@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Lilico"
 include ':app'
+include ':wallet-core'
