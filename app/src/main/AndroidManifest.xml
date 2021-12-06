@@ -17,6 +17,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/Theme.Lilico">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
