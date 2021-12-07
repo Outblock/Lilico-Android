@@ -24,19 +24,17 @@ class TestFlowTransaction {
         Log.w("method", "testFlowTransaction()")
         val wallet = HDWallet(MNEMONIC, "")
         val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
-        // TODO 不知道从哪取
+        // TODO 如何从 wallet-core 的 key 获取 flow 的 address
         val accountAddress = FlowAddress("TODO")
 
         val account = accessApi.getAccountAtLatestBlock(FlowAddress(wallet.getAddressForCoin(CoinType.FLOW)))!!
-
+        val keyIndex = account.keys.indexOfFirst { it.publicKey.bytes.contentEquals(wallet.getKeyForCoin(CoinType.FLOW).publicKeyNist256p1.data()) }
         val publicKey = wallet.getKeyForCoin(CoinType.FLOW).publicKeyNist256p1
 
-        // TODO 不知道从哪取
+        // TODO 如何根据 address 取到 privateKey
         val privateKey = Crypto.decodePrivateKey(PRIVATE_KEY)
 
-        // TODO 不知道从哪取
-        val keyIndex = 0
-        // TODO 不知道从哪取
+        // TODO 定义以及如何获取
         val signerIndex = 0
 
         val payerAccountKey = accessApi.getAccountKey(payerAccountAddress, 0)
