@@ -1,7 +1,7 @@
 package io.outblock.lilico
 
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test
 import org.junit.runner.RunWith
 import wallet.core.jni.HDWallet
@@ -12,14 +12,15 @@ import wallet.core.jni.HDWallet
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class TestWallet {
+    init {
+        System.loadLibrary("TrustWalletCore");
+    }
+
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        println("TEST START")
-        System.loadLibrary("TrustWalletCore")
+    fun testCreateMnemonic() {
+        Log.w("TEST START", "testCreateMnemonic()")
         val wallet = HDWallet(128, "")
-        println("MNEMONIC:${wallet.mnemonic()}")
+        Log.w("MNEMONIC", wallet.mnemonic())
     }
 }
