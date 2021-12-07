@@ -67,8 +67,8 @@ class TestWallet {
         const val MNEMONIC = "normal dune pole key case cradle unfold require tornado mercy hospital buyer"
         const val PUBLIC_KEY = "04dbe5b4b4416ad9158339dd692002ceddab895e11bd87d90ce7e3e745efef28d2ad6e736fe3d57d52213f397a7ba9f0bc8c65620a872aefedbc1ddd74c605cf58"
         const val PRIVATE_KEY = "638dc9ad0eee91d09249f0fd7c5323a11600e20d5b9105b66b782a96236e74cf"
-
         const val SIGNATURE = "0cd37adf53dc353eeb07321c765d81aedd11f34a6393de31bb15e2c5a07793c96ac54369d71a7e769dced55fc941d2f723538e1b31bf587e7f435e911222068b01"
+        const val TEST_ADDRESS = "0xcfe03e16d57ad8ad"
 
         const val HOST_MAINNET = "access.mainnet.nodes.onflow.org"
         const val HOST_TESTNET = "access.devnet.nodes.onflow.org"

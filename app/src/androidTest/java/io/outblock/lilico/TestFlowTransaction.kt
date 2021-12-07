@@ -9,6 +9,7 @@ import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.TestWallet.Companion.HOST_TESTNET
 import io.outblock.lilico.TestWallet.Companion.MNEMONIC
 import io.outblock.lilico.TestWallet.Companion.PRIVATE_KEY
+import io.outblock.lilico.TestWallet.Companion.TEST_ADDRESS
 import org.junit.Test
 import org.junit.runner.RunWith
 import wallet.core.jni.CoinType
@@ -23,21 +24,39 @@ class TestFlowTransaction {
     fun testFlowTransaction() {
         Log.w("method", "testFlowTransaction()")
         val wallet = HDWallet(MNEMONIC, "")
-        val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
-        // TODO 如何从 wallet-core 的 key 获取 flow 的 address
-        val accountAddress = FlowAddress("TODO")
 
-        val account = accessApi.getAccountAtLatestBlock(FlowAddress(wallet.getAddressForCoin(CoinType.FLOW)))!!
-        val keyIndex = account.keys.indexOfFirst { it.publicKey.bytes.contentEquals(wallet.getKeyForCoin(CoinType.FLOW).publicKeyNist256p1.data()) }
-        val publicKey = wallet.getKeyForCoin(CoinType.FLOW).publicKeyNist256p1
+        val privateKey = wallet.getDerivedKey(CoinType.FLOW, 0, 0, 0)
+        val publicKey = privateKey.publicKeyNist256p1.uncompressed()
+
+        // AccessAPI is sync
+        val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
+
+        // Better use async in the future
+        val asyncApi = Flow.newAsyncAccessApi(HOST_TESTNET, 9000)
+
+        val accountAddress = FlowAddress(TEST_ADDRESS)
+        val account = accessApi.getAccountAtLatestBlock(accountAddress)
+
+        val keyIndex = 0
+//        val publicKey = wallet.getKeyForCoin(CoinType.FLOW).publicKeyNist256p1
 
         // TODO 如何根据 address 取到 privateKey
-        val privateKey = Crypto.decodePrivateKey(PRIVATE_KEY)
+        // PrivateKey store in local, we don't fetch it from blockchian
+//        val privateKey = Crypto.decodePrivateKey(PRIVATE_KEY)
 
         // TODO 定义以及如何获取
         val signerIndex = 0
 
         val payerAccountKey = accessApi.getAccountKey(payerAccountAddress, 0)
+
+        // Check this one, better use DSL to construct transaction
+        // https://github.com/the-nft-company/flow-jvm-sdk/blob/main/src/test/kotlin/com/nftco/flow/sdk/TransactionTest.kt#L187-L215
+
+
+        // We need let the privateKey we got from wallet core to confirm Signer Protocol
+        // Then use func like FlowAccessApi.flowTransaction and FlowAccessApi.simpleFlowTransaction to send transaction
+        // https://github.com/the-nft-company/flow-jvm-sdk/blob/8b4f4fb2cf741aff317e08bd14881038a93c24f1/src/main/kotlin/com/nftco/flow/sdk/models.kt#L96-L107
+        // https://github.com/the-nft-company/flow-jvm-sdk/blob/a1e99c41a5948bb15ac2d5c5a74c754c86f57044/src/main/kotlin/com/nftco/flow/sdk/transaction-dsl.kt#L31-L44
 
         accessApi.sendTransaction(
             FlowTransaction(
