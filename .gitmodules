@@ -1,0 +1,3 @@
+[submodule "crypto-foundation"]
+	path = crypto-foundation
+	url = https://github.com/Outblock/wallet-core-android.git
