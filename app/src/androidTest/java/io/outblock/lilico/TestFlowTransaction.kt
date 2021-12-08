@@ -49,7 +49,7 @@ class TestFlowTransaction {
                 )
             }
         ).send()
-        println("=========> transaction id:${response.transactionId}")
+        println("=========> transaction id:${response.transactionId!!.bytes.bytesToHex()}")
     }
 
     /**
