@@ -1,10 +1,9 @@
 package io.outblock.lilico
 
+import com.nftco.flow.sdk.Flow
+import com.nftco.flow.sdk.simpleFlowScript
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.onflow.sdk.Flow
-import org.onflow.sdk.FlowScript
-import org.onflow.sdk.simpleFlowScript
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -20,7 +19,7 @@ class ExampleUnitTest {
     @Test
     fun testScript() {
         println("===========> method: testScript()")
-        val accessApi = Flow.newAccessApi("access.mainnet.nodes.onflow.org", 9000)
+        val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
         println("===========> start ping")
         accessApi.ping()
         println("===========> end ping")
