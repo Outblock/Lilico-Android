@@ -1,95 +1,141 @@
 package io.outblock.lilico
 
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nftco.flow.sdk.*
-import com.nftco.flow.sdk.cadence.AddressField
-import com.nftco.flow.sdk.cadence.UFix64NumberField
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.TestWallet.Companion.HOST_TESTNET
 import io.outblock.lilico.TestWallet.Companion.MNEMONIC
 import io.outblock.lilico.TestWallet.Companion.TEST_ADDRESS
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.onflow.protobuf.entities.TransactionOuterClass
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
+import java.security.Provider
+import java.security.Security
+
 
 val payerAccountAddress: FlowAddress = FlowAddress("f8d6e0586b0a20c7")
 
 @RunWith(AndroidJUnit4::class)
 class TestFlowTransaction {
 
+    init {
+        System.loadLibrary("TrustWalletCore");
+    }
+
     @Test
-    fun testFlowTransaction() {
-        Log.w("method", "testFlowTransaction()")
+    fun testSimpleTransaction() {
         val wallet = HDWallet(MNEMONIC, "")
-
         val privateKey = wallet.getDerivedKey(CoinType.FLOW, 0, 0, 0)
-        val publicKey = privateKey.publicKeyNist256p1.uncompressed()
 
-        // AccessAPI is sync
         val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
 
-        // Better use async in the future
-        val asyncApi = Flow.newAsyncAccessApi(HOST_TESTNET, 9000)
-
-        val accountAddress = FlowAddress(TEST_ADDRESS)
-        val account = accessApi.getAccountAtLatestBlock(accountAddress)!!
-
-        val keyIndex = 0
-
-        // TODO 定义以及如何获取
-        val signerIndex = 0
-
-        val payerAccountKey = accessApi.getAccountKey(payerAccountAddress, 0)
-
-        // Check this one, better use DSL to construct transaction
-        // https://github.com/the-nft-company/flow-jvm-sdk/blob/main/src/test/kotlin/com/nftco/flow/sdk/TransactionTest.kt#L187-L215
-
-
-        // We need let the privateKey we got from wallet core to confirm Signer Protocol
-        // Then use func like FlowAccessApi.flowTransaction and FlowAccessApi.simpleFlowTransaction to send transaction
-        // https://github.com/the-nft-company/flow-jvm-sdk/blob/8b4f4fb2cf741aff317e08bd14881038a93c24f1/src/main/kotlin/com/nftco/flow/sdk/models.kt#L96-L107
-        // https://github.com/the-nft-company/flow-jvm-sdk/blob/a1e99c41a5948bb15ac2d5c5a74c754c86f57044/src/main/kotlin/com/nftco/flow/sdk/transaction-dsl.kt#L31-L44
+        updateSecurityProvider()
 
         val jvmPrivateKey = Crypto.decodePrivateKey(privateKey.data().bytesToHex(), SignatureAlgorithm.ECDSA_P256)
-        with(TransactionBuilder()) {
-            script = FlowScript(SCRIPT)
-            arguments = mutableListOf(FlowArgument(UFix64NumberField("10")), FlowArgument(AddressField(accountAddress.stringValue)))
-            referenceBlockId = accessApi.getLatestBlockHeader().id
-            gasLimit = 1000
-            proposalKey = FlowTransactionProposalKey(
-                accountAddress,
-                payerAccountKey.id,
-                sequenceNumber = payerAccountKey.sequenceNumber.toLong()
-            )
-            payerAddress = payerAccountAddress
-            authorizers = listOf(accountAddress)
-            payloadSignatures = listOf(
-                PendingSignature(
-                    address = account.address,
-                    keyIndex = keyIndex,
-                    signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256)
+        val response = accessApi.simpleFlowTransaction(
+            address = FlowAddress(TEST_ADDRESS),
+            signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256),
+            gasLimit = 1000,
+            keyIndex = 0,
+            block = {
+                script = FlowScript(
+                    """
+                    pub fun main(): String {
+                        return "Hello World"
+                    }
+                """
                 )
-            )
-            envelopeSignatures = listOf(
-                PendingSignature(
-                    address = account.address,
-                    keyIndex = keyIndex,
-                    signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256)
-                )
-            )
-        }
-//        accessApi.simpleFlowTransaction()
-//        accessApi.sendTransaction(
-//            FlowTransaction(
-//                script = FlowScript(SCRIPT),
-//                arguments = listOf(FlowArgument(UFix64NumberField("10")), FlowArgument(AddressField(accountAddress.stringValue))),
-//
-//            )
-//        )
+            }
+        ).send()
+        println("=========> transaction id:${response.transactionId}")
     }
+
+    /**
+     * 修复Android 上相关加密方式失效问题
+     */
+    private fun updateSecurityProvider() {
+        // Web3j will set up the provider lazily when it's first used.
+        val provider: Provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) ?: return
+        if (provider.javaClass == BouncyCastleProvider::class.java) {
+            // BC with same package name, shouldn't happen in real life.
+            return
+        }
+        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
+        Security.insertProviderAt(BouncyCastleProvider(), 1)
+    }
+
+//    @Test
+//    fun testFlowTransaction() {
+//        Log.w("method", "testFlowTransaction()")
+//        val wallet = HDWallet(MNEMONIC, "")
+//
+//        val privateKey = wallet.getDerivedKey(CoinType.FLOW, 0, 0, 0)
+//        val publicKey = privateKey.publicKeyNist256p1.uncompressed()
+//
+//        // AccessAPI is sync
+//        val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
+//
+//        // Better use async in the future
+//        val asyncApi = Flow.newAsyncAccessApi(HOST_TESTNET, 9000)
+//
+//        val accountAddress = FlowAddress(TEST_ADDRESS)
+//        val account = accessApi.getAccountAtLatestBlock(accountAddress)!!
+//
+//        val keyIndex = 0
+//
+//        // TODO 定义以及如何获取
+//        val signerIndex = 0
+//
+//        val payerAccountKey = accessApi.getAccountKey(payerAccountAddress, 0)
+//
+//        // Check this one, better use DSL to construct transaction
+//        // https://github.com/the-nft-company/flow-jvm-sdk/blob/main/src/test/kotlin/com/nftco/flow/sdk/TransactionTest.kt#L187-L215
+//
+//
+//        // We need let the privateKey we got from wallet core to confirm Signer Protocol
+//        // Then use func like FlowAccessApi.flowTransaction and FlowAccessApi.simpleFlowTransaction to send transaction
+//        // https://github.com/the-nft-company/flow-jvm-sdk/blob/8b4f4fb2cf741aff317e08bd14881038a93c24f1/src/main/kotlin/com/nftco/flow/sdk/models.kt#L96-L107
+//        // https://github.com/the-nft-company/flow-jvm-sdk/blob/a1e99c41a5948bb15ac2d5c5a74c754c86f57044/src/main/kotlin/com/nftco/flow/sdk/transaction-dsl.kt#L31-L44
+//
+//        val jvmPrivateKey = Crypto.decodePrivateKey(privateKey.data().bytesToHex(), SignatureAlgorithm.ECDSA_P256)
+//        with(TransactionBuilder()) {
+//            script = FlowScript(SCRIPT)
+//            arguments = mutableListOf(FlowArgument(UFix64NumberField("10")), FlowArgument(AddressField(accountAddress.stringValue)))
+//            referenceBlockId = accessApi.getLatestBlockHeader().id
+//            gasLimit = 1000
+//            proposalKey = FlowTransactionProposalKey(
+//                accountAddress,
+//                payerAccountKey.id,
+//                sequenceNumber = payerAccountKey.sequenceNumber.toLong()
+//            )
+//            payerAddress = payerAccountAddress
+//            authorizers = listOf(accountAddress)
+//            payloadSignatures = listOf(
+//                PendingSignature(
+//                    address = account.address,
+//                    keyIndex = keyIndex,
+//                    signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256)
+//                )
+//            )
+//            envelopeSignatures = listOf(
+//                PendingSignature(
+//                    address = account.address,
+//                    keyIndex = keyIndex,
+//                    signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256)
+//                )
+//            )
+//        }
+////        accessApi.simpleFlowTransaction()
+////        accessApi.sendTransaction(
+////            FlowTransaction(
+////                script = FlowScript(SCRIPT),
+////                arguments = listOf(FlowArgument(UFix64NumberField("10")), FlowArgument(AddressField(accountAddress.stringValue))),
+////
+////            )
+////        )
+//    }
 
     private fun FlowAccessApi.getAccountKey(address: FlowAddress, keyIndex: Int): FlowAccountKey {
         return getAccountAtLatestBlock(address)!!.keys[keyIndex]
