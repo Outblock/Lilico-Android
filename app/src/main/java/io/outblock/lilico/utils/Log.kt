@@ -23,10 +23,10 @@ fun loge(tag: String?, msg: Any?) {
     log(tag, msg, Log.ERROR)
 }
 
-fun loge(msg: Throwable, printStackTrace: Boolean = true) {
-    log("Exception", msg.message ?: "", Log.ERROR)
+fun loge(msg: Throwable?, printStackTrace: Boolean = true) {
+    log("Exception", msg?.message ?: "", Log.ERROR)
     if (BuildConfig.DEBUG && printStackTrace) {
-        msg.printStackTrace()
+        msg?.printStackTrace()
     }
 }
 
