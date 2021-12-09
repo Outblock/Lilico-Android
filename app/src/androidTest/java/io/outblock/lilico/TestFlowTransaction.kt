@@ -3,14 +3,19 @@ package io.outblock.lilico
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
+import io.outblock.lilico.TestWallet.Companion.DERIVATION_PATH
 import io.outblock.lilico.TestWallet.Companion.HOST_TESTNET
 import io.outblock.lilico.TestWallet.Companion.MNEMONIC
 import io.outblock.lilico.TestWallet.Companion.TEST_ADDRESS
+import io.outblock.wallet.extensions.toHex
+import junit.framework.Assert.assertEquals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 import org.junit.runner.RunWith
 import wallet.core.jni.CoinType
+import wallet.core.jni.Curve
 import wallet.core.jni.HDWallet
+import wallet.core.jni.PrivateKey
 import java.security.Provider
 import java.security.Security
 
@@ -27,28 +32,32 @@ class TestFlowTransaction {
     @Test
     fun testSimpleTransaction() {
         val wallet = HDWallet(MNEMONIC, "")
-        val privateKey = wallet.getDerivedKey(CoinType.FLOW, 0, 0, 0)
-
+        val privateKey = wallet.getCurveKey(Curve.NIST256P1, DERIVATION_PATH)
         val accessApi = Flow.newAccessApi(HOST_TESTNET, 9000)
 
-        updateSecurityProvider()
+        assertEquals("638dc9ad0eee91d09249f0fd7c5323a11600e20d5b9105b66b782a96236e74cf", privateKey.data().bytesToHex())
+//        updateSecurityProvider()
+        val address = FlowAddress("0x4f05d22690e07938")
+        val signer = WalletCoreSigner(
+            privateKey,
+            SignatureAlgorithm.ECDSA_P256,
+            HashAlgorithm.SHA2_256)
 
-        val jvmPrivateKey = Crypto.decodePrivateKey(privateKey.data().bytesToHex(), SignatureAlgorithm.ECDSA_P256)
-        val response = accessApi.simpleFlowTransaction(
-            address = FlowAddress(TEST_ADDRESS),
-            signer = Crypto.getSigner(jvmPrivateKey, HashAlgorithm.SHA2_256),
-            gasLimit = 1000,
-            keyIndex = 0,
-            block = {
-                script = FlowScript(
-                    """
-                    pub fun main(): String {
-                        return "Hello World"
-                    }
+//        val data = "hello schnorr".encodeToByteArray()
+//        val signedData = signer.sign(data)
+//        println("=========> transaction --> ${signedData.bytesToHex()}")
+
+        val response = accessApi.simpleFlowTransaction(address = address, signer = signer, keyIndex= 1) {
+            script {
                 """
-                )
+                transaction {
+                  execute {
+                    log("A transaction happened")
+                  }
+                }
+                """
             }
-        ).send()
+        }.send()
         println("=========> transaction id:${response.transactionId!!.bytes.bytesToHex()}")
     }
 
