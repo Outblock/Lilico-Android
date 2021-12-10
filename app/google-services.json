@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:246247206636:android:2f3402eadd214c15f23fc9",
+        "mobilesdk_app_id": "1:246247206636:android:b7838017a85d9bd4f23fc9",
         "android_client_info": {
-          "package_name": "io.outblock.lilico"
+          "package_name": "io.outblock.lilico.dev"
         }
       },
       "oauth_client": [

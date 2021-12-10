@@ -18,9 +18,38 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            keyAlias 'outblock'
+            keyPassword 'io.outblock'
+            storeFile file('keystore.jks')
+            storePassword 'io.outblock'
+        }
+    }
+
+    buildTypes {
+        debug {
             minifyEnabled false
+            multiDexEnabled true
+            debuggable true
+            applicationIdSuffix = ".dev"
+            signingConfig signingConfigs.release
+        }
+
+        dev {
+            minifyEnabled true
+            shrinkResources true
+            multiDexEnabled false
+            debuggable false
+            applicationIdSuffix = ".dev"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            multiDexEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -72,6 +101,20 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "androidx.security:security-crypto:1.1.0-alpha03"
     /** Android Architecture **/
+
+    /** Google Drive **/
+    implementation('com.google.api-client:google-api-client:1.23.0') {
+        exclude group: 'com.google.guava'
+    }
+    implementation 'com.google.android.gms:play-services-drive:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+//    implementation('com.google.oauth-client:google-oauth-client-jetty:1.23.0') {
+//        exclude group: 'com.google.guava'
+//    }
+//    implementation('com.google.apis:google-api-services-drive:v3-rev110-1.23.0') {
+//        exclude group: 'com.google.guava'
+//    }
+    /** Google Drive **/
 
     /** Kotlin 相关 **/
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
