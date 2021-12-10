@@ -15,7 +15,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        testFirebaseAuth()
+//        testFirebaseAuth()
+
+//        GoogleDriveAuthActivity.launch(this)
     }
 
     private fun testFirebaseAuth() {

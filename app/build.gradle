@@ -108,12 +108,15 @@ dependencies {
     }
     implementation 'com.google.android.gms:play-services-drive:17.0.0'
     implementation 'com.google.android.gms:play-services-auth:20.0.0'
-//    implementation('com.google.oauth-client:google-oauth-client-jetty:1.23.0') {
-//        exclude group: 'com.google.guava'
-//    }
-//    implementation('com.google.apis:google-api-services-drive:v3-rev110-1.23.0') {
-//        exclude group: 'com.google.guava'
-//    }
+    implementation 'com.google.http-client:google-http-client:1.40.1'
+    implementation 'com.google.api-client:google-api-client-android:1.32.1'
+//    implementation 'com.google.oauth-client:google-oauth-client-servlet:1.30.4'
+    implementation('com.google.oauth-client:google-oauth-client-jetty:1.23.0') {
+        exclude group: 'com.google.guava'
+    }
+    implementation('com.google.apis:google-api-services-drive:v3-rev110-1.23.0') {
+        exclude group: 'com.google.guava'
+    }
     /** Google Drive **/
 
     /** Kotlin 相关 **/
@@ -133,6 +136,8 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    implementation 'com.zackratos.ultimatebarx:ultimatebarx:0.6.0'
 
     /** TEST **/
     testImplementation 'junit:junit:4.+'

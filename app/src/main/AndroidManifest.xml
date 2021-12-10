@@ -4,6 +4,12 @@
     package="io.outblock.lilico">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Permissions required by GoogleAuthUtil -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".LilicoApplication"
         android:allowBackup="true"
@@ -11,7 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Lilico"
+        android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,LockedOrientationActivity">
         <activity
             android:name=".page.main.MainActivity"
@@ -20,13 +26,17 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Lilico">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".manager.drive.GoogleDriveAuthActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
         <!-- Firebase Messaging Start -->
         <service
             android:name=".service.MessagingService"
