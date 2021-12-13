@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "246247206636",
+    "project_id": "lilico-dev",
+    "storage_bucket": "lilico-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246247206636:android:b7838017a85d9bd4f23fc9",
+        "android_client_info": {
+          "package_name": "io.outblock.lilico.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246247206636-3jao9q30fttoqqdli9shbel3btaaf80f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRT-VmEQ3vEJZFO2pXc53wNffaor3Jebg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246247206636-3jao9q30fttoqqdli9shbel3btaaf80f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
