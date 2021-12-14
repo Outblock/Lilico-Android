@@ -37,6 +37,12 @@
             android:name=".manager.drive.GoogleDriveAuthActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Transparent.FullScreen"/>
+
+
+        <activity
+            android:name=".page.walletcreate.WalletCreateActivity"
+            android:launchMode="singleTop"/>
+
         <!-- Firebase Messaging Start -->
         <service
             android:name=".service.MessagingService"

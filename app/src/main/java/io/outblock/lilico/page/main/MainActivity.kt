@@ -1,10 +1,12 @@
 package io.outblock.lilico.page.main
 
 import android.os.Bundle
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
+import io.outblock.lilico.page.walletcreate.WalletCreateActivity
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logw
@@ -15,6 +17,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        findViewById<View>(R.id.create_button).setOnClickListener { WalletCreateActivity.launch(this) }
 //        testFirebaseAuth()
 
 //        GoogleDriveAuthActivity.launch(this)
