@@ -10,6 +10,8 @@ import androidx.security.crypto.MasterKey
 // 助记词
 private const val KEY_MNEMONIC = "key_mnemonic"
 
+private const val KEY_JWT_TOKEN = "jwt_token"
+
 private val preference by lazy {
     EncryptedSharedPreferences.create(
         Env.getApp(),
@@ -25,3 +27,9 @@ fun saveMnemonic(mnemonic: String) {
 }
 
 fun getMnemonic(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
+
+fun saveJwtToken(jwt: String) {
+    preference.edit().putString(KEY_JWT_TOKEN, jwt).apply()
+}
+
+fun getJwtToken(): String = preference.getString(KEY_JWT_TOKEN, "").orEmpty()

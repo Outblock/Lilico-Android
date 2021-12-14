@@ -14,6 +14,8 @@ class WalletCreateActivity : BaseActivity() {
         setContentView(R.layout.activity_create_wallet)
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CreateMnemonicFragment()).commit()
+
+        title = "Create Wallet"
     }
 
     companion object {

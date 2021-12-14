@@ -9,4 +9,5 @@
     android:textSize="18sp"
     android:clickable="true"
     android:focusable="true"
+    android:textColor="@color/text"
     tools:text="1 sense"/>
