@@ -9,7 +9,6 @@ import io.outblock.lilico.TestWallet.Companion.MNEMONIC
 import io.outblock.lilico.TestWallet.Companion.TEST_ADDRESS
 import io.outblock.wallet.extensions.toHex
 import junit.framework.Assert.assertEquals
-import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
 import org.junit.runner.RunWith
 import wallet.core.jni.CoinType
@@ -60,21 +59,6 @@ class TestFlowTransaction {
         }.send()
         println("=========> transaction id:${response.transactionId!!.bytes.bytesToHex()}")
     }
-
-    /**
-     * 修复Android 上相关加密方式失效问题
-     */
-    private fun updateSecurityProvider() {
-        // Web3j will set up the provider lazily when it's first used.
-        val provider: Provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) ?: return
-        if (provider.javaClass == BouncyCastleProvider::class.java) {
-            // BC with same package name, shouldn't happen in real life.
-            return
-        }
-        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
-        Security.insertProviderAt(BouncyCastleProvider(), 1)
-    }
-
 //    @Test
 //    fun testFlowTransaction() {
 //        Log.w("method", "testFlowTransaction()")
