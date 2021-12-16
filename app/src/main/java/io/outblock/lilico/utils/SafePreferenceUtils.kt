@@ -26,10 +26,14 @@ fun saveMnemonic(mnemonic: String) {
     preference.edit().putString(KEY_MNEMONIC, mnemonic).apply()
 }
 
-fun getMnemonic(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
+fun getMnemonicFromPreference(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
 
 fun saveJwtToken(jwt: String) {
     preference.edit().putString(KEY_JWT_TOKEN, jwt).apply()
+}
+
+fun clearJwtToken() {
+    saveJwtToken("")
 }
 
 fun getJwtToken(): String = preference.getString(KEY_JWT_TOKEN, "").orEmpty()

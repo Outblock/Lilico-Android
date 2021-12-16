@@ -1,6 +1,6 @@
 package io.outblock.lilico.network
 
-import io.outblock.lilico.network.model.OutblockUser
+import io.outblock.lilico.network.model.CreateWalletResponse
 import io.outblock.lilico.network.model.RegisterRequest
 import io.outblock.lilico.network.model.RegisterResponse
 import retrofit2.http.Body
@@ -12,5 +12,5 @@ interface ApiService {
     suspend fun register(@Body param: RegisterRequest): RegisterResponse
 
     @POST("/user/wallet")
-    suspend fun createWallet(): OutblockUser
+    suspend fun createWallet(): CreateWalletResponse
 }

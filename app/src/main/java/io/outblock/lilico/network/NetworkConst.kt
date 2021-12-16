@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 val API_HOST = if (BuildConfig.BUILD_TYPE != "release") "https://dev.lilico.app" else "https://lilico.app"
@@ -13,6 +14,11 @@ val API_HOST = if (BuildConfig.BUILD_TYPE != "release") "https://dev.lilico.app"
 fun retrofit(): Retrofit {
     val client = OkHttpClient.Builder().apply {
         addInterceptor(HeaderInterceptor())
+
+        callTimeout(10, TimeUnit.SECONDS)
+        connectTimeout(10, TimeUnit.SECONDS)
+        readTimeout(10, TimeUnit.SECONDS)
+        writeTimeout(10, TimeUnit.SECONDS)
 
         if (BuildConfig.DEBUG) {
             addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
