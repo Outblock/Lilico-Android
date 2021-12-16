@@ -5,9 +5,10 @@ import io.outblock.lilico.network.interceptor.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
-val API_HOST = if (BuildConfig.BUILD_TYPE != "release") "https://dev.lilico.app/" else "https://lilico.app/"
+val API_HOST = if (BuildConfig.BUILD_TYPE != "release") "https://dev.lilico.app" else "https://lilico.app"
 
 fun retrofit(): Retrofit {
     val client = OkHttpClient.Builder().apply {
@@ -18,5 +19,5 @@ fun retrofit(): Retrofit {
         }
     }.build()
 
-    return Retrofit.Builder().baseUrl(API_HOST).client(client).build()
+    return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(API_HOST).client(client).build()
 }

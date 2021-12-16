@@ -6,7 +6,6 @@ import com.nftco.flow.sdk.Flow
 import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
 import com.nftco.flow.sdk.simpleFlowScript
-import io.outblock.wallet.extensions.toHex
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

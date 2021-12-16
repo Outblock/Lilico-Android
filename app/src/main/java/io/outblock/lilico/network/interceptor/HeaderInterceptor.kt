@@ -7,8 +7,7 @@ import okhttp3.Response
 class HeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val newUrl = request.url.newBuilder().addQueryParameter("jwt", getJwtToken()).build()
-        return chain.proceed(request.newBuilder().url(newUrl).build())
+        val request = chain.request().newBuilder().addHeader("Authorization", "Bearer ${getJwtToken()}").build()
+        return chain.proceed(request)
     }
 }
