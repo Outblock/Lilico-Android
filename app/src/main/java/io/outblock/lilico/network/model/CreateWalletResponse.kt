@@ -29,5 +29,4 @@ data class CreateWalletResponseData(
 
     @SerializedName("updated_at")
     val updatedAt: String,
-
-    )
+)

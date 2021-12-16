@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryVariant">#f0f0f0</color>
-    <color name="colorSecondary">#FF7863</color>
+    <color name="colorSecondary">#FF6E4F</color>
     <color name="colorSecondaryVariant">#FED100</color>
 
     <color name="text">#23262f</color>
@@ -12,6 +12,63 @@
 
     <color name="card_bg">#f0f0f0</color>
 
-    <color name="black">#FF000000</color>
+    <color name="error">#EF383A</color>
+
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_8">#14FFFFFF</color>
+    <color name="white_10">#1AFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="white_25">#40FFFFFF</color>
+    <color name="white_30">#4DFFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_50">#80FFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="white_95">#EFFFFFFF</color>
+    <color name="white_98">#F8FFFFFF</color>
+    <color name="white_100">#FFFFFFFF</color>
+
+    <color name="gray_11">#111111</color>
+    <color name="gray_22">#222222</color>
+    <color name="gray_33">#333333</color>
+    <color name="gray_44">#444444</color>
+    <color name="gray_55">#555555</color>
+    <color name="gray_66">#666666</color>
+    <color name="gray_6a">#6A6A6A</color>
+    <color name="gray_77">#777777</color>
+    <color name="gray_88">#888888</color>
+    <color name="gray_99">#999999</color>
+    <color name="gray_aa">#AAAAAA</color>
+    <color name="gray_cc">#CCCCCC</color>
+    <color name="gray_dd">#DDDDDD</color>
+    <color name="gray_ee">#EEEEEE</color>
+    <color name="gray_ef">#efefef</color>
+    <color name="gray_f4">#F4F4F4</color>
+    <color name="gray_fd">#FDFDFD</color>
+    <color name="gray_fe">#FEFEFE</color>
+
+    <color name="gray_33_30">#4D333333</color>
+
+    <color name="black">#FF000000</color>
+    <color name="black_00">#00000000</color>
+    <color name="black_2">#05000000</color>
+    <color name="black_4">#0A000000</color>
+    <color name="black_6">#0F000000</color>
+    <color name="black_8">#14000000</color>
+    <color name="black_10">#1A000000</color>
+    <color name="black_15">#26000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_25">#40000000</color>
+    <color name="black_30">#4D000000</color>
+    <color name="black_40">#66000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_60">#99000000</color>
+    <color name="black_70">#B3000000</color>
+    <color name="black_80">#CC000000</color>
+    <color name="black_90">#E6000000</color>
+    <color name="black_95">#EF000000</color>
+    <color name="black_98">#F8000000</color>
 </resources>

@@ -14,5 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/bg</item>
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 </resources>

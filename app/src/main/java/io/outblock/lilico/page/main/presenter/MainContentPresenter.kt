@@ -1,12 +1,15 @@
 package io.outblock.lilico.page.main.presenter
 
 import androidx.viewpager2.widget.ViewPager2
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityMainBinding
+import io.outblock.lilico.page.demo.DemoActivity
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.main.adapter.MainPageAdapter
 import io.outblock.lilico.page.main.model.MainContentModel
+import io.outblock.lilico.utils.extensions.setVisible
 
 class MainContentPresenter(
     private val activity: MainActivity,
@@ -24,6 +27,11 @@ class MainContentPresenter(
     init {
         binding.viewPager.adapter = MainPageAdapter(activity)
         setupListener()
+
+        if (BuildConfig.DEBUG) {
+            binding.demoButton.setVisible(true)
+            binding.demoButton.setOnClickListener { DemoActivity.launch(activity) }
+        }
     }
 
     override fun bind(model: MainContentModel) {
