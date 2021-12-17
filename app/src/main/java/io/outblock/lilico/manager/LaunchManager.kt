@@ -2,8 +2,6 @@ package io.outblock.lilico.manager
 
 import android.app.Application
 import android.content.Intent
-import androidx.appcompat.app.AppCompatDelegate
-import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.ioScope
 
@@ -17,7 +15,6 @@ object LaunchManager {
 
     private fun asyncInit() {
         ioScope {
-            firebaseJwt()
             System.loadLibrary("TrustWalletCore")
         }
     }

@@ -2,16 +2,13 @@ package io.outblock.lilico.page.walletcreate.fragments.mnemonic
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.utils.getMnemonicFromPreference
 import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.saveMnemonic
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.getMnemonic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import wallet.core.jni.HDWallet
 
-class CreateMnemonicViewModel : ViewModel() {
+class WalletCreateMnemonicViewModel : ViewModel() {
 
     val mnemonicList = MutableLiveData<List<MnemonicModel>>()
 

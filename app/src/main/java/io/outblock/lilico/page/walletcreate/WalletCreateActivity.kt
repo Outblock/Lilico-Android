@@ -3,19 +3,46 @@ package io.outblock.lilico.page.walletcreate
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import io.outblock.lilico.R
+import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.page.walletcreate.fragments.mnemonic.CreateMnemonicFragment
+import io.outblock.lilico.databinding.ActivityCreateWalletBinding
+import io.outblock.lilico.page.walletcreate.model.WalletCreateContentModel
+import io.outblock.lilico.page.walletcreate.presenter.WalletCreateContentPresenter
 
 class WalletCreateActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityCreateWalletBinding
+    private lateinit var contentPresenter: WalletCreateContentPresenter
+    private lateinit var viewModel: WalletCreateViewMode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_wallet)
+        binding = ActivityCreateWalletBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        UltimateBarX.with(this).light(!isNightMode(this)).fitWindow(true).applyStatusBar()
+        contentPresenter = WalletCreateContentPresenter(this, binding)
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CreateMnemonicFragment()).commit()
+        viewModel = ViewModelProvider(this)[WalletCreateViewMode::class.java].apply {
+            onStepChangeLiveData.observe(this@WalletCreateActivity, { contentPresenter.bind(WalletCreateContentModel(changeStep = it)) })
+        }
 
-        title = "Create Wallet"
+        setupToolbar()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        title = ""
     }
 
     companion object {

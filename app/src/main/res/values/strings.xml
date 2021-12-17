@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Lilico</string>
+    <string name="next">Next</string>
+    <string name="username">Username</string>
+    <string name="username_too_short">Too short</string>
+    <string name="username_too_long">Too long</string>
+    <string name="username_format_error">The user name can only contain alphanumeric and.</string>
+    <string name="username_exist">It’s taken</string>
+    <string name="username_success">Sounds good</string>
 </resources>
