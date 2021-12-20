@@ -1,7 +1,5 @@
 package io.outblock.lilico.page.walletcreate.fragments.username
 
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
@@ -18,17 +16,12 @@ class WalletCreateUsernamePresenter(
 
     private val viewModel by lazy { ViewModelProvider(fragment)[WalletCreateUsernameViewModel::class.java] }
 
-    private val usernameCheckTask = Runnable { viewModel.verifyUsername(binding.editText.text.toString()) }
-
-    private val handler = Handler(Looper.getMainLooper())
-
     init {
         binding.editText.addTextChangedListener(object : SimpleTextWatcher() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 hideStateView()
                 binding.nextButton.isEnabled = false
-                handler.removeCallbacks(usernameCheckTask)
-                handler.postDelayed(usernameCheckTask, 1000)
+                viewModel.verifyUsername(s.toString())
             }
         })
         with(binding.root) {
