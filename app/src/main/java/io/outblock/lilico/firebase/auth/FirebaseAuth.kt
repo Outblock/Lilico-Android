@@ -15,7 +15,7 @@ private const val JWT_TOKEN_EXPIRE_TIME = DateUtils.MINUTE_IN_MILLIS * 55
 typealias FirebaseAuthCallback = (isSuccessful: Boolean, exception: Exception?) -> Unit
 
 fun isAnonymousSignIn(): Boolean {
-    return Firebase.auth.currentUser?.isAnonymous ?: false
+    return Firebase.auth.currentUser?.isAnonymous ?: true
 }
 
 fun firebaseCustomLogin(token: String, onComplete: FirebaseAuthCallback) {
