@@ -1,23 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_wallet_create_mnemonic"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_wallet_create_mnemonic"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingHorizontal="24dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Your Keychain"
+        android:textColor="@color/text"
+        android:textSize="36dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Write down or copy these words in the right order and save them somewhere safe."
+        android:textColor="@color/text_light"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mnemonic_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="12"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_border_round_16dp"
+        android:backgroundTint="#49D9A9"
         android:fadingEdge="none"
         android:overScrollMode="never"
+        android:paddingHorizontal="19dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/desc"
+        tools:itemCount="12"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/item_mnemonic"
         tools:spanCount="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_round_warning"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_padding"
+        app:layout_constraintBottom_toTopOf="@id/backup_cloud">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Do not share your secret phrase!"
+            android:textColor="@color/error"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="If someone has your secret phrase, they will have full control of your wallet."
+            android:textColor="@color/error"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backup_cloud"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="Backup to google drive"
+        app:layout_constraintBottom_toTopOf="@id/backup_manually"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backup_manually"
+        style="@style/Button.Outline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="Backup Manually"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

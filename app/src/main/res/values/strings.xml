@@ -7,4 +7,7 @@
     <string name="username_format_error">The user name can only contain alphanumeric and.</string>
     <string name="username_exist">It’s taken</string>
     <string name="username_success">Sounds good</string>
+    <string name="register_error">Register error</string>
+    <string name="confirm">Confirm</string>
+    <string name="almost_there">Almost there</string>
 </resources>

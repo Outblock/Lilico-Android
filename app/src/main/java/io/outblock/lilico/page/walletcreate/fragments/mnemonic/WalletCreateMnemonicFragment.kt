@@ -28,7 +28,7 @@ class WalletCreateMnemonicFragment : Fragment() {
         with(binding.mnemonicContainer) {
             adapter = this@WalletCreateMnemonicFragment.adapter
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-            addItemDecoration(GridSpaceItemDecoration(horizontal = 6.dp2px().toDouble(), vertical = 8.dp2px().toDouble()))
+            addItemDecoration(GridSpaceItemDecoration(horizontal = 20.dp2px().toDouble(), vertical = 8.dp2px().toDouble()))
         }
 
         viewModel = ViewModelProvider(this)[WalletCreateMnemonicViewModel::class.java].apply {

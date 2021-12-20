@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateUsernameBinding
+import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
+import io.outblock.lilico.utils.updateUsername
 
 class WalletCreateUsernamePresenter(
     private val fragment: Fragment,
@@ -15,6 +17,8 @@ class WalletCreateUsernamePresenter(
 ) : BasePresenter<WalletCreateUsernameModel> {
 
     private val viewModel by lazy { ViewModelProvider(fragment)[WalletCreateUsernameViewModel::class.java] }
+
+    private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
 
     init {
         binding.editText.addTextChangedListener(object : SimpleTextWatcher() {
@@ -26,6 +30,10 @@ class WalletCreateUsernamePresenter(
         })
         with(binding.root) {
             post { layoutParams.height = height }
+        }
+        binding.nextButton.setOnClickListener {
+            updateUsername(binding.editText.text.toString())
+            pageViewModel.nextStep()
         }
     }
 

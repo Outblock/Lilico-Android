@@ -37,6 +37,8 @@
 
     <style name="CheckBox">
         <item name="android:buttonTint">@color/colorSecondary</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="EditText" parent="AppTheme">
@@ -79,5 +81,6 @@
         <item name="strokeColor">@color/text</item>
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">12dp</item>
+        <item name="rippleColor">@color/black_10</item>
     </style>
 </resources>

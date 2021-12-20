@@ -10,6 +10,6 @@ class MnemonicItemPresenter(
 ) : BaseViewHolder(view), BasePresenter<MnemonicModel> {
 
     override fun bind(model: MnemonicModel) {
-        (view as MnemonicItem).setText("${model.index}. ${model.text}")
+        (view as MnemonicItem).setText(model)
     }
 }

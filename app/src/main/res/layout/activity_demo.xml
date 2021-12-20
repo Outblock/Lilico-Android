@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Open my wallet"
-            app:rippleColor="@color/black_10"/>
+            />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

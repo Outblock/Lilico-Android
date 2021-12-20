@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 private const val KEY_LAUNCH_TIMES = "KEY_LAUNCH_TIMES"
 
 private val KEY_JWT_REFRESH_TIME = longPreferencesKey("KEY_JWT_REFRESH_TIME")
+private val KEY_USERNAME = stringPreferencesKey("KEY_USERNAME")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -26,6 +28,12 @@ suspend fun getJwtRefreshTime(): Long = dataStore.data.map { it[KEY_JWT_REFRESH_
 
 fun updateJwtRefreshTime() {
     edit { dataStore.edit { it[KEY_JWT_REFRESH_TIME] = System.currentTimeMillis() } }
+}
+
+suspend fun getUsername(): String = dataStore.data.map { it[KEY_USERNAME].orEmpty() }.first()
+
+fun updateUsername(username: String) {
+    edit { dataStore.edit { it[KEY_USERNAME] = username } }
 }
 
 private fun edit(unit: suspend () -> Unit) {

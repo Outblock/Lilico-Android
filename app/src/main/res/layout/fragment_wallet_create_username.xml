@@ -5,15 +5,16 @@
     android:id="@+id/fragment_wallet_create_username"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding">
+    android:paddingHorizontal="@dimen/activity_padding">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/top_banner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#e0e0e0"
+        app:cardBackgroundColor="#fafafa"
         app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -85,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="48dp"
         android:enabled="false"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"

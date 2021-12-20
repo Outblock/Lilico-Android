@@ -1,5 +1,7 @@
 package io.outblock.lilico.page.walletcreate.presenter
 
+import androidx.transition.Fade
+import androidx.transition.Transition
 import com.google.android.material.transition.MaterialSharedAxis
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -19,11 +21,7 @@ class WalletCreateContentPresenter(
     private val binding: ActivityCreateWalletBinding,
 ) : BasePresenter<WalletCreateContentModel> {
 
-    private var currentStep = WALLET_CREATE_STEP_USERNAME
-
-    init {
-        onStepChane(currentStep)
-    }
+    private var currentStep = -1
 
     override fun bind(model: WalletCreateContentModel) {
         model.changeStep?.let { onStepChane(it) }
@@ -44,7 +42,10 @@ class WalletCreateContentPresenter(
         currentStep = step
     }
 
-    private fun createTransition(currentStep: Int, newStep: Int): MaterialSharedAxis {
+    private fun createTransition(currentStep: Int, newStep: Int): Transition {
+        if (currentStep < 0) {
+            return Fade().apply { duration = 50 }
+        }
         val transition = MaterialSharedAxis(MaterialSharedAxis.X, currentStep < newStep)
 
         transition.addTarget(getRootIdByStep(currentStep))

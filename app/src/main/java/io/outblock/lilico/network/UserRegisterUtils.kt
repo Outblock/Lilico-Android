@@ -7,18 +7,17 @@ import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
 import io.outblock.lilico.utils.clearJwtToken
-import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.wallet.getPublicKey
 
 
 private const val TAG = "UserRegisterUtils"
 
-fun registerOutblockUser(
+suspend fun registerOutblockUser(
     username: String,
     callback: (isSuccess: Boolean) -> Unit,
 ) {
-    ioScope { registerOutblockUserInternal(username, callback) }
+    registerOutblockUserInternal(username, callback)
 }
 
 private suspend fun registerOutblockUserInternal(

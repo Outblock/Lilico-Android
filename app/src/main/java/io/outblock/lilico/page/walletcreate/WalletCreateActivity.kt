@@ -14,16 +14,16 @@ class WalletCreateActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreateWalletBinding
     private lateinit var contentPresenter: WalletCreateContentPresenter
-    private lateinit var viewModel: WalletCreateViewMode
+    private lateinit var viewModel: WalletCreateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateWalletBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        UltimateBarX.with(this).light(!isNightMode(this)).fitWindow(true).applyStatusBar()
+
         contentPresenter = WalletCreateContentPresenter(this, binding)
 
-        viewModel = ViewModelProvider(this)[WalletCreateViewMode::class.java].apply {
+        viewModel = ViewModelProvider(this)[WalletCreateViewModel::class.java].apply {
             onStepChangeLiveData.observe(this@WalletCreateActivity, { contentPresenter.bind(WalletCreateContentModel(changeStep = it)) })
         }
 
