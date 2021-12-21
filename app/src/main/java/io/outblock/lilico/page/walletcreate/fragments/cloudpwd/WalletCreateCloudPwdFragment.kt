@@ -5,17 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.outblock.lilico.databinding.FragmentWalletCreateWarningBinding
+import androidx.lifecycle.ViewModelProvider
+import io.outblock.lilico.databinding.FragmentWalletCreateCloudPwdBinding
 
 class WalletCreateCloudPwdFragment : Fragment() {
 
-    private lateinit var binding: FragmentWalletCreateWarningBinding
+    private lateinit var binding: FragmentWalletCreateCloudPwdBinding
+    private lateinit var presenter: WalletCreateCloudPwdPresenter
+    private lateinit var viewModel: WalletCreateCloudPwdViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentWalletCreateWarningBinding.inflate(inflater)
+        binding = FragmentWalletCreateCloudPwdBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        presenter = WalletCreateCloudPwdPresenter(this, binding)
+        viewModel = ViewModelProvider(this)[WalletCreateCloudPwdViewModel::class.java].apply {
+            backupCallbackLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletCreateCloudPwdModel(isBackupSuccess = it)) }
+        }
     }
 }

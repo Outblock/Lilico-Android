@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.outblock.lilico.databinding.FragmentWalletCreateUsernameBinding
+import io.outblock.lilico.databinding.FragmentWalletCreatePinCodeBinding
 
 class WalletCreatePinCodeFragment : Fragment() {
 
-    private lateinit var binding: FragmentWalletCreateUsernameBinding
+    private lateinit var binding: FragmentWalletCreatePinCodeBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentWalletCreateUsernameBinding.inflate(inflater)
+        binding = FragmentWalletCreatePinCodeBinding.inflate(inflater)
         return binding.root
     }
 

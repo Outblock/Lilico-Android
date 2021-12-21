@@ -15,11 +15,14 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import java.util.*
 
 
 class GoogleDriveAuthActivity : AppCompatActivity() {
+
+    private val password by lazy { intent.getStringExtra(EXTRA_PASSWORD)!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +76,10 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                     credential
                 ).setApplicationName("Drive API Migration").build()
 
-                testGoogleDrive(googleDriveService)
+                ioScope {
+                    uploadMnemonicToGoogleDrive(googleDriveService, password)
+                    finish()
+                }
             } else {
                 logd(TAG, "signIn fail ${task.exception}")
             }
@@ -83,9 +89,12 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
     companion object {
         private val TAG = GoogleDriveAuthActivity::class.java.simpleName
         private const val REQUEST_CODE_SIGN_IN = 1
+        private const val EXTRA_PASSWORD = "extra_password"
 
-        fun launch(context: Context) {
-            context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java))
+        fun launch(context: Context, password: String) {
+            context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
+                putExtra(EXTRA_PASSWORD, password)
+            })
         }
     }
 }

@@ -1,7 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_wallet_create_cloud_pwd"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_padding"
+    android:paddingTop="85dp">
 
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/please_create"
+        android:textColor="@color/text"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/title_2"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/password"
+        android:textStyle="bold"
+        android:textColor="@color/colorSecondary"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@id/title_3"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:text="@string/cloud_password_tip"
+        android:textColor="@color/text_sub"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/pwd_text_wrapper_1"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pwd_text_wrapper_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="54dp"
+        android:textCursorDrawable="@drawable/bg_edittext_cursor"
+        app:boxBackgroundMode="none"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        android:elevation="8dp"
+        android:translationZ="8dp"
+        app:layout_constraintBottom_toTopOf="@id/pwd_text_wrapper_2"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/pwd_text_1"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:autofillHints="password"
+            android:hint="@string/enter_your_password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/text_sub"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pwd_text_wrapper_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:textCursorDrawable="@drawable/bg_edittext_cursor"
+        app:boxBackgroundMode="none"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/check_box"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/pwd_text_2"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:autofillHints="password"
+            android:hint="@string/enter_your_password_again"
+            android:inputType="textPassword"
+            android:textColorHint="@color/text_sub"
+            android:backgroundTint="@color/border_3"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/pwd_text_tips_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/pwd_text_wrapper_1"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/state_icon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_username_error"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text"
+            app:layout_constraintEnd_toStartOf="@id/state_text"
+            app:layout_constraintTop_toTopOf="@id/edit_text"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text"
+            app:layout_constraintEnd_toEndOf="@id/edit_text"
+            app:layout_constraintTop_toTopOf="@id/edit_text"
+            tools:text="Enter 8 characters, with at least 1 number"
+            tools:visibility="visible"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/check_box"
+        style="@style/CheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/password_check"
+        app:layout_constraintBottom_toTopOf="@id/next_button"/>
+
+    <io.outblock.lilico.widgets.LoadingMaterialButton
+        android:id="@+id/next_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:enabled="false"
+        android:text="@string/create_password"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
