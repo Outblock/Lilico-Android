@@ -31,4 +31,9 @@ class WalletCreateCloudPwdViewModel : ViewModel() {
     fun backup(context: Context, pwd: String) {
         GoogleDriveAuthActivity.launch(context, pwd)
     }
+
+    override fun onCleared() {
+        LocalBroadcastManager.getInstance(Env.getApp()).unregisterReceiver(uploadReceiver)
+        super.onCleared()
+    }
 }
