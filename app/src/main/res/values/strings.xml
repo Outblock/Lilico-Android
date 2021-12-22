@@ -21,4 +21,12 @@
     <string name="please_create">Please Create</string>
     <string name="backing_up">Backing up</string>
     <string name="backup_error">Backup error</string>
+    <string name="backup">Backup</string>
+    <string name="manual">Manual</string>
+    <string name="manual_backup_tip">Please tap the word one by one, or drag and drop words in the right order.</string>
+    <string name="pick_your">Pick Your</string>
+    <string name="pin_code_title">Add Extra\nProtection To\nYour Wallet</string>
+    <string name="protection">Protection</string>
+    <string name="face_id">Face ID</string>
+    <string name="pin_code">PIN Code</string>
 </resources>

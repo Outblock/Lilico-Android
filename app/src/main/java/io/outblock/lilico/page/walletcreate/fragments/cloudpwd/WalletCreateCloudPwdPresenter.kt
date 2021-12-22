@@ -1,7 +1,6 @@
 package io.outblock.lilico.page.walletcreate.fragments.cloudpwd
 
 import android.content.res.ColorStateList
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,8 +25,8 @@ class WalletCreateCloudPwdPresenter(
 
     init {
         with(binding) {
-            pwdText1.setOnFocusChangeListener { view, hasFocus -> onFocusChange(view, hasFocus) }
-            pwdText2.setOnFocusChangeListener { view, hasFocus -> onFocusChange(view, hasFocus) }
+            pwdText1.setOnFocusChangeListener { _, _ -> onFocusChange() }
+            pwdText2.setOnFocusChangeListener { _, _ -> onFocusChange() }
 
             pwdText1.addTextChangedListener(object : SimpleTextWatcher() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -83,9 +82,13 @@ class WalletCreateCloudPwdPresenter(
         }
     }
 
-    private fun onFocusChange(view: View, hasFocus: Boolean) {
-        view.backgroundTintList =
-            if (hasFocus) ColorStateList.valueOf(R.color.text.res2color()) else ColorStateList.valueOf(R.color.border_3.res2color())
+    private fun onFocusChange() {
+        val focusedColor = ColorStateList.valueOf(R.color.text.res2color())
+        val unfocusedColor = ColorStateList.valueOf(R.color.border_3.res2color())
+        with(binding) {
+            pwdText1.backgroundTintList = if (pwdText1.isFocused) focusedColor else unfocusedColor
+            pwdText2.backgroundTintList = if (pwdText2.isFocused) focusedColor else unfocusedColor
+        }
     }
 
     private fun uploadMnemonic() {

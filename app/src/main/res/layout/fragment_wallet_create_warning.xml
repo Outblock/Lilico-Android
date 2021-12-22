@@ -15,19 +15,44 @@
         app:cardBackgroundColor="#fafafa"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
-        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintDimensionRatio="16:3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/intro_text_1"
+        android:id="@+id/title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Things You"
+        android:textColor="@color/text"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_banner"/>
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Need to Know"
+        android:textColor="@color/colorSecondary"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_1"/>
+
+    <TextView
+        android:id="@+id/intro_text_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Username can be used for orem ipsum dolor sit amet, consectetuer adipiscing elit"
-        android:textColor="@color/text_sub"
+        android:text="In the next step, you will see a secret phrase (12 words). The secret phrase is the only key to recover your wallet. "
+        android:textColor="@color/text_light"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/top_banner"
+        app:layout_constraintTop_toBottomOf="@id/title_2"
         tools:ignore="HardcodedText"/>
 
     <FrameLayout
@@ -47,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
-            android:text="Title 1 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed"/>
+            android:text="If I lose my secret phrases, I cannot access my account forever."/>
     </FrameLayout>
 
     <FrameLayout
@@ -67,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
-            android:text="Title 1 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed"/>
+            android:text="If I expose my secret phrases anywhere, my funds can be stolen."/>
     </FrameLayout>
 
     <FrameLayout
@@ -87,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
-            android:text="Title 1 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed"/>
+            android:text="It is my full responsibility to secure my secret phrases."/>
     </FrameLayout>
 
     <io.outblock.lilico.widgets.LoadingMaterialButton

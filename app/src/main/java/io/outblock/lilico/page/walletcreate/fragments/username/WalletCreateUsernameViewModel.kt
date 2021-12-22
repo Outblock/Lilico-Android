@@ -37,9 +37,9 @@ class WalletCreateUsernameViewModel : ViewModel() {
             val service = retrofit().create(ApiService::class.java)
             val resp = service.checkUsername(username)
 
-            if (resp.username == username) {
-                val msg = if (resp.unique) R.string.username_success.res2String() else R.string.username_exist.res2String()
-                usernameStateLiveData.postValue(Pair(resp.unique, msg))
+            if (resp.data.username == username) {
+                val msg = if (resp.data.unique) R.string.username_success.res2String() else R.string.username_exist.res2String()
+                usernameStateLiveData.postValue(Pair(resp.data.unique, msg))
             }
         }
     }

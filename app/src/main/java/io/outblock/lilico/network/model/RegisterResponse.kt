@@ -3,14 +3,19 @@ package io.outblock.lilico.network.model
 import com.google.gson.annotations.SerializedName
 
 data class RegisterResponse(
-    @SerializedName("custom_token")
-    val customToken: String,
+    @SerializedName("data")
+    val data: RegisterResponseData,
 
     @SerializedName("message")
     val message: String,
 
     @SerializedName("status")
     val status: Int,
+)
+
+data class RegisterResponseData(
+    @SerializedName("custom_token")
+    val customToken: String,
 
     @SerializedName("user_id")
     val uid: String,

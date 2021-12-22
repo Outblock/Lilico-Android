@@ -39,7 +39,7 @@ private suspend fun registerOutblockUserInternal(
     Firebase.auth.currentUser?.delete()?.addOnCompleteListener {
         logd(TAG, "delete user finish exception:${it.exception}")
         if (it.isSuccessful) {
-            firebaseCustomLogin(user.customToken) { isSuccessful, _ ->
+            firebaseCustomLogin(user.data.customToken) { isSuccessful, _ ->
                 if (isSuccessful) {
                     firebaseJwt { _, _ ->
                         callback(true)

@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
         android:text="@string/cloud_password_tip"
-        android:textColor="@color/text_sub"
+        android:textColor="@color/text_light"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/pwd_text_wrapper_1"
         app:layout_constraintStart_toStartOf="parent"/>

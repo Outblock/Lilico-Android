@@ -10,6 +10,7 @@ import io.outblock.lilico.databinding.FragmentWalletCreatePinCodeBinding
 class WalletCreatePinCodeFragment : Fragment() {
 
     private lateinit var binding: FragmentWalletCreatePinCodeBinding
+    private lateinit var presenter: WalletCreatePinCodePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentWalletCreatePinCodeBinding.inflate(inflater)
@@ -17,5 +18,6 @@ class WalletCreatePinCodeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        presenter = WalletCreatePinCodePresenter(this, binding)
     }
 }
