@@ -12,6 +12,8 @@ private const val KEY_MNEMONIC = "key_mnemonic"
 
 private const val KEY_JWT_TOKEN = "jwt_token"
 
+private const val KEY_AES_LOCAL_CODE = "key_aes_local_code"
+
 private val preference by lazy {
     EncryptedSharedPreferences.create(
         Env.getApp(),
@@ -27,6 +29,12 @@ fun saveMnemonic(mnemonic: String) {
 }
 
 fun getMnemonicFromPreference(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
+
+fun updateAesLocalCode(key: String) {
+    preference.edit().putString(KEY_AES_LOCAL_CODE, key).apply()
+}
+
+fun getAesLocalCode(): String = preference.getString(KEY_AES_LOCAL_CODE, "").orEmpty()
 
 fun saveJwtToken(jwt: String) {
     preference.edit().putString(KEY_JWT_TOKEN, jwt).apply()

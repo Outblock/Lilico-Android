@@ -6,8 +6,10 @@ import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.Fragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentWalletCreatePinCodeBinding
+import io.outblock.lilico.manager.biometric.BlockBiometricManager
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 
 class WalletCreatePinCodePresenter(
     private val fragment: Fragment,
@@ -21,8 +23,10 @@ class WalletCreatePinCodePresenter(
                 val index = indexOf(protection)
                 setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            faceIdLayout.setOnClickListener { }
+            faceIdLayout.setOnClickListener { BlockBiometricManager.showBiometricPrompt(fragment.requireActivity()) }
             pinCodeLayout.setOnClickListener { }
+
+            faceIdLayout.setVisible(BlockBiometricManager.checkIsBiometricEnable(fragment.requireContext()))
         }
     }
 }

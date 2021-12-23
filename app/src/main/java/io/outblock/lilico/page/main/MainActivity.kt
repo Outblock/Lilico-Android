@@ -15,7 +15,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        UltimateBarX.with(this).light(!isNightMode(this)).fitWindow(true).applyStatusBar()
 
         contentPresenter = MainContentPresenter(this, binding)
     }
