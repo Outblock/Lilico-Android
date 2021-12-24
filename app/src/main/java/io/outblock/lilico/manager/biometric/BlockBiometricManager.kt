@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import java.util.concurrent.Executor
+import javax.crypto.Cipher
 
 
 object BlockBiometricManager {
@@ -28,7 +29,7 @@ object BlockBiometricManager {
         return authenticateCode == BiometricManager.BIOMETRIC_SUCCESS
     }
 
-    fun showBiometricPrompt(activity: FragmentActivity) {
+    fun showBiometricPrompt(activity: FragmentActivity,callback:(isSuccess:Boolean)->Unit) {
         val promptInfo: BiometricPrompt.PromptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric login for my app")
             .setSubtitle("Log in using your biometric credential")
@@ -38,24 +39,46 @@ object BlockBiometricManager {
         val executor = Executor { Handler(Looper.getMainLooper()).post(it) }
         val biometricPrompt = BiometricPrompt(activity, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                super.onAuthenticationError(errorCode, errString)
                 loge(TAG, "Authentication error: $errString")
+                callback(false)
             }
 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                super.onAuthenticationSucceeded(result)
-                val authenticatedCryptoObject = result.cryptoObject
                 logd(TAG, "onAuthenticationSucceeded:${result.cryptoObject}")
-                // User has verified the signature, cipher, or message
-                // authentication code (MAC) associated with the crypto object,
-                // so you can use it in your app's crypto-driven workflows.
+                callback(true)
+//                val encrypt = encrypt(result.cryptoObject?.cipher, "hello 世界")
+//                val decrypt = decrypt(result.cryptoObject?.cipher, encrypt)
+//                logd(TAG, "encrypt:$encrypt")
+//                logd(TAG, "decrypt:$decrypt")
             }
 
             override fun onAuthenticationFailed() {
-                super.onAuthenticationFailed()
                 loge(TAG, "Authentication failed")
+                callback(false)
             }
         })
+
+//        Encrypt or decrypt pass this parameter
+//        val secretKeyName = R.string.secret_key_name.res2String()
+//        val cryptographyManager = CryptographyManager()
+//        val cipher = cryptographyManager.getInitializedCipherForEncryption(secretKeyName)
+//        val cipher = cryptographyManager.getInitializedCipherForDecryption(secretKeyName)
+//        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+
         biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun encrypt(cipher: Cipher?, text: String): String = cipher?.let {
+        CryptographyManager().encryptData(text, it)
+    } ?: kotlin.run {
+        loge(TAG, "cipher is null!")
+        text
+    }
+
+    private fun decrypt(cipher: Cipher?, text: String): String = cipher?.let {
+        CryptographyManager().decryptData(text, it)
+    } ?: kotlin.run {
+        loge(TAG, "cipher is null!")
+        text
     }
 }

@@ -29,4 +29,6 @@
     <string name="protection">Protection</string>
     <string name="face_id">Face ID</string>
     <string name="pin_code">PIN Code</string>
+
+    <string name="secret_key_name" translatable="false">biometric_sample_encryption_key</string>
 </resources>

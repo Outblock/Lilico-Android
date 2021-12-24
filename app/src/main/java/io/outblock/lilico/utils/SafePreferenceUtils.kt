@@ -4,11 +4,12 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
 /**
- * 加密存储 SharedPreferences
+ * Crypto SharedPreferences
  */
 
-// 助记词
+// mnemonic
 private const val KEY_MNEMONIC = "key_mnemonic"
+private const val KEY_MNEMONIC_BIOMETRIC = "key_mnemonic_biometric"
 
 private const val KEY_JWT_TOKEN = "jwt_token"
 

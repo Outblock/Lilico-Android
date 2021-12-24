@@ -1,5 +1,7 @@
 package io.outblock.lilico.page.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
@@ -21,5 +23,8 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+        fun launch(context: Context) {
+            context.startActivity(Intent(context, MainActivity::class.java))
+        }
     }
 }
