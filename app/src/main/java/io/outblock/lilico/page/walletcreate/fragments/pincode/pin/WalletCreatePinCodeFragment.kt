@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.walletcreate.fragments.pincode
+package io.outblock.lilico.page.walletcreate.fragments.pincode.pin
 
 import android.os.Bundle
 import android.view.LayoutInflater

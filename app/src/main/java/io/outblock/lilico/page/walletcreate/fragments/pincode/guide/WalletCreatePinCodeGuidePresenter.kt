@@ -1,22 +1,26 @@
-package io.outblock.lilico.page.walletcreate.fragments.pincode
+package io.outblock.lilico.page.walletcreate.fragments.pincode.guide
 
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
-import io.outblock.lilico.databinding.FragmentWalletCreatePinCodeBinding
+import io.outblock.lilico.databinding.FragmentWalletCreatePinGuideBinding
 import io.outblock.lilico.manager.biometric.BlockBiometricManager
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_CODE
+import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 
-class WalletCreatePinCodePresenter(
+class WalletCreatePinCodeGuidePresenter(
     private val fragment: Fragment,
-    private val binding: FragmentWalletCreatePinCodeBinding,
+    private val binding: FragmentWalletCreatePinGuideBinding,
 ) {
+    private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
 
     init {
         with(binding) {
@@ -34,7 +38,7 @@ class WalletCreatePinCodePresenter(
                     }
                 }
             }
-            pinCodeLayout.setOnClickListener { }
+            pinCodeLayout.setOnClickListener { pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_CODE) }
 
             faceIdLayout.setVisible(BlockBiometricManager.checkIsBiometricEnable(fragment.requireContext()))
         }

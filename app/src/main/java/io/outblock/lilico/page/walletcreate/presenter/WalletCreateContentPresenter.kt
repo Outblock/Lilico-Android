@@ -10,7 +10,8 @@ import io.outblock.lilico.page.walletcreate.*
 import io.outblock.lilico.page.walletcreate.fragments.cloudpwd.WalletCreateCloudPwdFragment
 import io.outblock.lilico.page.walletcreate.fragments.mnemonic.WalletCreateMnemonicFragment
 import io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck.WalletCreateMnemonicCheckFragment
-import io.outblock.lilico.page.walletcreate.fragments.pincode.WalletCreatePinCodeFragment
+import io.outblock.lilico.page.walletcreate.fragments.pincode.guide.WalletCreatePinCodeGuideFragment
+import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.WalletCreatePinCodeFragment
 import io.outblock.lilico.page.walletcreate.fragments.username.WalletCreateUsernameFragment
 import io.outblock.lilico.page.walletcreate.fragments.warning.WalletCreateWarningFragment
 import io.outblock.lilico.page.walletcreate.model.WalletCreateContentModel
@@ -34,6 +35,7 @@ class WalletCreateContentPresenter(
             WALLET_CREATE_STEP_MNEMONIC -> WalletCreateMnemonicFragment()
             WALLET_CREATE_STEP_CLOUD_PWD -> WalletCreateCloudPwdFragment()
             WALLET_CREATE_STEP_MNEMONIC_CHECK -> WalletCreateMnemonicCheckFragment()
+            WALLET_CREATE_STEP_PIN_GUIDE -> WalletCreatePinCodeGuideFragment()
             WALLET_CREATE_STEP_PIN_CODE -> WalletCreatePinCodeFragment()
             else -> WalletCreateUsernameFragment()
         }

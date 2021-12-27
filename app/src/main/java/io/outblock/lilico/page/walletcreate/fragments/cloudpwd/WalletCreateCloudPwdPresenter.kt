@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateCloudPwdBinding
-import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_CODE
+import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.res2color
@@ -51,7 +51,7 @@ class WalletCreateCloudPwdPresenter(
 
     private fun onBackupCallback(isSuccess: Boolean) {
         if (isSuccess) {
-            pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_CODE)
+            pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE)
         } else {
             updateContentViewState(true)
             binding.nextButton.setProgressVisible(false)

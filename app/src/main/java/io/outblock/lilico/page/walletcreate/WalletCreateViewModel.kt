@@ -11,7 +11,7 @@ class WalletCreateViewModel : ViewModel() {
     private var step = if (isAnonymousSignIn()) WALLET_CREATE_STEP_USERNAME else WALLET_CREATE_STEP_MNEMONIC
 
     init {
-        changeStep(step)
+        changeStep(WALLET_CREATE_STEP_PIN_CODE)
     }
 
     fun nextStep() {
