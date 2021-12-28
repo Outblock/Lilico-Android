@@ -1,13 +1,7 @@
 package io.outblock.lilico.network
 
-import io.outblock.lilico.network.model.CreateWalletResponse
-import io.outblock.lilico.network.model.RegisterRequest
-import io.outblock.lilico.network.model.RegisterResponse
-import io.outblock.lilico.network.model.UsernameCheckResponse
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import io.outblock.lilico.network.model.*
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -19,4 +13,7 @@ interface ApiService {
 
     @GET("/user/check/{username}")
     suspend fun checkUsername(@Path("username") username: String): UsernameCheckResponse
+
+    @POST("/user/token")
+    suspend fun uploadPushToken(@Field("push_token") token: String): CommonResponse
 }

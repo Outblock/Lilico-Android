@@ -21,6 +21,8 @@
     <color name="border_2">#b1b1b3</color>
     <color name="border_3">#E6E6E6</color>
 
+    <color name="success">#00B23C</color>
+
     <color name="primary_1">#FF6E4FBF</color>
     <color name="primary_2">#FF6E4F80</color>
     <color name="primary_3">#FF6E4F4D</color>

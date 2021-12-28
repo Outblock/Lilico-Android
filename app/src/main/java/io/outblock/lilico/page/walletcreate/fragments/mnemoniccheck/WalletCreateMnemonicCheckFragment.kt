@@ -22,7 +22,10 @@ class WalletCreateMnemonicCheckFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter = WalletCreateMnemonicCheckPresenter(this, binding)
         viewModel = ViewModelProvider(this)[WalletCreateMnemonicCheckViewModel::class.java].apply {
-            mnemonicList.observe(viewLifecycleOwner) { presenter.bind(WalletCreateMnemonicCheckModel(mnemonicList = it)) }
+
+            mnemonicQuestionLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletCreateMnemonicCheckModel(questionList = it)) }
+
+            generateMnemonicQuestion()
         }
     }
 }

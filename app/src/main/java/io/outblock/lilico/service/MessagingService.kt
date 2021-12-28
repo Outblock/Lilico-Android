@@ -5,6 +5,9 @@ import com.google.firebase.messaging.RemoteMessage
 import io.outblock.lilico.firebase.messaging.getFirebaseMessagingToken
 import io.outblock.lilico.firebase.messaging.parseFirebaseMessaging
 import io.outblock.lilico.firebase.messaging.subscribeMessagingTopic
+import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 
 class MessagingService : FirebaseMessagingService() {
@@ -17,10 +20,11 @@ class MessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
-        // TODO sendRegistrationToServer(token)
+        ioScope {
+            val service = retrofit().create(ApiService::class.java)
+            val resp = service.uploadPushToken(token)
+            logd(TAG, resp)
+        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

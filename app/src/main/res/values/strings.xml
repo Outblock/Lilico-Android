@@ -23,6 +23,8 @@
     <string name="backup_error">Backup error</string>
     <string name="backup">Backup</string>
     <string name="manual">Manual</string>
+    <string name="double_str">Double</string>
+    <string name="secure">Secure</string>
     <string name="manual_backup_tip">Please tap the word one by one, or drag and drop words in the right order.</string>
     <string name="pick_your">Pick Your</string>
     <string name="pin_code_title">Add Extra\nProtection To\nYour Wallet</string>
