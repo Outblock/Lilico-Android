@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.core.view.children
 import io.outblock.lilico.R
@@ -54,8 +55,7 @@ class PinCodeInputLayout : LinearLayout {
                 val isSameKey = isSameKey()
                 checkCallback?.invoke(isSameKey)
                 if (!isSameKey) {
-                    clear()
-                    shake()
+                    shakeAndClear()
                 }
             }
         } else {
@@ -90,7 +90,11 @@ class PinCodeInputLayout : LinearLayout {
         }
     }
 
-    private fun shake() {
-
+    private fun shakeAndClear() {
+        val animation = AnimationUtils.loadAnimation(context, R.anim.pin_code_shake);
+        children.forEach { child ->
+            child.startAnimation(animation)
+        }
+        postDelayed({ clear() }, 800)
     }
 }
