@@ -2,10 +2,7 @@ package io.outblock.lilico.utils
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +14,7 @@ private const val KEY_LAUNCH_TIMES = "KEY_LAUNCH_TIMES"
 
 private val KEY_JWT_REFRESH_TIME = longPreferencesKey("KEY_JWT_REFRESH_TIME")
 private val KEY_USERNAME = stringPreferencesKey("KEY_USERNAME")
+private val KEY_REGISTERED = booleanPreferencesKey("KEY_REGISTERED")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -34,6 +32,12 @@ suspend fun getUsername(): String = dataStore.data.map { it[KEY_USERNAME].orEmpt
 
 fun updateUsername(username: String) {
     edit { dataStore.edit { it[KEY_USERNAME] = username } }
+}
+
+suspend fun isRegistered(): Boolean = dataStore.data.map { it[KEY_REGISTERED] ?: false }.first()
+
+fun setRegistered() {
+    edit { dataStore.edit { it[KEY_REGISTERED] = true } }
 }
 
 private fun edit(unit: suspend () -> Unit) {

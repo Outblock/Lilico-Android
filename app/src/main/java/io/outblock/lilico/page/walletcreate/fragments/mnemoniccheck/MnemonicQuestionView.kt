@@ -59,7 +59,7 @@ class MnemonicQuestionView : FrameLayout {
 
     fun bindData(question: MnemonicQuestionModel) {
         this.question = question
-        titleView.text = context.getString(R.string.mnemonic_question_title, "${question.index + 1}")
+        titleView.text = context.getString(R.string.mnemonic_question_title, question.index + 1)
         button1.text = question.question[0]
         button2.text = question.question[1]
         button3.text = question.question[2]

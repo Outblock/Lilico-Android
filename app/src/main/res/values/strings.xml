@@ -40,4 +40,11 @@
     <string name="create_pin_tip">So no one else but you can unlock your wallet.</string>
     <string name="mnemonic_question_title">Select the word #%1$d</string>
     <string name="finish">Finish</string>
+    <string name="create">Create</string>
+    <string name="import_str">import</string>
+    <string name="dont_have_account">Don’t have \nan account?</string>
+    <string name="already_have_account">Already have \nan account?</string>
+    <string name="home">Home</string>
+    <string name="explore">Explore</string>
+    <string name="profile">Profile</string>
 </resources>
