@@ -1,6 +1,6 @@
 package io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck
 
-class MnemonicCheckItem(
+class MnemonicQuestionModel(
     val index: Int,
     val mnemonic: String,
     val question: List<String>,

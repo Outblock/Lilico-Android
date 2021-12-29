@@ -10,57 +10,31 @@ import wallet.core.jni.Mnemonic
 
 class WalletCreateMnemonicCheckViewModel : ViewModel() {
 
-    val mnemonicQuestionLiveData = MutableLiveData<List<MnemonicCheckItem>>()
+    val mnemonicQuestionLiveData = MutableLiveData<List<MnemonicQuestionModel>>()
 
     fun generateMnemonicQuestion() {
         viewModelIOScope(this) {
-            val questionList = mutableListOf<MnemonicCheckItem>()
+            val questionList = mutableListOf<MnemonicQuestionModel>()
             val mnemonics = getMnemonic().split(" ").toMutableList()
 
-            var index = listOf(0, 1, 2).shuffled().first()
-            var mnemonic = mnemonics[index]
-            questionList.add(
-                MnemonicCheckItem(
-                    index = index,
-                    mnemonic = mnemonic,
-                    listOf(mnemonics[index], Mnemonic.suggest(mnemonic.take(1)), Mnemonic.suggest(mnemonic.take(1))).shuffled(),
-                )
-            )
-
-            index = listOf(3, 4, 5).shuffled().shuffled().first()
-            mnemonic = mnemonics[index]
-            questionList.add(
-                MnemonicCheckItem(
-                    index = index,
-                    mnemonic = mnemonic,
-                    listOf(mnemonics[index], Mnemonic.suggest(mnemonic.take(1)), Mnemonic.suggest(mnemonic.take(1))).shuffled(),
-                )
-            )
-
-            index = listOf(6, 7, 8).shuffled().first()
-            mnemonic = mnemonics[index]
-            questionList.add(
-                MnemonicCheckItem(
-                    index = index,
-                    mnemonic = mnemonic,
-                    listOf(mnemonics[index], Mnemonic.suggest(mnemonic.take(1)), Mnemonic.suggest(mnemonic.take(1))).shuffled(),
-                )
-            )
-
-            index = listOf(9, 10, 11).shuffled().first()
-            mnemonic = mnemonics[index]
-
-            questionList.add(
-                MnemonicCheckItem(
-                    index = index,
-                    mnemonic = mnemonic,
-                    listOf(mnemonics[index], Mnemonic.suggest(mnemonic.take(1)), Mnemonic.suggest(mnemonic.take(1))).shuffled(),
-                )
-            )
-
+            questionList.add(generateMnemonicItem(mnemonics, listOf(0, 1, 2)))
+            questionList.add(generateMnemonicItem(mnemonics, listOf(3, 4, 5)))
+            questionList.add(generateMnemonicItem(mnemonics, listOf(6, 7, 8)))
+            questionList.add(generateMnemonicItem(mnemonics, listOf(9, 10, 11)))
             withContext(Dispatchers.Main) {
                 mnemonicQuestionLiveData.value = questionList
             }
         }
+    }
+
+    private fun generateMnemonicItem(mnemonics: List<String>, indexRange: List<Int>): MnemonicQuestionModel {
+        val index = indexRange.shuffled().first()
+        val mnemonic = mnemonics[index]
+        val suggest = Mnemonic.suggest(mnemonic.take(1)).split(" ").shuffled()
+        return MnemonicQuestionModel(
+            index = index,
+            mnemonic = mnemonic,
+            listOf(mnemonics[index], suggest[0], suggest[1]).shuffled(),
+        )
     }
 }

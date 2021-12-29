@@ -48,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
         android:layout_marginBottom="20dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/next_button"
@@ -61,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
         android:enabled="false"
-        android:text="@string/create_password"
+        android:text="@string/finish"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
