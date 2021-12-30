@@ -57,7 +57,6 @@ internal class T9Keyboard(
                     view.isEnabled = item.type != KeyboardItem.TYPE_EMPTY_KEY
                     view.setOnClickListener {
                         onKeyboardActionListener?.invoke(item)
-                        vibrateKeyboard()
                     }
                     view.setOnLongClickListener(null)
                     if (item.type == KeyboardItem.TYPE_DELETE_KEY) {

@@ -18,7 +18,7 @@
     <string name="password">Password</string>
     <string name="password_verify_format">Enter 6 characters, with at least 1 number</string>
     <string name="password_verify_no_number">At least 1 character</string>
-    <string name="please_create">Please Create</string>
+    <string name="please_create">Create \nPassword</string>
     <string name="backing_up">Backing up</string>
     <string name="backup_error">Backup error</string>
     <string name="backup">Backup</string>
@@ -47,4 +47,14 @@
     <string name="home">Home</string>
     <string name="explore">Explore</string>
     <string name="profile">Profile</string>
+    <string name="things_you">Things You \nNeed to Know</string>
+    <string name="know">Know</string>
+    <string name="wallet_create_warning_tip">In the next step, you will see a secret phrase (12 words). The secret phrase is the only key to recover your wallet.</string>
+    <string name="create_wallet_warning1">If I lose my secret phrases, I cannot access my account forever.</string>
+    <string name="create_wallet_warning2">If I expose my secret phrases anywhere, my funds can be stolen.</string>
+    <string name="create_wallet_warning3">It is my full responsibility to secure my secret phrases.</string>
+    <string name="backup_manually">Backup Manually</string>
+    <string name="backup_to_google_drive">Backup to google drive</string>
+    <string name="recovery_phrase">Recovery Phrase</string>
+    <string name="phrase">Phrase</string>
 </resources>

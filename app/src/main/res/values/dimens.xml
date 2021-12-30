@@ -2,4 +2,5 @@
 <resources>
     <dimen name="edittext_radius">16dp</dimen>
     <dimen name="activity_padding">16dp</dimen>
+    <dimen name="wallet_create_button_margin">24dp</dimen>
 </resources>

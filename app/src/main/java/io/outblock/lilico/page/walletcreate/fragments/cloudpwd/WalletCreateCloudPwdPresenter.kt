@@ -1,7 +1,12 @@
 package io.outblock.lilico.page.walletcreate.fragments.cloudpwd
 
 import android.content.res.ColorStateList
+import android.graphics.Rect
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
@@ -22,6 +27,9 @@ class WalletCreateCloudPwdPresenter(
 
     private val viewModel by lazy { ViewModelProvider(fragment)[WalletCreateCloudPwdViewModel::class.java] }
     private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
+    private val rootView by lazy { fragment.requireActivity().findViewById<View>(R.id.rootView) }
+
+    private val keyboardObserver by lazy { keyboardObserver() }
 
     init {
         with(binding) {
@@ -43,10 +51,19 @@ class WalletCreateCloudPwdPresenter(
 
             nextButton.setOnClickListener { uploadMnemonic() }
         }
+        observeKeyboardVisible()
     }
 
     override fun bind(model: WalletCreateCloudPwdModel) {
         model.isBackupSuccess?.let { onBackupCallback(it) }
+    }
+
+    fun unbind() {
+        with(rootView.viewTreeObserver) {
+            if (isAlive) {
+                removeOnGlobalLayoutListener(keyboardObserver)
+            }
+        }
     }
 
     private fun onBackupCallback(isSuccess: Boolean) {
@@ -108,4 +125,25 @@ class WalletCreateCloudPwdPresenter(
         }
     }
 
+    private fun observeKeyboardVisible() {
+        rootView.post { rootView.viewTreeObserver.addOnGlobalLayoutListener(keyboardObserver) }
+    }
+
+    private fun keyboardObserver(): ViewTreeObserver.OnGlobalLayoutListener {
+        return ViewTreeObserver.OnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val contentHeight = rootView.rootView.height
+
+            val isKeyboardVisible = contentHeight - rect.bottom > contentHeight * 0.15f
+            with(binding.placeholder.layoutParams as ConstraintLayout.LayoutParams) {
+                dimensionRatio = if (isKeyboardVisible) "16:2" else "16:4.5"
+                binding.placeholder.layoutParams = this
+            }
+            with(binding.contentWrapper.layoutParams as ViewGroup.MarginLayoutParams) {
+                bottomMargin = if (isKeyboardVisible) contentHeight - rect.bottom else 0
+                binding.contentWrapper.layoutParams = this
+            }
+        }
+    }
 }

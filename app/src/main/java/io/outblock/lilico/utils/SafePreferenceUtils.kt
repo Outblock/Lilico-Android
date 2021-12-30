@@ -12,6 +12,7 @@ private const val KEY_MNEMONIC = "key_mnemonic"
 private const val KEY_MNEMONIC_BIOMETRIC = "key_mnemonic_biometric"
 
 private const val KEY_JWT_TOKEN = "jwt_token"
+private const val KEY_PUSH_TOKEN = "push_token"
 
 private const val KEY_AES_LOCAL_CODE = "key_aes_local_code"
 
@@ -46,3 +47,9 @@ fun clearJwtToken() {
 }
 
 fun getJwtToken(): String = preference.getString(KEY_JWT_TOKEN, "").orEmpty()
+
+fun getPushToken(): String = preference.getString(KEY_PUSH_TOKEN, "").orEmpty()
+
+fun updatePushToken(token: String) {
+    preference.edit().putString(KEY_PUSH_TOKEN, token).apply()
+}

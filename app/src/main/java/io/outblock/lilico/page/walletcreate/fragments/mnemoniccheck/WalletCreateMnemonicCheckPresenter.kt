@@ -2,17 +2,21 @@ package io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck
 
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateMnemonicCheckBinding
-import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
+import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 
 class WalletCreateMnemonicCheckPresenter(
     private val fragment: Fragment,
     private val binding: FragmentWalletCreateMnemonicCheckBinding,
 ) : BasePresenter<WalletCreateMnemonicCheckModel> {
 
+    private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
+
     init {
-        binding.nextButton.setOnClickListener { MainActivity.launch(fragment.requireContext()) }
+        binding.nextButton.setOnClickListener { pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE) }
     }
 
     override fun bind(model: WalletCreateMnemonicCheckModel) {

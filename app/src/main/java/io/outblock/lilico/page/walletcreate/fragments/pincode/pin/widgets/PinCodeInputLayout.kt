@@ -91,6 +91,7 @@ class PinCodeInputLayout : LinearLayout {
     }
 
     private fun shakeAndClear() {
+        vibrateKeyboard()
         val animation = AnimationUtils.loadAnimation(context, R.anim.pin_code_shake);
         children.forEach { child ->
             child.startAnimation(animation)

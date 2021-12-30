@@ -15,5 +15,5 @@ interface ApiService {
     suspend fun checkUsername(@Path("username") username: String): UsernameCheckResponse
 
     @POST("/user/token")
-    suspend fun uploadPushToken(@Field("push_token") token: String): CommonResponse
+    suspend fun uploadPushToken(@Body token: Map<String,String>): CommonResponse
 }

@@ -28,4 +28,9 @@ class WalletCreateUsernameFragment : Fragment() {
             usernameStateLiveData.observe(viewLifecycleOwner, { presenter.bind(WalletCreateUsernameModel(state = it)) })
         }
     }
+
+    override fun onDestroyView() {
+        presenter.unbind()
+        super.onDestroyView()
+    }
 }

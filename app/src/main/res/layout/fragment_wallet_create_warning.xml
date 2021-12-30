@@ -7,113 +7,110 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/activity_padding">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/top_banner"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#fafafa"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:layout_constraintDimensionRatio="16:3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/next_button"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/title_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:text="Things You"
-        android:textColor="@color/text"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_banner"/>
-
-    <TextView
-        android:id="@+id/title_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Need to Know"
-        android:textColor="@color/colorSecondary"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_1"/>
-
-    <TextView
-        android:id="@+id/intro_text_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="In the next step, you will see a secret phrase (12 words). The secret phrase is the only key to recover your wallet. "
-        android:textColor="@color/text_light"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/title_2"
-        tools:ignore="HardcodedText"/>
-
-    <FrameLayout
-        android:id="@+id/warning_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/bg_edittext"
-        android:backgroundTint="@color/border_3"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        app:layout_constraintBottom_toTopOf="@id/warning_2">
-
-        <CheckBox
-            android:id="@+id/warning_check_1"
-            style="@style/CheckBox"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:text="If I lose my secret phrases, I cannot access my account forever."/>
-    </FrameLayout>
+            android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/warning_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/bg_edittext"
-        android:backgroundTint="@color/border_3"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        app:layout_constraintBottom_toTopOf="@id/warning_3">
+            <TextView
+                android:id="@+id/title_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/things_you"
+                android:textColor="@color/text"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@id/intro_text_2"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <CheckBox
-            android:id="@+id/warning_check_2"
-            style="@style/CheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:text="If I expose my secret phrases anywhere, my funds can be stolen."/>
-    </FrameLayout>
+            <TextView
+                android:id="@+id/intro_text_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="@string/wallet_create_warning_tip"
+                android:textColor="@color/text_light"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@id/placeholder"
+                />
 
-    <FrameLayout
-        android:id="@+id/warning_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/bg_edittext"
-        android:backgroundTint="@color/border_3"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
-        app:layout_constraintBottom_toTopOf="@id/next_button">
+            <View
+                android:id="@+id/placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/warning_1"
+                app:layout_constraintDimensionRatio="16:3"/>
 
-        <CheckBox
-            android:id="@+id/warning_check_3"
-            style="@style/CheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:text="It is my full responsibility to secure my secret phrases."/>
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/warning_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_edittext"
+                android:backgroundTint="@color/border_3"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                app:layout_constraintBottom_toTopOf="@id/warning_2">
+
+                <CheckBox
+                    android:id="@+id/warning_check_1"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="@string/create_wallet_warning1"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/warning_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_edittext"
+                android:backgroundTint="@color/border_3"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                app:layout_constraintBottom_toTopOf="@id/warning_3">
+
+                <CheckBox
+                    android:id="@+id/warning_check_2"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="@string/create_wallet_warning2"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/warning_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/bg_edittext"
+                android:backgroundTint="@color/border_3"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <CheckBox
+                    android:id="@+id/warning_check_3"
+                    style="@style/CheckBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:text="@string/create_wallet_warning3"/>
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <io.outblock.lilico.widgets.LoadingMaterialButton
         android:id="@+id/next_button"
@@ -121,12 +118,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:enabled="false"
         android:gravity="center"
+        android:text="@string/confirm"
         app:iconGravity="textStart"
         app:iconPadding="10dp"
-        android:text="@string/confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

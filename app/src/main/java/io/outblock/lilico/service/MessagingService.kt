@@ -1,14 +1,17 @@
 package io.outblock.lilico.service
 
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import io.outblock.lilico.firebase.messaging.getFirebaseMessagingToken
 import io.outblock.lilico.firebase.messaging.parseFirebaseMessaging
 import io.outblock.lilico.firebase.messaging.subscribeMessagingTopic
+import io.outblock.lilico.firebase.messaging.uploadPushToken
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.updatePushToken
 
 class MessagingService : FirebaseMessagingService() {
 
@@ -21,9 +24,8 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         ioScope {
-            val service = retrofit().create(ApiService::class.java)
-            val resp = service.uploadPushToken(token)
-            logd(TAG, resp)
+            updatePushToken(token)
+            uploadPushToken()
         }
     }
 

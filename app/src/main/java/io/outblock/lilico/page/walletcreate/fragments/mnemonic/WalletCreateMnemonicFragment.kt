@@ -1,17 +1,23 @@
 package io.outblock.lilico.page.walletcreate.fragments.mnemonic
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentWalletCreateMnemonicBinding
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_CLOUD_PWD
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_MNEMONIC_CHECK
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 class WalletCreateMnemonicFragment : Fragment() {
@@ -30,6 +36,11 @@ class WalletCreateMnemonicFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.title.text = SpannableString(R.string.recovery_phrase.res2String()).apply {
+            val protection = R.string.phrase.res2String()
+            val index = indexOf(protection)
+            setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
         with(binding.mnemonicContainer) {
             adapter = this@WalletCreateMnemonicFragment.adapter
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)

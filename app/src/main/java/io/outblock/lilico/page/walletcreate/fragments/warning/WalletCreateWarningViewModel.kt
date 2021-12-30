@@ -2,6 +2,7 @@ package io.outblock.lilico.page.walletcreate.fragments.warning
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.firebase.messaging.uploadPushToken
 import io.outblock.lilico.network.registerOutblockUser
 import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.ioScope
@@ -19,6 +20,7 @@ class WalletCreateWarningViewModel : ViewModel() {
             registerOutblockUser(getUsername()) { isSuccess ->
                 ioScope { withContext(Dispatchers.Main) { registerCallbackLiveData.postValue(isSuccess) } }
                 if (isSuccess) {
+                    uploadPushToken()
                     createWalletFromServer()
                 }
             }
