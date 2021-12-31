@@ -22,3 +22,10 @@ fun createWalletFromServer() {
         val resp = service.createWallet()
     }
 }
+
+fun String.toAddress(): String {
+    if (this.startsWith("0x")) {
+        return this
+    }
+    return "0x" + this
+}

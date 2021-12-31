@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.wallet
+package io.outblock.lilico.page.wallet.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -148,6 +148,7 @@ dependencies {
     implementation 'com.zackratos.ultimatebarx:ultimatebarx:0.6.0'
 
     implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     /** TEST **/
     testImplementation 'junit:junit:4.+'

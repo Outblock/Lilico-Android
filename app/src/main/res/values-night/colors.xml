@@ -5,7 +5,6 @@
     <color name="colorSecondary">#FF6E4F</color>
     <color name="colorSecondaryVariant">#FED100</color>
 
-    <color name="text">#fbfbfa</color>
     <color name="text_sub">#D2D2D2</color>
 
     <color name="bg">#2a2a33</color>
@@ -13,4 +12,52 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="front_color">#262626</color>
+    <color name="mango_nft">#FAC832</color>
+    <color name="mango1">#FAD157</color>
+    <color name="mango3">#C79F28</color>
+    <color name="mango4">#94761E</color>
+    <color name="mango5">#614E13</color>
+    <color name="navy_wallet">#277FF2</color>
+    <color name="navy1">#579AF2</color>
+    <color name="navy3">#0B59BF</color>
+    <color name="navy4">#08418C</color>
+    <color name="navy5">#052A59</color>
+    <color name="neutrals10">#D9D9D9</color>
+    <color name="neutrals11">#E6E6E6</color>
+    <color name="neutrals12">#F2F2F2</color>
+    <color name="neutrals12_background">#0D0D0D</color>
+    <color name="neutrals4">#666666</color>
+    <color name="neutrals6">#999999</color>
+    <color name="neutrals7">#B2B2B2</color>
+    <color name="neutrals8">#BFBFBF</color>
+    <color name="neutrals9">#CCCCCC</color>
+    <color name="note">#808080</color>
+    <color name="outline">#4C4C4C</color>
+    <color name="salmon_primary">#FF7C4D</color>
+    <color name="salmon1">#FF8F66</color>
+    <color name="salmon3">#CC643E</color>
+    <color name="salmon4">#994A2D</color>
+    <color name="salmon5">#66321F</color>
+    <color name="shades2">#000000</color>
+    <color name="success1">#45E57B</color>
+    <color name="success2">#00E54D</color>
+    <color name="success3">#00B23C</color>
+    <color name="success4">#00802B</color>
+    <color name="success5">#004D1A</color>
+    <color name="text">#FFFFFF</color>
+    <color name="violet_discover">#7A7AFF</color>
+    <color name="violet1">#9494FF</color>
+    <color name="violet3">#4E4ECC</color>
+    <color name="violet4">#3A3A99</color>
+    <color name="violet5">#303080</color>
+    <color name="warning1">#FF5B4D</color>
+    <color name="warning2">#FF4433</color>
+    <color name="warning3">#CC3629</color>
+    <color name="warning4">#4C3735</color>
+    <color name="warning5">#332524</color>
+
 </resources>
+

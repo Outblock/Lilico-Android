@@ -5,7 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.profile.ProfileFragment
-import io.outblock.lilico.page.wallet.WalletHomeFragment
+import io.outblock.lilico.page.wallet.fragment.WalletHomeFragment
 
 class MainPageAdapter(
     private val activity: MainActivity

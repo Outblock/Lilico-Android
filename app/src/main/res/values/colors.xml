@@ -4,8 +4,6 @@
     <color name="colorPrimaryVariant">#ffffff</color>
     <color name="colorSecondary">#FF6E4F</color>
     <color name="colorSecondaryVariant">#FF5833</color>
-
-    <color name="text">#23262f</color>
     <color name="text_sub">#565A69</color>
     <color name="text_light">#8f8f93</color>
 
@@ -22,7 +20,6 @@
     <color name="border_3">#E6E6E6</color>
 
     <color name="success">#00B23C</color>
-    <color name="warning2">#E52817</color>
 
     <color name="primary_1">#FF6E4FBF</color>
     <color name="primary_2">#FF6E4F80</color>
@@ -122,4 +119,53 @@
     <color name="black_90">#E6000000</color>
     <color name="black_95">#EF000000</color>
     <color name="black_98">#F8000000</color>
+
+
+    <color name="front_color">#FFFFFF</color>
+    <color name="mango_nft">#FABE19</color>
+    <color name="mango1">#E0AB16</color>
+    <color name="mango3">#FACB4B</color>
+    <color name="mango4">#FAD97D</color>
+    <color name="mango5">#FAE6AF</color>
+    <color name="navy_wallet">#0F71F2</color>
+    <color name="navy1">#0B59BF</color>
+    <color name="navy3">#579AF2</color>
+    <color name="navy4">#88B6F2</color>
+    <color name="navy5">#D0DFF2</color>
+    <color name="neutrals1">#1A1A1A</color>
+    <color name="neutrals10">#D9D9D9</color>
+    <color name="neutrals11">#E6E6E6</color>
+    <color name="neutrals12">#FAFAFA</color>
+    <color name="neutrals12_background">#0D0D0D</color>
+    <color name="neutrals3">#4D4D4D</color>
+    <color name="neutrals4">#666666</color>
+    <color name="neutrals6">#999999</color>
+    <color name="neutrals7">#B2B2B2</color>
+    <color name="neutrals8">#BFBFBF</color>
+    <color name="neutrals9">#CCCCCC</color>
+    <color name="note">#808080</color>
+    <color name="outline">#E6E6E6</color>
+    <color name="salmon_primary">#FF7340</color>
+    <color name="salmon1">#CC5C33</color>
+    <color name="salmon3">#FF8559</color>
+    <color name="salmon4">#FFAB8C</color>
+    <color name="salmon5">#FFE3D9</color>
+    <color name="shades2">#000000</color>
+    <color name="success1">#00802B</color>
+    <color name="success2">#00B23C</color>
+    <color name="success3">#29CC60</color>
+    <color name="success4">#52CC7B</color>
+    <color name="success5">#A1E5B8</color>
+    <color name="text">#333333</color>
+    <color name="violet_discover">#6666FF</color>
+    <color name="violet1">#5252CC</color>
+    <color name="violet3">#8080FF</color>
+    <color name="violet4">#B2B2FF</color>
+    <color name="violet5">#E5E5FF</color>
+    <color name="warning1">#80160D</color>
+    <color name="warning2">#E52817</color>
+    <color name="warning3">#FF8A80</color>
+    <color name="warning4">#FFB9B2</color>
+    <color name="warning5">#FFE8E5</color>
+    <color name="warning6">#FFF3F2</color>
 </resources>

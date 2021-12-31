@@ -15,6 +15,7 @@ import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.setRegistered
 
 class WalletCreatePinCodeGuidePresenter(
     private val fragment: Fragment,
@@ -23,6 +24,7 @@ class WalletCreatePinCodeGuidePresenter(
     private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
 
     init {
+        setRegistered()
         with(binding) {
             title1.text = SpannableString(R.string.pin_code_title.res2String()).apply {
                 val protection = R.string.protection.res2String()
