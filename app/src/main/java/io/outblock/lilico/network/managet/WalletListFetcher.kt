@@ -34,7 +34,6 @@ class WalletListFetcher(
         ioScope {
             fetchFromCache()
             while (isFetchLooperEnable) {
-                delay(2000)
                 val service = retrofit().create(ApiService::class.java)
                 val resp = service.getWalletList()
                 if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
@@ -49,6 +48,7 @@ class WalletListFetcher(
                 if (!isFetchLooperEnable) {
                     break
                 }
+                delay(2000)
             }
         }
     }
