@@ -13,7 +13,6 @@ class WalletListFetcher(
     private val fetchCallback: (data: WalletListData) -> Unit,
 ) {
 
-
     private var isFetchLooperEnable = false
 
     fun cacheExist() = cacheFile().exists()

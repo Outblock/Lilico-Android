@@ -5,7 +5,10 @@ import androidx.annotation.WorkerThread
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
+import io.outblock.lilico.utils.loge
 import java.io.IOException
+import java.util.*
+
 
 class DriveServerHelper(private val driveService: Drive) {
 
@@ -14,11 +17,11 @@ class DriveServerHelper(private val driveService: Drive) {
      */
     @Throws(IOException::class)
     @WorkerThread
-    fun createFile(): String {
+    fun createFile(fileName: String): String {
         val metadata = File()
-            .setParents(listOf("root"))
+            .setParents(Collections.singletonList("appDataFolder"))
             .setMimeType("text/plain")
-            .setName("Untitled file")
+            .setName(fileName)
         val googleFile: File = driveService.files().create(metadata).execute()
             ?: throw IOException("Null result when requesting file creation.")
         return googleFile.id
@@ -58,5 +61,41 @@ class DriveServerHelper(private val driveService: Drive) {
         driveService.files().update(fileId, metadata, contentStream).execute()
     }
 
+    @Throws(IOException::class)
+    @WorkerThread
+    fun getFileId(fileName: String): String? {
+        try {
+            val files = driveService.files().list()
+                .setSpaces("appDataFolder")
+                .setFields("nextPageToken, files(id, name)")
+                .setPageSize(10)
+                .execute()
+            for (file in files.files) {
+                if (file.name == fileName) {
+                    return file.id
+                }
+            }
+        } catch (e: Exception) {
+            loge(e)
+        }
+        return null
+    }
 
+    @Throws(IOException::class)
+    @WorkerThread
+    fun writeStringToFile(fileName: String, content: String) {
+        var fileId = getFileId(fileName)
+        if (fileId == null) {
+            val googleFile: File = driveService.files().create(metadata(fileName)).execute()
+                ?: throw IOException("Null result when requesting file creation.")
+            fileId = googleFile.id
+        }
+        val stream = ByteArrayContent.fromString("text/plain", content)
+        driveService.files().update(fileId, metadata(fileName), stream)
+    }
+
+    private fun metadata(fileName: String) = File()
+        .setParents(Collections.singletonList("appDataFolder"))
+        .setMimeType("text/plain")
+        .setName(fileName)
 }
