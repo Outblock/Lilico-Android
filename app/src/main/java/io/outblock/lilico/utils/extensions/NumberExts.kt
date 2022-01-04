@@ -11,9 +11,13 @@ fun String?.toSafeInt(default: Int = 0): Int {
         return default
     }
 
-    return try {
-        Integer.parseInt(this)
-    } catch (e: Exception) {
-        default
+    return this.toIntOrNull() ?: default
+}
+
+fun String?.toSafeLong(default: Long = 0): Long {
+    if (this.isNullOrBlank()) {
+        return default
     }
+
+    return this.toLongOrNull() ?: default
 }

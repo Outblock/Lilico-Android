@@ -24,5 +24,5 @@ interface ApiService {
     suspend fun getWalletList(): WalletListResponse
 
     @GET("/account/info/{address}")
-    suspend fun getAddressInfo(@Path("address") address: String): CommonResponse
+    suspend fun getAddressInfo(@Path("address") address: String): AddressInfoResponse
 }

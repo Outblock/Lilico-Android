@@ -57,4 +57,5 @@
     <string name="backup_to_google_drive">Backup to google drive</string>
     <string name="recovery_phrase">Recovery Phrase</string>
     <string name="phrase">Phrase</string>
+    <string name="nft">NFT</string>
 </resources>

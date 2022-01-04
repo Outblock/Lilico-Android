@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import java.io.File
 
 class WalletListFetcher(
-    private val fetchCallback: (data: WalletListData) -> Unit,
+    private val fetchCallback: (data: WalletListData, isFromCache: Boolean) -> Unit,
 ) {
 
     private var isFetchLooperEnable = false
@@ -37,7 +37,7 @@ class WalletListFetcher(
                 val resp = service.getWalletList()
                 if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
                     if (isFetchLooperEnable) {
-                        fetchCallback.invoke(resp.data!!)
+                        fetchCallback.invoke(resp.data!!, false)
                         Gson().toJson(resp.data).saveToFile(cacheFile())
                     }
                     isFetchLooperEnable = false
@@ -59,7 +59,7 @@ class WalletListFetcher(
         val dataStr = cacheFile().read()
         safeRun {
             val data = Gson().fromJson(dataStr, WalletListData::class.java)
-            fetchCallback.invoke(data)
+            fetchCallback.invoke(data, true)
         }
     }
 

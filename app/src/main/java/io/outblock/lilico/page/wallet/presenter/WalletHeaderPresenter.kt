@@ -17,7 +17,7 @@ class WalletHeaderPresenter(
         with(binding) {
             walletName.text = "Blowfish Wallet"
             address.text = wallet.blockchain.first().address
-//            balanceNum.text = model.balance
+            balanceNum.text = "$0.0"
         }
     }
 

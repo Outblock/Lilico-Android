@@ -13,7 +13,7 @@ class WalletListResponse(
     val status: Int,
 )
 
-class WalletListData(
+data class WalletListData(
     @SerializedName("id")
     val id: String,
     @SerializedName("primary_wallet")

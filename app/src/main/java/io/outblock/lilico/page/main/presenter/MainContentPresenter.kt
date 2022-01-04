@@ -16,8 +16,9 @@ class MainContentPresenter(
     private val menuId by lazy {
         listOf(
             R.id.bottom_navigation_home,
+            R.id.bottom_navigation_nft,
             R.id.bottom_navigation_explore,
-            R.id.bottom_navigation_profile
+            R.id.bottom_navigation_profile,
         )
     }
 
@@ -39,8 +40,9 @@ class MainContentPresenter(
         binding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.bottom_navigation_home -> binding.viewPager.currentItem = 0
-                R.id.bottom_navigation_explore -> binding.viewPager.currentItem = 1
-                R.id.bottom_navigation_profile -> binding.viewPager.currentItem = 2
+                R.id.bottom_navigation_nft -> binding.viewPager.currentItem = 1
+                R.id.bottom_navigation_explore -> binding.viewPager.currentItem = 2
+                R.id.bottom_navigation_profile -> binding.viewPager.currentItem = 3
             }
             true
         }

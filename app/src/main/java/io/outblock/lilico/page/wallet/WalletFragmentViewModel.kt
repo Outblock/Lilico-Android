@@ -4,30 +4,31 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.managet.WalletListFetcher
+import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderPlaceholderModel
-import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.extensions.toSafeLong
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.toAddress
+import wallet.core.jni.CoinType
 
 class WalletFragmentViewModel : ViewModel() {
 
     val dataListLiveData = MutableLiveData<List<Any>>()
 
     private val walletListFetcher by lazy {
-        WalletListFetcher {
+        WalletListFetcher { walletList, isFromCache ->
             val data = dataListLiveData.value.orEmpty().toMutableList()
             if (data.isEmpty()) {
-                data.add(WalletHeaderModel(it))
+                data.add(WalletHeaderModel(walletList))
             } else {
-                data[0] = WalletHeaderModel(it)
+                data[0] = WalletHeaderModel(walletList)
             }
             dataListLiveData.postValue(data)
-
-            ioScope {
-                val service = retrofit().create(ApiService::class.java)
-                val resp = service.getAddressInfo(it.primaryWallet()!!.blockchain.first().address.toAddress())
+            if (!isFromCache) {
+                loadAddress(walletList)
             }
         }
     }
@@ -46,6 +47,20 @@ class WalletFragmentViewModel : ViewModel() {
     override fun onCleared() {
         walletListFetcher.stop()
         super.onCleared()
+    }
+
+    private fun loadAddress(walletData: WalletListData) {
+        viewModelIOScope(this) {
+            val blockchainList = walletData.primaryWallet()?.blockchain ?: return@viewModelIOScope
+
+            val service = retrofit().create(ApiService::class.java)
+            for (blockchain in blockchainList) {
+                val resp = service.getAddressInfo(blockchain.address.toAddress())
+                val data = dataListLiveData.value.orEmpty().toMutableList()
+                data.add(WalletCoinItemModel(CoinType.FLOW, blockchain.address, resp.data.data.account.balance.toSafeLong()))
+                dataListLiveData.postValue(data)
+            }
+        }
     }
 
 

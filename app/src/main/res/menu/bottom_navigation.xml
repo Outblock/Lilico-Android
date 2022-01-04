@@ -10,6 +10,13 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/bottom_navigation_nft"
+        android:enabled="true"
+        android:icon="@drawable/ic_nft_tab"
+        android:title="@string/nft"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/bottom_navigation_explore"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_explore_24"

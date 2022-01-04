@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
@@ -30,7 +31,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         UltimateBarX.with(this).color(Color.TRANSPARENT).fitWindow(false).light(false).applyStatusBar()
 
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestEmail()
+            .requestEmail()
             .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
             .build()
         val client = GoogleSignIn.getClient(this, signInOptions)
@@ -73,7 +74,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                 val googleDriveService: Drive = Drive.Builder(
                     NetHttpTransport(),
                     JacksonFactory.getDefaultInstance(),
-                    credential
+                    setHttpTimeout(credential),
                 ).setApplicationName("Drive API Migration").build()
 
                 ioScope {
@@ -83,6 +84,14 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
             } else {
                 logd(TAG, "signIn fail ${task.exception}")
             }
+        }
+    }
+
+    private fun setHttpTimeout(requestInitializer: HttpRequestInitializer): HttpRequestInitializer {
+        return HttpRequestInitializer { httpRequest ->
+            requestInitializer.initialize(httpRequest)
+            httpRequest.connectTimeout = 3 * 60000
+            httpRequest.readTimeout = 3 * 60000
         }
     }
 
