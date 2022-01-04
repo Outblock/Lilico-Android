@@ -39,7 +39,7 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
 
         addData(data, password)
 
-        driveServiceHelper.writeStringToFile(FILE_NAME, aesEncrypt(password, message = aesEncrypt(password, message = Gson().toJson(data))))
+        driveServiceHelper.writeStringToFile(FILE_NAME, aesEncrypt(AES_KEY, message = Gson().toJson(data)))
 
         if (BuildConfig.DEBUG) {
             val readText = driveServiceHelper.readFile(driveServiceHelper.getFileId(FILE_NAME)!!)
@@ -55,8 +55,17 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
 private fun existingData(driveService: Drive): List<DriveItem> {
     val driveServiceHelper = DriveServerHelper(driveService)
     val fileId = driveServiceHelper.getFileId(FILE_NAME) ?: return emptyList()
+
+    if (BuildConfig.DEBUG) {
+        driveServiceHelper.fileList()?.files?.map {
+            logd(TAG, "file list:${it.name}")
+        }
+    }
+
     return try {
+        logd(TAG, "existingData fileId:$fileId")
         val content = driveServiceHelper.readFile(fileId).second
+        logd(TAG, "existingData content:$content")
         val json = aesDecrypt(AES_KEY, message = content)
         logd(TAG, "existingData:$json")
         Gson().fromJson(json, object : TypeToken<List<DriveItem>>() {}.type)

@@ -5,6 +5,8 @@ import androidx.annotation.WorkerThread
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
+import com.google.api.services.drive.model.FileList
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import java.io.IOException
 import java.util.*
@@ -83,15 +85,33 @@ class DriveServerHelper(private val driveService: Drive) {
 
     @Throws(IOException::class)
     @WorkerThread
+    fun fileList(): FileList? {
+        try {
+            return driveService.files().list()
+                .setSpaces("appDataFolder")
+                .setFields("nextPageToken, files(id, name)")
+                .setPageSize(10)
+                .execute()
+        } catch (e: Exception) {
+            loge(e)
+        }
+        return null
+    }
+
+    @Throws(IOException::class)
+    @WorkerThread
     fun writeStringToFile(fileName: String, content: String) {
         var fileId = getFileId(fileName)
         if (fileId == null) {
+            logd("DriveServerHelper", "writeStringToFile fileId is null")
             val googleFile: File = driveService.files().create(metadata(fileName)).execute()
                 ?: throw IOException("Null result when requesting file creation.")
             fileId = googleFile.id
+            logd("DriveServerHelper", "writeStringToFile create fileId：$fileId")
         }
-        val stream = ByteArrayContent.fromString("text/plain", content)
-        driveService.files().update(fileId, metadata(fileName), stream)
+//        val stream = ByteArrayContent.fromString("text/plain", content)
+//        driveService.files().update(fileId, metadata(fileName), stream).execute()
+        saveFile(fileId!!, fileName, content)
     }
 
     private fun metadata(fileName: String) = File()
