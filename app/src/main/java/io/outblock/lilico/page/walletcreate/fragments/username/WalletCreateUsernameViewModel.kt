@@ -8,6 +8,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.usernameVerify
 import io.outblock.lilico.utils.viewModelIOScope
 
 class WalletCreateUsernameViewModel : ViewModel() {

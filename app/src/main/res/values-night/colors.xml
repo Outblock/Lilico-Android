@@ -7,6 +7,8 @@
 
     <color name="text_sub">#D2D2D2</color>
 
+    <color name="disable">#888888</color>
+
     <color name="bg">#2a2a33</color>
     <color name="card_bg">#4d4d56</color>
 
@@ -58,6 +60,6 @@
     <color name="warning3">#CC3629</color>
     <color name="warning4">#4C3735</color>
     <color name="warning5">#332524</color>
-
+    <color name="button">#fafafa</color>
 </resources>
 

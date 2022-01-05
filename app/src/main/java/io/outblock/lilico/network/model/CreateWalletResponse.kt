@@ -21,7 +21,7 @@ data class CreateWalletResponseData(
     @SerializedName("primary_wallet")
     val primaryWallet: Int,
 
-    @SerializedName("user_name")
+    @SerializedName("username")
     val username: String,
 
     @SerializedName("created_at")

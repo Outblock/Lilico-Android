@@ -18,6 +18,6 @@ data class OutblockUser(
     @SerializedName("updated_at")
     val updatedAt: String?,
 
-    @SerializedName("user_name")
+    @SerializedName("username")
     val username: String?,
 )

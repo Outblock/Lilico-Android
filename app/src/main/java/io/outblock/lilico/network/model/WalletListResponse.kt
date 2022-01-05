@@ -18,7 +18,7 @@ data class WalletListData(
     val id: String,
     @SerializedName("primary_wallet")
     val primaryWalletId: Int,
-    @SerializedName("user_name")
+    @SerializedName("username")
     val username: String,
     @SerializedName("wallets")
     val wallets: List<WalletData>?

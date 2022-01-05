@@ -14,7 +14,7 @@ data class UsernameCheckResponse(
 )
 
 data class UsernameCheckData(
-    @SerializedName("user_name")
+    @SerializedName("username")
     var username: String,
 
     @SerializedName("unique")

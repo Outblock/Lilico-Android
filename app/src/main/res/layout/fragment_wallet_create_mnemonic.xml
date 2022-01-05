@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_wallet_create_mnemonic"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingHorizontal="24dp">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -23,10 +22,12 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="10dp"
+
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/recovery_phrase"
                 android:textColor="@color/text"
-                android:layout_marginTop="10dp"
                 android:textSize="36sp"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -34,6 +35,7 @@
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
                 android:text="Write down or copy these words in the right order and save them somewhere safe."
                 android:textColor="@color/text_light"
@@ -44,10 +46,14 @@
                 android:id="@+id/mnemonic_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="#49D9A9"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_border_round_16dp"
+                android:backgroundTint="@color/button"
                 android:fadingEdge="none"
                 android:overScrollMode="never"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/desc"
                 tools:itemCount="12"
@@ -58,6 +64,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/bg_round_warning"
                 android:gravity="center_horizontal"
@@ -92,6 +99,7 @@
         style="@style/Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="12dp"
         android:text="@string/backup_to_google_drive"
         app:layout_constraintBottom_toTopOf="@id/backup_manually"/>
@@ -101,6 +109,7 @@
         style="@style/Button.Outline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:text="@string/backup_manually"
         app:layout_constraintBottom_toBottomOf="parent"/>
