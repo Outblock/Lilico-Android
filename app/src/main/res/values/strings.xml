@@ -16,7 +16,7 @@
     <string name="password_check">I understand Lilico can not recover this password.</string>
     <string name="cloud_password_tip">Lilico uses this password to encrypt your backup.</string>
     <string name="password">Password</string>
-    <string name="password_verify_format">Enter 6 characters, with at least 1 number</string>
+    <string name="password_verify_format">Enter 8 characters, with at least 1 number</string>
     <string name="password_verify_no_number">At least 1 character</string>
     <string name="please_create">Create \nPassword</string>
     <string name="backing_up">Backing up</string>
@@ -58,4 +58,12 @@
     <string name="recovery_phrase">Recovery Phrase</string>
     <string name="phrase">Phrase</string>
     <string name="nft">NFT</string>
+    <string name="restore_wallet">Restore Wallet</string>
+    <string name="restore_wallet_tip">Restore your wallet with the 12 wordrecovery phrase that you have written down.</string>
+    <string name="choose_account">Choose Account</string>
+    <string name="multiple_accounts_found">Multiple Accounts found.</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="continue_str">Continue</string>
+    <string name="restore_with_google_drive">Restore with Google Drive</string>
+    <string name="wrong_password">wrong password</string>
 </resources>

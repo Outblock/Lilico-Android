@@ -41,8 +41,11 @@
 
         <activity
             android:name=".page.walletcreate.WalletCreateActivity"
-            android:launchMode="singleTop"
-            />
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".page.walletrestore.WalletRestoreActivity"
+            android:launchMode="singleTop"/>
 
         <activity android:name=".page.demo.DemoActivity"/>
 

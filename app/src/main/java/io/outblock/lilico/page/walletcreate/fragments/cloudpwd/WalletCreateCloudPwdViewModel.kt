@@ -29,7 +29,7 @@ class WalletCreateCloudPwdViewModel : ViewModel() {
 
 
     fun backup(context: Context, pwd: String) {
-        GoogleDriveAuthActivity.launch(context, pwd)
+        GoogleDriveAuthActivity.uploadMnemonic(context, pwd)
     }
 
     override fun onCleared() {

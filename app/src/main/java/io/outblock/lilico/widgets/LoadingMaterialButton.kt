@@ -65,4 +65,6 @@ class LoadingMaterialButton : MaterialButton {
         }
         requestLayout()
     }
+
+    fun isProgressVisible() = progressVisible
 }

@@ -24,6 +24,7 @@ import java.util.*
 class GoogleDriveAuthActivity : AppCompatActivity() {
 
     private val password by lazy { intent.getStringExtra(EXTRA_PASSWORD)!! }
+    private val isRestore by lazy { intent.getBooleanExtra(EXTRA_RESTORE, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,11 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                 ).setApplicationName("Drive API Migration").build()
 
                 ioScope {
-                    uploadMnemonicToGoogleDrive(googleDriveService, password)
+                    if (isRestore) {
+                        restoreMnemonicFromGoogleDrive(googleDriveService)
+                    } else {
+                        uploadMnemonicToGoogleDrive(googleDriveService, password)
+                    }
                     finish()
                 }
             } else {
@@ -100,9 +105,17 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val EXTRA_PASSWORD = "extra_password"
 
-        fun launch(context: Context, password: String) {
+        private const val EXTRA_RESTORE = "EXTRA_RESTORE"
+
+        fun uploadMnemonic(context: Context, password: String) {
             context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
                 putExtra(EXTRA_PASSWORD, password)
+            })
+        }
+
+        fun restoreMnemonic(context: Context) {
+            context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
+                putExtra(EXTRA_RESTORE, true)
             })
         }
     }

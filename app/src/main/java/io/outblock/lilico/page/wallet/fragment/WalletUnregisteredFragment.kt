@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import io.outblock.lilico.databinding.FragmentWalletUnregisteredBinding
 import io.outblock.lilico.page.walletcreate.WalletCreateActivity
+import io.outblock.lilico.page.walletrestore.WalletRestoreActivity
 
 class WalletUnregisteredFragment : Fragment() {
 
@@ -20,7 +21,7 @@ class WalletUnregisteredFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
             createButton.setOnClickListener { WalletCreateActivity.launch(requireContext()) }
-            importButton.setOnClickListener { }
+            importButton.setOnClickListener { WalletRestoreActivity.launch(requireContext()) }
         }
     }
 }

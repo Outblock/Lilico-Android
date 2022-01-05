@@ -14,7 +14,6 @@ import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.secret.aesDecrypt
 import io.outblock.lilico.utils.secret.aesEncrypt
 import io.outblock.lilico.wallet.getMnemonic
-import java.io.IOException
 
 
 private const val TAG = "GoogleDriveUtils"
@@ -22,12 +21,13 @@ private const val TAG = "GoogleDriveUtils"
 private const val FILE_NAME = "outblock_backup"
 
 const val ACTION_GOOGLE_DRIVE_UPLOAD_FINISH = "ACTION_GOOGLE_DRIVE_UPLOAD_FINISH"
+const val ACTION_GOOGLE_DRIVE_RESTORE_FINISH = "ACTION_GOOGLE_DRIVE_RESTORE_FINISH"
 const val EXTRA_SUCCESS = "extra_success"
+const val EXTRA_CONTENT = "extra_content"
 
 private const val AES_KEY = "4047b6b927bcff0c"
 
 @WorkerThread
-@Throws(IOException::class)
 suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
     try {
         logd(TAG, "uploadMnemonicToGoogleDrive")
@@ -46,6 +46,20 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
             logd(TAG, "readText:$readText")
         }
         sendCallback(true)
+    } catch (e: Exception) {
+        loge(e)
+        sendCallback(false)
+    }
+}
+
+@WorkerThread
+fun restoreMnemonicFromGoogleDrive(driveService: Drive) {
+    try {
+        logd(TAG, "uploadMnemonicToGoogleDrive")
+        val data = existingData(driveService)
+        LocalBroadcastManager.getInstance(Env.getApp()).sendBroadcast(Intent(ACTION_GOOGLE_DRIVE_RESTORE_FINISH).apply {
+            putParcelableArrayListExtra(EXTRA_CONTENT, data.toCollection(ArrayList()))
+        })
     } catch (e: Exception) {
         loge(e)
         sendCallback(false)

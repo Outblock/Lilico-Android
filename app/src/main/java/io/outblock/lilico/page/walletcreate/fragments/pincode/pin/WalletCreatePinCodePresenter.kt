@@ -11,6 +11,7 @@ import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.Keyboa
 import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.keyboardT9Normal
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.wallet.updateMnemonicAesKey
 
 class WalletCreatePinCodePresenter(
     private val fragment: Fragment,
@@ -24,7 +25,10 @@ class WalletCreatePinCodePresenter(
                 val index = indexOf(protection)
                 setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            pinInput.setCheckCallback { if (it) MainActivity.launch(fragment.requireContext()) }
+            pinInput.setCheckCallback { passed ->
+                updateMnemonicAesKey(pinInput.keys().joinToString("") { "${it.number}" })
+                if (passed) MainActivity.launch(fragment.requireContext())
+            }
             pinKeyboard.setOnKeyboardActionListener { onKeyPressed(it) }
             pinKeyboard.bindKeys(keyboardT9Normal, KeyboardType.T9)
             pinKeyboard.show()

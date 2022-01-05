@@ -109,8 +109,6 @@ class DriveServerHelper(private val driveService: Drive) {
             fileId = googleFile.id
             logd("DriveServerHelper", "writeStringToFile create fileId：$fileId")
         }
-//        val stream = ByteArrayContent.fromString("text/plain", content)
-//        driveService.files().update(fileId, metadata(fileName), stream).execute()
         saveFile(fileId!!, fileName, content)
     }
 
