@@ -59,11 +59,15 @@
     <string name="phrase">Phrase</string>
     <string name="nft">NFT</string>
     <string name="restore_wallet">Restore Wallet</string>
-    <string name="restore_wallet_tip">Restore your wallet with the 12 wordrecovery phrase that you have written down.</string>
+    <string name="restore_wallet_tip">Restore your wallet with the 12 word recovery phrase that you have written down.</string>
     <string name="choose_account">Choose Account</string>
     <string name="multiple_accounts_found">Multiple Accounts found.</string>
     <string name="enter_password">Enter Password</string>
     <string name="continue_str">Continue</string>
     <string name="restore_with_google_drive">Restore with Google Drive</string>
     <string name="wrong_password">wrong password</string>
+    <string name="word_not_found">Opps, word not found.</string>
+    <string name="restore_mnemonic_tip">This is a 12 word phrase you were given when you created your previous wallet.</string>
+    <string name="restore_with_mnemonic">Sign in with \nRecovery Phrase</string>
+    <string name="restore_mnemonic_hint">Enter the Recovery Phrase</string>
 </resources>
