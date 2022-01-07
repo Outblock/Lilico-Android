@@ -1,9 +1,11 @@
 package io.outblock.lilico.page.walletrestore.fragments.mnemonic.presenter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
+import android.text.Selection
 import android.text.Spannable
-import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewTreeObserver
@@ -59,26 +61,22 @@ class WalletRestoreMnemonicPresenter(
     }
 
     private fun invalidWord(array: List<Pair<Int, String>>) {
+        binding.stateIcon.setVisible(array.isNotEmpty())
+        binding.stateText.setVisible(array.isNotEmpty())
+        binding.editText.backgroundTintList = ColorStateList.valueOf(if (array.isEmpty()) R.color.text.res2color() else R.color.error.res2color())
         with(binding.editText) {
-            val textList = text.split(" ")
-            val formatTextList = mutableListOf<CharSequence>()
-            textList.forEachIndexed { index, s ->
-                val isInvalid = array.firstOrNull { it.first == index } != null
-                if (isInvalid) {
-                    formatTextList.add(SpannableString(s).apply {
-                        setSpan(
-                            ForegroundColorSpan(errorColor),
-                            0,
-                            length,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    })
-                } else {
-                    formatTextList.add(s)
-                }
+            val selection = Selection.getSelectionStart(text)
+            val sp = SpannableStringBuilder(text.toString())
+            array.forEach { word ->
+                sp.setSpan(ForegroundColorSpan(errorColor), word.first, word.first + word.second.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            setText(formatTextList.joinToString(" ") { it })
+
+            text = sp
+            setSelection(selection)
         }
+
+        val isComplete = array.isEmpty() && binding.editText.text.split(" ").filter { it != " " }.size == 12
+        binding.nextButton.isEnabled = isComplete
     }
 
     private fun selectSuggest(word: String) {
