@@ -98,7 +98,6 @@
         android:id="@+id/backup_cloud"
         style="@style/Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="12dp"
         android:text="@string/backup_to_google_drive"

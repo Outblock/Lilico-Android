@@ -70,4 +70,9 @@
     <string name="restore_mnemonic_tip">This is a 12 word phrase you were given when you created your previous wallet.</string>
     <string name="restore_with_mnemonic">Sign in with \nRecovery Phrase</string>
     <string name="restore_mnemonic_hint">Enter the Recovery Phrase</string>
+    <string name="account_not_found">Account not Found</string>
+    <string name="account_not_found_desc">No account found with the recovery phrase. Do you want to create a new account with your phrase?</string>
+    <string name="your_phrase">your phrase</string>
+    <string name="create_wallet">Create Wallet</string>
+    <string name="cancel">Cancel</string>
 </resources>

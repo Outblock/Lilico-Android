@@ -5,7 +5,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
 import io.outblock.lilico.firebase.auth.firebaseJwt
-import io.outblock.lilico.firebase.messaging.uploadPushToken
 import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
 import io.outblock.lilico.utils.clearJwtToken
@@ -30,7 +29,7 @@ private suspend fun registerOutblockUserInternal(
     val user = service.register(
         RegisterRequest(
             username = username,
-            accountKey = AccountKey(publicKey = getPublicKey(true))
+            accountKey = AccountKey(publicKey = getPublicKey(removePrefix = true))
         )
     )
     logd(TAG, user.toString())

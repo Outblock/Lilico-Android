@@ -61,7 +61,6 @@ class LoadingMaterialButton : MaterialButton {
         } else {
             icon = null
             iconGravity = ICON_GRAVITY_TEXT_START
-            gravity = Gravity.CENTER
         }
         requestLayout()
     }

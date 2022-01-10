@@ -116,7 +116,6 @@
         android:id="@+id/next_button"
         style="@style/Button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:enabled="false"

@@ -2,8 +2,13 @@ package io.outblock.lilico.manager
 
 import android.app.Application
 import android.content.Intent
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.ioScope
+import java.util.concurrent.TimeUnit
 
 object LaunchManager {
 
@@ -11,6 +16,7 @@ object LaunchManager {
         application.startService(Intent(application, MessagingService::class.java))
         asyncInit()
         setNightMode()
+        runWorker(application)
     }
 
     private fun asyncInit() {
@@ -27,5 +33,9 @@ object LaunchManager {
 //        }
 
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
+
+    private fun runWorker(application: Application) {
+        WorkManager.getInstance(application).enqueue(PeriodicWorkRequestBuilder<JWTReloadWorker>(2, TimeUnit.MINUTES).build())
     }
 }

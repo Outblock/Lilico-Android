@@ -67,11 +67,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondary"/>
-        <!-- 消息本身未设置 channel_id 时 使用此 id-->
-        <!--        <meta-data-->
-        <!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-        <!--            android:value="@string/default_notification_channel_id" />-->
-        <!-- Firebase Messaging End -->
+
+        <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
     </application>
 
 </manifest>

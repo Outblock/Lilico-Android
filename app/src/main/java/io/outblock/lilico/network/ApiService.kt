@@ -23,6 +23,9 @@ interface ApiService {
     @GET("/user/wallet")
     suspend fun getWalletList(): WalletListResponse
 
+    @POST("/login")
+    suspend fun login(@Body params: Map<String, String>): LoginResponse
+
     @GET("/account/info/{address}")
     suspend fun getAddressInfo(@Path("address") address: String): AddressInfoResponse
 }
