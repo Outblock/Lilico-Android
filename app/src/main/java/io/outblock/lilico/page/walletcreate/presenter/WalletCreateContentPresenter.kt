@@ -8,6 +8,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityCreateWalletBinding
 import io.outblock.lilico.page.walletcreate.*
 import io.outblock.lilico.page.walletcreate.fragments.cloudpwd.WalletCreateCloudPwdFragment
+import io.outblock.lilico.page.walletcreate.fragments.legal.WalletCreateLegalFragment
 import io.outblock.lilico.page.walletcreate.fragments.mnemonic.WalletCreateMnemonicFragment
 import io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck.WalletCreateMnemonicCheckFragment
 import io.outblock.lilico.page.walletcreate.fragments.pincode.guide.WalletCreatePinCodeGuideFragment
@@ -31,6 +32,7 @@ class WalletCreateContentPresenter(
     private fun onStepChane(step: Int) {
         val transition = createTransition(currentStep, step)
         val fragment = when (step) {
+            WALLET_CREATE_STEP_LEGAL -> WalletCreateLegalFragment()
             WALLET_CREATE_STEP_WARNING -> WalletCreateWarningFragment()
             WALLET_CREATE_STEP_MNEMONIC -> WalletCreateMnemonicFragment()
             WALLET_CREATE_STEP_CLOUD_PWD -> WalletCreateCloudPwdFragment()

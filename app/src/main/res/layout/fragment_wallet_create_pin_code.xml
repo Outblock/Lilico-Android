@@ -5,14 +5,14 @@
     android:id="@+id/fragment_wallet_create_pin_code"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp">
+    >
 
     <TextView
         android:id="@+id/title_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/montsettat"
         android:text="@string/create_pin"
         android:textColor="@color/text"
         android:textSize="36sp"
@@ -38,7 +38,7 @@
         android:id="@+id/pin_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toTopOf="@id/pin_keyboard"/>
 
     <io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.SearchKeyboard

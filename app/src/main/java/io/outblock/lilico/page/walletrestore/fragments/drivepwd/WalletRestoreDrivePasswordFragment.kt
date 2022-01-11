@@ -18,9 +18,6 @@ import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
 import io.outblock.lilico.utils.secret.aesDecrypt
-import io.outblock.lilico.utils.secret.aesEncrypt
-import io.outblock.lilico.wallet.getMnemonic
-import io.outblock.lilico.wallet.getMnemonicAesKey
 import kotlinx.coroutines.delay
 
 class WalletRestoreDrivePasswordFragment : Fragment() {
@@ -37,25 +34,21 @@ class WalletRestoreDrivePasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.pwdText.addTextChangedListener(object : SimpleTextWatcher() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                checkPassword(s.toString())
+                updateTips()
             }
         })
         binding.nextButton.setOnClickListener { login() }
     }
 
-    private fun checkPassword(pwd: String) {
-        val verifyStr = verifyPassword(pwd)
-        updateTips(verifyStr.orEmpty())
-    }
-
-    private fun updateTips(str: String) {
+    private fun updateTips(tip: String? = null) {
         with(binding) {
-            if (str.isNotEmpty()) {
-                stateText.text = str
+            nextButton.setProgressVisible(false)
+            if (!tip.isNullOrBlank()) {
+                stateText.text = tip
                 stateText.setTextColor(R.color.error.res2color())
                 stateIcon.setVisible(true)
             } else {
-                nextButton.isEnabled = true
+                nextButton.isEnabled = verifyPassword(pwdText.text.toString())
                 stateIcon.setVisible(false)
                 stateText.setTextColor(R.color.text_sub.res2color())
                 stateText.setText(R.string.password_verify_format)

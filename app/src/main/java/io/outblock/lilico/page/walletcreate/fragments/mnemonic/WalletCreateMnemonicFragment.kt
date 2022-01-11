@@ -18,6 +18,7 @@ import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.setRegistered
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 class WalletCreateMnemonicFragment : Fragment() {
@@ -44,7 +45,7 @@ class WalletCreateMnemonicFragment : Fragment() {
         with(binding.mnemonicContainer) {
             adapter = this@WalletCreateMnemonicFragment.adapter
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-            addItemDecoration(GridSpaceItemDecoration(horizontal = 20.dp2px().toDouble(), vertical = 8.dp2px().toDouble()))
+            addItemDecoration(GridSpaceItemDecoration(vertical = 16.0))
         }
 
         with(binding) {
@@ -56,5 +57,6 @@ class WalletCreateMnemonicFragment : Fragment() {
             mnemonicList.observe(viewLifecycleOwner, { adapter.setNewDiffData(it) })
             loadMnemonic()
         }
+        setRegistered()
     }
 }

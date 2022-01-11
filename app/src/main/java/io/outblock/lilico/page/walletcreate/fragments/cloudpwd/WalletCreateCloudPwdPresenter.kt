@@ -2,6 +2,9 @@ package io.outblock.lilico.page.walletcreate.fragments.cloudpwd
 
 import android.content.res.ColorStateList
 import android.graphics.Rect
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -15,6 +18,7 @@ import io.outblock.lilico.databinding.FragmentWalletCreateCloudPwdBinding
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
@@ -33,12 +37,17 @@ class WalletCreateCloudPwdPresenter(
 
     init {
         with(binding) {
+            title1.text = SpannableString(R.string.please_create.res2String()).apply {
+                val protection = R.string.password.res2String()
+                val index = indexOf(protection)
+                setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
             pwdText1.setOnFocusChangeListener { _, _ -> onFocusChange() }
             pwdText2.setOnFocusChangeListener { _, _ -> onFocusChange() }
 
             pwdText1.addTextChangedListener(object : SimpleTextWatcher() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    checkPassword(s.toString())
+                    updateButtonState()
                 }
             })
 
@@ -81,21 +90,8 @@ class WalletCreateCloudPwdPresenter(
         with(binding) {
             val pwd1 = pwdText1.text.toString()
             val pwd2 = pwdText2.text.toString()
-            val isEnable = !pwdTextTips1.isVisible() && pwd1.isNotEmpty() && pwd1 == pwd2 && checkBox.isChecked
+            val isEnable = verifyPassword(pwd1) && pwd1 == pwd2 && checkBox.isChecked
             nextButton.isEnabled = isEnable
-            if (isEnable) {
-                nextButton.setText(R.string.next)
-            }
-        }
-    }
-
-    private fun checkPassword(pwd: String) {
-        val verifyStr = verifyPassword(pwd)
-        if (verifyStr.isNullOrEmpty()) {
-            binding.pwdTextTips1.setVisible(false)
-        } else {
-            binding.pwdTextTips1.setVisible(true)
-            binding.stateText.text = verifyStr
         }
     }
 

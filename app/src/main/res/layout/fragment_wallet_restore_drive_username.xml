@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/choose_account"
                 android:textColor="@color/text"
                 android:textSize="36sp"

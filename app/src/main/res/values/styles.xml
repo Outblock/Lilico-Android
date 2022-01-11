@@ -42,6 +42,7 @@
     </style>
 
     <style name="EditText" parent="AppTheme">
+        <item name="android:textCursorDrawable">@drawable/bg_edittext_cursor</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="android:background">@drawable/bg_edittext</item>
         <item name="android:textSize">18sp</item>
@@ -49,6 +50,9 @@
         <item name="android:paddingVertical">16dp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textColorHint">@color/text_sub</item>
+        <item name="android:textSelectHandle">@drawable/bg_empty</item>
+        <item name="android:textSelectHandleLeft">@drawable/bg_empty</item>
+        <item name="android:textSelectHandleRight">@drawable/bg_empty</item>
     </style>
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

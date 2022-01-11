@@ -24,10 +24,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/restore_with_mnemonic"
                 android:textColor="@color/text"
-                android:textSize="36sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>

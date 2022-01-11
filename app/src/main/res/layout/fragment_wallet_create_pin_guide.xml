@@ -16,6 +16,7 @@
         android:textColor="@color/text"
         android:textSize="36sp"
         android:textStyle="bold"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -38,7 +39,8 @@
         app:cardElevation="0dp"
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/title_2"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/pin_code_layout"
         app:strokeColor="@color/border_3"
         app:strokeWidth="1dp">
 
@@ -61,7 +63,7 @@
                 android:layout_marginStart="13sp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/face_id"
+                android:text="@string/biometrics"
                 android:textColor="@color/text"/>
 
             <ImageView
@@ -80,7 +82,8 @@
         android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        app:layout_constraintTop_toBottomOf="@id/face_id_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/wallet_create_button_margin"
         app:strokeColor="@color/border_3"
         app:strokeWidth="1dp">
 

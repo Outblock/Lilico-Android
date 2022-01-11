@@ -8,7 +8,7 @@ class WalletCreateViewModel : ViewModel() {
 
     val onStepChangeLiveData = MutableLiveData<Int>()
 
-    private var step = if (isAnonymousSignIn()) WALLET_CREATE_STEP_USERNAME else WALLET_CREATE_STEP_MNEMONIC
+    private var step = if (isAnonymousSignIn()) WALLET_CREATE_STEP_LEGAL else WALLET_CREATE_STEP_MNEMONIC
 
     init {
         changeStep(step)
@@ -22,5 +22,13 @@ class WalletCreateViewModel : ViewModel() {
     fun changeStep(step: Int) {
         this.step = step
         onStepChangeLiveData.postValue(step)
+    }
+
+    fun handleBackPressed():Boolean{
+        if(step == WALLET_CREATE_STEP_MNEMONIC_CHECK || step == WALLET_CREATE_STEP_CLOUD_PWD){
+            changeStep(WALLET_CREATE_STEP_MNEMONIC)
+            return true
+        }
+        return false
     }
 }

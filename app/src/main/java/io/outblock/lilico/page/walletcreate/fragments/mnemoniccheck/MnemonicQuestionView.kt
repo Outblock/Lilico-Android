@@ -2,6 +2,8 @@ package io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -11,6 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import io.outblock.lilico.R
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.widgets.CustomTypefaceSpan
 
 class MnemonicQuestionView : FrameLayout {
 
@@ -25,6 +28,8 @@ class MnemonicQuestionView : FrameLayout {
     private val errorColor by lazy { ColorStateList.valueOf(R.color.warning2.res2color()) }
 
     private lateinit var question: MnemonicQuestionModel
+
+    private val indexFont by lazy { resources.getFont(R.font.inter_semi_bold) }
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -59,7 +64,10 @@ class MnemonicQuestionView : FrameLayout {
 
     fun bindData(question: MnemonicQuestionModel) {
         this.question = question
-        titleView.text = context.getString(R.string.mnemonic_question_title, question.index + 1)
+        val index = "#${question.index + 1}"
+        val title = SpannableStringBuilder(context.getString(R.string.mnemonic_question_title, index))
+        title.setSpan(CustomTypefaceSpan(indexFont), title.indexOf(index), title.indexOf(index) + index.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        titleView.text = title
         button1.text = question.question[0]
         button2.text = question.question[1]
         button3.text = question.question[2]

@@ -37,7 +37,7 @@ data class WalletData(
     val icon: String,
     @SerializedName("name")
     val name: String,
-    @SerializedName("wallet_id")
+    @SerializedName("id")
     val walletId: Int
 )
 
@@ -49,7 +49,7 @@ data class BlockchainData(
     @SerializedName("chain_id")
     val chainId: String,
     @SerializedName("coins")
-    val coins: List<CoinData>,
+    val coins: List<String>,
     @SerializedName("name")
     val name: String
 )

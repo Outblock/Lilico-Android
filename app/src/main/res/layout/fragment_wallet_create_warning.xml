@@ -22,7 +22,7 @@
                 android:id="@+id/title_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/things_you"
                 android:textColor="@color/text"
                 android:textSize="36sp"
@@ -53,7 +53,7 @@
                 android:id="@+id/warning_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_edittext"
                 android:backgroundTint="@color/border_3"
                 android:paddingHorizontal="16dp"
@@ -65,7 +65,7 @@
                     style="@style/CheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="27dp"
                     android:text="@string/create_wallet_warning1"/>
             </FrameLayout>
 
@@ -73,7 +73,7 @@
                 android:id="@+id/warning_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_edittext"
                 android:backgroundTint="@color/border_3"
                 android:paddingHorizontal="16dp"
@@ -85,7 +85,7 @@
                     style="@style/CheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="27dp"
                     android:text="@string/create_wallet_warning2"/>
             </FrameLayout>
 
@@ -105,7 +105,7 @@
                     style="@style/CheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="27dp"
                     android:text="@string/create_wallet_warning3"/>
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

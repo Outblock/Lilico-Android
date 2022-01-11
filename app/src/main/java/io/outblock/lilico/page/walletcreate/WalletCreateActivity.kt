@@ -30,9 +30,21 @@ class WalletCreateActivity : BaseActivity() {
         setupToolbar()
     }
 
+    override fun onBackPressed() {
+        if (viewModel.handleBackPressed()) {
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                if (viewModel.handleBackPressed()) {
+                    return true
+                }
+                finish()
+            }
             else -> super.onOptionsItemSelected(item)
         }
         return true

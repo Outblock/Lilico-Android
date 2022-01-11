@@ -2,16 +2,16 @@ package io.outblock.lilico.page.walletcreate.fragments.username
 
 import android.graphics.Rect
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateUsernameBinding
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
+import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
 import io.outblock.lilico.utils.updateUsername
@@ -28,6 +28,8 @@ class WalletCreateUsernamePresenter(
     private val rootView by lazy { fragment.requireActivity().findViewById<View>(R.id.rootView) }
 
     private val keyboardObserver by lazy { keyboardObserver() }
+
+    private val buttonMargin by lazy { R.dimen.wallet_create_button_margin.res2pix() }
 
     init {
         binding.editText.addTextChangedListener(object : SimpleTextWatcher() {
@@ -97,14 +99,16 @@ class WalletCreateUsernamePresenter(
             val contentHeight = rootView.rootView.height
 
             val isKeyboardVisible = contentHeight - rect.bottom > contentHeight * 0.15f
-            with(binding.placeholder.layoutParams as ConstraintLayout.LayoutParams) {
-                dimensionRatio = if (isKeyboardVisible) "16:5" else "16:9"
-                binding.placeholder.layoutParams = this
+            with(binding.root) {
+                binding.root.setPadding(
+                    paddingLeft,
+                    paddingTop,
+                    paddingRight,
+                    if (isKeyboardVisible) contentHeight - rect.bottom - 70.dp2px().toInt() else 0,
+                )
             }
-            with(binding.contentWrapper.layoutParams as ViewGroup.MarginLayoutParams) {
-                bottomMargin = if (isKeyboardVisible) contentHeight - rect.bottom else 0
-                binding.contentWrapper.layoutParams = this
-            }
+
+            binding.guideline.setGuidelinePercent(if (isKeyboardVisible) 0.02f else 0.2f)
         }
     }
 }

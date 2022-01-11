@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="36dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/please_create"
                 android:textColor="@color/text"
                 android:textSize="36sp"
@@ -67,7 +67,7 @@
                     android:id="@+id/pwd_text_1"
                     style="@style/EditText"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="64dp"
                     android:autofillHints="password"
                     android:hint="@string/enter_your_password"
                     android:inputType="textPassword"
@@ -77,6 +77,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/pwd_text_wrapper_2"
+                style="@style/TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
@@ -91,7 +92,7 @@
                     android:id="@+id/pwd_text_2"
                     style="@style/EditText"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="64dp"
                     android:autofillHints="password"
                     android:backgroundTint="@color/border_3"
                     android:hint="@string/enter_your_password_again"
@@ -104,12 +105,13 @@
                 android:id="@+id/pwd_text_tips_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="13dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:visibility="gone"
+                android:paddingStart="7dp"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/pwd_text_wrapper_1"
+                tools:ignore="RtlSymmetry"
                 tools:visibility="visible">
 
                 <ImageView
@@ -118,10 +120,11 @@
                     android:layout_height="15dp"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_username_error"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/edit_text"
                     app:layout_constraintEnd_toStartOf="@id/state_text"
                     app:layout_constraintTop_toTopOf="@id/edit_text"
-                    tools:visibility="visible"/>
+                    tools:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/state_text"
@@ -133,7 +136,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/edit_text"
                     app:layout_constraintEnd_toEndOf="@id/edit_text"
                     app:layout_constraintTop_toTopOf="@id/edit_text"
-                    tools:text="Enter 8 characters, with at least 1 number"
+                    android:text="@string/password_verify_format"
                     tools:visibility="visible"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -144,7 +147,11 @@
         style="@style/CheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="10dp"
+        android:autoSizeMaxTextSize="14sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
         android:text="@string/password_check"
         app:layout_constraintBottom_toTopOf="@id/next_button"/>
 
@@ -154,6 +161,6 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:enabled="false"
-        android:text="@string/create_password"
+        android:text="@string/encrypt_backup"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

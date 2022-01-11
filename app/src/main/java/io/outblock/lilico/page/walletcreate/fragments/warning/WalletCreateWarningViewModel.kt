@@ -10,6 +10,7 @@ import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.createWalletFromServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class WalletCreateWarningViewModel : ViewModel() {
 
@@ -17,7 +18,7 @@ class WalletCreateWarningViewModel : ViewModel() {
 
     fun register() {
         viewModelIOScope(this) {
-            registerOutblockUser(getUsername()) { isSuccess ->
+            registerOutblockUser(getUsername().lowercase(Locale.getDefault())) { isSuccess ->
                 ioScope { withContext(Dispatchers.Main) { registerCallbackLiveData.postValue(isSuccess) } }
                 if (isSuccess) {
                     uploadPushToken()

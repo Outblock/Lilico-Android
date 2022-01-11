@@ -11,3 +11,5 @@ fun String.indexOfAll(s: String): List<Int> {
     }
     return result
 }
+
+fun String.capitalizeV2():String = replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }

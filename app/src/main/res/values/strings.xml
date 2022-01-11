@@ -25,7 +25,7 @@
     <string name="manual">Manual</string>
     <string name="double_str">Double</string>
     <string name="secure">Secure</string>
-    <string name="manual_backup_tip">Please tap the word one by one, or drag and drop words in the right order.</string>
+    <string name="manual_backup_tip">Unlock with PIN Code and Biometrics to allow extra wallet security.</string>
     <string name="pick_your">Pick Your</string>
     <string name="pin_code_title">Add Extra\nProtection To\nYour Wallet</string>
     <string name="protection">Protection</string>
@@ -38,7 +38,7 @@
     <string name="check_pin_tip">There’s no Restore PIN button. Please make sure you can remember your PIN.</string>
     <string name="secret_key_name" translatable="false">biometric_sample_encryption_key</string>
     <string name="create_pin_tip">So no one else but you can unlock your wallet.</string>
-    <string name="mnemonic_question_title">Select the word #%1$d</string>
+    <string name="mnemonic_question_title">Select the word %1$s</string>
     <string name="finish">Finish</string>
     <string name="create">Create</string>
     <string name="import_str">import</string>
@@ -75,4 +75,14 @@
     <string name="your_phrase">your phrase</string>
     <string name="create_wallet">Create Wallet</string>
     <string name="cancel">Cancel</string>
+    <string name="username_format_wrong">"Your username can only contain letters, numbers and '_'"</string>
+    <string name="encrypt_backup">Encrypt Backup</string>
+    <string name="done">Done</string>
+    <string name="biometrics">Biometrics</string>
+    <string name="legal_information">Legal \nInformation</string>
+    <string name="legal">Legal</string>
+    <string name="legal_tip">Please review the Privacy Policy and Terms of Service of Lilico Wallet.</string>
+    <string name="i_accept">I Accept</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

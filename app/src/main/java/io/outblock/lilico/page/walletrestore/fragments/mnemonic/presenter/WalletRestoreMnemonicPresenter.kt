@@ -7,7 +7,11 @@ import android.text.Selection
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.transition.Fade
+import android.transition.Scene
+import android.transition.TransitionManager
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -142,6 +146,7 @@ class WalletRestoreMnemonicPresenter(
             val contentHeight = rootView.rootView.height
 
             val isKeyboardVisible = contentHeight - rect.bottom > contentHeight * 0.15f
+            TransitionManager.go(Scene(rootView as ViewGroup), Fade().apply { duration = 150 })
             binding.nextButton.setVisible(!isKeyboardVisible)
             binding.recyclerView.setVisible(isKeyboardVisible)
         }

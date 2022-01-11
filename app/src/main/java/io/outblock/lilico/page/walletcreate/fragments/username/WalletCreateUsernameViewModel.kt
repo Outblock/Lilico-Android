@@ -30,7 +30,7 @@ class WalletCreateUsernameViewModel : ViewModel() {
         }
 
         handler.removeCallbacks(usernameCheckTask)
-        handler.postDelayed(usernameCheckTask, 1000)
+        handler.postDelayed(usernameCheckTask, 500)
     }
 
     private fun verifyUsernameRemote() {

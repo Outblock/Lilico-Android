@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/restore_wallet"
                 android:textColor="@color/text"
                 android:textSize="36sp"
@@ -49,7 +49,7 @@
         style="@style/Button"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="1dp"
         android:text="@string/restore_with_google_drive"
         app:layout_constraintBottom_toTopOf="@id/mnemonic_restore"/>
 

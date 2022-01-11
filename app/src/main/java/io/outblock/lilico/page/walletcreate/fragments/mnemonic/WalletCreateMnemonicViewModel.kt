@@ -14,9 +14,15 @@ class WalletCreateMnemonicViewModel : ViewModel() {
 
     fun loadMnemonic() {
         viewModelIOScope(this) {
-            var str = getMnemonic()
+            val str = getMnemonic()
             withContext(Dispatchers.Main) {
-                mnemonicList.value = str.split(" ").mapIndexed { index, s -> MnemonicModel(index + 1, s) }
+                val list = str.split(" ").mapIndexed { index, s -> MnemonicModel(index + 1, s) }
+                val result = mutableListOf<MnemonicModel>()
+                (0 until list.size / 2).forEach{  i ->
+                    result.add(list[i])
+                    result.add(list[i + list.size / 2])
+                }
+                mnemonicList.value = result
             }
 
             logd("Mnemonic", str)

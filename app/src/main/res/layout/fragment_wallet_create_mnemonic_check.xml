@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/double_str"
                 android:textColor="@color/text"
                 android:textSize="36sp"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/montsettat"
                 android:text="@string/secure"
                 android:textColor="@color/colorSecondary"
                 android:textSize="36sp"
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:enabled="false"
-        android:text="@string/finish"
+        android:text="@string/done"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
