@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.autofill.AutofillManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -17,10 +18,8 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateCloudPwdBinding
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
-import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
 import io.outblock.lilico.utils.verifyPassword
 
@@ -59,8 +58,11 @@ class WalletCreateCloudPwdPresenter(
             checkBox.setOnCheckedChangeListener { _, _ -> updateButtonState() }
 
             nextButton.setOnClickListener { uploadMnemonic() }
+
+            fragment.requireContext().getSystemService(AutofillManager::class.java)?.requestAutofill(pwdText1)
         }
         observeKeyboardVisible()
+
     }
 
     override fun bind(model: WalletCreateCloudPwdModel) {

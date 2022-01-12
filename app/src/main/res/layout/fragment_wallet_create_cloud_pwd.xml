@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:autofillHints="password"
+                    android:importantForAutofill="yes"
                     android:hint="@string/enter_your_password"
                     android:inputType="textPassword"
                     android:textColorHint="@color/text_sub"
