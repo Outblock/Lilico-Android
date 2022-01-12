@@ -28,4 +28,10 @@ interface ApiService {
 
     @GET("/account/info/{address}")
     suspend fun getAddressInfo(@Path("address") address: String): AddressInfoResponse
+
+    @GET("/nft/list")
+    suspend fun nftList(): NFTListResponse
+
+    @GET("/nft/meta")
+    suspend fun nftMeta(): CommonResponse
 }
