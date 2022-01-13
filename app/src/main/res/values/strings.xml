@@ -85,4 +85,7 @@
     <string name="i_accept">I Accept</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="top_selection">Top Selection</string>
+    <string name="list">List</string>
+    <string name="grid">Grid</string>
 </resources>

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter

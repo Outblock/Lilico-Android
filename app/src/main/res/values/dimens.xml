@@ -3,4 +3,5 @@
     <dimen name="edittext_radius">16dp</dimen>
     <dimen name="activity_padding">25dp</dimen>
     <dimen name="wallet_create_button_margin">24dp</dimen>
+    <dimen name="nft_tool_bar_height">52dp</dimen>
 </resources>

@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
+import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.uiScope
 
@@ -23,6 +26,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
         contentPresenter = MainContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]

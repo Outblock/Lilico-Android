@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme.TransparentStatusBar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/transparent</item>
+    </style>
 
     <style name="AppTheme.Transparent">
         <item name="android:windowIsTranslucent">true</item>

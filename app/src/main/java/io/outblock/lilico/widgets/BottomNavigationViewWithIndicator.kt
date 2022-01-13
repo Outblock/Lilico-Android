@@ -81,6 +81,11 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
         }
     }
 
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {}
+
+    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
+    }
+
     private fun onItemSelected(itemId: Int, animate: Boolean = true) {
         if (!isLaidOut) return
 
