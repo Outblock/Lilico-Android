@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font-family xmlns:android="http://schemas.android.com/apk/res/android">
     <font
-        android:font="@font/inter_semibold_src"
+        android:font="@font/src_inter_semibold"
         android:fontStyle="normal"
         android:fontWeight="600"/>
 </font-family>

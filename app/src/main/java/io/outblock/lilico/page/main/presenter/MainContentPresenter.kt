@@ -24,6 +24,7 @@ class MainContentPresenter(
 
     init {
         binding.viewPager.adapter = MainPageAdapter(activity)
+        binding.viewPager.isUserInputEnabled = false
         setupListener()
     }
 

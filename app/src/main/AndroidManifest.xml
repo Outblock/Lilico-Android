@@ -48,6 +48,10 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize"/>
 
+        <activity
+            android:name=".page.nftdetail.NftDetailActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->

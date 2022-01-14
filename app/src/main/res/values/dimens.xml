@@ -4,4 +4,5 @@
     <dimen name="activity_padding">25dp</dimen>
     <dimen name="wallet_create_button_margin">24dp</dimen>
     <dimen name="nft_tool_bar_height">52dp</dimen>
+    <dimen name="nft_list_divider_size">16dp</dimen>
 </resources>

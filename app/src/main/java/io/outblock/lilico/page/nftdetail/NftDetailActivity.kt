@@ -1,0 +1,52 @@
+package io.outblock.lilico.page.nftdetail
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
+import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.databinding.ActivityNftDetailBinding
+import io.outblock.lilico.page.nftdetail.model.NftDetailModel
+import io.outblock.lilico.page.nftdetail.presenter.NftDetailPresenter
+
+class NftDetailActivity : BaseActivity() {
+
+    private val nftAddress by lazy { intent.getStringExtra(EXTRA_NFT_ADDRESS)!! }
+    private val walletAddress by lazy { intent.getStringExtra(EXTRA_WALLET_ADDRESS)!! }
+    private lateinit var binding: ActivityNftDetailBinding
+    private lateinit var presenter: NftDetailPresenter
+    private lateinit var viewModel: NftDetailViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityNftDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        presenter = NftDetailPresenter(this, binding)
+        viewModel = ViewModelProvider(this)[NftDetailViewModel::class.java].apply {
+            nftLiveData.observe(this@NftDetailActivity) { presenter.bind(NftDetailModel(nft = it)) }
+            load(walletAddress, nftAddress)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            else -> super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    companion object {
+        private const val EXTRA_NFT_ADDRESS = "extra_nft_address"
+        private const val EXTRA_WALLET_ADDRESS = "extra_wallet_address"
+
+        fun launch(context: Context, walletAddress: String, address: String) {
+            val intent = Intent(context, NftDetailActivity::class.java)
+            intent.putExtra(EXTRA_NFT_ADDRESS, address)
+            intent.putExtra(EXTRA_WALLET_ADDRESS, walletAddress)
+            context.startActivity(intent)
+        }
+    }
+}

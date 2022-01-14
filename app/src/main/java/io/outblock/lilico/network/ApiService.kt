@@ -29,9 +29,18 @@ interface ApiService {
     @GET("/account/info/{address}")
     suspend fun getAddressInfo(@Path("address") address: String): AddressInfoResponse
 
-    @GET("/nft/list")
-    suspend fun nftList(): NFTListResponse
+    @GET("/nft/list/{address}/{offset}/{limit}")
+    suspend fun nftList(
+        @Path("address") address: String,
+        @Path("offset") offset: Int = 0,
+        @Path("limit") limit: Int = 100,
+    ): NFTListResponse
 
-    @GET("/nft/meta")
-    suspend fun nftMeta(): CommonResponse
+    @GET("/nft/meta/:address/:contractName/:contractAddress/:tokenId")
+    suspend fun nftMeta(
+        @Path("address") address: String,
+        @Path("contractName") contractName: String,
+        @Path("contractAddress") contractAddress: String,
+        @Path("tokenId") tokenId: String,
+    ): CommonResponse
 }

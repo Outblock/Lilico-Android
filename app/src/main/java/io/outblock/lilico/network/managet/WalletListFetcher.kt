@@ -1,13 +1,14 @@
 package io.outblock.lilico.network.managet
 
 import androidx.annotation.WorkerThread
-import com.google.gson.Gson
+import io.outblock.lilico.cache.CACHE_WALLET
+import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.ioScope
 import kotlinx.coroutines.delay
-import java.io.File
 
 class WalletListFetcher(
     private val fetchCallback: (data: WalletListData, isFromCache: Boolean) -> Unit,
@@ -15,7 +16,10 @@ class WalletListFetcher(
 
     private var isFetchLooperEnable = false
 
-    fun cacheExist() = cacheFile().exists()
+    private val cache by lazy { walletCache() }
+
+    @WorkerThread
+    fun cacheExist() = cache.isCacheExist()
 
     @WorkerThread
     fun fetch() {
@@ -27,8 +31,6 @@ class WalletListFetcher(
         isFetchLooperEnable = false
     }
 
-    private fun cacheFile() = File(DATA_PATH, "${"wallet".hashCode()}")
-
     private fun fetchInternal() {
         ioScope {
             fetchFromCache()
@@ -38,7 +40,7 @@ class WalletListFetcher(
                 if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
                     if (isFetchLooperEnable) {
                         fetchCallback.invoke(resp.data!!, false)
-                        Gson().toJson(resp.data).saveToFile(cacheFile())
+                        cache.cache(resp.data)
                     }
                     isFetchLooperEnable = false
                     break
@@ -53,14 +55,9 @@ class WalletListFetcher(
     }
 
     private fun fetchFromCache() {
-        if (!cacheFile().exists()) {
+        if (!cache.isCacheExist()) {
             return
         }
-        val dataStr = cacheFile().read()
-        safeRun {
-            val data = Gson().fromJson(dataStr, WalletListData::class.java)
-            fetchCallback.invoke(data, true)
-        }
+        cache.read()?.let { fetchCallback.invoke(it, true) }
     }
-
 }

@@ -1,6 +1,8 @@
 package io.outblock.lilico.network.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class NFTListResponse(
     @SerializedName("data")
@@ -28,6 +30,7 @@ data class NFTListData(
     val ownerAddress: String
 )
 
+@Parcelize
 data class Nft(
     @SerializedName("contract")
     val contract: NFTContract,
@@ -36,13 +39,14 @@ data class Nft(
     @SerializedName("id")
     val id: NFTId,
     @SerializedName("media")
-    val media: NFTMedia,
+    val media: NFTMedia?,
     @SerializedName("metadata")
     val metadata: NFTMetadata,
     @SerializedName("title")
-    val title: String
-)
+    val title: String?,
+) : Parcelable
 
+@Parcelize
 data class NFTContract(
     @SerializedName("address")
     val address: String,
@@ -52,8 +56,9 @@ data class NFTContract(
     val externalDomain: String,
     @SerializedName("name")
     val name: String
-)
+) : Parcelable
 
+@Parcelize
 data class NFTContractMetadata(
     @SerializedName("publicCollectionName")
     val publicCollectionName: String,
@@ -61,35 +66,40 @@ data class NFTContractMetadata(
     val publicPath: String,
     @SerializedName("storagePath")
     val storagePath: String
-)
+) : Parcelable
 
+@Parcelize
 data class NFTId(
     @SerializedName("tokenId")
     val tokenId: String,
     @SerializedName("tokenMetadata")
     val tokenMetadata: NFTTokenMetadata
-)
+) : Parcelable
 
+@Parcelize
 data class NFTMetadata(
     @SerializedName("metadata")
     val metadata: List<NFTMetadataX>
-)
+) : Parcelable
 
+@Parcelize
 data class NFTMetadataX(
     @SerializedName("name")
     val name: String,
     @SerializedName("value")
     val value: String
-)
+) : Parcelable
 
+@Parcelize
 data class NFTMedia(
     @SerializedName("mimeType")
     val mimeType: String,
     @SerializedName("uri")
     val uri: String
-)
+) : Parcelable
 
+@Parcelize
 data class NFTTokenMetadata(
     @SerializedName("uuid")
     val uuid: String
-)
+) : Parcelable

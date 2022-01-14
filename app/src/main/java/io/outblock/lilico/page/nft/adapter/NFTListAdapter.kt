@@ -8,6 +8,7 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.model.GridHeaderPlaceholderModel
+import io.outblock.lilico.page.nft.model.NFTItemModel
 import io.outblock.lilico.page.nft.model.NFTTitleModel
 import io.outblock.lilico.page.nft.nftListDiffCallback
 import io.outblock.lilico.page.nft.presenter.GridHeaderPlaceholderPresenter
@@ -18,7 +19,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is Nft -> TYPE_NFT
+            is NFTItemModel -> TYPE_NFT
             is NFTTitleModel -> TYPE_TITLE
             is GridHeaderPlaceholderModel -> TYPE_GRID_HEADER
             else -> TYPE_NFT
@@ -36,7 +37,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is NFTListItemPresenter -> holder.bind(getItem(position) as Nft)
+            is NFTListItemPresenter -> holder.bind(getItem(position) as NFTItemModel)
             is TitleItemPresenter->holder.bind(getItem(position) as NFTTitleModel)
         }
     }

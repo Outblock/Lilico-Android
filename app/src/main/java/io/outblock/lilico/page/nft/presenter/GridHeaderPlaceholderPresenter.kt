@@ -17,7 +17,7 @@ class GridHeaderPlaceholderPresenter(
     private val context = view.context
 
     init {
-        val height = R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight
+        val height = R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight - R.dimen.nft_list_divider_size.res2pix()
         val layoutParam = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
         view.layoutParams = layoutParam
     }
