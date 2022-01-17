@@ -1,15 +1,18 @@
 package io.outblock.lilico.page.nftdetail.presenter
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.nft.cover
+import io.outblock.lilico.page.nft.desc
+import io.outblock.lilico.page.nft.name
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.toCoverUrl
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class NftDetailPresenter(
     private val activity: AppCompatActivity,
@@ -18,6 +21,9 @@ class NftDetailPresenter(
 
     init {
         setupToolbar()
+        with(binding) {
+            toolbar.addStatusBarTopPadding()
+        }
     }
 
     override fun bind(model: NftDetailModel) {
@@ -26,9 +32,11 @@ class NftDetailPresenter(
 
     private fun bindData(nft: Nft) {
         with(binding) {
-            Glide.with(coverView).load(nft.media?.uri?.toCoverUrl()).into(coverView)
-            titleView.text = nft.title ?: nft.description
-            descView.text = nft.contract.name
+            Glide.with(coverView).load(nft.cover()).into(coverView)
+            Glide.with(backgroundImage).load(nft.cover()).transform(BlurTransformation(15, 30)).into(backgroundImage)
+            titleView.text = nft.name()
+            subtitleView.text = nft.contract.externalDomain
+            descView.text = nft.desc()
             purchaseDate.text = "01.01.2022"
         }
     }

@@ -5,15 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nftdetail.presenter.NftDetailPresenter
+import io.outblock.lilico.utils.isNightMode
 
 class NftDetailActivity : BaseActivity() {
 
     private val nftAddress by lazy { intent.getStringExtra(EXTRA_NFT_ADDRESS)!! }
     private val walletAddress by lazy { intent.getStringExtra(EXTRA_WALLET_ADDRESS)!! }
+    private val tokenId by lazy { intent.getStringExtra(EXTRA_TOKEN_ID)!! }
     private lateinit var binding: ActivityNftDetailBinding
     private lateinit var presenter: NftDetailPresenter
     private lateinit var viewModel: NftDetailViewModel
@@ -22,11 +25,12 @@ class NftDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNftDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
 
         presenter = NftDetailPresenter(this, binding)
         viewModel = ViewModelProvider(this)[NftDetailViewModel::class.java].apply {
             nftLiveData.observe(this@NftDetailActivity) { presenter.bind(NftDetailModel(nft = it)) }
-            load(walletAddress, nftAddress)
+            load(walletAddress, nftAddress,tokenId)
         }
     }
 
@@ -41,11 +45,18 @@ class NftDetailActivity : BaseActivity() {
     companion object {
         private const val EXTRA_NFT_ADDRESS = "extra_nft_address"
         private const val EXTRA_WALLET_ADDRESS = "extra_wallet_address"
+        private const val EXTRA_TOKEN_ID = "extra_token_id"
 
-        fun launch(context: Context, walletAddress: String, address: String) {
+        fun launch(
+            context: Context,
+            walletAddress: String,
+            address: String,
+            tokenId: String,
+        ) {
             val intent = Intent(context, NftDetailActivity::class.java)
             intent.putExtra(EXTRA_NFT_ADDRESS, address)
             intent.putExtra(EXTRA_WALLET_ADDRESS, walletAddress)
+            intent.putExtra(EXTRA_TOKEN_ID, tokenId)
             context.startActivity(intent)
         }
     }

@@ -35,7 +35,7 @@ data class Nft(
     @SerializedName("contract")
     val contract: NFTContract,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("id")
     val id: NFTId,
     @SerializedName("media")
@@ -55,7 +55,7 @@ data class NFTContract(
     @SerializedName("externalDomain")
     val externalDomain: String,
     @SerializedName("name")
-    val name: String
+    val name: String?,
 ) : Parcelable
 
 @Parcelize

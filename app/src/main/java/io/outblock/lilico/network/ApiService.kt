@@ -36,7 +36,7 @@ interface ApiService {
         @Path("limit") limit: Int = 100,
     ): NFTListResponse
 
-    @GET("/nft/meta/:address/:contractName/:contractAddress/:tokenId")
+    @GET("/nft/meta/{address}/{contractName}/{contractAddress}/{tokenId}")
     suspend fun nftMeta(
         @Path("address") address: String,
         @Path("contractName") contractName: String,

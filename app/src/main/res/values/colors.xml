@@ -169,4 +169,6 @@
     <color name="warning5">#FFE8E5</color>
     <color name="warning6">#FFF3F2</color>
     <color name="button">#1a1a1a</color>
+
+    <color name="primary48">#76ffffff</color>
 </resources>

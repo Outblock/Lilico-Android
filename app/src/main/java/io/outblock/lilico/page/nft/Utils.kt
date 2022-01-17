@@ -2,8 +2,7 @@ package io.outblock.lilico.page.nft
 
 import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
-import io.outblock.lilico.page.wallet.model.WalletHeaderModel
+import io.outblock.lilico.utils.toCoverUrl
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -21,4 +20,20 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 
         return true
     }
+}
+
+fun Nft.cover(): String? {
+    var url = media?.uri?.toCoverUrl()
+    if (url.isNullOrEmpty()) {
+        url = metadata.metadata.firstOrNull { it.name == "image" }?.value
+    }
+    return url
+}
+
+fun Nft.name(): String? {
+    return title ?: metadata.metadata.firstOrNull { it.name == "title" }?.value ?:contract.name
+}
+
+fun Nft.desc(): String? {
+    return description ?: metadata.metadata.firstOrNull { it.name == "description" }?.value
 }
