@@ -7,12 +7,12 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListBinding
-import io.outblock.lilico.page.nft.model.GridHeaderPlaceholderModel
+import io.outblock.lilico.page.nft.model.HeaderPlaceholderModel
 import io.outblock.lilico.utils.extensions.res2pix
 
-class GridHeaderPlaceholderPresenter(
+class HeaderPlaceholderPresenter(
     private val view: View,
-) : BaseViewHolder(view), BasePresenter<GridHeaderPlaceholderModel> {
+) : BaseViewHolder(view), BasePresenter<HeaderPlaceholderModel> {
     private val binding by lazy { ItemNftListBinding.bind(view) }
     private val context = view.context
 
@@ -22,6 +22,6 @@ class GridHeaderPlaceholderPresenter(
         view.layoutParams = layoutParam
     }
 
-    override fun bind(model: GridHeaderPlaceholderModel) {
+    override fun bind(model: HeaderPlaceholderModel) {
     }
 }

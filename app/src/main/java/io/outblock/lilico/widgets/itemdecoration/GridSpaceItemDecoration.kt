@@ -20,6 +20,8 @@ class GridSpaceItemDecoration(
     @Dimension(unit = Dimension.DP) private val vertical: Double = 0.0,
 ) : RecyclerView.ItemDecoration() {
 
+    private var dividerVisibleCheck: DividerVisibleCheck? = null
+
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
@@ -27,11 +29,16 @@ class GridSpaceItemDecoration(
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
+
         val gridLayoutManager = parent.layoutManager as? GridLayoutManager ?: return
         val itemCount = parent.adapter?.itemCount ?: return
         val spanCount = gridLayoutManager.spanCount
         val position = parent.getChildLayoutPosition(view)
         val spanSizeLookup = gridLayoutManager.spanSizeLookup
+
+        if (dividerVisibleCheck?.dividerVisible(position) == false) {
+            return
+        }
 
         val spanSize = spanSizeLookup.getSpanSize(position)
         val spanIndex = spanSizeLookup.getSpanIndex(position, spanCount)
@@ -67,6 +74,10 @@ class GridSpaceItemDecoration(
             right.dp2px().toInt(),
             bottom.dp2px().toInt(),
         )
+    }
+
+    fun setDividerVisibleCheck(dividerVisibleCheck: DividerVisibleCheck) {
+        this.dividerVisibleCheck = dividerVisibleCheck
     }
 
     @Dimension(unit = Dimension.DP)
@@ -110,4 +121,8 @@ class GridSpaceItemDecoration(
         )
     }
 
+}
+
+interface DividerVisibleCheck {
+    fun dividerVisible(position: Int): Boolean
 }

@@ -15,7 +15,9 @@ class TitleItemPresenter(
         with(binding) {
             iconView.setImageResource(model.icon)
             iconView.setColorFilter(model.iconTint)
+
             textView.text = model.text
+            textView.setTextColor(model.textColor)
         }
     }
 }

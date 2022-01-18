@@ -44,7 +44,9 @@ data class Nft(
     val metadata: NFTMetadata,
     @SerializedName("title")
     val title: String?,
-) : Parcelable
+) : Parcelable {
+    fun uniqueId() = "${contract.address}-${id.tokenId}"
+}
 
 @Parcelize
 data class NFTContract(

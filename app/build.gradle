@@ -153,6 +153,7 @@ dependencies {
 
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation "com.yuyakaido.android:card-stack-view:2.3.4"
 
     /** TEST **/
     testImplementation 'junit:junit:4.+'

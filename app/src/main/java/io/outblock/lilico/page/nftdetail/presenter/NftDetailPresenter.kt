@@ -7,11 +7,12 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.cover
-import io.outblock.lilico.page.nft.desc
-import io.outblock.lilico.page.nft.name
+import io.outblock.lilico.page.nft.*
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isNftInSelection
+import io.outblock.lilico.utils.uiScope
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class NftDetailPresenter(
@@ -19,10 +20,17 @@ class NftDetailPresenter(
     private val binding: ActivityNftDetailBinding,
 ) : BasePresenter<NftDetailModel> {
 
+    private var nft: Nft? = null
+
     init {
         setupToolbar()
         with(binding) {
             toolbar.addStatusBarTopPadding()
+
+            collectButton.setOnClickListener {
+                val nft = nft ?: return@setOnClickListener
+                toggleNftSelection(nft)
+            }
         }
     }
 
@@ -31,6 +39,7 @@ class NftDetailPresenter(
     }
 
     private fun bindData(nft: Nft) {
+        this.nft = nft
         with(binding) {
             Glide.with(coverView).load(nft.cover()).into(coverView)
             Glide.with(backgroundImage).load(nft.cover()).transform(BlurTransformation(15, 30)).into(backgroundImage)
@@ -38,6 +47,8 @@ class NftDetailPresenter(
             subtitleView.text = nft.contract.externalDomain
             descView.text = nft.desc()
             purchaseDate.text = "01.01.2022"
+
+            ioScope { updateSelectionState(isNftInSelection(nft)) }
         }
     }
 
@@ -47,5 +58,21 @@ class NftDetailPresenter(
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         activity.supportActionBar?.setDisplayShowHomeEnabled(true)
         activity.title = ""
+    }
+
+    private fun updateSelectionState(isSelected: Boolean) {
+        uiScope { binding.collectButton.setImageResource(if (isSelected) R.drawable.ic_collect_nft_on else R.drawable.ic_collect_nft) }
+    }
+
+    private fun toggleNftSelection(nft: Nft) {
+        ioScope {
+            if (isNftInSelection(nft)) {
+                removeNftFromSelection(nft)
+                updateSelectionState(false)
+            } else {
+                addNftToSelection(nft)
+                updateSelectionState(true)
+            }
+        }
     }
 }

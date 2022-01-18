@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import io.outblock.lilico.network.model.Nft
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -15,6 +16,7 @@ private const val KEY_LAUNCH_TIMES = "KEY_LAUNCH_TIMES"
 private val KEY_JWT_REFRESH_TIME = longPreferencesKey("KEY_JWT_REFRESH_TIME")
 private val KEY_USERNAME = stringPreferencesKey("KEY_USERNAME")
 private val KEY_REGISTERED = booleanPreferencesKey("KEY_REGISTERED")
+private val KEY_NFT_SELECTIONS = stringPreferencesKey("KEY_NFT_SELECTIONS")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -39,6 +41,16 @@ suspend fun isRegistered(): Boolean = dataStore.data.map { it[KEY_REGISTERED] ?:
 fun setRegistered() {
     edit { dataStore.edit { it[KEY_REGISTERED] = true } }
 }
+
+suspend fun isNftInSelection(nft: Nft): Boolean {
+    val list = dataStore.data.map { it[KEY_NFT_SELECTIONS] }.first().orEmpty().split(",")
+    return list.contains(nft.uniqueId())
+}
+
+suspend fun updateNftSelectionsPref(list: List<String>) {
+    dataStore.edit { block -> block[KEY_NFT_SELECTIONS] = list.joinToString(",") { it } }
+}
+
 
 private fun edit(unit: suspend () -> Unit) {
     scope.launch { unit.invoke() }
