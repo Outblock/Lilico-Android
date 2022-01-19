@@ -2,9 +2,9 @@ package io.outblock.lilico.manager
 
 import android.app.Application
 import android.content.Intent
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.ioScope
@@ -22,6 +22,7 @@ object LaunchManager {
     private fun asyncInit() {
         ioScope {
             System.loadLibrary("TrustWalletCore")
+            NftCollectionConfig.sync()
         }
     }
 

@@ -17,6 +17,7 @@ private val KEY_JWT_REFRESH_TIME = longPreferencesKey("KEY_JWT_REFRESH_TIME")
 private val KEY_USERNAME = stringPreferencesKey("KEY_USERNAME")
 private val KEY_REGISTERED = booleanPreferencesKey("KEY_REGISTERED")
 private val KEY_NFT_SELECTIONS = stringPreferencesKey("KEY_NFT_SELECTIONS")
+private val KEY_NFT_COLLECTION_EXPANDED = booleanPreferencesKey("KEY_NFT_COLLECTION_EXPANDED")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -49,6 +50,12 @@ suspend fun isNftInSelection(nft: Nft): Boolean {
 
 suspend fun updateNftSelectionsPref(list: List<String>) {
     dataStore.edit { block -> block[KEY_NFT_SELECTIONS] = list.joinToString(",") { it } }
+}
+
+suspend fun isNftCollectionExpanded(): Boolean = dataStore.data.map { it[KEY_NFT_COLLECTION_EXPANDED] ?: false }.first()
+
+suspend fun updateNftCollectionExpanded(isExpanded: Boolean) {
+    dataStore.edit { it[KEY_NFT_COLLECTION_EXPANDED] = isExpanded }
 }
 
 

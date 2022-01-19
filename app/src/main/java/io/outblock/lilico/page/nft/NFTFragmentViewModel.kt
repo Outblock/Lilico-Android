@@ -10,13 +10,10 @@ import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.page.nft.model.HeaderPlaceholderModel
-import io.outblock.lilico.page.nft.model.NFTItemModel
-import io.outblock.lilico.page.nft.model.NFTTitleModel
+import io.outblock.lilico.page.nft.model.*
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.logw
-import io.outblock.lilico.utils.viewModelIOScope
 
 class NFTFragmentViewModel : ViewModel() {
 
@@ -24,6 +21,8 @@ class NFTFragmentViewModel : ViewModel() {
     val selectionIndexLiveData = MutableLiveData<Int>()
 
     private var isGridMode = false
+    private var isCollectionExpanded = false
+    private var selectedCollection = ""
 
     private val address by lazy { getNftAddress() }
     private val cacheNftList by lazy { nftListCache(address) }
@@ -36,6 +35,7 @@ class NFTFragmentViewModel : ViewModel() {
                 logw(TAG, "address not found")
                 return@viewModelIOScope
             }
+            isCollectionExpanded = isNftCollectionExpanded()
             if (isGridMode) loadGridData() else loadListData()
         }
     }
@@ -53,16 +53,53 @@ class NFTFragmentViewModel : ViewModel() {
 
     fun getWalletAddress() = address
 
-    private suspend fun loadListData() {
-        val data = mutableListOf<Any>()
-        val selections = cacheSelections.read() ?: NftSelections(emptyList())
-        if (selections.data.isNotEmpty()) {
-            data.add(selections)
+    fun toggleCollectionExpand() {
+        ioScope {
+            updateNftCollectionExpanded(!isCollectionExpanded)
+            load()
         }
+    }
+
+    private suspend fun loadListData() {
+        loadListDataFromCache()
+        loadListDataFromServer()
+    }
+
+    private suspend fun loadListDataFromServer() {
+        val data = loadSelectionCards()
+        val service = retrofit().create(ApiService::class.java)
+        val resp = service.nftList(address!!, 0, 100)
+        cacheNftList.cache(resp.data)
+
+        resp.data.nfts.parseToCollectionList().let { collections -> data.addCollections(collections) }
+
         if (!isGridMode) {
             dataLiveData.postValue(data.addHeader())
         }
     }
+
+    private fun loadListDataFromCache() {
+        val data = loadSelectionCards()
+        cacheNftList.read()?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
+
+        if (!isGridMode) {
+            dataLiveData.postValue(data.addHeader())
+        }
+    }
+
+    private fun MutableList<Any>.addCollections(collections: List<CollectionItemModel>) {
+        if (collections.isNotEmpty()) {
+            add(CollectionTitleModel())
+            if (isCollectionExpanded) {
+                add(CollectionTabsModel(collections = collections))
+                val selected = if (selectedCollection.isEmpty()) collections.first().address else selectedCollection
+                addAll(collections.first { it.address == selected }.nfts.orEmpty())
+            } else {
+                addAll(collections)
+            }
+        }
+    }
+
 
     private suspend fun loadGridData() {
         cacheNftList.read()?.nfts?.let { nftList ->
@@ -100,6 +137,15 @@ class NFTFragmentViewModel : ViewModel() {
                 textColor = if (isGridMode) R.color.text.res2color() else R.color.white.res2color()
             ),
         ).apply { addAll(list) }
+    }
+
+    private fun loadSelectionCards(): MutableList<Any> {
+        val data = mutableListOf<Any>()
+        val selections = cacheSelections.read() ?: NftSelections(emptyList())
+        if (selections.data.isNotEmpty()) {
+            data.add(selections)
+        }
+        return data
     }
 
     companion object {

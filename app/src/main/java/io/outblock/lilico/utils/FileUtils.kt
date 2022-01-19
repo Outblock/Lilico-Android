@@ -75,3 +75,13 @@ fun File?.read(): String {
         return reader.readText()
     }
 }
+
+fun readTextFromAssets(path: String): String? {
+    try {
+        BufferedReader(InputStreamReader(Env.getApp().assets.open(path))).use { reader ->
+            return reader.readText()
+        }
+    } catch (e: Exception) {
+        return null
+    }
+}

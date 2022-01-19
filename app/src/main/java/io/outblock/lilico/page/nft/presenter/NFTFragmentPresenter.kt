@@ -14,9 +14,7 @@ import io.outblock.lilico.page.nft.NFTFragment
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.adapter.NFTListAdapter
 import io.outblock.lilico.page.nft.cover
-import io.outblock.lilico.page.nft.model.HeaderPlaceholderModel
-import io.outblock.lilico.page.nft.model.NFTFragmentModel
-import io.outblock.lilico.page.nft.model.NFTTitleModel
+import io.outblock.lilico.page.nft.model.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
@@ -106,5 +104,6 @@ class NFTFragmentPresenter(
     private fun isSingleLineItem(position: Int): Boolean {
         val item = adapter.getData().getOrNull(position) ?: return false
         return item is HeaderPlaceholderModel || item is NFTTitleModel || item is NftSelections
+          || item is CollectionTitleModel || item is CollectionItemModel
     }
 }

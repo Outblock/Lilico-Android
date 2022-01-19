@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.nft.model.CollectionItemModel
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.toCoverUrl
 import io.outblock.lilico.utils.updateNftSelectionsPref
@@ -81,4 +82,23 @@ fun removeNftFromSelection(nft: Nft) {
 
         updateNftSelectionsPref(list.map { it.uniqueId() })
     }
+}
+
+fun List<Nft>.parseToCollectionList(): List<CollectionItemModel> {
+    val collectionMap = mutableMapOf<String, MutableList<Nft>>()
+
+    forEach {
+        val list = collectionMap[it.contract.address] ?: mutableListOf()
+        list.add(it)
+        collectionMap[it.contract.address] = list
+    }
+    return collectionMap.map {
+        val nft = it.value.first()
+        CollectionItemModel(
+            name = nft.contract.name,
+            count = it.value.size,
+            address = it.key,
+            nfts = it.value,
+        )
+    }.sortedByDescending { it.count }
 }

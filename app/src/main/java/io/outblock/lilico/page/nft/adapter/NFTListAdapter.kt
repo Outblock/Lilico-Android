@@ -7,14 +7,9 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.cache.NftSelections
-import io.outblock.lilico.page.nft.model.HeaderPlaceholderModel
-import io.outblock.lilico.page.nft.model.NFTItemModel
-import io.outblock.lilico.page.nft.model.NFTTitleModel
+import io.outblock.lilico.page.nft.model.*
 import io.outblock.lilico.page.nft.nftListDiffCallback
-import io.outblock.lilico.page.nft.presenter.HeaderPlaceholderPresenter
-import io.outblock.lilico.page.nft.presenter.NFTListItemPresenter
-import io.outblock.lilico.page.nft.presenter.SelectionItemPresenter
-import io.outblock.lilico.page.nft.presenter.TitleItemPresenter
+import io.outblock.lilico.page.nft.presenter.*
 
 class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
 
@@ -24,7 +19,9 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is NFTTitleModel -> TYPE_TITLE
             is HeaderPlaceholderModel -> TYPE_GRID_HEADER
             is NftSelections -> TYPE_SELECTION
-            else -> TYPE_NFT
+            is CollectionTitleModel -> TYPE_COLLECTION_TITLE
+            is CollectionItemModel -> TYPE_COLLECTION_LINE
+            else -> TYPE_NONE
         }
     }
 
@@ -34,6 +31,8 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             TYPE_TITLE -> TitleItemPresenter(parent.inflate(R.layout.item_nft_list_title))
             TYPE_GRID_HEADER -> HeaderPlaceholderPresenter(parent.inflate(R.layout.item_nft_list_grid_header_placeholder))
             TYPE_SELECTION -> SelectionItemPresenter(parent.inflate(R.layout.item_nft_list_selections))
+            TYPE_COLLECTION_TITLE -> CollectionTitlePresenter(parent.inflate(R.layout.item_nft_list_collection_title))
+            TYPE_COLLECTION_LINE -> CollectionLineItemPresenter(parent.inflate(R.layout.item_nft_list_collection_line))
             else -> BaseViewHolder(View(parent.context))
         }
     }
@@ -43,13 +42,17 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is NFTListItemPresenter -> holder.bind(getItem(position) as NFTItemModel)
             is TitleItemPresenter -> holder.bind(getItem(position) as NFTTitleModel)
             is SelectionItemPresenter -> holder.bind(getItem(position) as NftSelections)
+            is CollectionLineItemPresenter -> holder.bind(getItem(position) as CollectionItemModel)
         }
     }
 
     companion object {
+        private const val TYPE_NONE = -1
         private const val TYPE_NFT = 1
         private const val TYPE_TITLE = 2
         private const val TYPE_GRID_HEADER = 3
         private const val TYPE_SELECTION = 4
+        private const val TYPE_COLLECTION_TITLE = 5
+        private const val TYPE_COLLECTION_LINE = 6
     }
 }
