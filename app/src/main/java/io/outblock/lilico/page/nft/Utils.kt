@@ -6,17 +6,23 @@ import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.model.CollectionItemModel
+import io.outblock.lilico.page.nft.model.CollectionTabsModel
+import io.outblock.lilico.page.nft.model.NFTItemModel
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.toCoverUrl
 import io.outblock.lilico.utils.updateNftSelectionsPref
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-        if (oldItem is Nft && newItem is Nft) {
-            return oldItem.uniqueId() == newItem.uniqueId()
+        if (oldItem is NFTItemModel && newItem is NFTItemModel) {
+            return oldItem.nft.uniqueId() == newItem.nft.uniqueId()
         }
 
-        return false
+        if (oldItem is CollectionTabsModel && newItem is CollectionTabsModel) {
+            return true
+        }
+
+        return oldItem == newItem
     }
 
     @SuppressLint("DiffUtilEquals")
@@ -24,12 +30,10 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
         if (oldItem is Nft && newItem is Nft) {
             return oldItem == newItem
         }
-//        if(oldItem.javaClass == newItem.javaClass){
-//            if(oldItem is NFTTitleModel){
-//                return oldItem == newItem
-//            }
-//        }
 
+        if (oldItem is CollectionTabsModel && newItem is CollectionTabsModel) {
+            return true
+        }
         return oldItem == newItem
     }
 }

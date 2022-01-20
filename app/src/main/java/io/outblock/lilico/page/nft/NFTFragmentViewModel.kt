@@ -19,6 +19,7 @@ class NFTFragmentViewModel : ViewModel() {
 
     val dataLiveData = MutableLiveData<List<Any>>()
     val selectionIndexLiveData = MutableLiveData<Int>()
+    val collectionTabChangeLiveData = MutableLiveData<String>()
 
     private var isGridMode = false
     private var isCollectionExpanded = false
@@ -60,6 +61,12 @@ class NFTFragmentViewModel : ViewModel() {
         }
     }
 
+    fun updateSelectCollections(address: String) {
+        selectedCollection = address
+        collectionTabChangeLiveData.postValue(address)
+        loadListDataFromCache()
+    }
+
     private suspend fun loadListData() {
         loadListDataFromCache()
         loadListDataFromServer()
@@ -91,25 +98,27 @@ class NFTFragmentViewModel : ViewModel() {
         if (collections.isNotEmpty()) {
             add(CollectionTitleModel())
             if (isCollectionExpanded) {
+                if (selectedCollection.isEmpty()) {
+                    selectedCollection = collections.first().address
+                }
+                collections.forEach { it.isSelected = it.address == selectedCollection }
                 add(CollectionTabsModel(collections = collections))
-                val selected = if (selectedCollection.isEmpty()) collections.first().address else selectedCollection
-                addAll(collections.first { it.address == selected }.nfts.orEmpty())
+                addAll(collections.first { it.address == selectedCollection }.nfts?.map { NFTItemModel(nft = it) }.orEmpty())
             } else {
                 addAll(collections)
             }
         }
     }
 
-
     private suspend fun loadGridData() {
         cacheNftList.read()?.nfts?.let { nftList ->
-            dataLiveData.postValue(nftList.map { NFTItemModel(walletAddress = address!!, nft = it) }.addHeader())
+            dataLiveData.postValue(nftList.map { NFTItemModel(nft = it) }.addHeader())
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
         if (isGridMode) {
-            dataLiveData.postValue(resp.data.nfts.map { NFTItemModel(walletAddress = address!!, nft = it) }.addHeader())
+            dataLiveData.postValue(resp.data.nfts.map { NFTItemModel(nft = it) }.addHeader())
         }
     }
 

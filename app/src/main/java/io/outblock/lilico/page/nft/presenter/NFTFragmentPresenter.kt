@@ -104,6 +104,6 @@ class NFTFragmentPresenter(
     private fun isSingleLineItem(position: Int): Boolean {
         val item = adapter.getData().getOrNull(position) ?: return false
         return item is HeaderPlaceholderModel || item is NFTTitleModel || item is NftSelections
-          || item is CollectionTitleModel || item is CollectionItemModel
+          || item is CollectionTitleModel || item is CollectionItemModel || item is CollectionTabsModel
     }
 }

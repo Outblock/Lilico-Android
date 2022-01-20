@@ -2,9 +2,10 @@ package io.outblock.lilico.page.nft.model
 
 import io.outblock.lilico.network.model.Nft
 
-class CollectionItemModel(
+data class CollectionItemModel(
     val name: String?,
     val count: Int,
     val address: String,
     val nfts: List<Nft>?,
+    var isSelected: Boolean = false,
 )

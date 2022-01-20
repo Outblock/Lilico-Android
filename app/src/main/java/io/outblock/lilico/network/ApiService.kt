@@ -4,7 +4,7 @@ import io.outblock.lilico.network.model.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -14,8 +14,8 @@ interface ApiService {
     @POST("/user/address")
     suspend fun createWallet(): CreateWalletResponse
 
-    @GET("/user/check/{username}")
-    suspend fun checkUsername(@Path("username") username: String): UsernameCheckResponse
+    @GET("/user/check")
+    suspend fun checkUsername(@Query("username") username: String): UsernameCheckResponse
 
     @POST("/user/token")
     suspend fun uploadPushToken(@Body token: Map<String, String>): CommonResponse
@@ -26,21 +26,21 @@ interface ApiService {
     @POST("/login")
     suspend fun login(@Body params: Map<String, String>): LoginResponse
 
-    @GET("/account/info/{address}")
-    suspend fun getAddressInfo(@Path("address") address: String): AddressInfoResponse
+    @GET("/account/info")
+    suspend fun getAddressInfo(@Query("address") address: String): AddressInfoResponse
 
-    @GET("/nft/list/{address}/{offset}/{limit}")
+    @GET("/nft/list")
     suspend fun nftList(
-        @Path("address") address: String,
-        @Path("offset") offset: Int = 0,
-        @Path("limit") limit: Int = 100,
+        @Query("address") address: String,
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 100,
     ): NFTListResponse
 
-    @GET("/nft/meta/{address}/{contractName}/{contractAddress}/{tokenId}")
+    @GET("/nft/meta")
     suspend fun nftMeta(
-        @Path("address") address: String,
-        @Path("contractName") contractName: String,
-        @Path("contractAddress") contractAddress: String,
-        @Path("tokenId") tokenId: String,
+        @Query("address") address: String,
+        @Query("contractName") contractName: String,
+        @Query("contractAddress") contractAddress: String,
+        @Query("tokenId") tokenId: String,
     ): CommonResponse
 }

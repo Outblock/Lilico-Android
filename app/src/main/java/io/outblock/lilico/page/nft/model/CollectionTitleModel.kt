@@ -1,5 +1,5 @@
 package io.outblock.lilico.page.nft.model
 
-class CollectionTitleModel(
-
+data class CollectionTitleModel(
+    val title: String = "",
 )

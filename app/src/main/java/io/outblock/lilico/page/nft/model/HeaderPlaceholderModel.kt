@@ -1,3 +1,5 @@
 package io.outblock.lilico.page.nft.model
 
-class HeaderPlaceholderModel()
+data class HeaderPlaceholderModel(
+    val holder: String = "",
+)
