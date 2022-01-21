@@ -17,8 +17,10 @@ import io.outblock.lilico.utils.extensions.res2color
 
 class NFTFragmentViewModel : ViewModel() {
 
-    val dataLiveData = MutableLiveData<List<Any>>()
+    val listDataLiveData = MutableLiveData<List<Any>>()
+    val gridDataLiveData = MutableLiveData<List<Any>>()
     val selectionIndexLiveData = MutableLiveData<Int>()
+    val listScrollChangeLiveData = MutableLiveData<Int>()
     val collectionTabChangeLiveData = MutableLiveData<String>()
 
     private var isGridMode = false
@@ -67,6 +69,10 @@ class NFTFragmentViewModel : ViewModel() {
         loadListDataFromCache()
     }
 
+    fun onListScrollChange(scrollY: Int) {
+        listScrollChangeLiveData.postValue(scrollY)
+    }
+
     private suspend fun loadListData() {
         loadListDataFromCache()
         loadListDataFromServer()
@@ -81,7 +87,7 @@ class NFTFragmentViewModel : ViewModel() {
         resp.data.nfts.parseToCollectionList().let { collections -> data.addCollections(collections) }
 
         if (!isGridMode) {
-            dataLiveData.postValue(data.addHeader())
+            listDataLiveData.postValue(data.addHeader())
         }
     }
 
@@ -90,7 +96,7 @@ class NFTFragmentViewModel : ViewModel() {
         cacheNftList.read()?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
         if (!isGridMode) {
-            dataLiveData.postValue(data.addHeader())
+            listDataLiveData.postValue(data.addHeader())
         }
     }
 
@@ -112,13 +118,13 @@ class NFTFragmentViewModel : ViewModel() {
 
     private suspend fun loadGridData() {
         cacheNftList.read()?.nfts?.let { nftList ->
-            dataLiveData.postValue(nftList.map { NFTItemModel(nft = it) }.addHeader())
+            gridDataLiveData.postValue(nftList.map { NFTItemModel(nft = it) }.addHeader())
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
         if (isGridMode) {
-            dataLiveData.postValue(resp.data.nfts.map { NFTItemModel(nft = it) }.addHeader())
+            gridDataLiveData.postValue(resp.data.nfts.map { NFTItemModel(nft = it) }.addHeader())
         }
     }
 
@@ -139,13 +145,13 @@ class NFTFragmentViewModel : ViewModel() {
         val list = this
         return mutableListOf(
             HeaderPlaceholderModel(),
-            NFTTitleModel(
+            if (!isGridMode && firstOrNull { it is NftSelections } == null) null else NFTTitleModel(
                 icon = R.drawable.ic_collection_star,
                 iconTint = if (isGridMode) R.color.text.res2color() else R.color.white.res2color(),
                 text = R.string.top_selection.res2String(),
                 textColor = if (isGridMode) R.color.text.res2color() else R.color.white.res2color()
             ),
-        ).apply { addAll(list) }
+        ).apply { addAll(list) }.filterNotNull()
     }
 
     private fun loadSelectionCards(): MutableList<Any> {

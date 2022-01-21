@@ -5,53 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8"/>
-
-    <ImageView
-        android:id="@+id/background_image"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_nft_gradient"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nft_tool_bar_height"
-        android:paddingHorizontal="18dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_nft_toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/colorPrimary">
+        tools:background="@color/text">
 
         <View
             android:id="@+id/tabs_background"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:alpha="0.24"
             android:background="@drawable/bg_round_corner"
             android:backgroundTint="@color/white"
-            android:alpha="0.24"
             app:layout_constraintBottom_toBottomOf="@id/tabs"
             app:layout_constraintEnd_toEndOf="@id/tabs"
             app:layout_constraintStart_toStartOf="@id/tabs"
@@ -61,11 +36,13 @@
             android:id="@+id/tabs"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            app:tl_bar_color="@color/transparent"
-            app:tl_bar_stroke_width="0dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:tl_bar_color="@color/transparent"
+            app:tl_bar_stroke_width="0dp"
             app:tl_indicator_anim_enable="true"
             app:tl_indicator_bounce_enable="true"
             app:tl_indicator_color="@color/white"
@@ -86,6 +63,7 @@
         <ImageButton
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginEnd="18dp"
             android:background="?attr/actionBarItemBackground"
             android:scaleType="centerInside"
             android:src="@drawable/ic_search"

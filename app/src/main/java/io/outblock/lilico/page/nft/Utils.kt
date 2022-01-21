@@ -22,18 +22,23 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
             return true
         }
 
+        if (oldItem is NftSelections && newItem is NftSelections) {
+            return true
+        }
+
         return oldItem == newItem
     }
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        if (oldItem is Nft && newItem is Nft) {
-            return oldItem == newItem
-        }
-
         if (oldItem is CollectionTabsModel && newItem is CollectionTabsModel) {
             return true
         }
+
+        if (oldItem is NftSelections && newItem is NftSelections) {
+            return true
+        }
+
         return oldItem == newItem
     }
 }

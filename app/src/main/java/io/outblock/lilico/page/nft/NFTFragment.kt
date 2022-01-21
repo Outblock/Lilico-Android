@@ -24,8 +24,8 @@ class NFTFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter = NFTFragmentPresenter(this, binding)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            dataLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(data = it)) }
-            selectionIndexLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(selectionIndex = it)) }
+            listDataLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
+            listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
             load()
         }
     }

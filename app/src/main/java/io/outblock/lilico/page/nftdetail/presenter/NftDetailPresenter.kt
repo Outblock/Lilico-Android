@@ -2,6 +2,7 @@ package io.outblock.lilico.page.nftdetail.presenter
 
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -42,7 +43,8 @@ class NftDetailPresenter(
         this.nft = nft
         with(binding) {
             Glide.with(coverView).load(nft.cover()).into(coverView)
-            Glide.with(backgroundImage).load(nft.cover()).transform(BlurTransformation(15, 30)).into(backgroundImage)
+            Glide.with(backgroundImage).load(nft.cover()).transition(DrawableTransitionOptions.withCrossFade(100))
+                .transform(BlurTransformation(15, 30)).into(backgroundImage)
             titleView.text = nft.name()
             subtitleView.text = nft.contract.externalDomain
             descView.text = nft.desc()
