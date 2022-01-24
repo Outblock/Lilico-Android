@@ -26,9 +26,9 @@ public class CardStackLayoutManager
 
     private final Context context;
 
-    private CardStackListener listener = CardStackListener.DEFAULT;
-    private CardStackSetting setting = new CardStackSetting();
-    private CardStackState state = new CardStackState();
+    private final CardStackListener listener;
+    private final CardStackSetting setting = new CardStackSetting();
+    private final CardStackState state = new CardStackState();
 
     public CardStackLayoutManager(Context context) {
         this(context, CardStackListener.DEFAULT);
@@ -76,13 +76,8 @@ public class CardStackLayoutManager
 
         switch (state.status) {
             case Idle:
-                if (setting.swipeableMethod.canSwipeManually()) {
-                    state.dx -= dx;
-                    update(recycler);
-                    return dx;
-                }
-                break;
             case Dragging:
+            case ManualSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dx -= dx;
                     update(recycler);
@@ -101,14 +96,6 @@ public class CardStackLayoutManager
                 }
                 break;
             case AutomaticSwipeAnimated:
-                break;
-            case ManualSwipeAnimating:
-                if (setting.swipeableMethod.canSwipeManually()) {
-                    state.dx -= dx;
-                    update(recycler);
-                    return dx;
-                }
-                break;
             case ManualSwipeAnimated:
                 break;
         }
@@ -124,13 +111,8 @@ public class CardStackLayoutManager
 
         switch (state.status) {
             case Idle:
-                if (setting.swipeableMethod.canSwipeManually()) {
-                    state.dy -= dy;
-                    update(recycler);
-                    return dy;
-                }
-                break;
             case Dragging:
+            case ManualSwipeAnimating:
                 if (setting.swipeableMethod.canSwipeManually()) {
                     state.dy -= dy;
                     update(recycler);
@@ -149,14 +131,6 @@ public class CardStackLayoutManager
                 }
                 break;
             case AutomaticSwipeAnimated:
-                break;
-            case ManualSwipeAnimating:
-                if (setting.swipeableMethod.canSwipeManually()) {
-                    state.dy -= dy;
-                    update(recycler);
-                    return dy;
-                }
-                break;
             case ManualSwipeAnimated:
                 break;
         }

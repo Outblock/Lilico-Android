@@ -14,7 +14,6 @@ import io.outblock.lilico.page.nft.adapter.SelectionsAdapter
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.findActivity
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.cardstackview.*
 
 class SelectionItemPresenter(
@@ -42,30 +41,19 @@ class SelectionItemPresenter(
         adapter.setNewDiffData(model.data.reversed())
     }
 
-    override fun onCardDragging(direction: Direction?, ratio: Float) {
-        logd(TAG, "onCardDragging")
-    }
+    override fun onCardDragging(direction: Direction?, ratio: Float) {}
 
-    override fun onCardSwiped(direction: Direction?) {
-        logd(TAG, "onCardSwiped")
-    }
+    override fun onCardSwiped(direction: Direction?) {}
 
-    override fun onCardRewound() {
-        logd(TAG, "onCardRewound")
-    }
+    override fun onCardRewound() {}
 
-    override fun onCardCanceled() {
-        logd(TAG, "onCardCanceled")
-    }
+    override fun onCardCanceled() {}
 
     override fun onCardAppeared(view: View?, position: Int) {
-        logd(TAG, "onCardAppeared")
         viewModel.updateSelectionIndex(position)
     }
 
-    override fun onCardDisappeared(view: View?, position: Int) {
-        logd(TAG, "onCardDisappeared")
-    }
+    override fun onCardDisappeared(view: View?, position: Int) {}
 
     private fun createCardStackManager(): CardStackLayoutManager {
         return CardStackLayoutManager(context, this@SelectionItemPresenter).apply {
