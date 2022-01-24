@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.nft.presenter
 
+import android.animation.ArgbEvaluator
 import androidx.lifecycle.ViewModelProvider
 import com.flyco.tablayout.listener.OnTabSelectListener
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
@@ -63,7 +64,7 @@ class NFTFragmentPresenter(
 
     private fun listPageScrollProgress(scrollY: Int): Float {
         val scroll = if (scrollY < 0) viewModel.listScrollChangeLiveData.value ?: 0 else scrollY
-        val maxScrollY = ScreenUtils.getScreenHeight() * 0.3f
+        val maxScrollY = ScreenUtils.getScreenHeight() * 0.25f
         return min(scroll / maxScrollY, 1f)
     }
 
@@ -75,8 +76,15 @@ class NFTFragmentPresenter(
                 binding.toolbar.background.alpha = 255
                 binding.tabsBackground.background.setTint(R.color.neutrals4.res2color())
             } else {
-                binding.toolbar.background.alpha = (255 * listPageScrollProgress(scrollY)).toInt()
-                binding.tabsBackground.background.setTint(R.color.white.res2color())
+                val progress = listPageScrollProgress(scrollY)
+                binding.toolbar.background.alpha = (255 * progress).toInt()
+                binding.tabsBackground.background.setTint(
+                    ArgbEvaluator().evaluate(
+                        progress,
+                        R.color.white.res2color(),
+                        R.color.neutrals4.res2color()
+                    ) as Int
+                )
             }
         } else {
             binding.toolbar.background.alpha = 255

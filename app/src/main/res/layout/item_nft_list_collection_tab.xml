@@ -33,8 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="10dp"
-            android:fontFamily="@font/montsettat_medium"
+            android:fontFamily="@font/montsettat"
             android:textColor="@color/text"
+            android:textStyle="bold"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/count_view"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -43,10 +44,11 @@
             tools:text="Claude Monet"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_marginStart="2dp"
             android:src="@drawable/ic_coin_flow"
+            android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="@id/name_view"
             app:layout_constraintStart_toEndOf="@id/name_view"
             app:layout_constraintTop_toTopOf="@id/name_view"/>

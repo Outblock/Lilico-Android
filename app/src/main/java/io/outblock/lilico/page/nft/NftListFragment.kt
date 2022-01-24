@@ -34,6 +34,8 @@ internal class NftListFragment : Fragment() {
 
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2dip().toDouble() }
 
+    private var scrollY = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNftListBinding.inflate(inflater)
         return binding.root
@@ -41,6 +43,7 @@ internal class NftListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        binding.root.setBackgroundResource(if (isList) R.color.neutrals12 else R.color.colorPrimary)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             if (isList) {
                 listDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
@@ -72,7 +75,7 @@ internal class NftListFragment : Fragment() {
                     setDividerVisibleCheck(object : DividerVisibleCheck {
                         override fun dividerVisible(position: Int): Boolean {
                             val item = this@NftListFragment.adapter.getData().getOrNull(position) ?: return true
-                            return item !is NftSelections
+                            return item !is NftSelections && item !is CollectionTabsModel
                         }
                     })
                 })
@@ -80,7 +83,9 @@ internal class NftListFragment : Fragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (isList) {
-                        viewModel.onListScrollChange(computeVerticalScrollOffset())
+                        this@NftListFragment.scrollY += dy
+                        binding.backgroundWrapper.translationY = -this@NftListFragment.scrollY.toFloat()
+                        viewModel.onListScrollChange(this@NftListFragment.scrollY)
                     }
                 }
             })

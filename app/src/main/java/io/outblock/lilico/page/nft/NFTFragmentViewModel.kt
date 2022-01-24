@@ -102,7 +102,7 @@ class NFTFragmentViewModel : ViewModel() {
 
     private fun MutableList<Any>.addCollections(collections: List<CollectionItemModel>) {
         if (collections.isNotEmpty()) {
-            add(CollectionTitleModel())
+            add(CollectionTitleModel(count = collections.size))
             if (isCollectionExpanded) {
                 if (selectedCollection.isEmpty()) {
                     selectedCollection = collections.first().address

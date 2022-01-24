@@ -22,12 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
         android:fontFamily="@font/montsettat"
-        android:text="@string/collections"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/icon_view"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/collections"/>
 
     <ImageButton
         android:id="@+id/toggle_view"

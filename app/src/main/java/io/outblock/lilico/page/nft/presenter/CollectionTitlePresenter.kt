@@ -3,6 +3,7 @@ package io.outblock.lilico.page.nft.presenter
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTitleBinding
@@ -22,5 +23,6 @@ class CollectionTitlePresenter(
     }
 
     override fun bind(model: CollectionTitleModel) {
+        binding.textView.text = view.context.getString(R.string.collections_count, model.count)
     }
 }

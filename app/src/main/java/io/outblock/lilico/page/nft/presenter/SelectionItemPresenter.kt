@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.yuyakaido.android.cardstackview.*
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.cache.NftSelections
@@ -16,6 +15,7 @@ import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.widgets.cardstackview.*
 
 class SelectionItemPresenter(
     private val view: View,
@@ -73,8 +73,8 @@ class SelectionItemPresenter(
             setVisibleCount(6)
             setTranslationInterval(15.dp2px())
             setScaleInterval(0.9f)
-            setSwipeThreshold(0.1f)
-            setMaxDegree(1.0f)
+            setSwipeThreshold(0.3f)
+            setMaxDegree(20.0f)
             setDirections(Direction.HORIZONTAL)
             setCanScrollHorizontal(true)
             setCanScrollVertical(false)

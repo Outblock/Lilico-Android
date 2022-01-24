@@ -46,6 +46,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is SelectionItemPresenter -> holder.bind(getItem(position) as NftSelections)
             is CollectionLineItemPresenter -> holder.bind(getItem(position) as CollectionItemModel)
             is CollectionTabsPresenter -> holder.bind(getItem(position) as CollectionTabsModel)
+            is CollectionTitlePresenter -> holder.bind(getItem(position) as CollectionTitleModel)
         }
     }
 
