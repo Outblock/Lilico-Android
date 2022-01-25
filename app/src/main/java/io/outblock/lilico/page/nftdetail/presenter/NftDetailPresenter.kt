@@ -1,20 +1,41 @@
 package io.outblock.lilico.page.nftdetail.presenter
 
+import android.animation.ArgbEvaluator
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
+import androidx.core.widget.NestedScrollView
+import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.*
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
+import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
+import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isNftInSelection
-import io.outblock.lilico.utils.uiScope
 import jp.wasabeef.glide.transformations.BlurTransformation
+import java.lang.Float.min
+
+private val filterMetadata by lazy { listOf("uri", "img", "description") }
 
 class NftDetailPresenter(
     private val activity: AppCompatActivity,
@@ -22,6 +43,10 @@ class NftDetailPresenter(
 ) : BasePresenter<NftDetailModel> {
 
     private var nft: Nft? = null
+
+    private var pageColor: Int = R.color.text_sub.res2color()
+
+    private val screenHeight by lazy { ScreenUtils.getScreenHeight() }
 
     init {
         setupToolbar()
@@ -32,6 +57,15 @@ class NftDetailPresenter(
                 val nft = nft ?: return@setOnClickListener
                 toggleNftSelection(nft)
             }
+
+            backgroundImage.layoutParams.height = ScreenUtils.getScreenHeight()
+            backgroundGradient.layoutParams.height = ScreenUtils.getScreenHeight()
+
+            scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+                updateToolbarColor(scrollY)
+            })
+
+            moreButton.setOnClickListener { NftMorePopupMenu(it, pageColor).show() }
         }
     }
 
@@ -39,18 +73,91 @@ class NftDetailPresenter(
         model.nft?.let { bindData(it) }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindData(nft: Nft) {
         this.nft = nft
         with(binding) {
-            Glide.with(coverView).load(nft.cover()).into(coverView)
-            Glide.with(backgroundImage).load(nft.cover()).transition(DrawableTransitionOptions.withCrossFade(100))
-                .transform(BlurTransformation(15, 30)).into(backgroundImage)
-            titleView.text = nft.name()
-            subtitleView.text = nft.contract.externalDomain
+            val config = NftCollectionConfig.get(nft.contract.address) ?: return
+            val title = "${config.name} #${nft.id.tokenId}"
+            toolbar.title = title
+
+            uiScope { updateSelectionState(isNftInSelection(nft)) }
+
+            bindCover(nft)
+            Glide.with(backgroundImage).load(nft.cover())
+                .transition(DrawableTransitionOptions.withCrossFade(100))
+                .transform(BlurTransformation(15, 30))
+                .into(backgroundImage)
+
+            titleView.text = title
+            subtitleView.text = config.name
+            Glide.with(collectionIcon).load(config.logo).transform(CenterCrop(), CircleCrop()).into(collectionIcon)
             descView.text = nft.desc()
+
             purchaseDate.text = "01.01.2022"
+            purchasePrice.text = "1239.22"
+
+            bindTags(nft)
 
             ioScope { updateSelectionState(isNftInSelection(nft)) }
+        }
+    }
+
+    private fun bindCover(nft: Nft) {
+        Glide.with(binding.coverView)
+            .asBitmap()
+            .load(nft.cover())
+            .transform(CenterCrop(), RoundedCorners(12.dp2px().toInt()))
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean = false
+
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    model: Any?,
+                    target: Target<Bitmap>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    ioScope {
+                        val color = Palette.from(resource).generate().getDominantColor(R.color.text_sub.res2color())
+                        uiScope { updatePageColor(color) }
+                    }
+                    return false
+                }
+            })
+            .into(binding.coverView)
+    }
+
+    private fun updatePageColor(color: Int) {
+        pageColor = color
+        with(binding) {
+            shareButton.setColorFilter(color)
+            uiScope { updateSelectionState(isNftInSelection(nft!!)) }
+            tags.children.forEach { tag ->
+                tag.background.setTint(color)
+                tag.findViewById<TextView>(R.id.title_view).setTextColor(color)
+            }
+
+            sendButton.iconTint = ColorStateList.valueOf(color)
+            moreButton.iconTint = ColorStateList.valueOf(color)
+        }
+    }
+
+    private fun bindTags(nft: Nft) {
+        with(binding.tags) {
+            nft.metadata.metadata.filter { !filterMetadata.contains(it.name.lowercase()) && it.value.isNotBlank() && !it.value.startsWith("https://") }
+                .forEach { metadata ->
+                    val tagView = (LayoutInflater.from(activity).inflate(R.layout.item_nft_tag, this, false) as ViewGroup)
+                    tagView.background.setTint(pageColor)
+                    tagView.background.alpha = (0.4f * 255).toInt()
+                    val titleView = tagView.findViewById<TextView>(R.id.title_view)
+                    val contentView = tagView.findViewById<TextView>(R.id.content_view)
+
+                    titleView.setTextColor(pageColor)
+                    titleView.text = metadata.name.uppercase()
+                    contentView.text = metadata.value
+                    addView(tagView)
+                }
         }
     }
 
@@ -63,7 +170,12 @@ class NftDetailPresenter(
     }
 
     private fun updateSelectionState(isSelected: Boolean) {
-        uiScope { binding.collectButton.setImageResource(if (isSelected) R.drawable.ic_collect_nft_on else R.drawable.ic_collect_nft) }
+        uiScope {
+            binding.collectButton.isChecked = isSelected
+            binding.collectButton.setBtnColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
+            binding.collectButton.setBtnFillColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
+            binding.collectButton.setSrcColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
+        }
     }
 
     private fun toggleNftSelection(nft: Nft) {
@@ -76,5 +188,23 @@ class NftDetailPresenter(
                 updateSelectionState(true)
             }
         }
+    }
+
+    private fun ActivityNftDetailBinding.updateToolbarColor(scrollY: Int) {
+        val progress = min(scrollY / (screenHeight * 0.25f), 1.0f)
+        toolbar.setBackgroundColor(
+            ArgbEvaluator().evaluate(
+                progress,
+                R.color.transparent.res2color(),
+                R.color.colorPrimary.res2color(),
+            ) as Int
+        )
+        toolbar.setTitleTextColor(
+            ArgbEvaluator().evaluate(
+                progress,
+                R.color.transparent.res2color(),
+                R.color.text.res2color(),
+            ) as Int
+        )
     }
 }

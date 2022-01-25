@@ -154,6 +154,8 @@ dependencies {
     implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
+    implementation 'com.sackcentury:shinebutton:1.0.0'
+
     /** TEST **/
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

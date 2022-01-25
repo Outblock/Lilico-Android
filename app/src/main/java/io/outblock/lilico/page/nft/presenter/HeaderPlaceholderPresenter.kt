@@ -18,7 +18,7 @@ class HeaderPlaceholderPresenter(
 
     override fun bind(model: HeaderPlaceholderModel) {
         val layoutParam =
-            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, if (model.addDivider) baseHeight - dividerHeight else baseHeight)
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, if (model.addDivider) baseHeight else baseHeight - dividerHeight)
         view.layoutParams = layoutParam
     }
 }

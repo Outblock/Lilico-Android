@@ -44,7 +44,7 @@ class NFTListItemPresenter(
                     nft.id.tokenId,
                 )
             }
-            coverView.setOnLongClickListener {
+            coverViewWrapper.setOnLongClickListener {
                 NftItemPopupMenu(coverView, model.nft).show()
                 true
             }
