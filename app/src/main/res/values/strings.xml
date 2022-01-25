@@ -91,4 +91,6 @@
     <string name="purchase_date">Purchase Date</string>
     <string name="collections">Collections</string>
     <string name="collections_count">%1$d Collections</string>
+    <string name="share">Share</string>
+    <string name="send">Send</string>
 </resources>

@@ -144,8 +144,8 @@ class NFTFragmentViewModel : ViewModel() {
         }
         val list = this
         return mutableListOf(
-            HeaderPlaceholderModel(),
-            if (!isGridMode && firstOrNull { it is NftSelections } == null) null else NFTTitleModel(
+            HeaderPlaceholderModel(addDivider = isGridMode),
+            if (isGridMode || firstOrNull { it is NftSelections } == null) null else NFTTitleModel(
                 icon = R.drawable.ic_collection_star,
                 iconTint = if (isGridMode) R.color.text.res2color() else R.color.white.res2color(),
                 text = R.string.top_selection.res2String(),

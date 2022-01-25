@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.cover
 import io.outblock.lilico.page.nft.model.NFTItemModel
+import io.outblock.lilico.page.nft.widget.NftItemPopupMenu
 import io.outblock.lilico.page.nftdetail.NftDetailActivity
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.findActivity
@@ -24,6 +25,7 @@ class NFTListItemPresenter(
     private val binding by lazy { ItemNftListBinding.bind(view) }
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModel::class.java] }
     private val context = view.context
+
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: NFTItemModel) {
@@ -42,7 +44,15 @@ class NFTListItemPresenter(
                     nft.id.tokenId,
                 )
             }
+            coverView.setOnLongClickListener {
+                NftItemPopupMenu(coverView, model.nft).show()
+                true
+            }
         }
         view.setOnClickListener { NftDetailActivity.launch(context, viewModel.getWalletAddress().orEmpty(), nft.contract.address, nft.id.tokenId) }
+    }
+
+    private fun showPopupMenu(model: NFTItemModel) {
+
     }
 }
