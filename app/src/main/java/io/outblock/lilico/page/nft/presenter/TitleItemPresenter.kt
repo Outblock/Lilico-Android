@@ -1,10 +1,12 @@
 package io.outblock.lilico.page.nft.presenter
 
 import android.view.View
+import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListTitleBinding
 import io.outblock.lilico.page.nft.model.NFTTitleModel
+import io.outblock.lilico.utils.extensions.res2pix
 
 class TitleItemPresenter(
     private val view: View,
@@ -18,6 +20,9 @@ class TitleItemPresenter(
 
             textView.text = model.text
             textView.setTextColor(model.textColor)
+        }
+        with(view) {
+            setPadding(R.dimen.nft_list_divider_size.res2pix(), paddingTop, paddingRight, paddingBottom)
         }
     }
 }

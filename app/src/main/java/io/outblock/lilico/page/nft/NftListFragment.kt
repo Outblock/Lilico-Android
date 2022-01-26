@@ -20,7 +20,6 @@ import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.DividerVisibleCheck
-import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 internal class NftListFragment : Fragment() {
@@ -75,7 +74,8 @@ internal class NftListFragment : Fragment() {
                     setDividerVisibleCheck(object : DividerVisibleCheck {
                         override fun dividerVisible(position: Int): Boolean {
                             val item = this@NftListFragment.adapter.getData().getOrNull(position) ?: return true
-                            return item !is NftSelections && item !is CollectionTabsModel
+                            return !(item is NftSelections || item is CollectionTabsModel
+                              || (isList && item is NFTTitleModel))
                         }
                     })
                 })

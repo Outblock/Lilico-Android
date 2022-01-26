@@ -7,6 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.utils.extensions.res2color
 
 data class NFTTitleModel(
+    val isList: Boolean,
     @DrawableRes val icon: Int,
     @ColorInt val iconTint: Int = Color.WHITE,
     val text: String,

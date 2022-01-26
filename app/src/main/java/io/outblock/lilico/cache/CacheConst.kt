@@ -24,5 +24,5 @@ fun nftSelectionCache(): CacheManager<NftSelections> {
 
 data class NftSelections(
     @SerializedName("data")
-    var data: List<Nft>,
+    var data: MutableList<Nft>,
 )

@@ -146,6 +146,7 @@ class NFTFragmentViewModel : ViewModel() {
         return mutableListOf(
             HeaderPlaceholderModel(addDivider = isGridMode),
             if (isGridMode || firstOrNull { it is NftSelections } == null) null else NFTTitleModel(
+                isList = !isGridMode,
                 icon = R.drawable.ic_collection_star,
                 iconTint = if (isGridMode) R.color.text.res2color() else R.color.white.res2color(),
                 text = R.string.top_selection.res2String(),
@@ -156,7 +157,7 @@ class NFTFragmentViewModel : ViewModel() {
 
     private fun loadSelectionCards(): MutableList<Any> {
         val data = mutableListOf<Any>()
-        val selections = cacheSelections.read() ?: NftSelections(emptyList())
+        val selections = cacheSelections.read() ?: NftSelections(mutableListOf())
         if (selections.data.isNotEmpty()) {
             data.add(selections)
         }
