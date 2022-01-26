@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import androidx.palette.graphics.Palette
@@ -16,7 +17,6 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -26,12 +26,19 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.*
+import io.outblock.lilico.page.nft.addNftToSelection
+import io.outblock.lilico.page.nft.cover
+import io.outblock.lilico.page.nft.desc
+import io.outblock.lilico.page.nft.removeNftFromSelection
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
-import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isNftInSelection
+import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.likebutton.LikeButton
+import io.outblock.lilico.widgets.likebutton.OnLikeListener
 import jp.wasabeef.glide.transformations.BlurTransformation
 import java.lang.Float.min
 
@@ -48,15 +55,24 @@ class NftDetailPresenter(
 
     private val screenHeight by lazy { ScreenUtils.getScreenHeight() }
 
+    private var coverRatio = "1:1"
+
     init {
         setupToolbar()
         with(binding) {
             toolbar.addStatusBarTopPadding()
 
-            collectButton.setOnClickListener {
-                val nft = nft ?: return@setOnClickListener
-                toggleNftSelection(nft)
-            }
+            collectButton.setOnLikeListener(object : OnLikeListener {
+                override fun liked(likeButton: LikeButton?) {
+                    val nft = nft ?: return
+                    toggleNftSelection(nft)
+                }
+
+                override fun unLiked(likeButton: LikeButton?) {
+                    val nft = nft ?: return
+                    toggleNftSelection(nft)
+                }
+            })
 
             backgroundImage.layoutParams.height = ScreenUtils.getScreenHeight()
             backgroundGradient.layoutParams.height = ScreenUtils.getScreenHeight()
@@ -66,6 +82,7 @@ class NftDetailPresenter(
             })
 
             moreButton.setOnClickListener { NftMorePopupMenu(it, pageColor).show() }
+            collectButton.setLikeDrawableTint(R.color.colorSecondary.res2color())
         }
     }
 
@@ -107,7 +124,6 @@ class NftDetailPresenter(
         Glide.with(binding.coverView)
             .asBitmap()
             .load(nft.cover())
-            .transform(CenterCrop(), RoundedCorners(12.dp2px().toInt()))
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean = false
 
@@ -119,6 +135,7 @@ class NftDetailPresenter(
                     isFirstResource: Boolean
                 ): Boolean {
                     ioScope {
+                        coverRatio = "${resource.width}:${resource.height}"
                         val color = Palette.from(resource).generate().getDominantColor(R.color.text_sub.res2color())
                         uiScope { updatePageColor(color) }
                     }
@@ -131,6 +148,11 @@ class NftDetailPresenter(
     private fun updatePageColor(color: Int) {
         pageColor = color
         with(binding) {
+            with(coverView.layoutParams as ConstraintLayout.LayoutParams) {
+                dimensionRatio = coverRatio
+                coverView.layoutParams = this
+            }
+
             shareButton.setColorFilter(color)
             uiScope { updateSelectionState(isNftInSelection(nft!!)) }
             tags.children.forEach { tag ->
@@ -171,10 +193,11 @@ class NftDetailPresenter(
 
     private fun updateSelectionState(isSelected: Boolean) {
         uiScope {
-            binding.collectButton.isChecked = isSelected
-            binding.collectButton.setBtnColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
-            binding.collectButton.setBtnFillColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
-            binding.collectButton.setSrcColor(if (isSelected) R.color.colorSecondary.res2color() else pageColor)
+            with(binding.collectButton) {
+                isLiked = isSelected
+                setUnLikeDrawableTint(pageColor)
+                setCircleStartColorInt(pageColor)
+            }
         }
     }
 

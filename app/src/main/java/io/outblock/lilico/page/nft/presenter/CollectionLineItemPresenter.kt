@@ -11,6 +11,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionLineBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.model.CollectionItemModel
 import io.outblock.lilico.utils.extensions.dp2px
@@ -25,10 +26,6 @@ class CollectionLineItemPresenter(
 
     private val corner by lazy { 12.dp2px().toInt() }
 
-    init {
-        view.setOnClickListener { }
-    }
-
     override fun bind(model: CollectionItemModel) {
         with(binding) {
             val config = NftCollectionConfig.get(model.address) ?: return@with
@@ -36,5 +33,6 @@ class CollectionLineItemPresenter(
             countView.text = view.context.getString(R.string.collections_count, model.count)
             Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corner)).into(coverView)
         }
+        view.setOnClickListener { CollectionActivity.launch(view.context, viewModel.getWalletAddress()!!, model.address) }
     }
 }
