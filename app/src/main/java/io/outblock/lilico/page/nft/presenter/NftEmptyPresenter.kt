@@ -13,7 +13,7 @@ class NftEmptyPresenter(
     init {
         with(binding) {
             getNewButton.setOnClickListener { }
-            Glide.with(backgroundImage).load(R.drawable.bg_empty).transform(BlurTransformation(15, 30)).into(backgroundImage)
+            Glide.with(backgroundImage).load(R.drawable.bg_empty).transform(BlurTransformation(10, 20)).into(backgroundImage)
         }
     }
 
