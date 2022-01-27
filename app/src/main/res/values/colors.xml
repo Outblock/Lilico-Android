@@ -145,11 +145,12 @@
     <color name="neutrals9">#CCCCCC</color>
     <color name="note">#808080</color>
     <color name="outline">#E6E6E6</color>
-    <color name="salmon_primary">#FF7340</color>
+    <color name="salmon_primary">#FC814A</color>
     <color name="salmon1">#CC5C33</color>
     <color name="salmon3">#FF8559</color>
     <color name="salmon4">#FFAB8C</color>
     <color name="salmon5">#FFE3D9</color>
+    <color name="salmon_primary_8">#14FC814A</color>
     <color name="shades2">#000000</color>
     <color name="success1">#00802B</color>
     <color name="success2">#00B23C</color>

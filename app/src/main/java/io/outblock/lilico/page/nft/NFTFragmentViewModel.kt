@@ -23,6 +23,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     val selectionIndexLiveData = MutableLiveData<Int>()
     val listScrollChangeLiveData = MutableLiveData<Int>()
     val collectionTabChangeLiveData = MutableLiveData<String>()
+    val emptyLiveData = MutableLiveData<Boolean>()
 
     private var isGridMode = false
     private var isCollectionExpanded = false
@@ -105,6 +106,8 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
         resp.data.nfts.parseToCollectionList().let { collections -> data.addCollections(collections) }
 
+        emptyLiveData.postValue(data.isEmpty())
+
         if (!isGridMode) {
             listDataLiveData.postValue(data)
         }
@@ -143,6 +146,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
         if (isGridMode) {
+            emptyLiveData.postValue(resp.data.nfts.isEmpty())
             gridDataLiveData.postValue(resp.data.nfts.map { NFTItemModel(nft = it) }.addHeader())
         }
     }
