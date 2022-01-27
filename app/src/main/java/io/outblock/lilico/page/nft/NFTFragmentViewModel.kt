@@ -8,14 +8,17 @@ import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.nft.NftSelectionManager
+import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
 import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.model.*
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 
-class NFTFragmentViewModel : ViewModel() {
+class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     val listDataLiveData = MutableLiveData<List<Any>>()
     val gridDataLiveData = MutableLiveData<List<Any>>()
@@ -31,6 +34,10 @@ class NFTFragmentViewModel : ViewModel() {
     private val cacheNftList by lazy { nftListCache(address) }
     private val cacheSelections by lazy { nftSelectionCache() }
     private val cacheWallet by lazy { walletCache() }
+
+    init {
+        NftSelectionManager.addOnNftSelectionChangeListener(this)
+    }
 
     fun load() {
         viewModelIOScope(this) {
@@ -71,6 +78,18 @@ class NFTFragmentViewModel : ViewModel() {
 
     fun onListScrollChange(scrollY: Int) {
         listScrollChangeLiveData.postValue(scrollY)
+    }
+
+    override fun onAddSelection(nft: Nft) {
+        if (listDataLiveData.value?.firstOrNull { it is NftSelections } == null) {
+            loadListDataFromCache()
+        }
+    }
+
+    override fun onRemoveSelection(nft: Nft) {
+        if (listDataLiveData.value?.filterIsInstance<NftSelections>()?.firstOrNull()?.data?.size == 1) {
+            loadListDataFromCache()
+        }
     }
 
     private suspend fun loadListData() {

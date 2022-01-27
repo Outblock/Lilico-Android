@@ -5,6 +5,7 @@ import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.isSameNft
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.updateNftSelectionsPref
 import java.lang.ref.WeakReference
 import java.util.concurrent.CopyOnWriteArrayList
@@ -50,13 +51,15 @@ object NftSelectionManager {
     }
 
     private fun dispatchListener(isAdd: Boolean, nft: Nft) {
-        listeners.removeAll { it.get() == null }
-        listeners.forEach {
-            val listener = it.get() ?: return@forEach
-            if (isAdd) {
-                listener.onAddSelection(nft)
-            } else {
-                listener.onRemoveSelection(nft)
+        uiScope {
+            listeners.removeAll { it.get() == null }
+            listeners.forEach {
+                val listener = it.get() ?: return@forEach
+                if (isAdd) {
+                    listener.onAddSelection(nft)
+                } else {
+                    listener.onRemoveSelection(nft)
+                }
             }
         }
     }

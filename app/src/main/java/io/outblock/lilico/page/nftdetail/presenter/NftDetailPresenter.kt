@@ -1,25 +1,36 @@
 package io.outblock.lilico.page.nftdetail.presenter
 
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
+import androidx.core.widget.NestedScrollView
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.cover
 import io.outblock.lilico.page.nft.desc
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
+import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.ioScope
@@ -27,6 +38,8 @@ import io.outblock.lilico.utils.isNftInSelection
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.likebutton.LikeButton
 import io.outblock.lilico.widgets.likebutton.OnLikeListener
+import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlin.math.min
 
 private val filterMetadata by lazy { listOf("uri", "img", "description") }
 

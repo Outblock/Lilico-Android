@@ -41,7 +41,7 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 }
 
 fun Nft.cover(): String? {
-    var url = media?.uri?.toCoverUrl()
+    var url = media?.firstOrNull { it.mimeType == "image" }?.uri?.toCoverUrl()
     if (url.isNullOrEmpty()) {
         url = metadata.metadata.firstOrNull { it.name == "image" }?.value
     }

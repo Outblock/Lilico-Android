@@ -20,7 +20,9 @@ import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.DividerVisibleCheck
+import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlin.math.min
 
 internal class NftListFragment : Fragment() {
 
@@ -45,7 +47,12 @@ internal class NftListFragment : Fragment() {
         binding.root.setBackgroundResource(if (isList) R.color.neutrals12 else R.color.colorPrimary)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             if (isList) {
-                listDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
+                listDataLiveData.observe(viewLifecycleOwner) {
+                    adapter.setNewDiffData(it)
+                    if (it.indexOfFirst { it is NftSelections } < 0) {
+                        Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
+                    }
+                }
                 selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
             } else {
                 gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
@@ -84,7 +91,7 @@ internal class NftListFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (isList) {
                         this@NftListFragment.scrollY += dy
-                        binding.backgroundWrapper.translationY = -this@NftListFragment.scrollY.toFloat()
+                        binding.backgroundWrapper.translationY = min(-this@NftListFragment.scrollY.toFloat(), 0f)
                         viewModel.onListScrollChange(this@NftListFragment.scrollY)
                     }
                 }
@@ -103,6 +110,11 @@ internal class NftListFragment : Fragment() {
             if (viewModel.isGridMode()) {
                 return@ioScope
             }
+
+            if (index < 0) {
+                Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
+            }
+
             val data = nftSelectionCache().read()?.data?.reversed() ?: return@ioScope
             val nft = data.getOrNull(index) ?: return@ioScope
             uiScope {

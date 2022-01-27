@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.children
 import io.outblock.lilico.utils.logd
 import kotlin.math.pow
 
@@ -40,5 +41,9 @@ class CardSwipeView : MotionLayout {
 
     override fun setOnClickListener(l: OnClickListener?) {
         this.onClickListener = l
+    }
+
+    fun refresh() {
+        children.forEach { it.visibility = VISIBLE }
     }
 }

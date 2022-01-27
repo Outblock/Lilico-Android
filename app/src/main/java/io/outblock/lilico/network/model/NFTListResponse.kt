@@ -39,7 +39,7 @@ data class Nft(
     @SerializedName("id")
     val id: NFTId,
     @SerializedName("media")
-    val media: NFTMedia?,
+    val media: List<NFTMedia>?,
     @SerializedName("metadata")
     val metadata: NFTMetadata,
     @SerializedName("title")
