@@ -1,6 +1,6 @@
 package io.outblock.lilico.page.main.presenter
 
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityMainBinding
@@ -24,7 +24,7 @@ class MainContentPresenter(
 
     init {
         binding.viewPager.adapter = MainPageAdapter(activity)
-        binding.viewPager.isUserInputEnabled = false
+        binding.viewPager.offscreenPageLimit = 4
         setupListener()
     }
 
@@ -33,17 +33,17 @@ class MainContentPresenter(
     }
 
     private fun setupListener() {
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.viewPager.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 binding.navigationView.selectedItemId = menuId[position]
             }
         })
         binding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.bottom_navigation_home -> binding.viewPager.currentItem = 0
-                R.id.bottom_navigation_nft -> binding.viewPager.currentItem = 1
-                R.id.bottom_navigation_explore -> binding.viewPager.currentItem = 2
-                R.id.bottom_navigation_profile -> binding.viewPager.currentItem = 3
+                R.id.bottom_navigation_home -> binding.viewPager.setCurrentItem(0, false)
+                R.id.bottom_navigation_nft -> binding.viewPager.setCurrentItem(1, false)
+                R.id.bottom_navigation_explore -> binding.viewPager.setCurrentItem(2, false)
+                R.id.bottom_navigation_profile -> binding.viewPager.setCurrentItem(3, false)
             }
             true
         }

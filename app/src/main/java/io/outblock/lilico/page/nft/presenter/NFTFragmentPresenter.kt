@@ -23,8 +23,6 @@ class NFTFragmentPresenter(
 
     private val viewModel by lazy { ViewModelProvider(fragment.requireActivity())[NFTFragmentViewModel::class.java] }
 
-    private val context = fragment.requireContext()
-
     private var isTopSelectionExist = false
 
     init {
@@ -32,8 +30,7 @@ class NFTFragmentPresenter(
             post { setPadding(paddingLeft, paddingTop + statusBarHeight, paddingRight, paddingBottom) }
         }
         with(binding.viewPager) {
-            adapter = NftListPageAdapter(fragment.requireActivity())
-            isUserInputEnabled = false
+            adapter = NftListPageAdapter(fragment)
         }
         setupTabs()
     }

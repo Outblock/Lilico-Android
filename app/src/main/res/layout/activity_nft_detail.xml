@@ -27,11 +27,20 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:alpha="0.2"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toTopOf="@id/background_image"
+                app:layout_constraintBottom_toBottomOf="@id/background_image"/>
+
+            <View
                 android:id="@+id/background_gradient"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:background="@drawable/bg_nft_gradient"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/background_image"
+                app:layout_constraintBottom_toBottomOf="@id/background_image"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/header_wrapper"
@@ -46,8 +55,8 @@
                     android:id="@+id/cover_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:scaleType="centerCrop"
                     android:layout_marginEnd="18dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:round="12dp"
@@ -104,9 +113,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-7dp"
-                    tools:layout_width="88dp"
-                    tools:layout_height="88dp"
-                    tools:background="#999"
                     android:background="@color/transparent"
                     app:anim_scale_factor="2"
                     app:circle_end_color="@color/colorSecondary"
@@ -118,16 +124,19 @@
                     app:layout_constraintTop_toBottomOf="@id/cover_view"
                     app:like_drawable="@drawable/ic_collect_nft"
                     app:unlike_drawable="@drawable/ic_collect_nft"
-                    tools:ignore="ContentDescription"/>
+                    tools:background="#999"
+                    tools:ignore="ContentDescription"
+                    tools:layout_height="88dp"
+                    tools:layout_width="88dp"/>
 
                 <FrameLayout
                     android:id="@+id/share_button_wrapper"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="74dp"
                     android:paddingBottom="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cover_view">
 
                     <ImageButton

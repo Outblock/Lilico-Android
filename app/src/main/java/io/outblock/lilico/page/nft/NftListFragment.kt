@@ -124,7 +124,7 @@ internal class NftListFragment : Fragment() {
             uiScope {
                 Glide.with(binding.backgroundImage)
                     .load(nft.cover())
-                    .transition(DrawableTransitionOptions.withCrossFade(150))
+                    .transition(DrawableTransitionOptions.withCrossFade(250))
                     .placeholder(binding.backgroundImage.drawable)
                     .transform(BlurTransformation(10, 20))
                     .into(binding.backgroundImage)

@@ -1,7 +1,7 @@
 package io.outblock.lilico.page.main.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.nft.NFTFragment
@@ -10,10 +10,10 @@ import io.outblock.lilico.page.wallet.fragment.WalletHomeFragment
 
 class MainPageAdapter(
     private val activity: MainActivity
-) : FragmentStateAdapter(activity) {
-    override fun getItemCount(): Int = 4
+) : FragmentStatePagerAdapter(activity.supportFragmentManager) {
+    override fun getCount(): Int = 4
 
-    override fun createFragment(position: Int): Fragment {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             1 -> NFTFragment()
             2 -> ExploreFragment()
@@ -21,4 +21,5 @@ class MainPageAdapter(
             else -> WalletHomeFragment()
         }
     }
+
 }

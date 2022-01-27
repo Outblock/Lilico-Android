@@ -64,7 +64,8 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     fun toggleCollectionExpand() {
         ioScope {
             updateNftCollectionExpanded(!isCollectionExpanded)
-            load()
+            isCollectionExpanded = isNftCollectionExpanded()
+            loadListDataFromCache()
         }
     }
 
