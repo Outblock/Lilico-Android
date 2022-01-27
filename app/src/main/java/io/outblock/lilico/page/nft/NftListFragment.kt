@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import io.outblock.lilico.R
@@ -16,13 +16,14 @@ import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.databinding.FragmentNftListBinding
 import io.outblock.lilico.page.nft.adapter.NFTListAdapter
 import io.outblock.lilico.page.nft.model.*
+import io.outblock.lilico.page.nft.presenter.SelectionItemPresenter
+import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.DividerVisibleCheck
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlin.math.min
 
 internal class NftListFragment : Fragment() {
 
@@ -35,7 +36,7 @@ internal class NftListFragment : Fragment() {
 
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2dip().toDouble() }
 
-    private var scrollY = 0
+    private val selectionPresenter by lazy { SelectionItemPresenter(binding.topSelectionHeader) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNftListBinding.inflate(inflater)
@@ -44,12 +45,17 @@ internal class NftListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        setupScrollView()
         binding.root.setBackgroundResource(if (isList) R.color.neutrals12 else R.color.colorPrimary)
+        binding.backgroundWrapper.layoutParams.height = (ScreenUtils.getScreenHeight() * 0.55).toInt()
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             if (isList) {
-                listDataLiveData.observe(viewLifecycleOwner) {
-                    adapter.setNewDiffData(it)
-                    if (it.indexOfFirst { it is NftSelections } < 0) {
+                listDataLiveData.observe(viewLifecycleOwner) { data ->
+                    adapter.setNewDiffData(data)
+                }
+                topSelectionLiveData.observe(viewLifecycleOwner) { data ->
+                    selectionPresenter.bind(data)
+                    if (data.data.isEmpty()) {
                         Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
                     }
                 }
@@ -59,6 +65,14 @@ internal class NftListFragment : Fragment() {
             }
             load()
         }
+    }
+
+    private fun setupScrollView() {
+        binding.root.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (isList) {
+                viewModel.onListScrollChange(scrollY)
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -86,16 +100,6 @@ internal class NftListFragment : Fragment() {
                         }
                     })
                 })
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (isList) {
-                        this@NftListFragment.scrollY += dy
-                        binding.backgroundWrapper.translationY = min(-this@NftListFragment.scrollY.toFloat(), 0f)
-                        viewModel.onListScrollChange(this@NftListFragment.scrollY)
-                    }
-                }
-            })
         }
     }
 
@@ -120,7 +124,7 @@ internal class NftListFragment : Fragment() {
             uiScope {
                 Glide.with(binding.backgroundImage)
                     .load(nft.cover())
-                    .transition(DrawableTransitionOptions.withCrossFade(100))
+                    .transition(DrawableTransitionOptions.withCrossFade(150))
                     .placeholder(binding.backgroundImage.drawable)
                     .transform(BlurTransformation(10, 20))
                     .into(binding.backgroundImage)

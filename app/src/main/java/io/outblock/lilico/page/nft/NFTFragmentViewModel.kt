@@ -3,7 +3,6 @@ package io.outblock.lilico.page.nft
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.BuildConfig
-import io.outblock.lilico.R
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
@@ -15,12 +14,11 @@ import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.model.*
 import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.extensions.res2color
 
 class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     val listDataLiveData = MutableLiveData<List<Any>>()
+    val topSelectionLiveData = MutableLiveData<NftSelections>()
     val gridDataLiveData = MutableLiveData<List<Any>>()
     val selectionIndexLiveData = MutableLiveData<Int>()
     val listScrollChangeLiveData = MutableLiveData<Int>()
@@ -81,24 +79,25 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     override fun onAddSelection(nft: Nft) {
-        if (listDataLiveData.value?.firstOrNull { it is NftSelections } == null) {
-            loadListDataFromCache()
+        viewModelIOScope(this) {
+            loadSelectionCards()
         }
     }
 
     override fun onRemoveSelection(nft: Nft) {
-        if (listDataLiveData.value?.filterIsInstance<NftSelections>()?.firstOrNull()?.data?.size == 1) {
-            loadListDataFromCache()
+        viewModelIOScope(this) {
+            loadSelectionCards()
         }
     }
 
     private suspend fun loadListData() {
+        loadSelectionCards()
         loadListDataFromCache()
         loadListDataFromServer()
     }
 
     private suspend fun loadListDataFromServer() {
-        val data = loadSelectionCards()
+        val data = mutableListOf<Any>()
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
@@ -106,16 +105,16 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         resp.data.nfts.parseToCollectionList().let { collections -> data.addCollections(collections) }
 
         if (!isGridMode) {
-            listDataLiveData.postValue(data.addHeader())
+            listDataLiveData.postValue(data)
         }
     }
 
     private fun loadListDataFromCache() {
-        val data = loadSelectionCards()
+        val data = mutableListOf<Any>()
         cacheNftList.read()?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
         if (!isGridMode) {
-            listDataLiveData.postValue(data.addHeader())
+            listDataLiveData.postValue(data)
         }
     }
 
@@ -162,25 +161,14 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
             return this
         }
         val list = this
-        return mutableListOf(
+        return mutableListOf<Any>(
             HeaderPlaceholderModel(addDivider = isGridMode),
-            if (isGridMode || firstOrNull { it is NftSelections } == null) null else NFTTitleModel(
-                isList = !isGridMode,
-                icon = R.drawable.ic_collection_star,
-                iconTint = if (isGridMode) R.color.text.res2color() else R.color.white.res2color(),
-                text = R.string.top_selection.res2String(),
-                textColor = if (isGridMode) R.color.text.res2color() else R.color.white.res2color()
-            ),
-        ).apply { addAll(list) }.filterNotNull()
+        ).apply { addAll(list) }.toList()
     }
 
-    private fun loadSelectionCards(): MutableList<Any> {
-        val data = mutableListOf<Any>()
-        val selections = cacheSelections.read() ?: NftSelections(mutableListOf())
-        if (selections.data.isNotEmpty()) {
-            data.add(selections)
-        }
-        return data
+    private fun loadSelectionCards() {
+        val data = cacheSelections.read() ?: NftSelections(mutableListOf())
+        topSelectionLiveData.postValue(data)
     }
 
     companion object {

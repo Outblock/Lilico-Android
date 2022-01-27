@@ -6,7 +6,6 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.databinding.FragmentNftBinding
 import io.outblock.lilico.page.nft.NFTFragment
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
@@ -26,7 +25,7 @@ class NFTFragmentPresenter(
 
     private val context = fragment.requireContext()
 
-    private var listPageData: List<Any>? = null
+    private var isTopSelectionExist = false
 
     init {
         with(binding.toolbar) {
@@ -40,9 +39,9 @@ class NFTFragmentPresenter(
     }
 
     override fun bind(model: NFTFragmentModel) {
-        model.listPageData?.let {
+        model.topSelection?.let {
+            isTopSelectionExist = it.data.isNotEmpty()
             updateToolbarBackground()
-            listPageData = it
         }
         model.onListScrollChange?.let { updateToolbarBackground(it) }
     }
@@ -71,7 +70,7 @@ class NFTFragmentPresenter(
     private fun updateToolbarBackground(scrollY: Int = -1) {
         val isList = !viewModel.isGridMode()
         if (isList) {
-            if (listPageData?.firstOrNull { it is NftSelections } == null) {
+            if (!isTopSelectionExist) {
                 // no selection
                 binding.toolbar.background.alpha = 255
                 binding.tabsBackground.background.setTint(R.color.neutrals4.res2color())
