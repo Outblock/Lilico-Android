@@ -96,7 +96,7 @@ internal class NftListFragment : Fragment() {
                         override fun dividerVisible(position: Int): Boolean {
                             val item = this@NftListFragment.adapter.getData().getOrNull(position) ?: return true
                             return !(item is NftSelections || item is CollectionTabsModel
-                              || (isList && item is NFTTitleModel))
+                              || (isList && item is NFTTitleModel) || item is NFTItemModel)
                         }
                     })
                 })

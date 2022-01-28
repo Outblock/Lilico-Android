@@ -1,5 +1,6 @@
 package io.outblock.lilico.widgets.itemdecoration
 
+import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
 import androidx.annotation.Dimension
@@ -74,6 +75,37 @@ class GridSpaceItemDecoration(
             right.dp2px().toInt(),
             bottom.dp2px().toInt(),
         )
+    }
+
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+//        canvas.save()
+//        val left: Int
+//        val right: Int
+//        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
+//        if (parent.clipToPadding) {
+//            left = parent.paddingLeft
+//            right = parent.width - parent.paddingRight
+//            canvas.clipRect(
+//                left, parent.paddingTop, right,
+//                parent.height - parent.paddingBottom
+//            )
+//        } else {
+//            left = 0
+//            right = parent.width
+//        }
+//
+//        val childCount = parent.childCount
+//        for (i in 0 until childCount) {
+//            val child = parent.getChildAt(i)
+//            parent.getDecoratedBoundsWithMargins(child, mBounds)
+//            val bottom: Int = mBounds.bottom + Math.round(child.translationY)
+//            val top: Int = bottom - mSize
+//            if (isDividerVisible(i)) {
+//                mDrawable.setBounds(left, top, right, bottom)
+//                mDrawable.draw(canvas)
+//            }
+//        }
+//        canvas.restore()
     }
 
     fun setDividerVisibleCheck(dividerVisibleCheck: DividerVisibleCheck) {

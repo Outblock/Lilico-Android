@@ -131,7 +131,10 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
                 }
                 collections.forEach { it.isSelected = it.address == selectedCollection }
                 add(CollectionTabsModel(collections = collections))
-                addAll(collections.first { it.address == selectedCollection }.nfts?.map { NFTItemModel(nft = it) }.orEmpty())
+                addAll(collections
+                    .first { it.address == selectedCollection }
+                    .nfts?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
+                    .orEmpty())
             } else {
                 addAll(collections)
             }
@@ -140,14 +143,14 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     private suspend fun loadGridData() {
         cacheNftList.read()?.nfts?.let { nftList ->
-            gridDataLiveData.postValue(nftList.map { NFTItemModel(nft = it) }.addHeader())
+            gridDataLiveData.postValue(nftList.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
         if (isGridMode) {
             emptyLiveData.postValue(resp.data.nfts.isEmpty())
-            gridDataLiveData.postValue(resp.data.nfts.map { NFTItemModel(nft = it) }.addHeader())
+            gridDataLiveData.postValue(resp.data.nfts.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
         }
     }
 

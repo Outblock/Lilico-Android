@@ -12,7 +12,7 @@ class CollectionViewModel : ViewModel() {
     fun load(walletAddress: String, address: String) {
         viewModelIOScope(this) {
             val data = nftListCache(walletAddress).read()?.nfts ?: return@viewModelIOScope
-            dataLiveData.postValue(data.filter { it.contract.address == address }.map { NFTItemModel(nft = it) })
+            dataLiveData.postValue(data.filter { it.contract.address == address }.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
         }
     }
 

@@ -128,4 +128,9 @@
         <item name="cornerSize">16dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+
+    <style name="AppTheme.BoldText">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
