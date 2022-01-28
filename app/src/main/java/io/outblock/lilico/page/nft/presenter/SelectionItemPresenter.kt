@@ -78,7 +78,7 @@ class SelectionItemPresenter(
             binding.titleWrapper.setVisible(list.isNotEmpty())
             binding.motionLayout.setVisible(list.isNotEmpty())
             binding.carousel.setAdapter(SelectionsAdapter(list))
-            binding.root.post { binding.carousel.jumpToIndex(currentIndex) }
+            binding.motionLayout.post { binding.carousel.jumpToIndex(currentIndex) }
             binding.carousel.refresh()
             viewModel.updateSelectionIndex(if (list.isEmpty()) -1 else currentIndex)
         }
