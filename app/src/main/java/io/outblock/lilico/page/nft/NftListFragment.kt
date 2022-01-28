@@ -122,12 +122,14 @@ internal class NftListFragment : Fragment() {
             val data = nftSelectionCache().read()?.data?.reversed() ?: return@ioScope
             val nft = data.getOrNull(index) ?: return@ioScope
             uiScope {
+                val oldUrl = binding.backgroundImage.tag as? String
                 Glide.with(binding.backgroundImage)
                     .load(nft.cover())
+                    .thumbnail(Glide.with(requireContext()).load(oldUrl).transform(BlurTransformation(10, 20)))
                     .transition(DrawableTransitionOptions.withCrossFade(250))
-                    .placeholder(binding.backgroundImage.drawable)
                     .transform(BlurTransformation(10, 20))
                     .into(binding.backgroundImage)
+                binding.backgroundImage.tag = nft.cover()
             }
         }
     }

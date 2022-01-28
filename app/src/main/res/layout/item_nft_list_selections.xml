@@ -102,6 +102,7 @@
         app:carousel_firstView="@+id/card1"
         app:carousel_forwardTransition="@+id/forward"
         app:carousel_infinite="true"
+        app:carousel_emptyViewsBehavior="invisible"
         app:carousel_nextState="@+id/next"
         app:carousel_previousState="@+id/previous"
         app:constraint_referenced_ids="card0, card1, card2, card3, card4, card5"/>
