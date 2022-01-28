@@ -1,10 +1,15 @@
 package io.outblock.lilico.page.nft.presenter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.helper.widget.Carousel
+import androidx.core.view.children
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.card.MaterialCardView
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -42,6 +47,16 @@ class SelectionItemPresenter(
             setOnClickListener {
                 data?.getOrNull(currentIndex)?.let {
                     NftDetailActivity.launch(activity, viewModel.getWalletAddress()!!, it.contract.address, it.id.tokenId)
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                children.forEach { child ->
+                    if (child is MaterialCardView) {
+                        child.outlineAmbientShadowColor = Color.TRANSPARENT
+                        child.outlineSpotShadowColor = Color.TRANSPARENT
+                        child.setCardBackgroundColor(ColorStateList.valueOf(Color.TRANSPARENT))
+                    }
                 }
             }
         }
