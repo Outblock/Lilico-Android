@@ -2,6 +2,7 @@ package io.outblock.lilico.page.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.managet.WalletListFetcher
 import io.outblock.lilico.network.model.WalletListData
@@ -18,8 +19,10 @@ class WalletFragmentViewModel : ViewModel() {
 
     val dataListLiveData = MutableLiveData<List<Any>>()
 
+    private val walletCache by lazy { walletCache() }
+
     private val walletListFetcher by lazy {
-        WalletListFetcher { walletList, isFromCache ->
+        WalletListFetcher { walletList ->
             val data = dataListLiveData.value.orEmpty().toMutableList()
             if (data.isEmpty()) {
                 data.add(WalletHeaderModel(walletList))
@@ -27,20 +30,32 @@ class WalletFragmentViewModel : ViewModel() {
                 data[0] = WalletHeaderModel(walletList)
             }
             dataListLiveData.postValue(data)
-            if (!isFromCache) {
-                loadAddress(walletList)
-            }
+
+            loadAddress(walletList)
         }
     }
 
     fun load() {
         viewModelIOScope(this) {
-            if (!walletListFetcher.cacheExist()) {
-                val data = mutableListOf<Any>()
-                data.add(WalletHeaderPlaceholderModel())
-                dataListLiveData.postValue(data)
-            }
+            loadWalletCache()
             walletListFetcher.fetch()
+        }
+    }
+
+    private fun loadWalletCache() {
+        if (!walletCache.isCacheExist()) {
+            val data = mutableListOf<Any>()
+            data.add(WalletHeaderPlaceholderModel())
+            dataListLiveData.postValue(data)
+        } else {
+            val data = dataListLiveData.value.orEmpty().toMutableList()
+            val cacheData = walletCache.read() ?: return
+            if (data.isEmpty()) {
+                data.add(WalletHeaderModel(cacheData))
+            } else {
+                data[0] = WalletHeaderModel(cacheData)
+            }
+            dataListLiveData.postValue(data)
         }
     }
 

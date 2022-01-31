@@ -11,11 +11,11 @@
         android:id="@+id/wallet_info_card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/activity_padding"
+        android:layout_marginHorizontal="18dp"
         android:layout_marginTop="28dp"
         app:cardBackgroundColor="#2f2f2f"
         app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
+        app:cardElevation="8dp"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -102,33 +102,37 @@
         android:layout_height="145dp"
         android:layout_marginTop="-10dp"
         android:src="@drawable/ic_blow_fish_2k"
+        android:elevation="9dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/activity_padding"
+        android:layout_height="76dp"
+        android:layout_marginHorizontal="18dp"
         android:layout_marginTop="31dp"
         app:cardBackgroundColor="@color/front_color"
         app:cardCornerRadius="16dp"
+        android:padding="0dp"
+        app:contentPadding="0dp"
         app:cardElevation="0dp"
+        app:cardUseCompatPadding="false"
         app:layout_constraintTop_toBottomOf="@id/wallet_info_card">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
-                android:text="Send"
+                android:text="@string/send"
                 android:textAllCaps="false"
                 android:textColor="@color/note"
                 app:cornerRadius="16dp"
@@ -141,10 +145,11 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/receive_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:padding="0dp"
                 android:background="?attr/selectableItemBackground"
-                android:text="Receive"
+                android:text="@string/receive"
                 android:textAllCaps="false"
                 android:textColor="@color/note"
                 app:cornerRadius="16dp"
@@ -157,10 +162,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buy_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
-                android:text="Buy"
+                android:text="@string/buy"
                 android:textAllCaps="false"
                 android:textColor="@color/note"
                 app:cornerRadius="16dp"
@@ -173,10 +178,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/swap_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
-                android:text="Swap"
+                android:text="@string/swap"
                 android:textAllCaps="false"
                 android:textColor="@color/note"
                 app:cornerRadius="16dp"

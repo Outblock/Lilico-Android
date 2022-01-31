@@ -100,4 +100,7 @@
     <string name="empty_title">We find nothing here.</string>
     <string name="nft_empty_desc">Looking forward to your new discovery.</string>
     <string name="get_new_nfts">Get new NFTs</string>
+    <string name="receive">Receive</string>
+    <string name="buy">Buy</string>
+    <string name="swap">Swap</string>
 </resources>
