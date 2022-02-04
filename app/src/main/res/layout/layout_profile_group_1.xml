@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:id="@+id/group1"
+    app:layout_constraintTop_toBottomOf="@id/action_group">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
+            android:id="@+id/backup_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_profile_temp"
+            app:title="Backup"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/neutrals12"/>
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
+            android:id="@+id/security_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_profile_temp"
+            app:isArrowVisible="true"
+            app:title="Security"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

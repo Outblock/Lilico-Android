@@ -43,4 +43,7 @@ interface ApiService {
         @Query("contractAddress") contractAddress: String,
         @Query("tokenId") tokenId: String,
     ): CommonResponse
+
+    @GET("/user/info")
+    suspend fun userInfo(): UserInfoResponse
 }

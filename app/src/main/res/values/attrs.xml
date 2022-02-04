@@ -19,4 +19,16 @@
         <attr name="is_enabled" format="boolean"/>
         <attr name="anim_scale_factor" format="float"/>
     </declare-styleable>
+
+    <declare-styleable name="ProfilePreference">
+        <attr name="iconEnable" format="boolean"/>
+        <attr name="icon" format="reference"/>
+        <attr name="title" format="string|reference"/>
+        <attr name="desc" format="string|reference"/>
+        <attr name="isArrowVisible" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProfilePreferenceSwitch">
+        <attr name="isChecked" format="boolean"/>
+    </declare-styleable>
 </resources>

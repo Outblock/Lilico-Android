@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/group2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:layout_constraintTop_toBottomOf="@id/group1">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
+            android:id="@+id/currency_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:desc="USD"
+            app:icon="@drawable/ic_profile_temp"
+            app:title="Currency"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/neutrals12"/>
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
+            android:id="@+id/security_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:desc="Light"
+            app:icon="@drawable/ic_profile_temp"
+            app:title="Theme"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/neutrals12"/>
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreferenceSwitch
+            android:id="@+id/notification_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_profile_temp"
+            app:title="Notification"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

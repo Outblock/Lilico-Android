@@ -103,4 +103,10 @@
     <string name="receive">Receive</string>
     <string name="buy">Buy</string>
     <string name="swap">Swap</string>
+    <string name="address">Address</string>
+    <string name="wallets">Wallets</string>
+    <string name="device">Device</string>
+    <string name="about">About</string>
+    <string name="switch_account">Switch Account</string>
+    <string name="logout">Logout</string>
 </resources>

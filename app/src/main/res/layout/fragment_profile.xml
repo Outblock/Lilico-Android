@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/neutrals12">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="18dp"
+        android:paddingBottom="50dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/avatar_view"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:layout_marginTop="18dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="82dp"
+            tools:background="#999"/>
+
+        <TextView
+            android:id="@+id/nickname_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/userid_view"
+            app:layout_constraintStart_toEndOf="@id/avatar_view"
+            app:layout_constraintTop_toTopOf="@id/avatar_view"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="nickzyan"/>
+
+        <TextView
+            android:id="@+id/userid_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+            app:layout_constraintStart_toEndOf="@id/avatar_view"
+            app:layout_constraintTop_toBottomOf="@id/nickname_view"
+            tools:text="\@zyanzzz"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/edit_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_profile_edit"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/avatar_view"/>
+
+        <include layout="@layout/layout_profile_action"/>
+
+        <include layout="@layout/layout_profile_group_1"/>
+
+        <include layout="@layout/layout_profile_group_2"/>
+
+        <include layout="@layout/layout_profile_group_3"/>
+
+        <include layout="@layout/layout_profile_group_4"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@color/transparent"
+            android:fontFamily="@font/inter_medium"
+            android:stateListAnimator="@null"
+            android:text="@string/logout"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:cornerRadius="16dp"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group4"
+            app:rippleColor="@color/black_10"
+            app:strokeColor="@color/transparent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
