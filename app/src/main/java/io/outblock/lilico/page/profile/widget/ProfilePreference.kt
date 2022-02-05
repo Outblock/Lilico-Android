@@ -18,12 +18,14 @@ open class ProfilePreference : FrameLayout {
     internal val icon: Int
     internal val iconEnable: Boolean
     internal val title: String
-    internal val desc: String
+    internal var subtitle: String
+    internal var desc: String
     internal val isArrowVisible: Boolean
 
     private val rootView by lazy { findViewById<ViewGroup>(R.id.rootView) }
     private val iconView by lazy { findViewById<ImageView>(R.id.icon_view) }
     private val titleView by lazy { findViewById<TextView>(R.id.title_view) }
+    private val subtitleView by lazy { findViewById<TextView>(R.id.subtitle_view) }
     private val descView by lazy { findViewById<TextView>(R.id.desc_view) }
     private val arrowView by lazy { findViewById<View>(R.id.arrow_view) }
     private val extendContainer by lazy { findViewById<ViewGroup>(R.id.extend_container) }
@@ -32,9 +34,10 @@ open class ProfilePreference : FrameLayout {
     constructor(context: Context, attrs: AttributeSet? = null) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
         val styleAttrs = context.obtainStyledAttributes(attrs, R.styleable.ProfilePreference, defStyleAttr, 0)
-        iconEnable = styleAttrs.getBoolean(R.styleable.ProfilePreference_iconEnable, false)
+        iconEnable = styleAttrs.getBoolean(R.styleable.ProfilePreference_iconEnable, true)
         icon = styleAttrs.getResourceId(R.styleable.ProfilePreference_icon, 0)
         title = styleAttrs.getString(R.styleable.ProfilePreference_title).orEmpty()
+        subtitle = styleAttrs.getString(R.styleable.ProfilePreference_subtitle).orEmpty()
         desc = styleAttrs.getString(R.styleable.ProfilePreference_desc).orEmpty()
         isArrowVisible = styleAttrs.getBoolean(R.styleable.ProfilePreference_isArrowVisible, false)
         styleAttrs.recycle()
@@ -44,8 +47,19 @@ open class ProfilePreference : FrameLayout {
         setup()
     }
 
-    fun setExtendView(view: View) {
-        extendContainer.addView(view, ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+    fun setExtendView(view: View, layoutParams: ViewGroup.LayoutParams? = null) {
+        extendContainer.addView(view, layoutParams ?: view.layoutParams)
+    }
+
+    fun setDesc(desc: String) {
+        this.desc = desc
+        descView.text = desc
+    }
+
+    fun setSubtitle(subtitle: String) {
+        this.subtitle = subtitle
+        subtitleView.setVisible(subtitle.isNotBlank())
+        subtitleView.text = subtitle
     }
 
     override fun setOnClickListener(l: OnClickListener?) {
@@ -61,5 +75,7 @@ open class ProfilePreference : FrameLayout {
 
         descView.text = desc
         titleView.text = title
+        subtitleView.setVisible(subtitle.isNotBlank())
+        subtitleView.text = subtitle
     }
 }

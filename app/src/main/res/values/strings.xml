@@ -109,4 +109,9 @@
     <string name="about">About</string>
     <string name="switch_account">Switch Account</string>
     <string name="logout">Logout</string>
+    <string name="edit_avatar">Edit avatar</string>
+    <string name="you_can_be_searched">You can be searched</string>
+    <string name="visible">Visible</string>
+    <string name="invisible">Invisible</string>
+    <string name="private_str">Private</string>
 </resources>

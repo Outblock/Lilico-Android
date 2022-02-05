@@ -1,6 +1,8 @@
 package io.outblock.lilico.network.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class UserInfoResponse(
     @SerializedName("data")
@@ -13,6 +15,7 @@ data class UserInfoResponse(
     val status: Int,
 )
 
+@Parcelize
 data class UserInfoData(
     @SerializedName("nickname")
     val nickname: String,
@@ -20,4 +23,4 @@ data class UserInfoData(
     val username: String,
     @SerializedName("avatar")
     val avatar: String,
-)
+) : Parcelable

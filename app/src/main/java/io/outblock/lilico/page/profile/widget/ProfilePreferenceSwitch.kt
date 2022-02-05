@@ -3,6 +3,7 @@ package io.outblock.lilico.page.profile.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import io.outblock.lilico.R
 
@@ -17,7 +18,7 @@ class ProfilePreferenceSwitch : ProfilePreference {
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr)
 
     init {
-        setExtendView(switchView)
+        setExtendView(switchView, ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
         setOnClickListener { toggleSwitch() }
     }
 

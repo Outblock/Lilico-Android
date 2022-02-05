@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/group1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
     app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
-    android:id="@+id/group1"
     app:layout_constraintTop_toBottomOf="@id/action_group">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -25,6 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
             android:background="@color/neutrals12"/>
 
         <io.outblock.lilico.page.profile.widget.ProfilePreference

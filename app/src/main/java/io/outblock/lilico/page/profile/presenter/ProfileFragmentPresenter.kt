@@ -1,23 +1,24 @@
 package io.outblock.lilico.page.profile.presenter
 
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.load
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
-import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.profile.ProfileFragment
 import io.outblock.lilico.page.profile.model.ProfileFragmentModel
+import io.outblock.lilico.page.profile.subpage.accountsetting.AccountSettingActivity
 
 class ProfileFragmentPresenter(
     private val fragment: ProfileFragment,
     private val binding: FragmentProfileBinding,
 ) : BasePresenter<ProfileFragmentModel> {
 
+    private var userInfo: UserInfoData? = null
+
     init {
         binding.root.addStatusBarTopPadding()
+        binding.editButton.setOnClickListener {
+            userInfo?.let { AccountSettingActivity.launch(fragment.requireContext(), it) }
+        }
     }
 
     override fun bind(model: ProfileFragmentModel) {
@@ -25,6 +26,7 @@ class ProfileFragmentPresenter(
     }
 
     private fun bindUserInfo(userInfo: UserInfoData) {
+        this.userInfo = userInfo
         with(binding) {
             val loader = ImageLoader.Builder(avatarView.context).componentRegistry {
                 add(SvgDecoder(avatarView.context))
