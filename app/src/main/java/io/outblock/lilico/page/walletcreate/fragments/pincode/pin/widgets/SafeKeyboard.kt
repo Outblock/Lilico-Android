@@ -11,7 +11,7 @@ import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.KeyboardItem
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
 
-class SearchKeyboard : FrameLayout {
+class PinKeyboard : FrameLayout {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)

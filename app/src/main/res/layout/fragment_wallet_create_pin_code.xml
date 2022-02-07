@@ -41,7 +41,7 @@
         android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toTopOf="@id/pin_keyboard"/>
 
-    <io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.SearchKeyboard
+    <io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.PinKeyboard
         android:id="@+id/pin_keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

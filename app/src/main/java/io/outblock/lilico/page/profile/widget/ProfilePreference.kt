@@ -48,6 +48,7 @@ open class ProfilePreference : FrameLayout {
     }
 
     fun setExtendView(view: View, layoutParams: ViewGroup.LayoutParams? = null) {
+        extendContainer.setVisible(true)
         extendContainer.addView(view, layoutParams ?: view.layoutParams)
     }
 

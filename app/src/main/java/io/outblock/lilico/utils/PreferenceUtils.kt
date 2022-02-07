@@ -18,6 +18,7 @@ private val KEY_USERNAME = stringPreferencesKey("KEY_USERNAME")
 private val KEY_REGISTERED = booleanPreferencesKey("KEY_REGISTERED")
 private val KEY_NFT_SELECTIONS = stringPreferencesKey("KEY_NFT_SELECTIONS")
 private val KEY_NFT_COLLECTION_EXPANDED = booleanPreferencesKey("KEY_NFT_COLLECTION_EXPANDED")
+private val KEY_BIOMETRIC_ENABLE = booleanPreferencesKey("KEY_BIOMETRIC_ENABLE")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -56,6 +57,12 @@ suspend fun isNftCollectionExpanded(): Boolean = dataStore.data.map { it[KEY_NFT
 
 suspend fun updateNftCollectionExpanded(isExpanded: Boolean) {
     dataStore.edit { it[KEY_NFT_COLLECTION_EXPANDED] = isExpanded }
+}
+
+suspend fun isBiometricEnable(): Boolean = dataStore.data.map { it[KEY_BIOMETRIC_ENABLE] ?: false }.first()
+
+fun setBiometricEnable(isEnable: Boolean) {
+    edit { dataStore.edit { it[KEY_BIOMETRIC_ENABLE] = isEnable } }
 }
 
 

@@ -114,4 +114,7 @@
     <string name="visible">Visible</string>
     <string name="invisible">Invisible</string>
     <string name="private_str">Private</string>
+    <string name="reset_pin_code">Reset PIN Code</string>
+    <string name="private_key">Private Key</string>
+    <string name="verify_pin_code">Verify PIN Code</string>
 </resources>

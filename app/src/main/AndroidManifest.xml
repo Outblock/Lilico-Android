@@ -59,6 +59,14 @@
             android:name=".page.profile.subpage.accountsetting.AccountSettingActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name="io.outblock.lilico.page.security.SecuritySettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.security.pin.SecurityPinActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->

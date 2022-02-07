@@ -1,11 +1,17 @@
 package io.outblock.lilico.page.profile.presenter
 
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.load
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
+import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.profile.ProfileFragment
 import io.outblock.lilico.page.profile.model.ProfileFragmentModel
 import io.outblock.lilico.page.profile.subpage.accountsetting.AccountSettingActivity
+import io.outblock.lilico.page.security.SecuritySettingActivity
 
 class ProfileFragmentPresenter(
     private val fragment: ProfileFragment,
@@ -19,6 +25,8 @@ class ProfileFragmentPresenter(
         binding.editButton.setOnClickListener {
             userInfo?.let { AccountSettingActivity.launch(fragment.requireContext(), it) }
         }
+
+        binding.group1.backupPreference.setOnClickListener { SecuritySettingActivity.launch(fragment.requireContext()) }
     }
 
     override fun bind(model: ProfileFragmentModel) {
