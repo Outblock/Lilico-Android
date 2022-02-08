@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/transparent"/>
+        app:titleTextColor="@color/text"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/group1"

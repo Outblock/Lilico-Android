@@ -16,6 +16,10 @@ fun getPublicKey(removePrefix: Boolean = true): String {
     return HDWallet(getMnemonic(), "").getPublicKey(removePrefix)
 }
 
+fun getPrivateKey(): String {
+    return HDWallet(getMnemonic(), "").getDerivedKey(CoinType.FLOW, 0, 0, 0).data().bytesToHex()
+}
+
 fun HDWallet.getPublicKey(removePrefix: Boolean = true): String {
     val privateKey = getDerivedKey(CoinType.FLOW, 0, 0, 0)
     val publicKey = privateKey.getPublicKeySecp256k1(false).data().bytesToHex()

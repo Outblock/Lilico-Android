@@ -26,7 +26,8 @@ class ProfileFragmentPresenter(
             userInfo?.let { AccountSettingActivity.launch(fragment.requireContext(), it) }
         }
 
-        binding.group1.backupPreference.setOnClickListener { SecuritySettingActivity.launch(fragment.requireContext()) }
+        binding.group1.backupPreference.setOnClickListener { }
+        binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(fragment.requireContext()) }
     }
 
     override fun bind(model: ProfileFragmentModel) {

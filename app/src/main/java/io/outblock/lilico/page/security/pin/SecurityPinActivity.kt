@@ -9,7 +9,7 @@ import io.outblock.lilico.databinding.ActivitySecurityPinBinding
 class SecurityPinActivity : BaseActivity() {
 
     private val type by lazy { intent.getIntExtra(EXTRA_TYPE, 0) }
-
+    private val action by lazy { intent.getParcelableExtra<Intent>(EXTRA_ACTION) }
     private lateinit var binding: ActivitySecurityPinBinding
     private lateinit var presenter: SecurityPinPresenter
 
@@ -17,17 +17,19 @@ class SecurityPinActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySecurityPinBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        presenter = SecurityPinPresenter(this, binding)
+        presenter = SecurityPinPresenter(this, binding, type, action)
     }
 
     companion object {
         private const val EXTRA_TYPE = "extra_type"
+        private const val EXTRA_ACTION = "extra_action"
         const val TYPE_CHECK = 1
         const val TYPE_RESET = 2
 
-        fun launch(context: Context, type: Int) {
+        fun launch(context: Context, type: Int = TYPE_CHECK, action: Intent? = null) {
             context.startActivity(Intent(context, SecurityPinActivity::class.java).apply {
                 putExtra(EXTRA_TYPE, type)
+                putExtra(EXTRA_ACTION, action)
             })
         }
     }

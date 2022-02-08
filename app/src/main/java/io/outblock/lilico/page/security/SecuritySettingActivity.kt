@@ -4,15 +4,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySecuritySettingBinding
+import io.outblock.lilico.manager.biometric.BlockBiometricManager
 import io.outblock.lilico.page.security.pin.SecurityPinActivity
-import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
+import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PHRASES
+import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PRIVATE_KEY
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.isBiometricEnable
 import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.setBiometricEnable
+import io.outblock.lilico.utils.uiScope
 
 class SecuritySettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySecuritySettingBinding
@@ -30,13 +37,23 @@ class SecuritySettingActivity : BaseActivity() {
     private fun setup() {
         with(binding) {
             pinPreference.setOnClickListener { SecurityPinActivity.launch(this@SecuritySettingActivity, SecurityPinActivity.TYPE_RESET) }
-            biometricsPreference.setOnCheckedChangeListener { }
-            privatePreference.setOnClickListener { }
-            recoveryPreference.setOnClickListener { }
-
-            ioScope {
-                biometricsPreference.setChecked(isBiometricEnable())
+            biometricsPreference.setOnCheckedChangeListener {
+                if (it) {
+                    BlockBiometricManager.showBiometricPrompt(this@SecuritySettingActivity) { isSuccess ->
+                        uiScope { biometricsPreference.setChecked(isSuccess) }
+                        if (isSuccess) {
+                            setBiometricEnable(true)
+                        } else {
+                            setBiometricEnable(false)
+                            Toast.makeText(this@SecuritySettingActivity, "Auth error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
+            privatePreference.setOnClickListener { SecurityRecoveryActivity.launch(this@SecuritySettingActivity, TYPE_PRIVATE_KEY) }
+            recoveryPreference.setOnClickListener { SecurityRecoveryActivity.launch(this@SecuritySettingActivity, TYPE_PHRASES) }
+
+            uiScope { biometricsPreference.setChecked(isBiometricEnable()) }
         }
     }
 
@@ -52,7 +69,7 @@ class SecuritySettingActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title = ""
+        title = R.string.security.res2String()
     }
 
     companion object {

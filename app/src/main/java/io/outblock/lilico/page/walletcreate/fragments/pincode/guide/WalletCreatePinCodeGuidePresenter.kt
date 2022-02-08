@@ -15,6 +15,7 @@ import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.setBiometricEnable
 import io.outblock.lilico.utils.setRegistered
 
 class WalletCreatePinCodeGuidePresenter(
@@ -34,6 +35,7 @@ class WalletCreatePinCodeGuidePresenter(
             faceIdLayout.setOnClickListener {
                 BlockBiometricManager.showBiometricPrompt(fragment.requireActivity()) { isSuccess ->
                     if (isSuccess) {
+                        setBiometricEnable(true)
                         MainActivity.launch(fragment.requireContext())
                     } else {
                         Toast.makeText(fragment.requireContext(), "Auth error", Toast.LENGTH_SHORT).show()

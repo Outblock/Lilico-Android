@@ -117,4 +117,8 @@
     <string name="reset_pin_code">Reset PIN Code</string>
     <string name="private_key">Private Key</string>
     <string name="verify_pin_code">Verify PIN Code</string>
+    <string name="enter_current_pin_code">Please enter current pin code</string>
+    <string name="do_not_share_secret">Do not share your secret phrase!</string>
+    <string name="do_not_share_secret_desc">If someone has your secret phrase, they will have full control of your wallet.</string>
+    <string name="security">Security</string>
 </resources>

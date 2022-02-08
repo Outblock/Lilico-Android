@@ -67,6 +67,10 @@
             android:name="io.outblock.lilico.page.security.pin.SecurityPinActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name="io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->
