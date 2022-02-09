@@ -7,6 +7,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateMnemonicCheckBinding
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
+import io.outblock.lilico.utils.setBackupManually
 
 class WalletCreateMnemonicCheckPresenter(
     private val fragment: Fragment,
@@ -16,7 +17,10 @@ class WalletCreateMnemonicCheckPresenter(
     private val pageViewModel by lazy { ViewModelProvider(fragment.requireActivity())[WalletCreateViewModel::class.java] }
 
     init {
-        binding.nextButton.setOnClickListener { pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE) }
+        binding.nextButton.setOnClickListener {
+            setBackupManually()
+            pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE)
+        }
     }
 
     override fun bind(model: WalletCreateMnemonicCheckModel) {

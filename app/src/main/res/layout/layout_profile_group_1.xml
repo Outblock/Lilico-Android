@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <io.outblock.lilico.page.profile.widget.ProfilePreference
+        <io.outblock.lilico.page.profile.widget.ProfilePreferenceState
             android:id="@+id/backup_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -25,6 +25,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
 
     private val password by lazy { intent.getStringExtra(EXTRA_PASSWORD)!! }
     private val isRestore by lazy { intent.getBooleanExtra(EXTRA_RESTORE, false) }
+    private val isDeleteBackup by lazy { intent.getBooleanExtra(EXTRA_DELETE_BACKUP, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,10 +80,10 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                 ).setApplicationName("Drive API Migration").build()
 
                 ioScope {
-                    if (isRestore) {
-                        restoreMnemonicFromGoogleDrive(googleDriveService)
-                    } else {
-                        uploadMnemonicToGoogleDrive(googleDriveService, password)
+                    when {
+                        isDeleteBackup -> deleteMnemonicFromGoogleDrive(googleDriveService)
+                        isRestore -> restoreMnemonicFromGoogleDrive(googleDriveService)
+                        else -> uploadMnemonicToGoogleDrive(googleDriveService, password)
                     }
                     finish()
                 }
@@ -105,7 +106,9 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val EXTRA_PASSWORD = "extra_password"
 
-        private const val EXTRA_RESTORE = "EXTRA_RESTORE"
+        private const val EXTRA_RESTORE = "extra_restore"
+
+        private const val EXTRA_DELETE_BACKUP = "extra_delete_backup"
 
         fun uploadMnemonic(context: Context, password: String) {
             context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
@@ -116,6 +119,12 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         fun restoreMnemonic(context: Context) {
             context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
                 putExtra(EXTRA_RESTORE, true)
+            })
+        }
+
+        fun deleteBackup(context: Context) {
+            context.startActivity(Intent(context, GoogleDriveAuthActivity::class.java).apply {
+                putExtra(EXTRA_DELETE_BACKUP, true)
             })
         }
     }

@@ -20,6 +20,9 @@ private val KEY_NFT_SELECTIONS = stringPreferencesKey("KEY_NFT_SELECTIONS")
 private val KEY_NFT_COLLECTION_EXPANDED = booleanPreferencesKey("KEY_NFT_COLLECTION_EXPANDED")
 private val KEY_BIOMETRIC_ENABLE = booleanPreferencesKey("KEY_BIOMETRIC_ENABLE")
 
+private val KEY_BACKUP_MANUALLY = booleanPreferencesKey("KEY_BACKUP_MANUALLY")
+private val KEY_BACKUP_GOOGLE_DRIVE = booleanPreferencesKey("KEY_BACKUP_GOOGLE_DRIVE")
+
 private val scope = CoroutineScope(Dispatchers.IO)
 
 // At the top level of your kotlin file:
@@ -65,6 +68,17 @@ fun setBiometricEnable(isEnable: Boolean) {
     edit { dataStore.edit { it[KEY_BIOMETRIC_ENABLE] = isEnable } }
 }
 
+suspend fun isBackupManually(): Boolean = dataStore.data.map { it[KEY_BACKUP_MANUALLY] ?: false }.first()
+
+fun setBackupManually() {
+    edit { dataStore.edit { it[KEY_BACKUP_MANUALLY] = true } }
+}
+
+suspend fun isBackupGoogleDrive(): Boolean = dataStore.data.map { it[KEY_BACKUP_GOOGLE_DRIVE] ?: false }.first()
+
+fun setBackupGoogleDrive(isBackuped: Boolean = true) {
+    edit { dataStore.edit { it[KEY_BACKUP_GOOGLE_DRIVE] = isBackuped } }
+}
 
 private fun edit(unit: suspend () -> Unit) {
     scope.launch { unit.invoke() }

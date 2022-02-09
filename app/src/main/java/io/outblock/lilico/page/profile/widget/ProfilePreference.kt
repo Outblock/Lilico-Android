@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import io.outblock.lilico.R
+import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 
 open class ProfilePreference : FrameLayout {
@@ -20,13 +22,17 @@ open class ProfilePreference : FrameLayout {
     internal val title: String
     internal var subtitle: String
     internal var desc: String
+
+    @ColorInt
+    internal var descColor: Int
+
     internal val isArrowVisible: Boolean
 
     private val rootView by lazy { findViewById<ViewGroup>(R.id.rootView) }
     private val iconView by lazy { findViewById<ImageView>(R.id.icon_view) }
     private val titleView by lazy { findViewById<TextView>(R.id.title_view) }
     private val subtitleView by lazy { findViewById<TextView>(R.id.subtitle_view) }
-    private val descView by lazy { findViewById<TextView>(R.id.desc_view) }
+    val descView: TextView by lazy { findViewById(R.id.desc_view) }
     private val arrowView by lazy { findViewById<View>(R.id.arrow_view) }
     private val extendContainer by lazy { findViewById<ViewGroup>(R.id.extend_container) }
 
@@ -39,6 +45,7 @@ open class ProfilePreference : FrameLayout {
         title = styleAttrs.getString(R.styleable.ProfilePreference_title).orEmpty()
         subtitle = styleAttrs.getString(R.styleable.ProfilePreference_subtitle).orEmpty()
         desc = styleAttrs.getString(R.styleable.ProfilePreference_desc).orEmpty()
+        descColor = styleAttrs.getColor(R.styleable.ProfilePreference_descColor, R.color.note.res2color())
         isArrowVisible = styleAttrs.getBoolean(R.styleable.ProfilePreference_isArrowVisible, false)
         styleAttrs.recycle()
 
@@ -75,6 +82,7 @@ open class ProfilePreference : FrameLayout {
         arrowView.setVisible(isArrowVisible)
 
         descView.text = desc
+        descView.setTextColor(descColor)
         titleView.text = title
         subtitleView.setVisible(subtitle.isNotBlank())
         subtitleView.text = subtitle

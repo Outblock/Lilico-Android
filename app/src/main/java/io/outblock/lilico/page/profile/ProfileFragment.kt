@@ -28,4 +28,9 @@ class ProfileFragment : Fragment() {
             load()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.bind(ProfileFragmentModel(onResume = true))
+    }
 }

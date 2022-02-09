@@ -16,11 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateCloudPwdBinding
+import io.outblock.lilico.page.profile.subpage.backup.BackupGoogleDriveActivity
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_PIN_GUIDE
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
+import io.outblock.lilico.utils.setBackupGoogleDrive
 import io.outblock.lilico.utils.verifyPassword
 
 class WalletCreateCloudPwdPresenter(
@@ -62,7 +64,6 @@ class WalletCreateCloudPwdPresenter(
             fragment.requireContext().getSystemService(AutofillManager::class.java)?.requestAutofill(pwdText1)
         }
         observeKeyboardVisible()
-
     }
 
     override fun bind(model: WalletCreateCloudPwdModel) {
@@ -79,7 +80,12 @@ class WalletCreateCloudPwdPresenter(
 
     private fun onBackupCallback(isSuccess: Boolean) {
         if (isSuccess) {
-            pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE)
+            setBackupGoogleDrive()
+            if (fragment.requireActivity() is BackupGoogleDriveActivity) {
+                fragment.requireActivity().finish()
+            } else {
+                pageViewModel.changeStep(WALLET_CREATE_STEP_PIN_GUIDE)
+            }
         } else {
             updateContentViewState(true)
             binding.nextButton.setProgressVisible(false)

@@ -7,6 +7,7 @@ import com.google.api.services.drive.Drive
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.BuildConfig
+import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.logd
@@ -21,6 +22,7 @@ private const val TAG = "GoogleDriveUtils"
 private const val FILE_NAME = "outblock_backup"
 
 const val ACTION_GOOGLE_DRIVE_UPLOAD_FINISH = "ACTION_GOOGLE_DRIVE_UPLOAD_FINISH"
+const val ACTION_GOOGLE_DRIVE_DELETE_FINISH = "ACTION_GOOGLE_DRIVE_DELETE_FINISH"
 const val ACTION_GOOGLE_DRIVE_RESTORE_FINISH = "ACTION_GOOGLE_DRIVE_RESTORE_FINISH"
 const val EXTRA_SUCCESS = "extra_success"
 const val EXTRA_CONTENT = "extra_content"
@@ -66,6 +68,30 @@ fun restoreMnemonicFromGoogleDrive(driveService: Drive) {
     }
 }
 
+@WorkerThread
+fun deleteMnemonicFromGoogleDrive(driveService: Drive) {
+    try {
+        logd(TAG, "deleteMnemonicFromGoogleDrive")
+        val driveServiceHelper = DriveServerHelper(driveService)
+        val data = existingData(driveService).toMutableList()
+        if (data.isNotEmpty()) {
+            val username = userInfoCache().read()?.username
+            data.removeIf { it.username == username }
+
+            driveServiceHelper.writeStringToFile(FILE_NAME, aesEncrypt(AES_KEY, message = Gson().toJson(data)))
+
+            if (BuildConfig.DEBUG) {
+                val readText = driveServiceHelper.readFile(driveServiceHelper.getFileId(FILE_NAME)!!)
+                logd(TAG, "readText:$readText")
+            }
+        }
+        sendDeleteCallback(true)
+    } catch (e: Exception) {
+        loge(e)
+        sendDeleteCallback(false)
+    }
+}
+
 private fun existingData(driveService: Drive): List<DriveItem> {
     val driveServiceHelper = DriveServerHelper(driveService)
     val fileId = driveServiceHelper.getFileId(FILE_NAME) ?: return emptyList()
@@ -101,6 +127,12 @@ private suspend fun addData(data: MutableList<DriveItem>, password: String) {
 
 private fun sendCallback(isSuccess: Boolean) {
     LocalBroadcastManager.getInstance(Env.getApp()).sendBroadcast(Intent(ACTION_GOOGLE_DRIVE_UPLOAD_FINISH).apply {
+        putExtra(EXTRA_SUCCESS, isSuccess)
+    })
+}
+
+private fun sendDeleteCallback(isSuccess: Boolean) {
+    LocalBroadcastManager.getInstance(Env.getApp()).sendBroadcast(Intent(ACTION_GOOGLE_DRIVE_DELETE_FINISH).apply {
         putExtra(EXTRA_SUCCESS, isSuccess)
     })
 }

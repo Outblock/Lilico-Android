@@ -121,4 +121,7 @@
     <string name="do_not_share_secret">Do not share your secret phrase!</string>
     <string name="do_not_share_secret_desc">If someone has your secret phrase, they will have full control of your wallet.</string>
     <string name="security">Security</string>
+    <string name="manually">Manually</string>
+    <string name="sync">Sync</string>
+    <string name="delete">Delete</string>
 </resources>
