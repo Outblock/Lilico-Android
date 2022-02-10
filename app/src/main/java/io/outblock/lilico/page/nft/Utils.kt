@@ -3,6 +3,7 @@ package io.outblock.lilico.page.nft
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.cache.NftSelections
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.model.CollectionItemModel
 import io.outblock.lilico.page.nft.model.CollectionTabsModel
@@ -49,7 +50,8 @@ fun Nft.cover(): String? {
 }
 
 fun Nft.name(): String? {
-    return title ?: metadata.metadata.firstOrNull { it.name == "title" }?.value ?: contract.name
+    val config = NftCollectionConfig.get(contract.address) ?: return null
+    return "${config.name} #${id.tokenId}"
 }
 
 fun Nft.desc(): String? {

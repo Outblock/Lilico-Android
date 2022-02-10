@@ -110,6 +110,7 @@
     <string name="switch_account">Switch Account</string>
     <string name="logout">Logout</string>
     <string name="edit_avatar">Edit avatar</string>
+    <string name="edit">Edit</string>
     <string name="you_can_be_searched">You can be searched</string>
     <string name="visible">Visible</string>
     <string name="invisible">Invisible</string>
@@ -124,4 +125,8 @@
     <string name="manually">Manually</string>
     <string name="sync">Sync</string>
     <string name="delete">Delete</string>
+    <string name="edit_nickname">Edit Nickname</string>
+    <string name="nickname">Nickname</string>
+    <string name="please_enter_a_nickname">Please enter a nickname</string>
+    <string name="save">Save</string>
 </resources>

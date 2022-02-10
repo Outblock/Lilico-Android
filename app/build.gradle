@@ -135,6 +135,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
     /** firebase **/
 
     implementation "dev.chrisbanes:insetter-ktx:0.3.1"

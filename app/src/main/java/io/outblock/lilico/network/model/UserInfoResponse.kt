@@ -18,9 +18,9 @@ data class UserInfoResponse(
 @Parcelize
 data class UserInfoData(
     @SerializedName("nickname")
-    val nickname: String,
+    var nickname: String,
     @SerializedName("username")
     val username: String,
     @SerializedName("avatar")
-    val avatar: String,
+    var avatar: String,
 ) : Parcelable

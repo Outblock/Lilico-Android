@@ -82,6 +82,18 @@
             android:name=".page.profile.subpage.backup.BackupGoogleDriveActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.avatar.edit.EditAvatarActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.avatar.ViewAvatarActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.nickname.EditNicknameActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->

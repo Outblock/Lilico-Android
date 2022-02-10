@@ -5,10 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.load
 import io.outblock.lilico.R
+import io.outblock.lilico.utils.loadAvatar
 
 class ProfilePreferenceImage : ProfilePreference {
 
@@ -29,11 +27,6 @@ class ProfilePreferenceImage : ProfilePreference {
     }
 
     fun setImageUrl(imageUrl: String) {
-        val loader = ImageLoader.Builder(context).componentRegistry {
-            add(SvgDecoder(context))
-        }.build()
-        imageView.load(imageUrl, loader) {
-            placeholder(R.drawable.placeholder)
-        }
+        imageView.loadAvatar(imageUrl)
     }
 }

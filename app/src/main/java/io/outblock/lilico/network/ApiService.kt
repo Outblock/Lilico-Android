@@ -46,4 +46,7 @@ interface ApiService {
 
     @GET("/user/info")
     suspend fun userInfo(): UserInfoResponse
+
+    @POST("/profile")
+    suspend fun updateProfile(@Body params: Map<String, String>): CommonResponse
 }
