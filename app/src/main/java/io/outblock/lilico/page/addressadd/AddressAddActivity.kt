@@ -70,7 +70,7 @@ class AddressAddActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title = R.string.edit_nickname.res2String()
+        title = R.string.add_address.res2String()
     }
 
     companion object {

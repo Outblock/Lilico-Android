@@ -134,4 +134,5 @@
     <string name="address_add_name_tip">Please enter a name</string>
     <string name="address_add_address_tip">Please enter address</string>
     <string name="name">Name</string>
+    <string name="add_address">Add address</string>
 </resources>

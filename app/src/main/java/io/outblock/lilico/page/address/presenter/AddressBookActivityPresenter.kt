@@ -22,11 +22,11 @@ class AddressBookActivityPresenter(
     init {
         setupToolbar()
         with(binding.editText) {
-            setOnEditorActionListener { v, actionId, event ->
+            setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard()
                     if (text.isNotEmpty()) {
-                        viewModel.search(text.toString())
+                        viewModel.search(text.toString().trim())
                     }
                     clearFocus()
                 }

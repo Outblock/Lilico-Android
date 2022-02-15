@@ -7,7 +7,7 @@ import io.outblock.lilico.utils.logd
 
 class FlowJvmHelper {
 
-    fun getFlownsAddress(domain: String, root: String = "fn"): FlowScriptResponse {
+    fun getFlownsAddress(domain: String, root: String = "fn"): String? {
         val result = FlowApi.get().simpleFlowScript {
             script {
                 """
@@ -25,8 +25,8 @@ class FlowJvmHelper {
             arg { marshall { string(domain) } }
             arg { marshall { string(root) } }
         }
-        logd(TAG, "getFlownsAddress response:$result")
-        return result
+        logd(TAG, "getFlownsAddress response:${String(result.bytes)}")
+        return result.parseSearchAddress()
     }
 
     fun getFlownsDomainsByAddress(address: String): FlowScriptResponse {
@@ -52,11 +52,11 @@ class FlowJvmHelper {
             }
             arg { address(address) }
         }
-        logd(TAG, "getFlownsDomainsByAddress response:$result")
+        logd(TAG, "getFlownsDomainsByAddress response:${String(result.bytes)}")
         return result
     }
 
-    fun getFindAddress(domain: String): FlowScriptResponse {
+    fun getFindAddress(domain: String): String? {
         val result = FlowApi.get().simpleFlowScript {
             script {
                 """
@@ -70,8 +70,8 @@ class FlowJvmHelper {
             }
             arg { marshall { string(domain) } }
         }
-        logd(TAG, "getFindAddress response:$result")
-        return result
+        logd(TAG, "getFindAddress response:${String(result.bytes)}")
+        return result.parseSearchAddress()
     }
 
     fun getFindDomainByAddress(address: String): FlowScriptResponse {

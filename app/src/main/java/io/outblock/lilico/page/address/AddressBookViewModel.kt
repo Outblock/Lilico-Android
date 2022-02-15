@@ -6,6 +6,7 @@ import io.outblock.lilico.cache.addressBookCache
 import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
+import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
@@ -31,8 +32,17 @@ class AddressBookViewModel : ViewModel() {
 
     fun search(keyword: String) {
         viewModelIOScope(this) {
-            safeRun { FlowJvmHelper().getFindAddress(keyword) }
-            safeRun { FlowJvmHelper().getFlownsAddress(keyword) }
+            val localData = addressBookList
+                .filterIsInstance<AddressBookPersonModel>()
+                .filter { it.data.name().contains(keyword) || it.data.address?.contains(keyword) ?: false }
+
+            val data = mutableListOf<Any>()
+            data.addAll(localData)
+            addressBookLiveData.postValue(data)
+            if (!keyword.contains(" ") && keyword.contains(".")) {
+                searchFindXyz(keyword, data)
+                searchFlowns(keyword, data)
+            }
         }
     }
 
@@ -44,6 +54,46 @@ class AddressBookViewModel : ViewModel() {
         addressBookLiveData.postValue(data)
         addressBookList.clear()
         addressBookList.addAll(data)
+    }
+
+    private fun searchFlowns(keyword: String, data: MutableList<Any>) {
+        if (!keyword.endsWith(".fns")) {
+            return
+        }
+        safeRun {
+            val address = FlowJvmHelper().getFlownsAddress(keyword)
+            data.add(AddressBookCharModel(text = ".flowns"))
+            data.add(
+                AddressBookPersonModel(
+                    data = AddressBookContact(
+                        address = address,
+                        contactName = keyword,
+                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FLOWNS)
+                    )
+                )
+            )
+            addressBookLiveData.postValue(data)
+        }
+    }
+
+    private fun searchFindXyz(keyword: String, data: MutableList<Any>) {
+        if (!keyword.endsWith(".find")) {
+            return
+        }
+        safeRun {
+            val address = FlowJvmHelper().getFindAddress(keyword.lowercase().removeSuffix(".find"))
+            data.add(AddressBookCharModel(text = ".find"))
+            data.add(
+                AddressBookPersonModel(
+                    data = AddressBookContact(
+                        address = address,
+                        contactName = keyword,
+                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FIND_XYZ)
+                    )
+                )
+            )
+            addressBookLiveData.postValue(data)
+        }
     }
 
     private fun parseAddressBook(data: List<AddressBookContact>): List<Any> {

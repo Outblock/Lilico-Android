@@ -8,17 +8,6 @@
     android:paddingHorizontal="33dp"
     android:paddingVertical="16dp">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/avatar_view"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:round="48dp"
-        android:scaleType="centerCrop"
-        tools:background="#999"/>
-
     <TextView
         android:id="@+id/name_prefix_view"
         android:layout_width="48dp"
@@ -35,6 +24,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="A"
         tools:visibility="visible"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/avatar_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:round="48dp"
+        android:scaleType="centerCrop"
+        tools:background="#999"/>
 
     <TextView
         android:id="@+id/name_view"

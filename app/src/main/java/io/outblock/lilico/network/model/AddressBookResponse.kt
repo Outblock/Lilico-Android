@@ -20,17 +20,17 @@ data class AddressBookContactBookList(
 
 data class AddressBookContact(
     @SerializedName("address")
-    val address: String?,
+    val address: String? = null,
     @SerializedName("avatar")
-    val avatar: String?,
+    val avatar: String? = null,
     @SerializedName("contact_name")
-    val contactName: String?,
+    val contactName: String? = null,
     @SerializedName("username")
-    val username: String?,
+    val username: String? = null,
     @SerializedName("domain")
-    val domain: AddressBookDomain?,
+    val domain: AddressBookDomain? = null,
     @SerializedName("id")
-    val id: String?,
+    val id: String? = null,
 ) {
     fun name(): String {
         return if (username.isNullOrEmpty()) contactName.orEmpty() else username
@@ -49,7 +49,7 @@ data class AddressBookDomain(
     @SerializedName("domain_type")
     val domainType: Int,
     @SerializedName("value")
-    val value: String?,
+    val value: String? = null,
 ) {
     companion object {
         const val DOMAIN_FIND_XYZ = 1
