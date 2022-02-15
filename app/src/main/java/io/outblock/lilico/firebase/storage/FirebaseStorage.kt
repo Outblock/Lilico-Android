@@ -14,7 +14,7 @@ suspend fun uploadAvatarToFirebase(image: Bitmap, callback: (url: String?) -> Un
     image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
     val data = baos.toByteArray()
 
-    val ref = Firebase.storage.reference.child("avatar/${getUsername()}.jpg")
+    val ref = Firebase.storage.reference.child("avatar/${getUsername()}-${System.currentTimeMillis()}.jpg")
     val uploadTask = ref.putBytes(data)
     uploadTask.continueWithTask { task -> ref.downloadUrl }
         .addOnCompleteListener { task ->
@@ -27,6 +27,10 @@ suspend fun uploadAvatarToFirebase(image: Bitmap, callback: (url: String?) -> Un
 
 fun String.firebaseImage(): String {
     if (!this.startsWith("https://firebasestorage.googleapis.com")) {
+        return this
+    }
+
+    if (this.contains("alt=media")) {
         return this
     }
     return "$this?alt=media"

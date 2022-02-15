@@ -160,6 +160,8 @@ dependencies {
     implementation 'com.sackcentury:shinebutton:1.0.0'
     implementation 'com.github.varunest:sparkbutton:1.0.6'
 
+    implementation "com.nftco:flow-jvm-sdk:0.6.0"
+
     /** TEST **/
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

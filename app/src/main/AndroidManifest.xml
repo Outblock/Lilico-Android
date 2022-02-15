@@ -94,6 +94,14 @@
             android:name=".page.profile.subpage.nickname.EditNicknameActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.address.AddressBookActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.addressadd.AddressAddActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->

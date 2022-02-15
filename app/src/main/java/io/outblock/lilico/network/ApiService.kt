@@ -1,10 +1,7 @@
 package io.outblock.lilico.network
 
 import io.outblock.lilico.network.model.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -49,4 +46,11 @@ interface ApiService {
 
     @POST("/profile")
     suspend fun updateProfile(@Body params: Map<String, String>): CommonResponse
+
+    @GET("/addressbook/contact")
+    suspend fun getAddressBook(): AddressBookResponse
+
+    @PUT("/addressbook/external")
+    @JvmSuppressWildcards
+    suspend fun addAddressBook(@Body params: Map<String, Any>): CommonResponse
 }

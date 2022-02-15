@@ -62,7 +62,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/avatar_view"/>
 
-        <include layout="@layout/layout_profile_action"/>
+        <include
+            layout="@layout/layout_profile_action"
+            android:id="@+id/action_group"/>
 
         <include
             layout="@layout/layout_profile_group_1"

@@ -1,16 +1,14 @@
 package io.outblock.lilico.cache
 
 import com.google.gson.annotations.SerializedName
-import io.outblock.lilico.network.model.NFTListData
-import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.network.model.WalletListData
+import io.outblock.lilico.network.model.*
 
 
 const val CACHE_NFT_LIST = "nft_list"
 const val CACHE_WALLET = "wallet"
 const val CACHE_NFT_SELECTION = "nft_selection"
 const val USER_INFO = "user_info"
+const val ADDRESS_BOOK = "address_book"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST", NFTListData::class.java)
@@ -26,6 +24,10 @@ fun nftSelectionCache(): CacheManager<NftSelections> {
 
 fun userInfoCache(): CacheManager<UserInfoData> {
     return CacheManager(USER_INFO, UserInfoData::class.java)
+}
+
+fun addressBookCache(): CacheManager<AddressBookContactBookList> {
+    return CacheManager(ADDRESS_BOOK, AddressBookContactBookList::class.java)
 }
 
 data class NftSelections(

@@ -129,4 +129,9 @@
     <string name="nickname">Nickname</string>
     <string name="please_enter_a_nickname">Please enter a nickname</string>
     <string name="save">Save</string>
+    <string name="address_book">Address Book</string>
+    <string name="search">Search</string>
+    <string name="address_add_name_tip">Please enter a name</string>
+    <string name="address_add_address_tip">Please enter address</string>
+    <string name="name">Name</string>
 </resources>

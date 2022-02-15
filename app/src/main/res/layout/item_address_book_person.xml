@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingHorizontal="33dp"
+    android:paddingVertical="16dp">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/avatar_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:round="48dp"
+        android:scaleType="centerCrop"
+        tools:background="#999"/>
+
+    <TextView
+        android:id="@+id/name_prefix_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_round_corner"
+        android:backgroundTint="@color/salmon5"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:textColor="@color/salmon_primary"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="A"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/name_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/inter"
+        android:textColor="@color/text"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/address_view"
+        app:layout_constraintStart_toEndOf="@id/avatar_view"
+        app:layout_constraintTop_toTopOf="@id/avatar_view"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="John  (@Kai)"/>
+
+    <TextView
+        android:id="@+id/address_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/note"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+        app:layout_constraintStart_toEndOf="@id/avatar_view"
+        app:layout_constraintTop_toBottomOf="@id/name_view"
+        tools:text="0x55ad22f01ef568a1"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

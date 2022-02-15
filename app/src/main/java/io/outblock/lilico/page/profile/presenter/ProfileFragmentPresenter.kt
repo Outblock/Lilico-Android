@@ -5,6 +5,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
 import io.outblock.lilico.network.model.UserInfoData
+import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.profile.ProfileFragment
 import io.outblock.lilico.page.profile.model.ProfileFragmentModel
 import io.outblock.lilico.page.profile.subpage.accountsetting.AccountSettingActivity
@@ -31,6 +32,7 @@ class ProfileFragmentPresenter(
             userInfo?.let { AccountSettingActivity.launch(fragment.requireContext(), it) }
         }
 
+        binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
         binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(fragment.requireContext()) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(fragment.requireContext()) }
         updatePreferenceState()
