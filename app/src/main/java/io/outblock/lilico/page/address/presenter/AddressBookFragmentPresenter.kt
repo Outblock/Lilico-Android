@@ -29,5 +29,10 @@ class AddressBookFragmentPresenter(
 
     override fun bind(model: AddressBookFragmentModel) {
         model.data?.let { adapter.setNewDiffData(it) }
+        model.isEmpty?.let { updateEmptyState(it) }
+    }
+
+    private fun updateEmptyState(isEmpty: Boolean) {
+
     }
 }

@@ -41,7 +41,7 @@ data class AddressBookContact(
         if (name.isEmpty()) {
             return ""
         }
-        return name.first().toString().uppercase()
+        return "#${name.first().toString().uppercase()}"
     }
 }
 

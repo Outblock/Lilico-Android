@@ -10,6 +10,7 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
+import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -17,7 +18,14 @@ class AddressBookViewModel : ViewModel() {
     private val addressBookList = mutableListOf<Any>()
     val addressBookLiveData = MutableLiveData<List<Any>>()
 
+    val emptyLiveData = MutableLiveData<Boolean>()
+
+    private var searchKeyword: String = ""
+
     fun loadAddressBook() {
+        if (searchKeyword.isNotBlank()) {
+            return
+        }
         viewModelIOScope(this) {
             addressBookCache().read()?.contacts?.let { updateOriginAddressBook(parseAddressBook(it)) }
 
@@ -30,7 +38,10 @@ class AddressBookViewModel : ViewModel() {
         }
     }
 
+    fun searchKeyword() = searchKeyword
+
     fun search(keyword: String) {
+        searchKeyword = keyword
         if (keyword.isBlank()) {
             addressBookLiveData.postValue(addressBookList)
             return
@@ -43,9 +54,16 @@ class AddressBookViewModel : ViewModel() {
             val data = mutableListOf<Any>()
             data.addAll(localData)
             addressBookLiveData.postValue(data)
+
+            searchUsers(keyword, data)
+
             if (!keyword.contains(" ") && keyword.contains(".")) {
                 searchFindXyz(keyword, data)
                 searchFlowns(keyword, data)
+            }
+
+            if (data.isEmpty()) {
+                emptyLiveData.postValue(true)
             }
         }
     }
@@ -58,6 +76,20 @@ class AddressBookViewModel : ViewModel() {
         addressBookLiveData.postValue(data)
         addressBookList.clear()
         addressBookList.addAll(data)
+    }
+
+    private suspend fun searchUsers(keyword: String, data: MutableList<Any>) {
+        try {
+            val service = retrofit().create(ApiService::class.java)
+            val resp = service.searchUser(keyword)
+            resp.data.users?.let {
+                if (it.isEmpty()) return@let
+                data.add(AddressBookCharModel(text = "Lilico user"))
+                data.addAll(it)
+            }
+        } catch (e: Exception) {
+            loge(e)
+        }
     }
 
     private fun searchFlowns(keyword: String, data: MutableList<Any>) {

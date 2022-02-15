@@ -23,4 +23,6 @@ data class UserInfoData(
     val username: String,
     @SerializedName("avatar")
     var avatar: String,
+    @SerializedName("address")
+    var address: String? = null,
 ) : Parcelable

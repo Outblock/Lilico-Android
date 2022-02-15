@@ -20,6 +20,9 @@ interface ApiService {
     @GET("/user/wallet")
     suspend fun getWalletList(): WalletListResponse
 
+    @GET("/user/search")
+    suspend fun searchUser(@Query("keyword") keyword: String): SearchUserResponse
+
     @POST("/login")
     suspend fun login(@Body params: Map<String, String>): LoginResponse
 
