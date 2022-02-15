@@ -31,6 +31,10 @@ class AddressBookViewModel : ViewModel() {
     }
 
     fun search(keyword: String) {
+        if (keyword.isBlank()) {
+            addressBookLiveData.postValue(addressBookList)
+            return
+        }
         viewModelIOScope(this) {
             val localData = addressBookList
                 .filterIsInstance<AddressBookPersonModel>()
