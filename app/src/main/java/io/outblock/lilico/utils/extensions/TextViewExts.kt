@@ -5,7 +5,10 @@ import android.graphics.MaskFilter
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.MaskFilterSpan
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 
 /**
@@ -30,4 +33,9 @@ fun TextView.setBlurText(text: CharSequence, blurLevel: Float = 3f) {
     val string = SpannableString(text)
     string.setSpan(MaskFilterSpan(blurMask), 0, string.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     setText(string)
+}
+
+fun EditText.hideKeyboard() {
+    val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(this.windowToken, 0)
 }

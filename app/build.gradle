@@ -160,7 +160,10 @@ dependencies {
     implementation 'com.sackcentury:shinebutton:1.0.0'
     implementation 'com.github.varunest:sparkbutton:1.0.6'
 
+    /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"
+    implementation 'io.grpc:grpc-okhttp:1.44.0'
+    /** FLOW **/
 
     /** TEST **/
     testImplementation 'junit:junit:4.+'

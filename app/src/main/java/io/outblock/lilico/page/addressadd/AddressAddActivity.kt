@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityAddAddressBinding
+import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.widgets.ProgressDialog
 
@@ -34,7 +34,7 @@ class AddressAddActivity : BaseActivity() {
 
         binding.saveButton.setOnClickListener {
             progressDialog.show()
-            hideKeyboard()
+            binding.nameText.hideKeyboard()
             viewModel.save(binding.nameText.text.toString(), binding.addressText.text.toString())
         }
         binding.nameText.doOnTextChanged { text, _, _, _ -> onEditTextChange() }
@@ -56,11 +56,6 @@ class AddressAddActivity : BaseActivity() {
         } else {
             Toast.makeText(this, "Save fail", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.nameText.windowToken, 0)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

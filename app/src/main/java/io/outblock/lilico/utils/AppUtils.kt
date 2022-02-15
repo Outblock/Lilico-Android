@@ -2,6 +2,7 @@ package io.outblock.lilico.utils
 
 import android.app.Activity
 import android.content.res.Configuration
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.firebase.storage.firebaseImage
 
@@ -17,3 +18,5 @@ fun String?.parseAvatarUrl(): String {
     val url = this.firebaseImage()
     return url
 }
+
+fun isDev() = BuildConfig.APPLICATION_ID.contains("dev")
