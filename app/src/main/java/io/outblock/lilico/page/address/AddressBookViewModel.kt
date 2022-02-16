@@ -19,6 +19,8 @@ class AddressBookViewModel : ViewModel() {
     val addressBookLiveData = MutableLiveData<List<Any>>()
 
     val emptyLiveData = MutableLiveData<Boolean>()
+    val onSearchStartLiveData = MutableLiveData<Boolean>()
+
 
     private var searchKeyword: String = ""
 
@@ -46,6 +48,7 @@ class AddressBookViewModel : ViewModel() {
             addressBookLiveData.postValue(addressBookList)
             return
         }
+        onSearchStartLiveData.postValue(true)
         viewModelIOScope(this) {
             val localData = addressBookList
                 .filterIsInstance<AddressBookPersonModel>()
@@ -139,7 +142,7 @@ class AddressBookViewModel : ViewModel() {
                 AddressBookPersonModel(it)
             ).apply {
                 if (!charList.contains(it.prefixName())) {
-                    add(0, AddressBookCharModel(text = it.prefixName()))
+                    add(0, AddressBookCharModel(text = "#${it.prefixName()}"))
                     charList.add(it.prefixName())
                 }
             }

@@ -8,6 +8,7 @@ import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.address.adapter.AddressBookAdapter
 import io.outblock.lilico.page.address.model.AddressBookFragmentModel
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
 class AddressBookFragmentPresenter(
@@ -28,11 +29,17 @@ class AddressBookFragmentPresenter(
     }
 
     override fun bind(model: AddressBookFragmentModel) {
-        model.data?.let { adapter.setNewDiffData(it) }
+        model.data?.let {
+            adapter.setNewDiffData(it)
+            updateEmptyState(it.isEmpty())
+            binding.progressBar.setVisible(false)
+        }
         model.isEmpty?.let { updateEmptyState(it) }
+        model.isSearchStart?.let { binding.progressBar.setVisible(it) }
     }
 
     private fun updateEmptyState(isEmpty: Boolean) {
-
+        binding.emptyTipWrapper.setVisible(isEmpty)
+        binding.progressBar.setVisible(false)
     }
 }

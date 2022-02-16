@@ -25,6 +25,7 @@ class AddressBookFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[AddressBookViewModel::class.java].apply {
             addressBookLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(data = it)) }
             emptyLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isEmpty = it)) }
+            onSearchStartLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isSearchStart = it)) }
         }
     }
 
