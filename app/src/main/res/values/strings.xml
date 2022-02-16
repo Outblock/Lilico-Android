@@ -135,5 +135,9 @@
     <string name="address_add_address_tip">Please enter address</string>
     <string name="name">Name</string>
     <string name="add_address">Add address</string>
+    <string name="checking">Checking</string>
+    <string name="address_check_length_error">Invalid address length</string>
+    <string name="address_check_chain_error">"Can't find address in chain</string>
+    <string name="address_check_success">Validated address</string>
     <string name="address_search_empty_tip">Sorry, We did not find any related account, please check your enter and search it again.</string>
 </resources>

@@ -9,11 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.databinding.FragmentAddressBookBinding
 import io.outblock.lilico.page.address.model.AddressBookFragmentModel
 import io.outblock.lilico.page.address.presenter.AddressBookFragmentPresenter
+import io.outblock.lilico.widgets.ProgressDialog
 
 class AddressBookFragment : Fragment() {
     private lateinit var binding: FragmentAddressBookBinding
     private lateinit var viewModel: AddressBookViewModel
     private lateinit var presenter: AddressBookFragmentPresenter
+
+    private val progressDialog by lazy { ProgressDialog(requireContext()) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentAddressBookBinding.inflate(layoutInflater)
@@ -26,6 +29,7 @@ class AddressBookFragment : Fragment() {
             addressBookLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(data = it)) }
             emptyLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isEmpty = it)) }
             onSearchStartLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isSearchStart = it)) }
+            showProgressLiveData.observe(viewLifecycleOwner) { if (it) progressDialog.show() else progressDialog.dismiss() }
         }
     }
 

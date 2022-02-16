@@ -21,6 +21,7 @@ class AddressBookViewModel : ViewModel() {
     val emptyLiveData = MutableLiveData<Boolean>()
     val onSearchStartLiveData = MutableLiveData<Boolean>()
 
+    val showProgressLiveData = MutableLiveData<Boolean>()
 
     private var searchKeyword: String = ""
 
@@ -37,6 +38,7 @@ class AddressBookViewModel : ViewModel() {
                 updateOriginAddressBook(parseAddressBook(it))
                 addressBookCache().cache(resp.data)
             }
+            showProgressLiveData.postValue(false)
         }
     }
 
@@ -73,6 +75,15 @@ class AddressBookViewModel : ViewModel() {
 
     fun clearSearch() {
         addressBookLiveData.postValue(addressBookList)
+    }
+
+    fun delete(contact: AddressBookContact) {
+        showProgressLiveData.postValue(true)
+        viewModelIOScope(this) {
+            val service = retrofit().create(ApiService::class.java)
+            val resp = service.deleteAddressBook(contact.id.orEmpty())
+            loadAddressBook()
+        }
     }
 
     private fun updateOriginAddressBook(data: List<Any>) {

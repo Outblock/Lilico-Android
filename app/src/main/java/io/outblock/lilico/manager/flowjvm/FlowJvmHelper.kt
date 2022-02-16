@@ -1,9 +1,11 @@
 package io.outblock.lilico.manager.flowjvm
 
+import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.FlowScriptResponse
 import com.nftco.flow.sdk.cadence.marshall
 import com.nftco.flow.sdk.simpleFlowScript
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.loge
 
 class FlowJvmHelper {
 
@@ -88,6 +90,18 @@ class FlowJvmHelper {
         }
         logd(TAG, "getFindDomainByAddress response:$result")
         return result
+    }
+
+    fun addressVerify(address: String): Boolean {
+        if (!address.startsWith("0x")) {
+            return false
+        }
+        return try {
+            FlowApi.get().getAccountAtLatestBlock(FlowAddress(address)) != null
+        } catch (e: Exception) {
+            loge(e)
+            false
+        }
     }
 
     companion object {

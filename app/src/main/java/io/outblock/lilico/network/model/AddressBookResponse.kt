@@ -1,6 +1,8 @@
 package io.outblock.lilico.network.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class AddressBookResponse(
     @SerializedName("data")
@@ -18,6 +20,7 @@ data class AddressBookContactBookList(
     val contacts: List<AddressBookContact>?,
 )
 
+@Parcelize
 data class AddressBookContact(
     @SerializedName("address")
     val address: String? = null,
@@ -31,7 +34,7 @@ data class AddressBookContact(
     val domain: AddressBookDomain? = null,
     @SerializedName("id")
     val id: String? = null,
-) {
+) : Parcelable {
     fun name(): String {
         return if (username.isNullOrEmpty()) contactName.orEmpty() else username
     }
@@ -45,12 +48,13 @@ data class AddressBookContact(
     }
 }
 
+@Parcelize
 data class AddressBookDomain(
     @SerializedName("domain_type")
     val domainType: Int,
     @SerializedName("value")
     val value: String? = null,
-) {
+) : Parcelable {
     companion object {
         const val DOMAIN_FIND_XYZ = 1
         const val DOMAIN_FLOWNS = 2

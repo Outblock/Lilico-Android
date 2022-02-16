@@ -27,6 +27,7 @@ class ProgressDialog(
 
     fun dismiss() {
         dialog?.dismiss()
+        dialog = null
     }
 }
 
