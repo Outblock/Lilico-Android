@@ -30,16 +30,23 @@ class AddressBookActivityPresenter(
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard()
-                    viewModel.search(text.toString().trim())
+                    viewModel.searchLocal(text.toString().trim())
                     clearFocus()
                 }
                 return@setOnEditorActionListener false
             }
-            doOnTextChanged { text, _, _, _ -> if (isAutoSearch(text)) viewModel.search(text.toString().trim()) }
+            doOnTextChanged { text, _, _, _ ->
+                if (isAutoSearch(text)) {
+                    viewModel.searchRemote(text.toString().trim(), true)
+                } else {
+                    viewModel.searchLocal(text.toString().trim())
+                }
+            }
             onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus -> onSearchFocusChange(hasFocus) }
         }
         binding.cancelButton.setOnClickListener {
             onSearchFocusChange(false)
+            binding.editText.hideKeyboard()
             binding.editText.setText("")
             binding.editText.clearFocus()
             viewModel.clearSearch()

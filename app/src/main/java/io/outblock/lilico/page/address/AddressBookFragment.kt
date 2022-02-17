@@ -27,7 +27,8 @@ class AddressBookFragment : Fragment() {
         presenter = AddressBookFragmentPresenter(this, binding)
         viewModel = ViewModelProvider(requireActivity())[AddressBookViewModel::class.java].apply {
             addressBookLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(data = it)) }
-            emptyLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isEmpty = it)) }
+            remoteEmptyLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isRemoteEmpty = it)) }
+            localEmptyLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isLocalEmpty = it)) }
             onSearchStartLiveData.observe(viewLifecycleOwner) { presenter.bind(AddressBookFragmentModel(isSearchStart = it)) }
             showProgressLiveData.observe(viewLifecycleOwner) { if (it) progressDialog.show() else progressDialog.dismiss() }
         }

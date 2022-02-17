@@ -44,7 +44,7 @@ class AddressAddActivity : BaseActivity() {
             viewModel.save(binding.nameText.text.toString(), binding.addressText.text.toString())
         }
         binding.nameText.doOnTextChanged { _, _, _, _ -> updateSaveButtonState() }
-        binding.addressText.doOnTextChanged { text, _, _, _ -> viewModel.addressVerify(text.toString()) }
+        binding.addressText.doOnTextChanged { text, _, _, _ -> viewModel.addressVerify(text.toString().lowercase().trim()) }
         updateAddressVerifyState(ADDRESS_VERIFY_STATE_IDLE)
 
         contact?.let {
@@ -71,7 +71,7 @@ class AddressAddActivity : BaseActivity() {
                 when (state) {
                     ADDRESS_VERIFY_STATE_PENDING -> R.string.checking
                     ADDRESS_VERIFY_STATE_SUCCESS -> R.string.address_check_success
-                    ADDRESS_VERIFY_STATE_LENGTH_ERROR -> R.string.address_check_length_error
+                    ADDRESS_VERIFY_STATE_FORMAT_ERROR -> R.string.address_check_format_error
                     ADDRESS_VERIFY_STATE_ERROR -> R.string.address_check_chain_error
                     else -> R.string.address_add_address_tip
                 }

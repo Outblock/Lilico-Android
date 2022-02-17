@@ -18,7 +18,8 @@ class AddressBookViewModel : ViewModel() {
     private val addressBookList = mutableListOf<Any>()
     val addressBookLiveData = MutableLiveData<List<Any>>()
 
-    val emptyLiveData = MutableLiveData<Boolean>()
+    val remoteEmptyLiveData = MutableLiveData<Boolean>()
+    val localEmptyLiveData = MutableLiveData<Boolean>()
     val onSearchStartLiveData = MutableLiveData<Boolean>()
 
     val showProgressLiveData = MutableLiveData<Boolean>()
@@ -44,7 +45,24 @@ class AddressBookViewModel : ViewModel() {
 
     fun searchKeyword() = searchKeyword
 
-    fun search(keyword: String) {
+    fun searchLocal(keyword: String) {
+        searchKeyword = keyword
+        if (keyword.isBlank()) {
+            addressBookLiveData.postValue(addressBookList)
+            return
+        }
+
+        val localData = addressBookList
+            .filterIsInstance<AddressBookPersonModel>()
+            .map { it.data }
+            .filter { it.name().contains(keyword) || it.address?.contains(keyword) ?: false }
+        addressBookLiveData.postValue(parseAddressBook(localData))
+        if (localData.isEmpty()) {
+            localEmptyLiveData.postValue(true)
+        }
+    }
+
+    fun searchRemote(keyword: String, includeLocal: Boolean = false) {
         searchKeyword = keyword
         if (keyword.isBlank()) {
             addressBookLiveData.postValue(addressBookList)
@@ -52,13 +70,15 @@ class AddressBookViewModel : ViewModel() {
         }
         onSearchStartLiveData.postValue(true)
         viewModelIOScope(this) {
-            val localData = addressBookList
-                .filterIsInstance<AddressBookPersonModel>()
-                .filter { it.data.name().contains(keyword) || it.data.address?.contains(keyword) ?: false }
-
             val data = mutableListOf<Any>()
-            data.addAll(localData)
-            addressBookLiveData.postValue(data)
+
+            if (includeLocal) {
+                val localData = addressBookList
+                    .filterIsInstance<AddressBookPersonModel>()
+                    .filter { it.data.name().contains(keyword) || it.data.address?.contains(keyword) ?: false }
+                data.addAll(localData)
+                addressBookLiveData.postValue(data)
+            }
 
             searchUsers(keyword, data)
 
@@ -68,7 +88,7 @@ class AddressBookViewModel : ViewModel() {
             }
 
             if (data.isEmpty()) {
-                emptyLiveData.postValue(true)
+                remoteEmptyLiveData.postValue(true)
             }
         }
     }

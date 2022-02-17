@@ -18,6 +18,8 @@ class AddressAddViewModel : ViewModel() {
 
     private var contact: AddressBookContact? = null
 
+    private val addressPattern by lazy { Regex("^0x[a-fA-F0-9]{16}\$") }
+
     fun setContact(contact: AddressBookContact?) {
         this.contact = contact
     }
@@ -60,16 +62,17 @@ class AddressAddViewModel : ViewModel() {
     }
 
     fun addressVerify(address: String) {
-        this.address = address
-        if (address.length != 18) {
-            addressVerifyStateLiveData.postValue(ADDRESS_VERIFY_STATE_LENGTH_ERROR)
+        val format = if (address.startsWith("0x")) address else "0x$address"
+        this.address = format
+        if (!addressPattern.matches(this.address)) {
+            addressVerifyStateLiveData.postValue(ADDRESS_VERIFY_STATE_FORMAT_ERROR)
             return
         } else {
             addressVerifyStateLiveData.postValue(ADDRESS_VERIFY_STATE_PENDING)
         }
         viewModelIOScope(this) {
-            val isVerified = FlowJvmHelper().addressVerify(address)
-            if (address == this.address) {
+            val isVerified = FlowJvmHelper().addressVerify(format)
+            if (format == this.address) {
                 addressVerifyStateLiveData.postValue(if (isVerified) ADDRESS_VERIFY_STATE_SUCCESS else ADDRESS_VERIFY_STATE_ERROR)
             }
         }

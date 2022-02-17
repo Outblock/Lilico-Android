@@ -65,7 +65,9 @@ private class AddressActionDialog(
         var dialog: Dialog? = null
         with(AlertDialog.Builder(context, R.style.Theme_AlertDialogTheme)) {
             setAdapter(ArrayAdapter<String>(context, R.layout.item_address_book_action).apply {
-                add(R.string.edit.res2String())
+                if (!contact.contactName.isNullOrBlank()) {
+                    add(R.string.edit.res2String())
+                }
                 add(R.string.delete.res2String())
             }) { dialog, which ->
                 dialog.dismiss()
