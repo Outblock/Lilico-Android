@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityAddressBookBinding
+import io.outblock.lilico.page.address.model.AddressBookActivityModel
 import io.outblock.lilico.page.address.presenter.AddressBookActivityPresenter
 import io.outblock.lilico.page.addressadd.AddressAddActivity
 
@@ -25,7 +26,7 @@ class AddressBookActivity : BaseActivity() {
 
         presenter = AddressBookActivityPresenter(this, binding)
         viewModel = ViewModelProvider(this)[AddressBookViewModel::class.java].apply {
-            addressBookLiveData.observe(this@AddressBookActivity) {}
+            clearEditTextFocusLiveData.observe(this@AddressBookActivity) { presenter.bind(AddressBookActivityModel(isClearInputFocus = it)) }
         }
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, AddressBookFragment()).commit()

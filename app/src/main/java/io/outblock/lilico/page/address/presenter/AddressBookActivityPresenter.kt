@@ -71,7 +71,10 @@ class AddressBookActivityPresenter(
     }
 
     override fun bind(model: AddressBookActivityModel) {
-
+        model.isClearInputFocus?.let {
+            binding.editText.clearFocus()
+            binding.editText.hideKeyboard()
+        }
     }
 
     private fun setupToolbar() {

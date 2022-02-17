@@ -24,6 +24,8 @@ class AddressBookViewModel : ViewModel() {
 
     val showProgressLiveData = MutableLiveData<Boolean>()
 
+    val clearEditTextFocusLiveData = MutableLiveData<Boolean>()
+
     private var searchKeyword: String = ""
 
     fun loadAddressBook() {
@@ -103,6 +105,10 @@ class AddressBookViewModel : ViewModel() {
             val service = retrofit().create(ApiService::class.java)
             val resp = service.deleteAddressBook(contact.id.orEmpty())
             loadAddressBook()
+            showProgressLiveData.postValue(false)
+            val data = addressBookLiveData.value?.toMutableList() ?: return@viewModelIOScope
+            data.removeIf { it is AddressBookPersonModel && it.data == contact }
+            addressBookLiveData.postValue(data)
         }
     }
 
@@ -131,6 +137,8 @@ class AddressBookViewModel : ViewModel() {
         }
     }
 
+    fun clearInputFocus() = clearEditTextFocusLiveData.postValue(true)
+
     private fun updateOriginAddressBook(data: List<Any>) {
         addressBookLiveData.postValue(data)
         addressBookList.clear()
@@ -141,11 +149,12 @@ class AddressBookViewModel : ViewModel() {
         try {
             val service = retrofit().create(ApiService::class.java)
             val resp = service.searchUser(keyword)
-            resp.data.users?.let {
-                if (it.isEmpty()) return@let
+            resp.data.users?.let { users ->
+                if (users.isEmpty()) return@let
                 data.add(AddressBookCharModel(text = "Lilico user"))
-                data.addAll(it)
+                data.addAll(users.map { AddressBookPersonModel(data = it.toContact()) })
             }
+            addressBookLiveData.postValue(data)
         } catch (e: Exception) {
             loge(e)
         }

@@ -40,6 +40,7 @@ class AddressBookFragmentPresenter(
 
         binding.localEmptyWrapper.setOnClickListener {
             viewModel.searchRemote(viewModel.searchKeyword())
+            viewModel.clearInputFocus()
             binding.localEmptyWrapper.setVisible(false)
         }
     }

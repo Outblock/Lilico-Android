@@ -34,7 +34,7 @@ class AddressBookPersonPresenter(
     override fun bind(model: AddressBookPersonModel) {
         val data = model.data
         with(binding) {
-            nameView.text = "${data.name()} ${if (!data.username.isNullOrEmpty()) "  (${data.username})" else ""}"
+            nameView.text = "${data.name()} ${if (!data.username.isNullOrEmpty()) "  (@${data.username})" else ""}"
 
             namePrefixView.text = data.prefixName()
             namePrefixView.setVisible(data.prefixName().isNotEmpty())
