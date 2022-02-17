@@ -141,4 +141,9 @@
     <string name="address_check_success">Validated address</string>
     <string name="address_search_empty_tip">Sorry, We did not find any related account, please check your enter and search it again.</string>
     <string name="search_the_id">Search the ID: %1$s</string>
+
+    <string name="send_to">Send to</string>
+    <string name="send_search_hint">Username, address(0x), Find or Flowns</string>
+    <string name="recent">Recent</string>
+    <string name="my_accounts">My Accounts</string>
 </resources>

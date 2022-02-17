@@ -106,6 +106,31 @@ class AddressBookViewModel : ViewModel() {
         }
     }
 
+    fun isAddressBookContains(contact: AddressBookPersonModel): Boolean {
+        return addressBookList.contains(contact)
+    }
+
+    fun addFriend(data: AddressBookContact) {
+        showProgressLiveData.postValue(true)
+        viewModelIOScope(this) {
+            val service = retrofit().create(ApiService::class.java)
+            try {
+                val resp = service.addAddressBook(
+                    mapOf(
+                        "contact_name" to data.contactName,
+                        "address" to data.address,
+                        "domain" to data.domain?.value,
+                        "domain_type" to data.domain?.domainType,
+                        "username" to data.username,
+                    )
+                )
+            } catch (e: Exception) {
+                loge(e)
+            }
+            showProgressLiveData.postValue(false)
+        }
+    }
+
     private fun updateOriginAddressBook(data: List<Any>) {
         addressBookLiveData.postValue(data)
         addressBookList.clear()

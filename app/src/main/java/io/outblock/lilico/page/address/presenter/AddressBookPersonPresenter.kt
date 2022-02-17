@@ -28,6 +28,8 @@ class AddressBookPersonPresenter(
 
     private val binding by lazy { ItemAddressBookPersonBinding.bind(view) }
 
+    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[AddressBookViewModel::class.java] }
+
     @SuppressLint("SetTextI18n")
     override fun bind(model: AddressBookPersonModel) {
         val data = model.data
@@ -48,6 +50,10 @@ class AddressBookPersonPresenter(
             }
 
             addressView.text = data.address.orEmpty()
+
+            addButton.setVisible(viewModel.isAddressBookContains(model))
+
+            addButton.setOnClickListener { viewModel.addFriend(model.data) }
         }
 
         view.setOnClickListener { AddressActionDialog(findActivity(view) as FragmentActivity, data).show() }

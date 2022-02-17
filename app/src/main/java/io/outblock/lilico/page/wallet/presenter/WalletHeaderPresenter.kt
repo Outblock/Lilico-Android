@@ -4,6 +4,7 @@ import android.view.View
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
+import io.outblock.lilico.page.send.TransactionSendActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 
 class WalletHeaderPresenter(
@@ -18,6 +19,8 @@ class WalletHeaderPresenter(
             walletName.text = "Blowfish Wallet"
             address.text = wallet.blockchain.first().address
             balanceNum.text = "$0.0"
+
+            sendButton.setOnClickListener { TransactionSendActivity.launch(view.context) }
         }
     }
 

@@ -29,11 +29,11 @@
         android:id="@+id/avatar_view"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:round="48dp"
-        android:scaleType="centerCrop"
         tools:background="#999"/>
 
     <TextView
@@ -45,6 +45,7 @@
         android:textColor="@color/text"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/address_view"
+        app:layout_constraintEnd_toStartOf="@id/add_button"
         app:layout_constraintStart_toEndOf="@id/avatar_view"
         app:layout_constraintTop_toTopOf="@id/avatar_view"
         app:layout_constraintVertical_chainStyle="packed"
@@ -58,7 +59,19 @@
         android:layout_marginTop="4dp"
         android:textColor="@color/note"
         app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+        app:layout_constraintEnd_toStartOf="@id/add_button"
         app:layout_constraintStart_toEndOf="@id/avatar_view"
         app:layout_constraintTop_toBottomOf="@id/name_view"
         tools:text="0x55ad22f01ef568a1"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:id="@+id/add_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/actionBarItemBackground"
+        android:src="@drawable/ic_add_user"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/border_2"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

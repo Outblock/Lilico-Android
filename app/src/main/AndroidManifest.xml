@@ -102,6 +102,10 @@
             android:name=".page.addressadd.AddressAddActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.send.TransactionSendActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <!-- Firebase Messaging Start -->

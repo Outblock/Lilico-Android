@@ -53,7 +53,8 @@ class AddressAddViewModel : ViewModel() {
     private suspend fun createContact(name: String, address: String) {
         val service = retrofit().create(ApiService::class.java)
         try {
-            val resp = service.addAddressBook(mapOf("contact_name" to name, "address" to address, "domain" to "", "domain_type" to 0))
+            val resp =
+                service.addAddressBook(mapOf("contact_name" to name, "address" to address, "domain" to "", "domain_type" to 0, "username" to null))
             resultLiveData.postValue(resp.status == 200)
         } catch (e: Exception) {
             loge(e)
