@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import io.outblock.lilico.R
+import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemAddressBookPersonBinding
@@ -17,6 +18,8 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
+import io.outblock.lilico.page.send.TransactionSendActivity
+import io.outblock.lilico.page.send.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
@@ -29,6 +32,8 @@ class AddressBookPersonPresenter(
     private val binding by lazy { ItemAddressBookPersonBinding.bind(view) }
 
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[AddressBookViewModel::class.java] }
+
+    private val isSendPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: AddressBookPersonModel) {
@@ -57,7 +62,9 @@ class AddressBookPersonPresenter(
         }
 
         view.setOnClickListener {
-            if (viewModel.isAddressBookContains(model)) {
+            if (isSendPage) {
+                SendAmountActivity.launch(view.context, data)
+            } else if (viewModel.isAddressBookContains(model)) {
                 AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
             }
         }

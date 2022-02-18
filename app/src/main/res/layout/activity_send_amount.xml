@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_wallet_create_mnemonic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/send_to"
+        app:titleTextColor="@color/text"/>
+
+    <FrameLayout
+        android:id="@+id/contact_card_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_round_16dp"
+        android:backgroundTint="@color/bg_icon"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <include
+            android:id="@+id/contact_card"
+            layout="@layout/item_address_book_person"/>
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:background="?attr/actionBarItemBackground"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintEnd_toEndOf="@id/contact_card_wrapper"
+        app:layout_constraintTop_toTopOf="@id/contact_card_wrapper"
+        app:tint="@color/nav_icon"
+        tools:ignore="ContentDescription"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

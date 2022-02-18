@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.addressBookCache
+import io.outblock.lilico.cache.recentTransactionCache
 import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
@@ -37,12 +38,14 @@ class AddressBookViewModel : ViewModel() {
             return
         }
         viewModelIOScope(this) {
-            addressBookCache().read()?.contacts?.let { updateOriginAddressBook(parseAddressBook(it)) }
+            val recentList = if (isSendPage) recentTransactionCache().read()?.contacts.orEmpty() else emptyList()
+
+            addressBookCache().read()?.contacts?.let { updateOriginAddressBook(parseAddressBook(merge(recentList, it))) }
 
             val service = retrofit().create(ApiService::class.java)
             val resp = service.getAddressBook()
             resp.data.contacts?.let {
-                updateOriginAddressBook(parseAddressBook(it))
+                updateOriginAddressBook(parseAddressBook(merge(recentList, it)))
                 addressBookCache().cache(resp.data)
             }
             showProgressLiveData.postValue(false)
@@ -134,9 +137,14 @@ class AddressBookViewModel : ViewModel() {
                         "username" to data.username,
                     )
                 )
-                val list = addressBookLiveData.value ?: emptyList()
-                list.filterIsInstance<AddressBookPersonModel>().firstOrNull { it.data == data }?.isFriend = true
-                addressBookLiveData.postValue(list)
+
+                if (resp.status == 200) {
+                    addressBookList.add(AddressBookPersonModel(data = data))
+
+                    val list = addressBookLiveData.value ?: emptyList()
+                    list.filterIsInstance<AddressBookPersonModel>().firstOrNull { it.data == data }?.isFriend = true
+                    addressBookLiveData.postValue(list)
+                }
             } catch (e: Exception) {
                 loge(e)
             }
@@ -205,6 +213,15 @@ class AddressBookViewModel : ViewModel() {
                 )
             )
             addressBookLiveData.postValue(data)
+        }
+    }
+
+    private fun merge(recentList: List<AddressBookContact>, addressBookList: List<AddressBookContact>): List<AddressBookContact> {
+        val recent = recentList.toMutableList()
+        recent.removeAll { addressBookList.firstOrNull { it.address == it.address } != null }
+        return mutableListOf<AddressBookContact>().apply {
+            addAll(recent)
+            addAll(addressBookList)
         }
     }
 

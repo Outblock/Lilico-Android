@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/address_book"
+        app:title="@string/send_to"
         app:titleTextColor="@color/text"/>
 
     <EditText
@@ -42,11 +42,24 @@
         app:layout_goneMarginEnd="18dp"/>
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/search_icon_view"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginStart="13dp"
         android:src="@drawable/ic_baseline_search_24"
-        android:tint="@color/colorSecondary"
+        app:tint="@color/colorSecondary"
+        app:layout_constraintBottom_toBottomOf="@id/edit_text"
+        app:layout_constraintStart_toStartOf="@id/edit_text"
+        app:layout_constraintTop_toTopOf="@id/edit_text"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="13dp"
+        android:src="@drawable/ic_baseline_search_24"
+        app:tint="@color/colorSecondary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/edit_text"
         app:layout_constraintStart_toStartOf="@id/edit_text"
         app:layout_constraintTop_toTopOf="@id/edit_text"/>

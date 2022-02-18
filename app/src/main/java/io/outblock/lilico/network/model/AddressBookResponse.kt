@@ -35,14 +35,14 @@ data class AddressBookContact(
     @SerializedName("id")
     val id: String? = null,
 ) : Parcelable {
-    fun name(): String {
-        return if (username.isNullOrEmpty()) contactName.orEmpty() else username
+    fun name(default: String = "-"): String {
+        return (if (username.isNullOrEmpty()) contactName else username) ?: default
     }
 
     fun prefixName(): String {
-        val name = name()
+        val name = name("")
         if (name.isEmpty()) {
-            return ""
+            return "0x"
         }
         return name.first().toString().uppercase()
     }
