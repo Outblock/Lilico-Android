@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
+import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.send.presenter.TransactionSendPresenter
 
 class TransactionSendActivity : BaseActivity() {
@@ -19,6 +21,9 @@ class TransactionSendActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTransactionSendBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
         presenter = TransactionSendPresenter(this, binding)
         viewModel = ViewModelProvider(this)[TransactionSendViewModel::class.java].apply {

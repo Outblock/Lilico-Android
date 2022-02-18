@@ -9,6 +9,7 @@ const val CACHE_WALLET = "wallet"
 const val CACHE_NFT_SELECTION = "nft_selection"
 const val USER_INFO = "user_info"
 const val ADDRESS_BOOK = "address_book"
+const val RECENT_ADDRESS_BOOK = "recent_address_book"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST", NFTListData::class.java)
@@ -28,6 +29,11 @@ fun userInfoCache(): CacheManager<UserInfoData> {
 
 fun addressBookCache(): CacheManager<AddressBookContactBookList> {
     return CacheManager(ADDRESS_BOOK, AddressBookContactBookList::class.java)
+}
+
+// recent send history
+fun recentTransactionCache(): CacheManager<AddressBookContactBookList> {
+    return CacheManager(RECENT_ADDRESS_BOOK, AddressBookContactBookList::class.java)
 }
 
 data class NftSelections(

@@ -14,6 +14,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityAddressBookBinding
 import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.address.AddressBookViewModel
+import io.outblock.lilico.page.address.isAddressBookAutoSearch
 import io.outblock.lilico.page.address.model.AddressBookActivityModel
 import io.outblock.lilico.utils.extensions.*
 
@@ -36,7 +37,7 @@ class AddressBookActivityPresenter(
                 return@setOnEditorActionListener false
             }
             doOnTextChanged { text, _, _, _ ->
-                if (isAutoSearch(text)) {
+                if (isAddressBookAutoSearch(text)) {
                     viewModel.searchRemote(text.toString().trim(), true)
                 } else {
                     viewModel.searchLocal(text.toString().trim())
@@ -61,13 +62,6 @@ class AddressBookActivityPresenter(
             TransitionManager.go(Scene(binding.root as ViewGroup), Slide(Gravity.END).apply { duration = 150 })
             binding.cancelButton.setVisible(isVisible)
         }
-    }
-
-    private fun isAutoSearch(text: CharSequence?): Boolean {
-        if (text.isNullOrBlank()) {
-            return false
-        }
-        return !text.trim().contains(" ") && (text.endsWith(".find") || text.endsWith(".fns"))
     }
 
     override fun bind(model: AddressBookActivityModel) {

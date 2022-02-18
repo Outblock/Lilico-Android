@@ -51,12 +51,16 @@ class AddressBookPersonPresenter(
 
             addressView.text = data.address.orEmpty()
 
-            addButton.setVisible(viewModel.isAddressBookContains(model))
+            addButton.setVisible(!viewModel.isAddressBookContains(model))
 
             addButton.setOnClickListener { viewModel.addFriend(model.data) }
         }
 
-        view.setOnClickListener { AddressActionDialog(findActivity(view) as FragmentActivity, data).show() }
+        view.setOnClickListener {
+            if (viewModel.isAddressBookContains(model)) {
+                AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
+            }
+        }
     }
 }
 

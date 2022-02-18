@@ -23,3 +23,10 @@ fun UserInfoData.toContact(): AddressBookContact {
         avatar = avatar,
     )
 }
+
+fun isAddressBookAutoSearch(text: CharSequence?): Boolean {
+    if (text.isNullOrBlank()) {
+        return false
+    }
+    return !text.trim().contains(" ") && (text.endsWith(".find") || text.endsWith(".fns"))
+}

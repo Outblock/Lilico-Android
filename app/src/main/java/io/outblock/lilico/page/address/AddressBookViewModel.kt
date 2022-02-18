@@ -2,6 +2,7 @@ package io.outblock.lilico.page.address
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.addressBookCache
 import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
 import io.outblock.lilico.network.ApiService
@@ -10,6 +11,7 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
+import io.outblock.lilico.page.send.TransactionSendActivity
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.viewModelIOScope
@@ -27,6 +29,8 @@ class AddressBookViewModel : ViewModel() {
     val clearEditTextFocusLiveData = MutableLiveData<Boolean>()
 
     private var searchKeyword: String = ""
+
+    private val isSendPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
 
     fun loadAddressBook() {
         if (searchKeyword.isNotBlank()) {
@@ -96,7 +100,7 @@ class AddressBookViewModel : ViewModel() {
     }
 
     fun clearSearch() {
-        addressBookLiveData.postValue(addressBookList)
+        loadAddressBook()
     }
 
     fun delete(contact: AddressBookContact) {
@@ -130,9 +134,13 @@ class AddressBookViewModel : ViewModel() {
                         "username" to data.username,
                     )
                 )
+                val list = addressBookLiveData.value ?: emptyList()
+                list.filterIsInstance<AddressBookPersonModel>().firstOrNull { it.data == data }?.isFriend = true
+                addressBookLiveData.postValue(list)
             } catch (e: Exception) {
                 loge(e)
             }
+
             showProgressLiveData.postValue(false)
         }
     }
@@ -140,9 +148,9 @@ class AddressBookViewModel : ViewModel() {
     fun clearInputFocus() = clearEditTextFocusLiveData.postValue(true)
 
     private fun updateOriginAddressBook(data: List<Any>) {
-        addressBookLiveData.postValue(data)
         addressBookList.clear()
         addressBookList.addAll(data)
+        addressBookLiveData.postValue(data)
     }
 
     private suspend fun searchUsers(keyword: String, data: MutableList<Any>) {

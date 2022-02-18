@@ -15,7 +15,7 @@ import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
 class AddressPageFragment : Fragment() {
 
-    private val type by lazy { requireArguments().getInt(EXTRA_TYPE) }
+    private val type by lazy { requireArguments().getInt(EXTRA_TYPE, -1) }
     private val adapter by lazy { AddressBookAdapter() }
 
     private lateinit var binding: LayoutTransactionSendAddressListBinding

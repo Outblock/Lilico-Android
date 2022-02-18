@@ -4,4 +4,5 @@ import io.outblock.lilico.network.model.AddressBookContact
 
 data class AddressBookPersonModel(
     val data: AddressBookContact,
+    var isFriend: Boolean? = null,
 )

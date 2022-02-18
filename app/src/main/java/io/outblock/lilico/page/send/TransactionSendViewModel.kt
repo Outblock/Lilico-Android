@@ -3,6 +3,7 @@ package io.outblock.lilico.page.send
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.addressBookCache
+import io.outblock.lilico.cache.recentTransactionCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.retrofit
@@ -24,7 +25,11 @@ class TransactionSendViewModel : ViewModel() {
     }
 
     private fun loadRecent() {
-
+        viewModelIOScope(this) {
+            recentTransactionCache().read()?.let { data ->
+                recentListLiveData.postValue(data.contacts?.map { AddressBookPersonModel(data = it) }.orEmpty())
+            }
+        }
     }
 
     private fun loadAddressBook() {
@@ -41,7 +46,9 @@ class TransactionSendViewModel : ViewModel() {
     }
 
     private fun loadAccounts() {
+        viewModelIOScope(this) {
 
+        }
     }
 
     private fun List<AddressBookContact>.format() = this.sortedBy { it.name() }.map { AddressBookPersonModel(data = it) }
