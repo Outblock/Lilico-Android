@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.network.model.AddressBookContact
+import io.outblock.lilico.page.send.subpage.amount.model.SendAmountModel
 import io.outblock.lilico.page.send.subpage.amount.presenter.SendAmountPresenter
 
 class SendAmountActivity : BaseActivity() {
@@ -26,6 +27,8 @@ class SendAmountActivity : BaseActivity() {
         presenter = SendAmountPresenter(this, binding, contact)
         viewModel = ViewModelProvider(this)[SendAmountViewModel::class.java].apply {
             setContact(contact)
+            balanceLiveData.observe(this@SendAmountActivity) { presenter.bind(SendAmountModel(balance = it)) }
+            load()
         }
     }
 

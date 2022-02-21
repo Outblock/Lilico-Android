@@ -146,4 +146,8 @@
     <string name="send_search_hint">Username, address(0x), Find or Flowns</string>
     <string name="recent">Recent</string>
     <string name="my_accounts">My Accounts</string>
+    <string name="transfer_amount">Transfer Amount</string>
+    <string name="max">Max</string>
+    <string name="amount_balance">Amount balance</string>
+    <string name="coin_rate_usd_convert">≈ $ %1$f</string>
 </resources>

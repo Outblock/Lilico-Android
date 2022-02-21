@@ -21,3 +21,11 @@ fun String?.toSafeLong(default: Long = 0): Long {
 
     return this.toLongOrNull() ?: default
 }
+
+fun String?.toSafeFloat(default: Float = 0f): Float {
+    if (this.isNullOrBlank()) {
+        return default
+    }
+
+    return this.toFloatOrNull() ?: default
+}

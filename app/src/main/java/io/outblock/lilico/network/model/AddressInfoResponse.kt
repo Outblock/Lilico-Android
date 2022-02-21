@@ -27,5 +27,5 @@ data class AddressInfoAccount(
     @SerializedName("address")
     val address: String,
     @SerializedName("balance")
-    val balance: String,
+    var balance: String,
 )

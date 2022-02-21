@@ -63,4 +63,10 @@ interface ApiService {
     @POST("/addressbook/contact")
     @JvmSuppressWildcards
     suspend fun editAddressBook(@Body params: Map<String, Any>): CommonResponse
+
+    @GET("/coin/rate")
+    suspend fun coinRate(@Query("coinId") coinId: Int): CoinRateResponse
+
+    @GET("/coin/map")
+    suspend fun coinMap(): CoinMapResponse
 }

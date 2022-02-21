@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Intent
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import io.outblock.lilico.manager.account.BalanceManager
+import io.outblock.lilico.manager.account.WalletManager
+import io.outblock.lilico.manager.coin.CoinMapManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
@@ -17,6 +20,7 @@ object LaunchManager {
         asyncInit()
         setNightMode()
         runWorker(application)
+        readCache()
     }
 
     private fun asyncInit() {
@@ -24,6 +28,12 @@ object LaunchManager {
             System.loadLibrary("TrustWalletCore")
             NftCollectionConfig.sync()
         }
+    }
+
+    private fun readCache() {
+        WalletManager.init()
+        CoinMapManager.reload()
+        BalanceManager.init()
     }
 
     private fun setNightMode() {
