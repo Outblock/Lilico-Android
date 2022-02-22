@@ -6,6 +6,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletCoinItemBinding
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
+import io.outblock.lilico.utils.formatBalance
 import java.math.BigDecimal
 import java.math.BigDecimal.ROUND_HALF_UP
 
@@ -25,7 +26,7 @@ class WalletCoinItemPresenter(
 
             coinIcon.setImageResource(R.drawable.ic_coin_flow)
             coinName.text = "Flow"
-            coinBalance.text = "${balance.setScale(3)} Flow"
+            coinBalance.text = "${model.balance.formatBalance()} Flow"
             coinPrice.text = "$9.08"
             coinBalancePrice.text = "$${currencyBalance.setScale(3, ROUND_HALF_UP)}"
         }

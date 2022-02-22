@@ -8,5 +8,5 @@ fun Long.formatBalance(): Float {
     val flowDecimal = BigDecimal(10).pow(8)
     val balance = BigDecimal(this).divide(flowDecimal)
     val currencyBalance = balance.multiply(currencyPrice)
-    return balance.setScale(3).toFloat()
+    return balance.setScale(3, BigDecimal.ROUND_HALF_DOWN).toFloat()
 }

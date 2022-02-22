@@ -14,6 +14,7 @@ import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
 import io.outblock.lilico.utils.extensions.toSafeLong
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.viewModelIOScope
 
 class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
@@ -30,12 +31,15 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
         this.contact = contact
     }
 
+    fun contact() = contact
+
     fun load() {
         viewModelIOScope(this) { WalletManager.fetch() }
     }
 
     override fun onBalanceUpdate(balance: AddressInfoAccount) {
         val coinRate = CoinRateManager.coinRate(CoinMapManager.getCoinIdByName("Flow")) { rate ->
+            logd("onBalanceUpdate 2", rate.usdRate())
             balanceLiveData.postValue(
                 SendBalanceModel(
                     address = balance.address,
@@ -44,6 +48,7 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
                 )
             )
         }
+        logd("onBalanceUpdate 1", coinRate?.usdRate())
         balanceLiveData.postValue(
             SendBalanceModel(
                 address = balance.address,

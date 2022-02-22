@@ -150,4 +150,9 @@
     <string name="max">Max</string>
     <string name="amount_balance">Amount balance</string>
     <string name="coin_rate_usd_convert">≈ $ %1$f</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="transaction">Transaction</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="amount_confirmation">Amount Confirmation</string>
 </resources>

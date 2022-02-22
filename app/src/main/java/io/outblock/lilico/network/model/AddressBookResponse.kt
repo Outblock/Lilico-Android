@@ -17,7 +17,7 @@ data class AddressBookResponse(
 
 data class AddressBookContactBookList(
     @SerializedName("contacts")
-    val contacts: List<AddressBookContact>?,
+    var contacts: List<AddressBookContact>?,
 )
 
 @Parcelize

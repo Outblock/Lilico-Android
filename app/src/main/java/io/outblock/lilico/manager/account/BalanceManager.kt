@@ -53,7 +53,7 @@ object BalanceManager {
             val isDiff = balanceList.isEmpty() || existBalance == null || existBalance.balance != balance.balance
             if (isDiff) {
                 dispatchListeners(balance)
-                balanceList.remove(balance)
+                balanceList.removeAll { it.address.toAddress() == address.toAddress() }
                 balanceList.add(balance)
                 ioScope { cache.cache(BalanceCache(balanceList.toList())) }
             }

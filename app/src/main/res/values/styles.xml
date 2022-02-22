@@ -121,7 +121,6 @@
         <item name="colorPrimary">@color/button_color</item>
         <item name="colorAccent">@color/button_color</item>
         <item name="colorOnPrimary">@color/button_color</item>
-        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="ShapeAppearanceOverlay">
