@@ -120,7 +120,7 @@
             android:id="@+id/max_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/bg_icon"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -140,17 +140,47 @@
             app:rippleColor="@color/black_20"
             tools:ignore="SmallSp"/>
 
-        <TextView
-            android:id="@+id/convert_amount_view"
+        <LinearLayout
+            android:id="@+id/convert_amount_wrapper"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_medium"
-            android:textColor="@color/note"
-            android:textSize="16sp"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/max_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/max_button"
-            tools:text="≈ $ 0.00"/>
+            app:layout_constraintTop_toTopOf="@id/max_button">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center"
+                android:text="≈"
+                android:textColor="@color/note"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"/>
+
+            <ImageView
+                android:id="@+id/convert_amount_icon_view"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_coin_usd"
+                tools:ignore="ContentDescription"
+                android:layout_marginHorizontal="3dp"
+                tools:tint="@color/note"/>
+
+            <TextView
+                android:id="@+id/convert_amount_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/note"
+                android:textSize="16dp"
+                tools:ignore="SpUsage"
+                tools:text="0.00"/>
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/swap_button"
@@ -159,9 +189,9 @@
             android:layout_marginStart="8dp"
             android:background="?attr/actionBarItemBackground"
             android:src="@drawable/ic_swap_amount"
-            app:layout_constraintBottom_toBottomOf="@id/convert_amount_view"
-            app:layout_constraintStart_toEndOf="@id/convert_amount_view"
-            app:layout_constraintTop_toTopOf="@id/convert_amount_view"
+            app:layout_constraintBottom_toBottomOf="@id/convert_amount_wrapper"
+            app:layout_constraintStart_toEndOf="@id/convert_amount_wrapper"
+            app:layout_constraintTop_toTopOf="@id/convert_amount_wrapper"
             tools:ignore="ContentDescription"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,6 +252,7 @@
         android:layout_marginStart="18dp"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
         android:text="@string/cancel"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/next_button"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -231,11 +262,11 @@
         style="@style/Button"
         android:layout_width="0dp"
         android:layout_height="54dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="18dp"
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
-        android:text="@string/next"
         android:enabled="false"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cancel_button"/>

@@ -12,6 +12,7 @@ import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.AddressInfoAccount
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
+import io.outblock.lilico.utils.Coin
 import io.outblock.lilico.utils.extensions.toSafeLong
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
@@ -22,10 +23,20 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
 
     val balanceLiveData = MutableLiveData<SendBalanceModel>()
 
+    val onCoinSwap = MutableLiveData<Boolean>()
+
+    private var currentCoin = Coin.FLOW
+    private var convertCoin = Coin.USD
+
+    private var coinList = Coin.values()
+
     init {
         WalletManager.addListener(this)
         BalanceManager.addListener(this)
     }
+
+    fun currentCoin() = currentCoin
+    fun convertCoin() = convertCoin
 
     fun setContact(contact: AddressBookContact) {
         this.contact = contact
@@ -35,6 +46,13 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
 
     fun load() {
         viewModelIOScope(this) { WalletManager.fetch() }
+    }
+
+    fun swapCoin() {
+        val temp = currentCoin
+        currentCoin = convertCoin
+        convertCoin = temp
+        onCoinSwap.postValue(true)
     }
 
     override fun onBalanceUpdate(balance: AddressInfoAccount) {

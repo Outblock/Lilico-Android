@@ -28,6 +28,7 @@ class SendAmountActivity : BaseActivity() {
         viewModel = ViewModelProvider(this)[SendAmountViewModel::class.java].apply {
             setContact(contact)
             balanceLiveData.observe(this@SendAmountActivity) { presenter.bind(SendAmountModel(balance = it)) }
+            onCoinSwap.observe(this@SendAmountActivity) { presenter.bind(SendAmountModel(onCoinSwap = true)) }
             load()
         }
     }

@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.send.subpage.amount.presenter
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +18,8 @@ import io.outblock.lilico.page.send.subpage.amount.model.SendAmountModel
 import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
 import io.outblock.lilico.page.send.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.send.subpage.transaction.TransactionDialog
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.*
-import io.outblock.lilico.utils.formatBalance
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.uiScope
 import wallet.core.jni.CoinType
 
 class SendAmountPresenter(
@@ -51,20 +50,29 @@ class SendAmountPresenter(
         }
         binding.nextButton.setOnClickListener { showSendDialog() }
         binding.cancelButton.setOnClickListener { activity.finish() }
+        binding.swapButton.setOnClickListener { viewModel.swapCoin() }
     }
 
     override fun bind(model: SendAmountModel) {
         model.balance?.let { updateBalance(it) }
+        model.onCoinSwap?.let { updateCoinState() }
+    }
+
+    private fun updateCoinState() {
+        with(binding) {
+            coinIconView.setImageResource(viewModel.currentCoin().icon())
+            updateTransferAmountConvert()
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateBalance(balance: SendBalanceModel) {
         with(binding) {
-            balanceAmountView.text = "${balance.balance.formatBalance()} Flow "
+            balanceAmountView.text = "${balance.balance.formatBalance().formatPrice()} Flow "
             balanceAmountConvertView.text =
                 activity.getString(
                     R.string.coin_rate_usd_convert,
-                    if (balance.coinRate > 0) balance.coinRate * balance.balance.formatBalance() else 0f
+                    (if (balance.coinRate > 0) balance.coinRate * balance.balance.formatBalance() else 0f).formatPrice()
                 )
             transferAmountInput.text = transferAmountInput.text
             updateTransferAmountConvert()
@@ -72,24 +80,29 @@ class SendAmountPresenter(
     }
 
     private fun updateTransferAmountConvert() {
-        binding.convertAmountView.text = activity.getString(
-            R.string.coin_rate_usd_convert,
-            binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat() * (balance()?.coinRate ?: 0f)
-        )
+        with(binding) {
+            convertAmountIconView.setImageResource(viewModel.convertCoin().icon())
+            if (viewModel.convertCoin() == Coin.USD) {
+                convertAmountIconView.imageTintList = ColorStateList.valueOf(R.color.note.res2color())
+            } else {
+                convertAmountIconView.imageTintList = null
+            }
+            convertAmountView.text = getAmountConvert()
+        }
     }
 
     private fun showSendDialog() {
         ioScope {
             val wallet = walletCache().read() ?: return@ioScope
             uiScope {
-                TransactionDialog(
-                    activity, TransactionModel(
+                TransactionDialog.newInstance(
+                    TransactionModel(
                         amount = binding.transferAmountInput.text.toString().toSafeFloat(),
                         coinType = CoinType.FLOW.value(),
                         target = viewModel.contact(),
                         fromAddress = wallet.wallets?.first()?.blockchain?.first()?.address.orEmpty(),
                     )
-                ).show()
+                ).show(activity.supportFragmentManager, "")
             }
         }
     }
@@ -115,5 +128,12 @@ class SendAmountPresenter(
     private fun verifyAmount(): Boolean {
         val number = binding.transferAmountInput.text.toString().toFloatOrNull()
         return number != null && number > 0
+    }
+
+    private fun getAmountConvert(): String {
+        val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
+        val rate = balance()?.coinRate ?: 0f
+        val convert = if (viewModel.convertCoin() == Coin.USD) amount * rate else amount / rate
+        return convert.formatPrice()
     }
 }

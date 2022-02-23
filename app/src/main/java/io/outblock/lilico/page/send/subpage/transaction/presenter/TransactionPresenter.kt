@@ -1,7 +1,6 @@
 package io.outblock.lilico.page.send.subpage.transaction.presenter
 
 import android.annotation.SuppressLint
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import io.outblock.lilico.R
@@ -12,20 +11,22 @@ import io.outblock.lilico.network.model.AddressBookContactBookList
 import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.send.subpage.transaction.TransactionDialog
 import io.outblock.lilico.page.send.subpage.transaction.TransactionViewModel
 import io.outblock.lilico.page.send.subpage.transaction.model.TransactionDialogModel
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.wallet.toAddress
 
 class TransactionPresenter(
-    private val activity: FragmentActivity,
+    private val fragment: TransactionDialog,
     private val binding: DialogTransactionDialogBinding,
 ) : BasePresenter<TransactionDialogModel> {
 
-    private val viewModel by lazy { ViewModelProvider(activity)[TransactionViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(fragment)[TransactionViewModel::class.java] }
 
     private val transaction by lazy { viewModel.transaction }
     private val contact by lazy { viewModel.transaction.target }
@@ -77,17 +78,17 @@ class TransactionPresenter(
                 list.add(0, transaction.target)
                 recentCache.contacts = list
                 recentTransactionCache().cache(recentCache)
-                uiScope { MainActivity.launch(activity) }
+                uiScope { MainActivity.launch(fragment.requireContext()) }
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setupAmount() {
-        binding.amountView.text = "${transaction.amount} Flow"
+        binding.amountView.text = "${transaction.amount.formatPrice()} Flow"
     }
 
     private fun updateAmountConvert(amountConvert: Float) {
-        binding.amountConvertView.text = "≈ \$ $amountConvert"
+        binding.amountConvertView.text = "≈ \$ ${amountConvert.formatPrice()}"
     }
 }
