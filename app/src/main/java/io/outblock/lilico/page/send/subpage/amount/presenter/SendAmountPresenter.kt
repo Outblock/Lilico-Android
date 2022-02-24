@@ -17,6 +17,7 @@ import io.outblock.lilico.page.send.subpage.amount.SendAmountViewModel
 import io.outblock.lilico.page.send.subpage.amount.model.SendAmountModel
 import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
 import io.outblock.lilico.page.send.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.send.subpage.amount.widget.SendCoinPopupMenu
 import io.outblock.lilico.page.send.subpage.transaction.TransactionDialog
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.*
@@ -48,9 +49,13 @@ class SendAmountPresenter(
                 return@setOnEditorActionListener false
             }
         }
-        binding.nextButton.setOnClickListener { showSendDialog() }
-        binding.cancelButton.setOnClickListener { activity.finish() }
-        binding.swapButton.setOnClickListener { viewModel.swapCoin() }
+        with(binding) {
+            nextButton.setOnClickListener { showSendDialog() }
+            cancelButton.setOnClickListener { activity.finish() }
+            swapButton.setOnClickListener { viewModel.swapCoin() }
+            coinWrapper.setOnClickListener { SendCoinPopupMenu(coinWrapper).show() }
+            maxButton.setOnClickListener { setMaxAmount() }
+        }
     }
 
     override fun bind(model: SendAmountModel) {
@@ -75,6 +80,7 @@ class SendAmountPresenter(
                     (if (balance.coinRate > 0) balance.coinRate * balance.balance.formatBalance() else 0f).formatPrice()
                 )
             transferAmountInput.text = transferAmountInput.text
+            transferAmountInput.setSelection(transferAmountInput.text.length)
             updateTransferAmountConvert()
         }
     }
@@ -115,6 +121,16 @@ class SendAmountPresenter(
         }
         binding.contactCard.addButton.setVisible(false)
         binding.closeButton.setOnClickListener { activity.finish() }
+    }
+
+    private fun setMaxAmount() {
+        val balance = balance()?.balance?.formatBalance() ?: 0f
+        val coinRate = balance()?.coinRate ?: 0f
+        val amount = (if (viewModel.convertCoin() == Coin.USD) balance else balance * coinRate).formatPrice()
+        with(binding) {
+            transferAmountInput.setText(amount)
+            transferAmountInput.setSelection(transferAmountInput.text.length)
+        }
     }
 
     private fun setupToolbar() {

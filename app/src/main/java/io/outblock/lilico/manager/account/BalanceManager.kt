@@ -2,6 +2,7 @@ package io.outblock.lilico.manager.account
 
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressInfoAccount
 import io.outblock.lilico.network.retrofit
@@ -24,6 +25,11 @@ object BalanceManager {
     fun init() {
         ioScope {
             balanceList.addAll(cache.read()?.data ?: emptyList())
+
+            val blockchainList = walletCache().read()?.primaryWallet()?.blockchain ?: return@ioScope
+            for (blockchain in blockchainList) {
+                fetch(blockchain.address.toAddress())
+            }
         }
     }
 
@@ -43,6 +49,8 @@ object BalanceManager {
             listeners.forEach { it.get()?.onBalanceUpdate(balance) }
         }
     }
+
+    fun getBalanceList() = balanceList.toList()
 
     private suspend fun fetch(address: String) {
         val service = retrofit().create(ApiService::class.java)

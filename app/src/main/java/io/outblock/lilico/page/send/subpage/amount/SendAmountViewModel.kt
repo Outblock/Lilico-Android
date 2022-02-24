@@ -28,8 +28,6 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
     private var currentCoin = Coin.FLOW
     private var convertCoin = Coin.USD
 
-    private var coinList = Coin.values()
-
     init {
         WalletManager.addListener(this)
         BalanceManager.addListener(this)
@@ -52,6 +50,11 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, BalanceCallback {
         val temp = currentCoin
         currentCoin = convertCoin
         convertCoin = temp
+        onCoinSwap.postValue(true)
+    }
+
+    fun changeCoin(coin: Coin) {
+        currentCoin = coin
         onCoinSwap.postValue(true)
     }
 

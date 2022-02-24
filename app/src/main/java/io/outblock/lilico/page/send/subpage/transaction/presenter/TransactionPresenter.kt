@@ -56,7 +56,11 @@ class TransactionPresenter(
             fromAddressView.text = "(${userInfo.address?.toAddress()})"
 
             toNameView.text = "${contact.name()} ${if (!contact.username.isNullOrEmpty()) "  (@${contact.username})" else ""}"
+            namePrefixView.text = contact.prefixName()
+            namePrefixView.setVisible(contact.prefixName().isNotEmpty())
+
             if (contact.domain?.domainType ?: 0 == 0) {
+                toAvatarView.setVisible(!contact.avatar.isNullOrEmpty(), invisible = true)
                 toAvatarView.loadAvatar(contact.avatar.orEmpty())
             } else {
                 val avatar =
@@ -64,6 +68,7 @@ class TransactionPresenter(
                 toAvatarView.setVisible(true)
                 Glide.with(toAvatarView).load(avatar).into(toAvatarView)
             }
+
             toAddressView.text = "(${contact.address})"
         }
     }

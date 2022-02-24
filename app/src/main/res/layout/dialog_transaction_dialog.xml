@@ -124,6 +124,23 @@
         tools:background="#999"/>
 
     <TextView
+        android:id="@+id/name_prefix_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_round_corner"
+        android:backgroundTint="@color/salmon5"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:textColor="@color/salmon_primary"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/to_avatar_view"
+        app:layout_constraintStart_toStartOf="@id/to_avatar_view"
+        app:layout_constraintTop_toTopOf="@id/to_avatar_view"
+        tools:text="A"
+        tools:visibility="visible"/>
+
+    <TextView
         android:id="@+id/to_name_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
