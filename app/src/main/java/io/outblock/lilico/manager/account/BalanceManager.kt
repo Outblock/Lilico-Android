@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 object BalanceManager {
     private val TAG = BalanceManager::class.java.simpleName
 
-    private val listeners = CopyOnWriteArrayList<WeakReference<BalanceCallback>>()
+    private val listeners = CopyOnWriteArrayList<WeakReference<OnBalanceUpdate>>()
 
     private val balanceList = CopyOnWriteArrayList<AddressInfoAccount>()
 
@@ -38,7 +38,7 @@ object BalanceManager {
         fetch(address)
     }
 
-    fun addListener(callback: BalanceCallback) {
+    fun addListener(callback: OnBalanceUpdate) {
         uiScope { this.listeners.add(WeakReference(callback)) }
     }
 
@@ -69,7 +69,7 @@ object BalanceManager {
     }
 }
 
-interface BalanceCallback {
+interface OnBalanceUpdate {
     fun onBalanceUpdate(balance: AddressInfoAccount)
 }
 

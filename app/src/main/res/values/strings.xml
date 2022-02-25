@@ -156,4 +156,5 @@
     <string name="to">To</string>
     <string name="amount_confirmation">Amount Confirmation</string>
     <string name="insufficient_balance">Insufficient balance</string>
+    <string name="copy_address_toast">Address copied to clipboard</string>
 </resources>

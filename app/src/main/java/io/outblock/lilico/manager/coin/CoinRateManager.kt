@@ -45,8 +45,9 @@ object CoinRateManager {
         return (quote?.price ?: -1f) * amount
     }
 
-    fun coinRate(coinId: Int, asyncCallback: (coinRate: CoinRate) -> Unit): CoinRate? {
+    fun coinRate(coinId: Int, asyncCallback: (coinRate: CoinRate) -> Unit) {
         val coinRate = coinRateMap[coinId]
+        uiScope { coinRate?.let { asyncCallback.invoke(it) } }
         if (coinRate?.isExpire() != false) {
             ioScope {
                 val service = retrofit().create(ApiService::class.java)
@@ -57,7 +58,6 @@ object CoinRateManager {
                 }
             }
         }
-        return coinRate
     }
 
     private fun CoinRateQuote.isExpire(): Boolean = System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS

@@ -4,4 +4,5 @@ import io.outblock.lilico.network.model.WalletListData
 
 data class WalletHeaderModel(
     val walletList: WalletListData,
+    var balance: Float,
 )

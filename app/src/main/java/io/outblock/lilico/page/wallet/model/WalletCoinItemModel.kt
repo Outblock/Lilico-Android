@@ -6,4 +6,5 @@ data class WalletCoinItemModel(
     val type: CoinType,
     val address: String,
     val balance: Long,
+    val coinRate: Float,
 )

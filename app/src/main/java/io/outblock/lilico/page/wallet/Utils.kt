@@ -19,7 +19,7 @@ val walletListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         if (oldItem is WalletHeaderModel && newItem is WalletHeaderModel) {
-            return oldItem.walletList == newItem.walletList
+            return oldItem == newItem
         }
 
         if (oldItem is WalletCoinItemModel && newItem is WalletCoinItemModel) {
