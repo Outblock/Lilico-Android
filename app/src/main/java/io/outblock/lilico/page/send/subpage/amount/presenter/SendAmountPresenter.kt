@@ -2,9 +2,13 @@ package io.outblock.lilico.page.send.subpage.amount.presenter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.Fade
+import androidx.transition.Scene
+import androidx.transition.TransitionManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.walletCache
@@ -39,6 +43,7 @@ class SendAmountPresenter(
         with(binding.transferAmountInput) {
             doOnTextChanged { _, _, _, _ ->
                 updateTransferAmountConvert()
+                checkAmount()
                 binding.nextButton.isEnabled = verifyAmount()
             }
             setOnEditorActionListener { _, actionId, _ ->
@@ -56,6 +61,19 @@ class SendAmountPresenter(
             coinWrapper.setOnClickListener { SendCoinPopupMenu(coinWrapper).show() }
             maxButton.setOnClickListener { setMaxAmount() }
         }
+    }
+
+    private fun checkAmount() {
+        val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
+        val coinRate = balance()?.coinRate ?: 0f
+        val inputBalance = if (viewModel.convertCoin() == Coin.USD) amount else amount / (if (coinRate == 0f) 1f else coinRate)
+        val isOutOfBalance = inputBalance > (balance()?.balance ?: 0).formatBalance()
+        if (isOutOfBalance && !binding.errorWrapper.isVisible()) {
+            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
+        } else if (!isOutOfBalance && binding.errorWrapper.isVisible()) {
+            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
+        }
+        binding.errorWrapper.setVisible(isOutOfBalance)
     }
 
     override fun bind(model: SendAmountModel) {

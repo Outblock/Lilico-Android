@@ -22,7 +22,10 @@ object CoinRateManager {
 
             val service = retrofit().create(ApiService::class.java)
             val response = service.coinRate(CoinMapManager.getCoinIdByName("Flow"))
-            response.data.data.values.forEach { updateCache(it.id, it) }
+            response.data.data.values.forEach {
+                coinRateMap[it.id] = it
+                cache.cache(CoinRateCacheData(coinRateMap))
+            }
         }
     }
 

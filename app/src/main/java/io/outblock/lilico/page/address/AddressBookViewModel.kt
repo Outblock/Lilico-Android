@@ -181,7 +181,7 @@ class AddressBookViewModel : ViewModel() {
             return
         }
         safeRun {
-            val address = FlowJvmHelper().getFlownsAddress(keyword)
+            val address = FlowJvmHelper().getFlownsAddress(keyword) ?: return@safeRun
             data.add(AddressBookCharModel(text = ".flowns"))
             data.add(
                 AddressBookPersonModel(
@@ -201,7 +201,7 @@ class AddressBookViewModel : ViewModel() {
             return
         }
         safeRun {
-            val address = FlowJvmHelper().getFindAddress(keyword.lowercase().removeSuffix(".find"))
+            val address = FlowJvmHelper().getFindAddress(keyword.lowercase().removeSuffix(".find")) ?: return@safeRun
             data.add(AddressBookCharModel(text = ".find"))
             data.add(
                 AddressBookPersonModel(
