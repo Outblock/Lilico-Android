@@ -142,15 +142,17 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     private suspend fun loadGridData() {
-        cacheNftList.read()?.nfts?.let { nftList ->
-            gridDataLiveData.postValue(nftList.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
+        cacheNftList.read()?.nfts?.toMutableList()?.let { nftList ->
+            gridDataLiveData.postValue(nftList.removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
         if (isGridMode) {
             emptyLiveData.postValue(resp.data.nfts.isEmpty())
-            gridDataLiveData.postValue(resp.data.nfts.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
+            gridDataLiveData.postValue(
+                resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader()
+            )
         }
     }
 
@@ -158,6 +160,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0x53f389d96fb4ce5e
         //0x2b06c41f44a05656
         //0xccea80173b51e028
+        //0x4ab2b65a8b2be2aa
         if (BuildConfig.DEBUG) {
             return "0x2b06c41f44a05656"
         }

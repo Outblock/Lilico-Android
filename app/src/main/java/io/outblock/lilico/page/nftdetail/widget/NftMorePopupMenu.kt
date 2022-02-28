@@ -1,14 +1,13 @@
 package io.outblock.lilico.page.nftdetail.widget
 
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.page.nftdetail.NftDetailViewModel
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.findActivity
-import io.outblock.lilico.utils.generateMenuItem
+import io.outblock.lilico.utils.popupMenu
 import io.outblock.lilico.utils.uiScope
 
 class NftMorePopupMenu(
@@ -19,21 +18,22 @@ class NftMorePopupMenu(
 
     fun show() {
         uiScope {
-            val popup = PopupMenu(view.context, view)
-            popup.menu.add(generateMenuItem(R.string.download, R.drawable.ic_download, color))
-            popup.menu.add(generateMenuItem(R.string.view_on_web, R.drawable.ic_web, color))
-            popup.setOnMenuItemClickListener {
-                onMenuItemClick(it)
-            }
-            popup.show()
+            popupMenu(
+                view,
+                titles = listOf(
+                    R.string.download.res2String(),
+                    R.string.view_on_web.res2String(),
+                ),
+                icons = listOf(R.drawable.ic_download, R.drawable.ic_web),
+                selectListener = { _, text -> onMenuItemClick(text) },
+            ).show()
         }
     }
 
-    private fun onMenuItemClick(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.action_select -> {}
-            R.id.action_share -> {}
-            R.id.action_send -> {}
+    private fun onMenuItemClick(text: String): Boolean {
+        when (text) {
+            R.string.download.res2String() -> {}
+            R.string.view_on_web.res2String() -> {}
         }
         return true
     }

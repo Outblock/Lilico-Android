@@ -50,6 +50,9 @@ fun Nft.cover(): String? {
 }
 
 fun Nft.name(): String? {
+    if (!title.isNullOrBlank()) {
+        return title
+    }
     val config = NftCollectionConfig.get(contract.address) ?: return null
     return "${config.name} #${id.tokenId}"
 }
@@ -70,7 +73,7 @@ fun List<Nft>.parseToCollectionList(): List<CollectionItemModel> {
         list.add(it)
         collectionMap[it.contract.address] = list
     }
-    return collectionMap.map {
+    return collectionMap.filter { NftCollectionConfig.get(it.key) != null }.map {
         val nft = it.value.first()
         CollectionItemModel(
             name = nft.contract.name,
@@ -79,4 +82,9 @@ fun List<Nft>.parseToCollectionList(): List<CollectionItemModel> {
             nfts = it.value,
         )
     }.sortedByDescending { it.count }
+}
+
+fun MutableList<Nft>.removeEmpty(): MutableList<Nft> {
+    removeAll { it.name().isNullOrBlank() || it.uniqueId().isBlank() || NftCollectionConfig.get(it.contract.address) == null }
+    return this
 }

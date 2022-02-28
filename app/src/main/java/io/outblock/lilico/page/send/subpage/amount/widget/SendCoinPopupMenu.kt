@@ -1,13 +1,10 @@
 package io.outblock.lilico.page.send.subpage.amount.widget
 
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.page.send.subpage.amount.SendAmountViewModel
 import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.dp2px
 
 class SendCoinPopupMenu(
     private val view: View,
@@ -18,15 +15,12 @@ class SendCoinPopupMenu(
         ioScope {
             val coinList = generateCoinList()
             uiScope {
-                val popup = PopupMenu(view.context, view)
-                val iconSize = 22.dp2px().toInt()
-                coinList.forEach { coin ->
-                    popup.menu.add(generateMenuItem(coin.name(), coin.icon(), maxIconWidth = iconSize, maxIconHeight = iconSize))
-                }
-                popup.setOnMenuItemClickListener {
-                    onMenuItemClick(it)
-                }
-                popup.show()
+                popupMenu(
+                    view,
+                    titles = coinList.map { it.name() },
+                    icons = coinList.map { it.icon() },
+                    selectListener = { _, text -> onMenuItemClick(text) },
+                ).show()
             }
         }
     }
@@ -35,8 +29,8 @@ class SendCoinPopupMenu(
         return listOf(Coin.FLOW, Coin.FUSD)
     }
 
-    private fun onMenuItemClick(menuItem: MenuItem): Boolean {
-        when (menuItem.title) {
+    private fun onMenuItemClick(text: String): Boolean {
+        when (text) {
             Coin.FUSD.name() -> viewModel.changeCoin(Coin.FUSD)
             Coin.FLOW.name() -> viewModel.changeCoin(Coin.FLOW)
         }

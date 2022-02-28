@@ -11,6 +11,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.cover
 import io.outblock.lilico.page.nft.model.NFTItemModel
@@ -24,10 +25,13 @@ class NFTListItemPresenter(
     private val view: View,
 ) : BaseViewHolder(view), BasePresenter<NFTItemModel> {
     private val binding by lazy { ItemNftListBinding.bind(view) }
+    private val activity by lazy { findActivity(view) as FragmentActivity }
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModel::class.java] }
     private val context = view.context
 
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2pix() }
+
+    private val isCollectionPage by lazy { activity.javaClass == CollectionActivity::class.java }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: NFTItemModel) {
@@ -51,13 +55,18 @@ class NFTListItemPresenter(
                 true
             }
 
-            with(view) {
-                setPadding(
-                    if (model.index % 2 == 0) dividerSize else dividerSize / 2,
-                    paddingTop,
-                    if (model.index % 2 != 0) dividerSize else dividerSize / 2,
-                    paddingBottom,
-                )
+            if (isCollectionPage) {
+                view.setBackgroundResource(R.color.transparent)
+                view.setPadding(0, 0, 0, 0)
+            } else {
+                with(view) {
+                    setPadding(
+                        if (model.index % 2 == 0) dividerSize else dividerSize / 2,
+                        paddingTop,
+                        if (model.index % 2 != 0) dividerSize else dividerSize / 2,
+                        paddingBottom,
+                    )
+                }
             }
         }
         view.setOnClickListener { NftDetailActivity.launch(context, viewModel.getWalletAddress().orEmpty(), nft.contract.address, nft.id.tokenId) }

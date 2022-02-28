@@ -13,13 +13,11 @@ import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -123,25 +121,18 @@ class NftDetailPresenter(
         Glide.with(binding.coverView)
             .asBitmap()
             .load(nft.cover())
-            .listener(object : RequestListener<Bitmap> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean = false
-
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    model: Any?,
-                    target: Target<Bitmap>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
+            .into(object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     ioScope {
                         coverRatio = "${resource.width}:${resource.height}"
                         val color = Palette.from(resource).generate().getDominantColor(R.color.text_sub.res2color())
-                        uiScope { updatePageColor(color) }
+                        uiScope {
+                            updatePageColor(color)
+                            binding.coverView.setImageBitmap(resource)
+                        }
                     }
-                    return false
                 }
             })
-            .into(binding.coverView)
     }
 
     private fun updatePageColor(color: Int) {
