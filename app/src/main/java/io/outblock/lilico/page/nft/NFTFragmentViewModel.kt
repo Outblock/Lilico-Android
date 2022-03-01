@@ -12,7 +12,10 @@ import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.page.nft.model.*
+import io.outblock.lilico.page.nft.model.CollectionItemModel
+import io.outblock.lilico.page.nft.model.CollectionTabsModel
+import io.outblock.lilico.page.nft.model.CollectionTitleModel
+import io.outblock.lilico.page.nft.model.NFTItemModel
 import io.outblock.lilico.utils.*
 
 class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
@@ -143,7 +146,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     private suspend fun loadGridData() {
         cacheNftList.read()?.nfts?.toMutableList()?.let { nftList ->
-            gridDataLiveData.postValue(nftList.removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader())
+            gridDataLiveData.postValue(nftList.removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
@@ -151,7 +154,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         if (isGridMode) {
             emptyLiveData.postValue(resp.data.nfts.isEmpty())
             gridDataLiveData.postValue(
-                resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.addHeader()
+                resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
             )
         }
     }
@@ -165,16 +168,6 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
             return "0x2b06c41f44a05656"
         }
         return cacheWallet.read()?.primaryWallet()?.blockchain?.firstOrNull()?.address
-    }
-
-    private fun List<Any>.addHeader(): List<Any> {
-        if (size == 0) {
-            return this
-        }
-        val list = this
-        return mutableListOf<Any>(
-            HeaderPlaceholderModel(addDivider = isGridMode),
-        ).apply { addAll(list) }.toList()
     }
 
     private fun loadSelectionCards() {
