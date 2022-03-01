@@ -18,6 +18,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -27,13 +29,11 @@ import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.cover
 import io.outblock.lilico.page.nft.desc
+import io.outblock.lilico.page.nft.video
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
-import io.outblock.lilico.utils.ScreenUtils
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isNftInSelection
-import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.likebutton.LikeButton
 import io.outblock.lilico.widgets.likebutton.OnLikeListener
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -51,6 +51,8 @@ class NftDetailPresenter(
     private var pageColor: Int = R.color.text_sub.res2color()
 
     private val screenHeight by lazy { ScreenUtils.getScreenHeight() }
+
+    private val videoPlayer by lazy { ExoPlayer.Builder(activity).build() }
 
     private var coverRatio = "1:1"
 
@@ -85,6 +87,11 @@ class NftDetailPresenter(
 
     override fun bind(model: NftDetailModel) {
         model.nft?.let { bindData(it) }
+        if (!nft?.video().isNullOrBlank()) {
+            model.onPause?.let { safeRun { videoPlayer.pause() } }
+            model.onRestart?.let { safeRun { videoPlayer.play() } }
+            model.onDestroy?.let { safeRun { videoPlayer.release() } }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -113,7 +120,24 @@ class NftDetailPresenter(
 
             bindTags(nft)
 
+            bindVideo(nft)
+
             ioScope { updateSelectionState(isNftInSelection(nft)) }
+        }
+    }
+
+    private fun bindVideo(nft: Nft) {
+        val uri = nft.video()
+        if (uri.isNullOrBlank()) {
+            return
+        }
+        with(videoPlayer) {
+            setVideoTextureView(binding.videoView)
+            setMediaItem(MediaItem.fromUri(uri))
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
+            volume = 0f
+            prepare()
+            play()
         }
     }
 
@@ -138,9 +162,9 @@ class NftDetailPresenter(
     private fun updatePageColor(color: Int) {
         pageColor = color
         with(binding) {
-            with(coverView.layoutParams as ConstraintLayout.LayoutParams) {
+            with(mediaWrapper.layoutParams as ConstraintLayout.LayoutParams) {
                 dimensionRatio = coverRatio
-                coverView.layoutParams = this
+                mediaWrapper.layoutParams = this
             }
 
             shareButton.setColorFilter(color)

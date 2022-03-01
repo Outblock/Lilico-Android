@@ -31,16 +31,16 @@
                 android:layout_height="0dp"
                 android:alpha="0.2"
                 android:background="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="@id/background_image"
-                app:layout_constraintBottom_toBottomOf="@id/background_image"/>
+                app:layout_constraintBottom_toBottomOf="@id/background_image"
+                app:layout_constraintTop_toTopOf="@id/background_image"/>
 
             <View
                 android:id="@+id/background_gradient"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@drawable/bg_nft_gradient"
-                app:layout_constraintTop_toTopOf="@id/background_image"
-                app:layout_constraintBottom_toBottomOf="@id/background_image"/>
+                app:layout_constraintBottom_toBottomOf="@id/background_image"
+                app:layout_constraintTop_toTopOf="@id/background_image"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/header_wrapper"
@@ -51,17 +51,29 @@
                 android:paddingTop="40dp"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/cover_view"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/media_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginEnd="18dp"
-                    android:scaleType="centerCrop"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:round="12dp"
-                    tools:background="#e0e0e0"
-                    tools:ignore="ContentDescription"/>
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/cover_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:background="#e0e0e0"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextureView
+                        android:id="@+id/video_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/title_view"
@@ -121,7 +133,7 @@
                     app:dots_secondary_color="@color/success"
                     app:icon_size="44dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cover_view"
+                    app:layout_constraintTop_toBottomOf="@id/media_wrapper"
                     app:like_drawable="@drawable/ic_collect_nft"
                     app:unlike_drawable="@drawable/ic_collect_nft"
                     tools:background="#999"
@@ -137,7 +149,7 @@
                     android:layout_marginEnd="74dp"
                     android:paddingBottom="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cover_view">
+                    app:layout_constraintTop_toBottomOf="@id/media_wrapper">
 
                     <ImageButton
                         android:id="@+id/share_button"

@@ -61,6 +61,10 @@ fun Nft.desc(): String? {
     return description ?: metadata.metadata.firstOrNull { it.name == "description" }?.value
 }
 
+fun Nft.video(): String? {
+    return media?.firstOrNull { it.mimeType.startsWith("video/") }?.uri?.trim()?.removePrefix("ipfs://")
+}
+
 fun Nft.isSameNft(other: Nft): Boolean {
     return contract.address == other.contract.address && id.tokenId == other.id.tokenId
 }

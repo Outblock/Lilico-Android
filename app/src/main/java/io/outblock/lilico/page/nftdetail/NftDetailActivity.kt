@@ -30,8 +30,23 @@ class NftDetailActivity : BaseActivity() {
         presenter = NftDetailPresenter(this, binding)
         viewModel = ViewModelProvider(this)[NftDetailViewModel::class.java].apply {
             nftLiveData.observe(this@NftDetailActivity) { presenter.bind(NftDetailModel(nft = it)) }
-            load(walletAddress, nftAddress,tokenId)
+            load(walletAddress, nftAddress, tokenId)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.bind(NftDetailModel(onPause = true))
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        presenter.bind(NftDetailModel(onRestart = true))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.bind(NftDetailModel(onDestroy = true))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

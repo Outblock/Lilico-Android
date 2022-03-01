@@ -161,6 +161,8 @@ dependencies {
     implementation 'com.github.varunest:sparkbutton:1.0.6'
 
     implementation 'com.github.li-xiaojun:XPopup:2.7.5'
+    implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.10'
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"
