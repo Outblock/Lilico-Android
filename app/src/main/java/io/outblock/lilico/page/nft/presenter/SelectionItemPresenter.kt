@@ -69,7 +69,7 @@ class SelectionItemPresenter(
     override fun bind(model: NftSelections) {
         val list = model.data.reversed()
         currentIndex = 0
-        view.setVisible(list.isNotEmpty())
+//        view.setVisible(list.isNotEmpty())
         updateData(list)
     }
 

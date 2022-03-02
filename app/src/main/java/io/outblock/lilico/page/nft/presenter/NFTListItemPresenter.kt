@@ -55,19 +55,9 @@ class NFTListItemPresenter(
                 true
             }
 
-            if (isCollectionPage) {
-                view.setBackgroundResource(R.color.transparent)
-                view.setPadding(0, 0, 0, 0)
-            } else {
-                with(view) {
-                    setPadding(
-                        if (model.index % 2 == 0) dividerSize else dividerSize / 2,
-                        paddingTop,
-                        if (model.index % 2 != 0) dividerSize else dividerSize / 2,
-                        paddingBottom,
-                    )
-                }
-            }
+            view.setBackgroundResource(R.color.transparent)
+            view.setPadding(0, 0, 0, 0)
+
         }
         view.setOnClickListener { NftDetailActivity.launch(context, viewModel.getWalletAddress().orEmpty(), nft.contract.address, nft.id.tokenId) }
     }

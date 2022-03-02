@@ -9,6 +9,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTitleBinding
 import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.model.CollectionTitleModel
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 
 class CollectionTitlePresenter(
@@ -23,6 +24,7 @@ class CollectionTitlePresenter(
     }
 
     override fun bind(model: CollectionTitleModel) {
+        view.setVisible()
         binding.textView.text = view.context.getString(R.string.collections_count, model.count)
     }
 }

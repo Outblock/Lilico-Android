@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="56dp"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="16dp"
@@ -13,9 +13,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginEnd="20dp"
-        android:padding="8dp">
+        android:paddingHorizontal="8dp">
 
         <ImageView
             android:id="@+id/cover_view"
@@ -35,8 +35,8 @@
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/montsettat"
             android:textColor="@color/text"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/count_view"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/cover_view"
@@ -47,8 +47,8 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_marginStart="2dp"
-            android:src="@drawable/ic_coin_flow"
             android:scaleType="centerInside"
+            android:src="@drawable/ic_coin_flow"
             app:layout_constraintBottom_toBottomOf="@id/name_view"
             app:layout_constraintStart_toEndOf="@id/name_view"
             app:layout_constraintTop_toTopOf="@id/name_view"/>

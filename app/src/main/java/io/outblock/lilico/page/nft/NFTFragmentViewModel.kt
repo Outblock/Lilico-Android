@@ -22,11 +22,15 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     val listDataLiveData = MutableLiveData<List<Any>>()
     val topSelectionLiveData = MutableLiveData<NftSelections>()
-    val gridDataLiveData = MutableLiveData<List<Any>>()
     val selectionIndexLiveData = MutableLiveData<Int>()
     val listScrollChangeLiveData = MutableLiveData<Int>()
     val collectionTabChangeLiveData = MutableLiveData<String>()
+    val collectionTabsLiveData = MutableLiveData<CollectionTabsModel>()
+    val collectionTitleLiveData = MutableLiveData<CollectionTitleModel>()
+    val collectionExpandChangeLiveData = MutableLiveData<Boolean>()
     val emptyLiveData = MutableLiveData<Boolean>()
+
+    val gridDataLiveData = MutableLiveData<List<Any>>()
 
     private var isGridMode = false
     private var isCollectionExpanded = false
@@ -41,21 +45,33 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         NftSelectionManager.addOnNftSelectionChangeListener(this)
     }
 
-    fun load() {
+    fun loadList() {
         viewModelIOScope(this) {
             if (address.isNullOrEmpty()) {
                 logw(TAG, "address not found")
                 return@viewModelIOScope
             }
             isCollectionExpanded = isNftCollectionExpanded()
-            if (isGridMode) loadGridData() else loadListData()
+            collectionExpandChangeLiveData.postValue(isCollectionExpanded)
+            loadListData()
+        }
+    }
+
+    fun loadGrid() {
+        viewModelIOScope(this) {
+            if (address.isNullOrEmpty()) {
+                logw(TAG, "address not found")
+                return@viewModelIOScope
+            }
+            loadGridData()
         }
     }
 
     fun updateLayoutMode(isGridMode: Boolean) {
         this.isGridMode = isGridMode
-        load()
     }
+
+    fun isCollectionExpanded() = isCollectionExpanded
 
     fun updateSelectionIndex(position: Int) {
         selectionIndexLiveData.postValue(position)
@@ -69,6 +85,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         ioScope {
             updateNftCollectionExpanded(!isCollectionExpanded)
             isCollectionExpanded = isNftCollectionExpanded()
+            collectionExpandChangeLiveData.postValue(isCollectionExpanded)
             loadListDataFromCache()
         }
     }
@@ -111,29 +128,25 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
         emptyLiveData.postValue(data.isEmpty())
 
-        if (!isGridMode) {
-            listDataLiveData.postValue(data)
-        }
+        listDataLiveData.postValue(data)
     }
 
     private fun loadListDataFromCache() {
         val data = mutableListOf<Any>()
         cacheNftList.read()?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
-        if (!isGridMode) {
-            listDataLiveData.postValue(data)
-        }
+        listDataLiveData.postValue(data)
     }
 
     private fun MutableList<Any>.addCollections(collections: List<CollectionItemModel>) {
         if (collections.isNotEmpty()) {
-            add(CollectionTitleModel(count = collections.size))
+            collectionTitleLiveData.postValue(CollectionTitleModel(count = collections.size))
+            if (selectedCollection.isEmpty()) {
+                selectedCollection = collections.first().address
+            }
+            collections.forEach { it.isSelected = it.address == selectedCollection }
+            collectionTabsLiveData.postValue(CollectionTabsModel(collections = collections))
             if (isCollectionExpanded) {
-                if (selectedCollection.isEmpty()) {
-                    selectedCollection = collections.first().address
-                }
-                collections.forEach { it.isSelected = it.address == selectedCollection }
-                add(CollectionTabsModel(collections = collections))
                 addAll(collections
                     .first { it.address == selectedCollection }
                     .nfts?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
@@ -151,12 +164,10 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
         cacheNftList.cache(resp.data)
-        if (isGridMode) {
-            emptyLiveData.postValue(resp.data.nfts.isEmpty())
-            gridDataLiveData.postValue(
-                resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
-            )
-        }
+        emptyLiveData.postValue(resp.data.nfts.isEmpty())
+        gridDataLiveData.postValue(
+            resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
+        )
     }
 
     private fun getNftAddress(): String? {

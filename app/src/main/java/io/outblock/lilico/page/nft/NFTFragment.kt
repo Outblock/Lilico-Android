@@ -33,7 +33,6 @@ class NFTFragment : Fragment() {
             topSelectionLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(topSelection = it)) }
             listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
             emptyLiveData.observe(viewLifecycleOwner) { isEmpty -> emptyPresenter.setVisible(isEmpty) }
-            load()
         }
     }
 }

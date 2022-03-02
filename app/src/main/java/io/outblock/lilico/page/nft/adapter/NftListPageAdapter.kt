@@ -3,6 +3,7 @@ package io.outblock.lilico.page.nft.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import io.outblock.lilico.page.nft.NFTFragment
+import io.outblock.lilico.page.nft.NftGridFragment
 import io.outblock.lilico.page.nft.NftListFragment
 
 class NftListPageAdapter(
@@ -13,8 +14,8 @@ class NftListPageAdapter(
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            1 -> NftListFragment.newInstance(false)
-            else -> NftListFragment.newInstance(true)
+            1 -> NftGridFragment.newInstance()
+            else -> NftListFragment.newInstance()
         }
     }
 }

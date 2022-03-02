@@ -13,6 +13,7 @@ import io.outblock.lilico.page.nft.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.adapter.CollectionTabsAdapter
 import io.outblock.lilico.page.nft.model.CollectionTabsModel
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -42,6 +43,7 @@ class CollectionTabsPresenter(
     }
 
     override fun bind(model: CollectionTabsModel) {
-        adapter.setNewDiffData(model.collections)
+        model.collections?.let { adapter.setNewDiffData(it) }
+        model.isExpand?.let { (view.parent as View).setVisible(it) }
     }
 }

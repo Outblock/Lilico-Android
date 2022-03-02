@@ -10,24 +10,24 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.databinding.FragmentNftListBinding
 import io.outblock.lilico.page.nft.adapter.NFTListAdapter
 import io.outblock.lilico.page.nft.model.*
+import io.outblock.lilico.page.nft.presenter.CollectionTabsPresenter
+import io.outblock.lilico.page.nft.presenter.CollectionTitlePresenter
 import io.outblock.lilico.page.nft.presenter.SelectionItemPresenter
-import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.res2dip
+import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.widgets.itemdecoration.DividerVisibleCheck
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 internal class NftListFragment : Fragment() {
-
-    private val isList by lazy { arguments?.getBoolean(EXTRA_IS_LIST) ?: true }
 
     private lateinit var binding: FragmentNftListBinding
     private lateinit var viewModel: NFTFragmentViewModel
@@ -38,6 +38,9 @@ internal class NftListFragment : Fragment() {
 
     private val selectionPresenter by lazy { SelectionItemPresenter(binding.topSelectionHeader) }
 
+    private val collectionTabsPresenter by lazy { CollectionTabsPresenter(binding.collectionTabs) }
+    private val collectionTitlePresenter by lazy { CollectionTitlePresenter(binding.collectionTitle.root) }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNftListBinding.inflate(inflater)
         return binding.root
@@ -46,33 +49,43 @@ internal class NftListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         setupScrollView()
-        binding.root.setBackgroundResource(if (isList) R.color.neutrals12 else R.color.colorPrimary)
-        binding.backgroundWrapper.layoutParams.height = (ScreenUtils.getScreenHeight() * 0.55).toInt()
+        binding.root.setBackgroundResource(R.color.neutrals12)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            if (isList) {
-                listDataLiveData.observe(viewLifecycleOwner) { data ->
-                    adapter.setNewDiffData(data)
+            listDataLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
+            topSelectionLiveData.observe(viewLifecycleOwner) { data ->
+                selectionPresenter.bind(data)
+                if (data.data.isEmpty()) {
+                    Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
                 }
-                topSelectionLiveData.observe(viewLifecycleOwner) { data ->
-                    selectionPresenter.bind(data)
-                    if (data.data.isEmpty()) {
-                        Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
-                    }
-                }
-                selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
-            } else {
-                gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
+                binding.root.setStickyView(R.id.collection_tabs)
             }
-            load()
+            selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
+            collectionTabsLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(it) }
+            collectionExpandChangeLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(CollectionTabsModel(isExpand = it)) }
+            collectionTitleLiveData.observe(viewLifecycleOwner) { collectionTitlePresenter.bind(it) }
+            loadList()
+        }
+    }
+
+    private fun updateListData(data: List<Any>) {
+        adapter.setNewDiffData(data)
+        with(binding.recyclerView) {
+            if (viewModel.isCollectionExpanded()) {
+                setBackgroundResource(R.drawable.bg_top_radius_16dp)
+                setPadding(paddingLeft, io.outblock.lilico.R.dimen.nft_list_divider_size.res2pix(), paddingRight, paddingBottom)
+            } else {
+                setBackgroundResource(R.color.transparent)
+                setPadding(paddingLeft, 0, paddingRight, paddingBottom)
+            }
         }
     }
 
     private fun setupScrollView() {
-        binding.root.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-            if (isList) {
-                viewModel.onListScrollChange(scrollY)
-            }
+        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            viewModel.onListScrollChange(scrollY)
         })
+        binding.root.setStickyView(R.id.collection_tabs)
+        binding.root.setOffsetY(R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight)
     }
 
     private fun setupRecyclerView() {
@@ -91,15 +104,8 @@ internal class NftListFragment : Fragment() {
                     horizontal = dividerSize,
                     start = dividerSize,
                     end = dividerSize
-                ).apply {
-                    setDividerVisibleCheck(object : DividerVisibleCheck {
-                        override fun dividerVisible(position: Int): Boolean {
-                            val item = this@NftListFragment.adapter.getData().getOrNull(position) ?: return true
-                            return !(item is NftSelections || item is CollectionTabsModel
-                              || (isList && item is NFTTitleModel) || item is NFTItemModel)
-                        }
-                    })
-                })
+                )
+            )
         }
     }
 
@@ -111,10 +117,6 @@ internal class NftListFragment : Fragment() {
 
     private fun updateSelection(index: Int) {
         ioScope {
-            if (viewModel.isGridMode()) {
-                return@ioScope
-            }
-
             if (index < 0) {
                 Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
             }
@@ -135,11 +137,8 @@ internal class NftListFragment : Fragment() {
     }
 
     companion object {
-        private const val EXTRA_IS_LIST = "extra_is_list"
-        fun newInstance(isList: Boolean): NftListFragment {
-            return NftListFragment().apply {
-                arguments = Bundle().apply { putBoolean(EXTRA_IS_LIST, isList) }
-            }
+        fun newInstance(): NftListFragment {
+            return NftListFragment()
         }
     }
 }
