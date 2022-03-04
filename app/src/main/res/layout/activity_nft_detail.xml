@@ -7,10 +7,17 @@
     android:background="@color/colorPrimary"
     tools:background="#aaaaaa">
 
+    <FrameLayout
+        android:id="@+id/share_screenshot_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent">
 

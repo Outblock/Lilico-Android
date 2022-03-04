@@ -111,6 +111,16 @@
 
         <activity android:name=".page.demo.DemoActivity"/>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/file_provider_authorities"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
         <!-- Firebase Messaging Start -->
         <service
             android:name=".service.MessagingService"
