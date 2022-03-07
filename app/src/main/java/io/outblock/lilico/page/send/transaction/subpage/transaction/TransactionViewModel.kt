@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.transaction
+package io.outblock.lilico.page.send.transaction.subpage.transaction
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.flowjvm.FlowJvmTransaction
 import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.page.send.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.toAddress
 

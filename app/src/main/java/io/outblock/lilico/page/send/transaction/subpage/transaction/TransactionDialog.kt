@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.transaction
+package io.outblock.lilico.page.send.transaction.subpage.transaction
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.databinding.DialogTransactionDialogBinding
-import io.outblock.lilico.page.send.subpage.amount.model.TransactionModel
-import io.outblock.lilico.page.send.subpage.transaction.model.TransactionDialogModel
-import io.outblock.lilico.page.send.subpage.transaction.presenter.TransactionPresenter
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
+import io.outblock.lilico.page.send.transaction.subpage.transaction.presenter.TransactionPresenter
 
 class TransactionDialog : BottomSheetDialogFragment() {
 

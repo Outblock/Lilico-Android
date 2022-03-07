@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send
+package io.outblock.lilico.page.send.transaction
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,9 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
 import io.outblock.lilico.page.address.AddressBookFragment
-import io.outblock.lilico.page.send.presenter.TransactionSendPresenter
+import io.outblock.lilico.page.send.transaction.presenter.TransactionSendPresenter
+import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.extensions.res2color
 
 class TransactionSendActivity : BaseActivity() {
 
@@ -25,10 +27,12 @@ class TransactionSendActivity : BaseActivity() {
 
         supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
-        presenter = TransactionSendPresenter(this, binding)
+        presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
         viewModel = ViewModelProvider(this)[TransactionSendViewModel::class.java].apply {
 
         }
+
+        setupToolbar()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -37,6 +41,14 @@ class TransactionSendActivity : BaseActivity() {
             else -> super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.navigationIcon?.mutate()?.setTint(R.color.neutrals1.res2color())
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        title = R.string.send_to.res2String()
     }
 
     companion object {

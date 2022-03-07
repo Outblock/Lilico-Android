@@ -7,7 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
-import io.outblock.lilico.page.send.TransactionSendActivity
+import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.textToClipboard

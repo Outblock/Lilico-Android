@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.amount.presenter
+package io.outblock.lilico.page.send.transaction.subpage.amount.presenter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -16,13 +16,13 @@ import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.address.presenter.AddressBookPersonPresenter
-import io.outblock.lilico.page.send.subpage.amount.SendAmountActivity
-import io.outblock.lilico.page.send.subpage.amount.SendAmountViewModel
-import io.outblock.lilico.page.send.subpage.amount.model.SendAmountModel
-import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
-import io.outblock.lilico.page.send.subpage.amount.model.TransactionModel
-import io.outblock.lilico.page.send.subpage.amount.widget.SendCoinPopupMenu
-import io.outblock.lilico.page.send.subpage.transaction.TransactionDialog
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountViewModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendAmountModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.widget.SendCoinPopupMenu
+import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionDialog
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.*
 import wallet.core.jni.CoinType

@@ -1,9 +1,9 @@
-package io.outblock.lilico.page.send.subpage.amount.widget
+package io.outblock.lilico.page.send.transaction.subpage.amount.widget
 
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import io.outblock.lilico.page.send.subpage.amount.SendAmountViewModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountViewModel
 import io.outblock.lilico.utils.*
 
 class SendCoinPopupMenu(

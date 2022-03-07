@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.presenter
+package io.outblock.lilico.page.send.transaction.presenter
 
 import android.transition.Scene
 import android.transition.Slide
@@ -8,27 +8,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.databinding.ActivityTransactionSendBinding
+import io.outblock.lilico.databinding.LayoutSendAddressSelectBinding
 import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.isAddressBookAutoSearch
-import io.outblock.lilico.page.send.TransactionSendActivity
-import io.outblock.lilico.page.send.adapter.TransactionSendPageAdapter
-import io.outblock.lilico.page.send.model.TransactionSendModel
-import io.outblock.lilico.page.send.subpage.amount.SendAmountActivity
+import io.outblock.lilico.page.send.transaction.adapter.TransactionSendPageAdapter
+import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.addressPattern
-import io.outblock.lilico.utils.extensions.*
+import io.outblock.lilico.utils.extensions.hideKeyboard
+import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 
 class TransactionSendPresenter(
-    private val activity: TransactionSendActivity,
-    private val binding: ActivityTransactionSendBinding,
+    private val fragmentManager: FragmentManager,
+    private val binding: LayoutSendAddressSelectBinding,
 ) : BasePresenter<TransactionSendModel> {
+    private val activity by lazy { findActivity(binding.root) as FragmentActivity }
+
     private val searchViewModel by lazy { ViewModelProvider(activity)[AddressBookViewModel::class.java] }
 
     private val tabTitles by lazy {
@@ -39,10 +45,9 @@ class TransactionSendPresenter(
     }
 
     init {
-        setupToolbar()
         with(binding) {
             with(binding.viewPager) {
-                adapter = TransactionSendPageAdapter(activity.supportFragmentManager)
+                adapter = TransactionSendPageAdapter(fragmentManager)
                 offscreenPageLimit = 3
             }
             tabLayout.setupWithViewPager(viewPager)
@@ -126,13 +131,5 @@ class TransactionSendPresenter(
             TransitionManager.go(Scene(binding.root as ViewGroup), Slide(Gravity.END).apply { duration = 150 })
             binding.cancelButton.setVisible(isVisible)
         }
-    }
-
-    private fun setupToolbar() {
-        binding.toolbar.navigationIcon?.mutate()?.setTint(R.color.neutrals1.res2color())
-        activity.setSupportActionBar(binding.toolbar)
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.supportActionBar?.setDisplayShowHomeEnabled(true)
-        activity.title = R.string.send_to.res2String()
     }
 }

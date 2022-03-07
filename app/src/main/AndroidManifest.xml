@@ -103,10 +103,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".page.send.TransactionSendActivity"
+            android:name=".page.send.transaction.TransactionSendActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".page.send.subpage.amount.SendAmountActivity"
+            android:name=".page.send.transaction.subpage.amount.SendAmountActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".page.demo.DemoActivity"/>

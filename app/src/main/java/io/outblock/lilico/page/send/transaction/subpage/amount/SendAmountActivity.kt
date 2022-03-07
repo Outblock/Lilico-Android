@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.amount
+package io.outblock.lilico.page.send.transaction.subpage.amount
 
 import android.content.Context
 import android.content.Intent
@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.page.send.subpage.amount.model.SendAmountModel
-import io.outblock.lilico.page.send.subpage.amount.presenter.SendAmountPresenter
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendAmountModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.presenter.SendAmountPresenter
 
 class SendAmountActivity : BaseActivity() {
 

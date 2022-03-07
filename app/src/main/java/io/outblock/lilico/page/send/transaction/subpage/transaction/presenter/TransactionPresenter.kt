@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.transaction.presenter
+package io.outblock.lilico.page.send.transaction.subpage.transaction.presenter
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
@@ -11,9 +11,9 @@ import io.outblock.lilico.network.model.AddressBookContactBookList
 import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.main.MainActivity
-import io.outblock.lilico.page.send.subpage.transaction.TransactionDialog
-import io.outblock.lilico.page.send.subpage.transaction.TransactionViewModel
-import io.outblock.lilico.page.send.subpage.transaction.model.TransactionDialogModel
+import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionDialog
+import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionViewModel
+import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope

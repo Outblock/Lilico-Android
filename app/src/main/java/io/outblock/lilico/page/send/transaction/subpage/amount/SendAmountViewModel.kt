@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.amount
+package io.outblock.lilico.page.send.transaction.subpage.amount
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.AddressInfoAccount
 import io.outblock.lilico.network.model.WalletListData
-import io.outblock.lilico.page.send.subpage.amount.model.SendBalanceModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.toSafeLong
 

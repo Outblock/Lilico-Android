@@ -18,8 +18,8 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
-import io.outblock.lilico.page.send.TransactionSendActivity
-import io.outblock.lilico.page.send.subpage.amount.SendAmountActivity
+import io.outblock.lilico.page.send.transaction.TransactionSendActivity
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity

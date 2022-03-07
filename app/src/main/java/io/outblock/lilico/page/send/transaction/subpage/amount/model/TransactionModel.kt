@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.amount.model
+package io.outblock.lilico.page.send.transaction.subpage.amount.model
 
 import android.os.Parcelable
 import io.outblock.lilico.network.model.AddressBookContact

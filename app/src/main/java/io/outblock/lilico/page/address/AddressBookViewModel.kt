@@ -12,7 +12,7 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
-import io.outblock.lilico.page.send.TransactionSendActivity
+import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.viewModelIOScope

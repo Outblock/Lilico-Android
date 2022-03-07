@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.subpage.transaction.model
+package io.outblock.lilico.page.send.transaction.subpage.transaction.model
 
 import io.outblock.lilico.network.model.UserInfoData
 

@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send
+package io.outblock.lilico.page.send.transaction
 
 import android.graphics.Color
 import android.os.Bundle

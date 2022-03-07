@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send
+package io.outblock.lilico.page.send.transaction
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

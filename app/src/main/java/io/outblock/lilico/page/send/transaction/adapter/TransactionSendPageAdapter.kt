@@ -1,9 +1,9 @@
-package io.outblock.lilico.page.send.adapter
+package io.outblock.lilico.page.send.transaction.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import io.outblock.lilico.page.send.AddressPageFragment
+import io.outblock.lilico.page.send.transaction.AddressPageFragment
 
 class TransactionSendPageAdapter(
     fragmentManager: FragmentManager

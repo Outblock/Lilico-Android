@@ -33,6 +33,7 @@ import io.outblock.lilico.page.nft.video
 import io.outblock.lilico.page.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nftdetail.shareNft
 import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
+import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.widgets.ProgressDialog
@@ -85,6 +86,7 @@ class NftDetailPresenter(
             moreButton.setOnClickListener { NftMorePopupMenu(it, pageColor).show() }
             collectButton.setLikeDrawableTint(R.color.colorSecondary.res2color())
             shareButton.setOnClickListener { showShareNft() }
+            sendButton.setOnClickListener { NftSendAddressDialog.newInstance(nft!!).show(activity.supportFragmentManager, "") }
         }
     }
 

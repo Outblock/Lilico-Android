@@ -158,4 +158,5 @@
     <string name="insufficient_balance">Insufficient balance</string>
     <string name="copy_address_toast">Address copied to clipboard</string>
     <string name="shared_via">Shared via</string>
+    <string name="send_nft">Send NFT</string>
 </resources>
