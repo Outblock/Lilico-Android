@@ -21,12 +21,12 @@ fun shareNft(wrapper: ViewGroup, nft: Nft, onReady: (file: File) -> Unit) {
             view.setup {
                 ioScope {
                     delay(1000)
-                    logd("xx", "drawToBitmap start")
+                    logd("shareNft", "drawToBitmap start")
                     val bitmap = it.drawToBitmap()
                     val file = File(CACHE_PATH, "nft_share.jpg")
                     bitmap.saveToFile(file)
                     uiScope { onReady.invoke(file) }
-                    logd("xx", "shareNft save bitmap finish")
+                    logd("shareNft", "shareNft save bitmap finish")
                 }
             }
         }

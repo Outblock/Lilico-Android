@@ -23,7 +23,6 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import jp.wasabeef.glide.transformations.BlurTransformation
 
@@ -75,7 +74,6 @@ class NftShareView(
                         uiScope {
                             updatePageColor(color, coverRatio)
                             binding.nftCoverView.setImageBitmap(resource)
-                            logd("xxx", "ready")
                             requestLayout()
                             post { onReady.invoke(this@NftShareView) }
                         }

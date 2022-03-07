@@ -94,7 +94,7 @@ class NftDetailPresenter(
             dialog.show()
             shareNft(binding.shareScreenshotWrapper, it) { file ->
                 dialog.dismiss()
-                activity.shareFile(file, title = "Nft share", text = "https://google.com")
+                activity.shareFile(file, title = "Nft share", text = "https://google.com", type = "image/*")
             }
         }
     }
