@@ -11,12 +11,13 @@ import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.startServiceSafe
 import java.util.concurrent.TimeUnit
 
 object LaunchManager {
 
     fun init(application: Application) {
-        application.startService(Intent(application, MessagingService::class.java))
+        application.startServiceSafe(Intent(application, MessagingService::class.java))
         asyncInit()
         setNightMode()
         runWorker(application)

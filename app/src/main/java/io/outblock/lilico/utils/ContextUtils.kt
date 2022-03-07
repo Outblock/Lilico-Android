@@ -3,10 +3,9 @@ package io.outblock.lilico.utils
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.Service
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
+import android.content.*
+import android.os.Build
+import android.os.IBinder
 import android.view.View
 
 /**
@@ -70,4 +69,20 @@ fun Context.startActivitySafe(intent: Intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
+}
+
+
+fun Context.startServiceSafe(intent: Intent) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        startService(intent)
+        return
+    }
+
+    bindService(intent, object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+        }
+    }, Context.BIND_AUTO_CREATE)
 }
