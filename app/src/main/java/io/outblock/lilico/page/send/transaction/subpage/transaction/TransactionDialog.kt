@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.databinding.DialogTransactionDialogBinding
+import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
 import io.outblock.lilico.page.send.transaction.subpage.transaction.presenter.TransactionPresenter
@@ -15,14 +15,14 @@ class TransactionDialog : BottomSheetDialogFragment() {
 
     private val transaction by lazy { arguments?.getParcelable<TransactionModel>(EXTRA_TRANSACTION)!! }
 
-    private lateinit var binding: DialogTransactionDialogBinding
+    private lateinit var binding: DialogSendConfirmBinding
 
     private lateinit var presenter: TransactionPresenter
     private lateinit var viewModel: TransactionViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DialogTransactionDialogBinding.inflate(inflater)
+        binding = DialogSendConfirmBinding.inflate(inflater)
         return binding.root
     }
 

@@ -18,6 +18,8 @@ import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
+import io.outblock.lilico.page.nftdetail.NftDetailActivity
+import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.extensions.res2String
@@ -33,7 +35,9 @@ class AddressBookPersonPresenter(
 
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[AddressBookViewModel::class.java] }
 
-    private val isSendPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
+    private val isSendTransactionPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
+
+    private val isSendNftPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == NftDetailActivity::class.java }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: AddressBookPersonModel) {
@@ -62,10 +66,12 @@ class AddressBookPersonPresenter(
         }
 
         view.setOnClickListener {
-            if (isSendPage) {
-                SendAmountActivity.launch(view.context, data)
-            } else if (viewModel.isAddressBookContains(model)) {
-                AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
+            ViewModelProvider(findActivity(view) as FragmentActivity)[SelectSendAddressViewModel::class.java]
+                .onAddressSelectedLiveData.postValue(data)
+            when {
+                isSendTransactionPage -> SendAmountActivity.launch(view.context, data)
+                isSendNftPage -> {}
+                viewModel.isAddressBookContains(model) -> AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
             }
         }
     }

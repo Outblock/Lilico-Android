@@ -10,11 +10,13 @@ import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.utils.viewModelIOScope
 
-class TransactionSendViewModel : ViewModel() {
+class SelectSendAddressViewModel : ViewModel() {
 
     val recentListLiveData = MutableLiveData<List<Any>>()
     val addressListLiveData = MutableLiveData<List<Any>>()
     val accountListLiveData = MutableLiveData<List<Any>>()
+
+    val onAddressSelectedLiveData = MutableLiveData<AddressBookContact>()
 
     fun load(type: Int) {
         when (type) {

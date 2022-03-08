@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.transaction.subpage.transaction.presenter
+package io.outblock.lilico.page.send.nft.confirm.presenter
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
@@ -7,45 +7,46 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.recentTransactionCache
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.AddressBookContactBookList
 import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.main.MainActivity
-import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionDialog
-import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionViewModel
-import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
+import io.outblock.lilico.page.nft.cover
+import io.outblock.lilico.page.nft.name
+import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmDialog
+import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmViewModel
+import io.outblock.lilico.page.send.nft.confirm.model.NftSendConfirmDialogModel
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.wallet.toAddress
 
-class TransactionPresenter(
-    private val fragment: TransactionDialog,
+class NftSendConfirmPresenter(
+    private val fragment: NftSendConfirmDialog,
     private val binding: DialogSendConfirmBinding,
-) : BasePresenter<TransactionDialogModel> {
+) : BasePresenter<NftSendConfirmDialogModel> {
 
-    private val viewModel by lazy { ViewModelProvider(fragment)[TransactionViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(fragment)[NftSendConfirmViewModel::class.java] }
 
-    private val transaction by lazy { viewModel.transaction }
-    private val contact by lazy { viewModel.transaction.target }
-
+    private val sendModel by lazy { viewModel.nft }
+    private val contact by lazy { viewModel.nft.target }
 
     init {
         binding.sendButton.setOnClickListener {
             binding.sendButton.setProgressVisible(true)
             viewModel.send()
         }
-        binding.amountWrapper.setVisible()
+        binding.nftWrapper.setVisible()
+        binding.titleView.setText(R.string.send_nft)
     }
 
-    override fun bind(model: TransactionDialogModel) {
+    override fun bind(model: NftSendConfirmDialogModel) {
         model.userInfo?.let {
             setupUserInfo(it)
-            setupAmount()
+            setupNft()
         }
-        model.amountConvert?.let { updateAmountConvert(it) }
         model.isSendSuccess?.let { updateSendState(it) }
     }
 
@@ -74,27 +75,30 @@ class TransactionPresenter(
         }
     }
 
+    private fun setupNft() {
+        with(binding) {
+            val nft = sendModel.nft
+            val config = NftCollectionConfig.get(nft.contract.address) ?: return@with
+            Glide.with(nftCover).load(nft.cover()).into(nftCover)
+            nftName.text = nft.name()
+            Glide.with(nftCollectionIcon).load(config.logo).into(nftCollectionIcon)
+            nftCollectionName.text = config.name
+            nftCoinTypeIcon.setImageResource(R.drawable.ic_coin_flow)
+        }
+    }
+
     private fun updateSendState(isSuccess: Boolean) {
         binding.sendButton.setProgressVisible(false)
         if (isSuccess) {
             ioScope {
                 val recentCache = recentTransactionCache().read() ?: AddressBookContactBookList(emptyList())
                 val list = recentCache.contacts.orEmpty().toMutableList()
-                list.removeAll { it.address == transaction.target.address }
-                list.add(0, transaction.target)
+                list.removeAll { it.address == sendModel.target.address }
+                list.add(0, sendModel.target)
                 recentCache.contacts = list
                 recentTransactionCache().cache(recentCache)
                 uiScope { MainActivity.launch(fragment.requireContext()) }
             }
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setupAmount() {
-        binding.amountView.text = "${transaction.amount.formatPrice()} Flow"
-    }
-
-    private fun updateAmountConvert(amountConvert: Float) {
-        binding.amountConvertView.text = "≈ \$ ${amountConvert.formatPrice()}"
     }
 }

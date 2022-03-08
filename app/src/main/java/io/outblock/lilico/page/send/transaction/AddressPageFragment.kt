@@ -19,7 +19,7 @@ class AddressPageFragment : Fragment() {
     private val adapter by lazy { AddressBookAdapter() }
 
     private lateinit var binding: LayoutTransactionSendAddressListBinding
-    private lateinit var viewModel: TransactionSendViewModel
+    private lateinit var viewModel: SelectSendAddressViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = LayoutTransactionSendAddressListBinding.inflate(inflater)
@@ -35,7 +35,7 @@ class AddressPageFragment : Fragment() {
             )
         }
 
-        viewModel = ViewModelProvider(requireActivity())[TransactionSendViewModel::class.java].apply {
+        viewModel = ViewModelProvider(requireActivity())[SelectSendAddressViewModel::class.java].apply {
             when (type) {
                 TYPE_RECENT -> recentListLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
                 TYPE_ADDRESS -> addressListLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }

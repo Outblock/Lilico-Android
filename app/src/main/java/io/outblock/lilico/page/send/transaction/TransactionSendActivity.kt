@@ -17,7 +17,7 @@ class TransactionSendActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransactionSendBinding
     private lateinit var presenter: TransactionSendPresenter
-    private lateinit var viewModel: TransactionSendViewModel
+    private lateinit var viewModel: SelectSendAddressViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class TransactionSendActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
         presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
-        viewModel = ViewModelProvider(this)[TransactionSendViewModel::class.java].apply {
+        viewModel = ViewModelProvider(this)[SelectSendAddressViewModel::class.java].apply {
 
         }
 
