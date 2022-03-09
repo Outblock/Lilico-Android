@@ -7,6 +7,7 @@ import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.getJwtToken
+import io.outblock.lilico.utils.isDev
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -26,7 +27,13 @@ class HeaderInterceptor : Interceptor {
         val request = chain.request().newBuilder()
             .addHeader("Authorization", "Bearer ${getJwtToken()}")
             .addHeader("User-Agent", userAgent)
+            .addHeader("Network", chain.getNetWork())
             .build()
         return chain.proceed(request)
+    }
+
+    private fun Interceptor.Chain.getNetWork(): String {
+        val isNftRequest = this.request().url.toUrl().toString().contains("/nft/")
+        return if (isDev() && !isNftRequest) "testnet" else "mainnet"
     }
 }
