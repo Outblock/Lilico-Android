@@ -34,10 +34,7 @@ class NftSendConfirmPresenter(
     private val contact by lazy { viewModel.nft.target }
 
     init {
-        binding.sendButton.setOnClickListener {
-            binding.sendButton.setProgressVisible(true)
-            viewModel.send()
-        }
+        binding.sendButton.setOnProcessing { viewModel.send() }
         binding.nftWrapper.setVisible()
         binding.titleView.setText(R.string.send_nft)
     }
@@ -88,7 +85,7 @@ class NftSendConfirmPresenter(
     }
 
     private fun updateSendState(isSuccess: Boolean) {
-        binding.sendButton.setProgressVisible(false)
+//        binding.sendButton.setProgressVisible(false)
         if (isSuccess) {
             ioScope {
                 val recentCache = recentTransactionCache().read() ?: AddressBookContactBookList(emptyList())

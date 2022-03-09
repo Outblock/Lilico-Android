@@ -34,7 +34,7 @@ class TransactionPresenter(
 
     init {
         binding.sendButton.setOnClickListener {
-            binding.sendButton.setProgressVisible(true)
+//            binding.sendButton.setProgressVisible(true)
             viewModel.send()
         }
         binding.amountWrapper.setVisible()
@@ -75,7 +75,7 @@ class TransactionPresenter(
     }
 
     private fun updateSendState(isSuccess: Boolean) {
-        binding.sendButton.setProgressVisible(false)
+//        binding.sendButton.setProgressVisible(false)
         if (isSuccess) {
             ioScope {
                 val recentCache = recentTransactionCache().read() ?: AddressBookContactBookList(emptyList())

@@ -171,6 +171,7 @@
     <color name="warning6">#FFF3F2</color>
     <color name="button">#1a1a1a</color>
 
+    <color name="primary10">#1affffff</color>
     <color name="primary30">#4fffffff</color>
     <color name="primary48">#76ffffff</color>
     <color name="primary80">#ccffffff</color>

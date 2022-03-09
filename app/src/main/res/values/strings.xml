@@ -159,4 +159,6 @@
     <string name="copy_address_toast">Address copied to clipboard</string>
     <string name="shared_via">Shared via</string>
     <string name="send_nft">Send NFT</string>
+    <string name="hold_to_send">Hold to Send</string>
+    <string name="transition_is_processing">The transition is processing</string>
 </resources>
