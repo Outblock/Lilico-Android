@@ -2,7 +2,6 @@ package io.outblock.lilico.base.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.firebase.firebaseInformationCheck
 import java.lang.ref.WeakReference
 

@@ -6,6 +6,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.WalletManager
+import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.coin.CoinMapManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.worker.JWTReloadWorker
@@ -18,6 +19,7 @@ object LaunchManager {
 
     fun init(application: Application) {
         application.startServiceSafe(Intent(application, MessagingService::class.java))
+        PageLifecycleObserver.init(application)
         asyncInit()
         setNightMode()
         runWorker(application)

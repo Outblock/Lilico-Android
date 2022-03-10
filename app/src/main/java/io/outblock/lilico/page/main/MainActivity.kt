@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
-import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
+import io.outblock.lilico.page.bubble.SendStateBubble
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.uiScope
+import kotlinx.coroutines.delay
 
 class MainActivity : BaseActivity() {
 
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        INSTANCE = this
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,7 +34,11 @@ class MainActivity : BaseActivity() {
 
         contentPresenter = MainContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        uiScope { isRegistered = isRegistered() }
+        uiScope {
+            isRegistered = isRegistered()
+            delay(1000)
+            SendStateBubble.show()
+        }
     }
 
     override fun onRestart() {
@@ -44,10 +50,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onDestroy() {
+        INSTANCE = null
+        super.onDestroy()
+    }
+
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+
+        private var INSTANCE: MainActivity? = null
         fun launch(context: Context) {
             context.startActivity(Intent(context, MainActivity::class.java))
         }
+
+        fun getInstance() = INSTANCE
     }
 }
