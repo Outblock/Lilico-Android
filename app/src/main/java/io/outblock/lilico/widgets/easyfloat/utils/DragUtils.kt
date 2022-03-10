@@ -1,7 +1,7 @@
 package io.outblock.lilico.widgets.easyfloat.utils
 
 import android.view.*
-import com.gravity22.music.song.lyric.R
+import io.outblock.lilico.R
 import io.outblock.lilico.widgets.easyfloat.EasyFloat
 import io.outblock.lilico.widgets.easyfloat.anim.DefaultAnimator
 import io.outblock.lilico.widgets.easyfloat.enums.ShowPattern

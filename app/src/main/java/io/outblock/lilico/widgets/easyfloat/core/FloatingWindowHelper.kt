@@ -12,6 +12,9 @@ import android.os.IBinder
 import android.view.*
 import android.view.WindowManager.LayoutParams.*
 import android.widget.EditText
+import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.loge
 import io.outblock.lilico.widgets.easyfloat.anim.AnimatorManager
 import io.outblock.lilico.widgets.easyfloat.data.FloatConfig
 import io.outblock.lilico.widgets.easyfloat.enums.ShowPattern
@@ -21,9 +24,6 @@ import io.outblock.lilico.widgets.easyfloat.utils.InputMethodUtils
 import io.outblock.lilico.widgets.easyfloat.utils.LifecycleUtils
 import io.outblock.lilico.widgets.easyfloat.utils.Logger
 import io.outblock.lilico.widgets.easyfloat.widget.ParentFrameLayout
-import com.gravity22.universe.common.loge
-import com.gravity22.universe.utils.extensions.isVisible
-import com.gravity22.universe.utils.extensions.setVisible
 
 /**
  * @author: Liuzhenfeng

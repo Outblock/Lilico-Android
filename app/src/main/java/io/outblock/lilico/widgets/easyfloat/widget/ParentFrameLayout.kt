@@ -9,10 +9,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
+import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.widgets.easyfloat.data.FloatConfig
 import io.outblock.lilico.widgets.easyfloat.interfaces.OnFloatTouchListener
 import io.outblock.lilico.widgets.easyfloat.utils.InputMethodUtils
-import com.gravity22.universe.utils.extensions.isVisible
 
 /**
  * @author: liuzhenfeng

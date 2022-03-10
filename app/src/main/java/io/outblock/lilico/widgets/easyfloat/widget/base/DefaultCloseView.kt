@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
-import com.gravity22.music.song.lyric.R
+import io.outblock.lilico.R
 import io.outblock.lilico.widgets.easyfloat.interfaces.OnTouchRangeListener
 import io.outblock.lilico.widgets.easyfloat.utils.DisplayUtils
 

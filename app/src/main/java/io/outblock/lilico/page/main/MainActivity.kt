@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
-import io.outblock.lilico.page.bubble.SendStateBubble
+import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
@@ -37,7 +37,7 @@ class MainActivity : BaseActivity() {
         uiScope {
             isRegistered = isRegistered()
             delay(1000)
-            SendStateBubble.show()
+            SendStateBubble.show(this)
         }
     }
 

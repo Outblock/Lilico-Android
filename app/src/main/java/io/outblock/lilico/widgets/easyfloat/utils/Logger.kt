@@ -1,7 +1,7 @@
 package io.outblock.lilico.widgets.easyfloat.utils
 
 import android.util.Log
-import com.gravity22.music.song.lyric.BuildConfig
+import io.outblock.lilico.BuildConfig
 
 /**
  * @author: liuzhenfeng
@@ -12,7 +12,6 @@ internal object Logger {
 
     private var tag = "EasyFloat--->"
 
-    // 设为false关闭日志
     private var logEnable = BuildConfig.DEBUG
 
     fun i(msg: Any) = i(tag, msg.toString())

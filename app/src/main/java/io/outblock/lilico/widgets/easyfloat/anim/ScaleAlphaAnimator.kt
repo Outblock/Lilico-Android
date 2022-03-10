@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import io.outblock.lilico.utils.extensions.scale
+import io.outblock.lilico.utils.loge
 import io.outblock.lilico.widgets.easyfloat.enums.SidePattern
 import io.outblock.lilico.widgets.easyfloat.interfaces.OnFloatAnimator
 import io.outblock.lilico.widgets.easyfloat.utils.DisplayUtils
-import com.gravity22.universe.common.loge
-import com.gravity22.universe.utils.extensions.scale
 
 /**
  * @author: liuzhenfeng
