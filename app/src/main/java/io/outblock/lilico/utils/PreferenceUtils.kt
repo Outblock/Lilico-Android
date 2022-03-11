@@ -1,10 +1,13 @@
 package io.outblock.lilico.utils
 
 import android.content.Context
+import android.graphics.Point
+import android.view.Gravity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.utils.extensions.toSafeInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -22,6 +25,7 @@ private val KEY_BIOMETRIC_ENABLE = booleanPreferencesKey("KEY_BIOMETRIC_ENABLE")
 
 private val KEY_BACKUP_MANUALLY = booleanPreferencesKey("KEY_BACKUP_MANUALLY")
 private val KEY_BACKUP_GOOGLE_DRIVE = booleanPreferencesKey("KEY_BACKUP_GOOGLE_DRIVE")
+private val KEY_SEND_STATE_BUBBLE_POSITION = stringPreferencesKey("KEY_SEND_STATE_BUBBLE_POSITION")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -78,6 +82,17 @@ suspend fun isBackupGoogleDrive(): Boolean = dataStore.data.map { it[KEY_BACKUP_
 
 fun setBackupGoogleDrive(isBackuped: Boolean = true) {
     edit { dataStore.edit { it[KEY_BACKUP_GOOGLE_DRIVE] = isBackuped } }
+}
+
+suspend fun getSendStateBubblePosition(): Point {
+    val list = dataStore.data
+        .map { it[KEY_SEND_STATE_BUBBLE_POSITION] ?: "${Gravity.END},${(ScreenUtils.getScreenHeight() * 0.5f).toInt()}" }
+        .first().split(",").map { it.toSafeInt() }
+    return Point(list[0], list[1])
+}
+
+fun updateSendStateBubblePosition(point: Point) {
+    edit { dataStore.edit { it[KEY_SEND_STATE_BUBBLE_POSITION] = "${point.x},${point.y}" } }
 }
 
 private fun edit(unit: suspend () -> Unit) {

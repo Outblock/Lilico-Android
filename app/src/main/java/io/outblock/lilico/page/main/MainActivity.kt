@@ -34,11 +34,7 @@ class MainActivity : BaseActivity() {
 
         contentPresenter = MainContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        uiScope {
-            isRegistered = isRegistered()
-            delay(1000)
-            SendStateBubble.show(this)
-        }
+        uiScope { isRegistered = isRegistered() }
     }
 
     override fun onRestart() {
