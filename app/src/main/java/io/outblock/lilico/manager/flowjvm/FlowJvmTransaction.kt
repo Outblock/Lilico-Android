@@ -11,7 +11,7 @@ import java.security.Security
 
 class FlowJvmTransaction {
 
-    fun send(fromAddress: String, toAddress: String, amount: Float): FlowTransactionResult? {
+    fun send(fromAddress: String, toAddress: String, amount: Float): String? {
         logd(TAG, "send > fromAddress:$fromAddress, toAddress:$toAddress, amount:$amount")
         updateSecurityProvider()
         try {
@@ -53,9 +53,7 @@ class FlowJvmTransaction {
 
             val txID = FlowApi.get().sendTransaction(tx)
             logd(TAG, "send > txID:$${txID.bytes.bytesToHex()}")
-            val result = waitForSeal(FlowApi.get(), txID, timeoutMs = 30_000).throwOnError()
-            logd(TAG, "send > result:$result")
-            return result
+            return txID.bytes.bytesToHex()
         } catch (e: Exception) {
             loge(TAG, e)
             return null

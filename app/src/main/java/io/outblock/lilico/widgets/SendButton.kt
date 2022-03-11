@@ -76,8 +76,6 @@ class SendButton : MaterialCardView {
 
         val progress = min(1.0f, indicatorProgress / duration)
 
-        logd(TAG, "progress:$progress")
-
         binding.progressBar.progress = progress
 
         if (progress == 1f) {

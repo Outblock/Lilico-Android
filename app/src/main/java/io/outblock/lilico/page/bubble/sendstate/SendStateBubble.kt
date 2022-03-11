@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Point
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
+import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.easyfloat.EasyFloat
 import io.outblock.lilico.widgets.easyfloat.enums.ShowPattern
@@ -17,9 +20,12 @@ object SendStateBubble {
 
     private val TAG = SendStateBubble::class.java.simpleName
 
-
     fun show(activity: Activity) {
         ioScope {
+            if (TransactionStateManager.getLastVisibleTransaction() == null) {
+                logd(TAG, "no not finished transaction")
+                return@ioScope
+            }
             val position = getSendStateBubblePosition()
             uiScope {
                 logd(TAG, "show")
@@ -28,6 +34,8 @@ object SendStateBubble {
             }
         }
     }
+
+    fun dismiss() = EasyFloat.dismiss(TAG, force = true)
 
     @SuppressLint("InflateParams")
     private fun showFloatingWindow(activity: Activity, position: Point) {
@@ -42,13 +50,24 @@ object SendStateBubble {
             .registerCallback {
                 dragEnd { view ->
                     cpuScope {
-                        val location = intArrayOf(0, 0)
-                        view.getLocationOnScreen(location)
-                        val gravity = if (location[0] > ScreenUtils.getScreenWidth() / 2) Gravity.END else Gravity.START
-                        updateSendStateBubblePosition(Point(gravity, location[1] - statusBarHeight))
+                        val location = view.getLocation()
+                        updateSendStateBubblePosition(location)
+                        uiScope { view.stateView()?.onDragEnd(location.x) }
                     }
                 }
+                createResult { _, _, view -> view?.stateView()?.onDragEnd(position.x, true) }
             }
             .show()
+    }
+
+    private fun View.getLocation(): Point {
+        val location = intArrayOf(0, 0)
+        getLocationOnScreen(location)
+        val gravity = if (location[0] > ScreenUtils.getScreenWidth() / 2) Gravity.END else Gravity.START
+        return Point(gravity, location[1] - statusBarHeight)
+    }
+
+    private fun View.stateView(): SendStateView? {
+        return (this as? ViewGroup)?.getChildAt(0) as? SendStateView
     }
 }

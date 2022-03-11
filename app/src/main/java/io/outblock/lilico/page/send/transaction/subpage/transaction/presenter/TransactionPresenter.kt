@@ -31,12 +31,8 @@ class TransactionPresenter(
     private val transaction by lazy { viewModel.transaction }
     private val contact by lazy { viewModel.transaction.target }
 
-
     init {
-        binding.sendButton.setOnClickListener {
-//            binding.sendButton.setProgressVisible(true)
-            viewModel.send()
-        }
+        binding.sendButton.setOnProcessing { viewModel.send() }
         binding.amountWrapper.setVisible()
     }
 

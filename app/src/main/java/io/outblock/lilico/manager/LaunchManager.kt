@@ -9,6 +9,7 @@ import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.coin.CoinMapManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.ioScope
@@ -37,6 +38,7 @@ object LaunchManager {
         WalletManager.init()
         CoinMapManager.reload()
         BalanceManager.init()
+        TransactionStateManager.init()
     }
 
     private fun setNightMode() {
