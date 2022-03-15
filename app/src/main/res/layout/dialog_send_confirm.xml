@@ -13,12 +13,15 @@
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:fontFamily="@font/inter_semi_bold"
-        android:gravity="center"
+        android:fontFamily="@font/inter"
+        android:gravity="center_vertical|start"
         android:paddingVertical="18dp"
+        android:paddingStart="26dp"
+        android:paddingEnd="0dp"
         android:text="@string/transaction"
         android:textColor="@color/text"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.utils.widget.ImageFilterButton
@@ -341,6 +344,25 @@
                     app:layout_constraintStart_toEndOf="@id/from_avatar_view"
                     app:layout_constraintTop_toTopOf="@id/from_avatar_view"
                     tools:ignore="ContentDescription"/>
+
+                <TextView
+                    android:id="@+id/progress_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_round_corner"
+                    android:backgroundTint="@color/salmon5"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/salmon_primary"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/line_view"
+                    app:layout_constraintStart_toStartOf="@id/line_view"
+                    app:layout_constraintTop_toBottomOf="@id/line_view"
+                    tools:text="Pending"
+                    tools:visibility="visible"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -355,6 +377,6 @@
         app:cardBackgroundColor="@color/button_color"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp"
-        app:rippleColor="@color/primary10"
-        app:layout_constraintTop_toBottomOf="@id/content_wrapper"/>
+        app:layout_constraintTop_toBottomOf="@id/content_wrapper"
+        app:rippleColor="@color/primary10"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

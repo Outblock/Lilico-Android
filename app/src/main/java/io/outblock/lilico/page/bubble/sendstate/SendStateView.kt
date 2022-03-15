@@ -12,6 +12,7 @@ import io.outblock.lilico.databinding.WindowSendStateBubbleContentBinding
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.page.send.processing.SendProcessingDialog
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.uiScope
 import kotlinx.coroutines.delay
@@ -28,6 +29,7 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
     init {
         addView(binding.root)
         TransactionStateManager.addOnTransactionStateChange(this)
+        setOnClickListener { SendProcessingDialog.show() }
     }
 
     override fun onTransactionStateChange() {

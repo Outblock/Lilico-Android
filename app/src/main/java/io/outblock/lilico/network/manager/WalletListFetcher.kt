@@ -1,4 +1,4 @@
-package io.outblock.lilico.network.managet
+package io.outblock.lilico.network.manager
 
 import androidx.annotation.WorkerThread
 import io.outblock.lilico.cache.walletCache

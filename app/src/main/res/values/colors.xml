@@ -149,14 +149,14 @@
     <color name="salmon1">#CC5C33</color>
     <color name="salmon3">#FF8559</color>
     <color name="salmon4">#FFAB8C</color>
-    <color name="salmon5">#FFE3D9</color>
+    <color name="salmon5">#FCE9E1</color>
     <color name="salmon_primary_8">#14FC814A</color>
     <color name="shades2">#000000</color>
     <color name="success1">#00802B</color>
     <color name="success2">#00B23C</color>
-    <color name="success3">#29CC60</color>
+    <color name="success3">#69C93C</color>
     <color name="success4">#52CC7B</color>
-    <color name="success5">#A1E5B8</color>
+    <color name="success5">#EBFCE3</color>
     <color name="text">#333333</color>
     <color name="violet_discover">#6666FF</color>
     <color name="violet1">#5252CC</color>
@@ -164,7 +164,7 @@
     <color name="violet4">#B2B2FF</color>
     <color name="violet5">#E5E5FF</color>
     <color name="warning1">#80160D</color>
-    <color name="warning2">#E52817</color>
+    <color name="warning2">#C44536</color>
     <color name="warning3">#FF8A80</color>
     <color name="warning4">#FFB9B2</color>
     <color name="warning5">#FFE8E5</color>

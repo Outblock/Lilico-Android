@@ -48,8 +48,10 @@ class TransactionViewModel : ViewModel() {
         viewModelIOScope(this) {
             val tid =
                 FlowJvmTransaction().send(transaction.fromAddress.toAddress(), transaction.target.address.orEmpty().toAddress(), transaction.amount)
-                    ?: return@viewModelIOScope
-//            resultLiveData.postValue(result != null && result.errorMessage.isBlank())
+            resultLiveData.postValue(tid != null)
+            if (tid.isNullOrBlank()) {
+                return@viewModelIOScope
+            }
             TransactionStateManager.newTransaction(
                 TransactionState(
                     transactionId = tid,
