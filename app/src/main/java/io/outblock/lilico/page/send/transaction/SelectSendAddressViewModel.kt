@@ -8,6 +8,7 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
+import io.outblock.lilico.page.address.removeRepeated
 import io.outblock.lilico.utils.viewModelIOScope
 
 class SelectSendAddressViewModel : ViewModel() {
@@ -36,14 +37,14 @@ class SelectSendAddressViewModel : ViewModel() {
 
     private fun loadAddressBook() {
         viewModelIOScope(this) {
-            addressBookCache().read()?.contacts?.let { data -> addressListLiveData.postValue(data.format()) }
+            addressBookCache().read()?.contacts?.removeRepeated()?.let { data -> addressListLiveData.postValue(data.format()) }
 
             val service = retrofit().create(ApiService::class.java)
             val resp = service.getAddressBook()
-            resp.data.contacts?.let { data ->
-                addressListLiveData.postValue(data.format())
-                addressBookCache().cache(resp.data)
-            }
+            val contacts = resp.data.contacts?.removeRepeated() ?: return@viewModelIOScope
+            addressListLiveData.postValue(contacts.format())
+            resp.data.contacts = contacts
+            addressBookCache().cache(resp.data)
         }
     }
 

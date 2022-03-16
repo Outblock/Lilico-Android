@@ -46,6 +46,8 @@ data class AddressBookContact(
         }
         return name.first().toString().uppercase()
     }
+
+    fun uniqueId() = "${address}--${domain?.domainType}--${name()}"
 }
 
 @Parcelize

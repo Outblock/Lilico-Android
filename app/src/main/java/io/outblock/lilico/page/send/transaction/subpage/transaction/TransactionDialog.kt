@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
-import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
 import io.outblock.lilico.page.send.transaction.subpage.transaction.presenter.TransactionPresenter
@@ -36,11 +35,10 @@ class TransactionDialog : BottomSheetDialogFragment() {
             userInfoLiveData.observe(this@TransactionDialog) { presenter.bind(TransactionDialogModel(userInfo = it)) }
             amountConvertLiveData.observe(this@TransactionDialog) { presenter.bind(TransactionDialogModel(amountConvert = it)) }
             resultLiveData.observe(this@TransactionDialog) { isSuccess ->
-                val context = requireContext()
-                if (!isSuccess) Toast.makeText(requireContext(), R.string.common_error_hint, Toast.LENGTH_LONG).show()
-                dismiss()
-                if (isSuccess) {
-                    MainActivity.launch(context)
+                presenter.bind(TransactionDialogModel(isSendSuccess = isSuccess))
+                if (!isSuccess) {
+                    Toast.makeText(requireContext(), R.string.common_error_hint, Toast.LENGTH_LONG).show()
+                    dismiss()
                 }
             }
             load()

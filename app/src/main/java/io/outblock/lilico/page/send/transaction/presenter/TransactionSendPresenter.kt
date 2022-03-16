@@ -73,7 +73,7 @@ class TransactionSendPresenter(
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard()
-                    searchViewModel.searchLocal(text.toString().trim())
+                    searchViewModel.searchRemote(text.toString().trim(), includeLocal = true)
                     clearFocus()
                 }
                 return@setOnEditorActionListener false
@@ -81,7 +81,7 @@ class TransactionSendPresenter(
             doOnTextChanged { input, _, _, _ ->
                 val text = input.toString().trim()
                 if (isAddressBookAutoSearch(text)) {
-                    searchViewModel.searchRemote(text, true)
+                    searchViewModel.searchRemote(text, true, isAutoSearch = true)
                 } else {
                     searchViewModel.searchLocal(text)
                 }

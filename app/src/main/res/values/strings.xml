@@ -167,4 +167,6 @@
     <string name="failed">Failed</string>
     <string name="nft_send_processing">Process of Sending NFT</string>
     <string name="coin_send_processing">Process of Transaction</string>
+    <string name="address_add_success">Add to address book successfully</string>
+    <string name="address_add_failed">Failed to add to address book</string>
 </resources>

@@ -27,7 +27,6 @@ object CoinMapManager {
                 coinList.clear()
                 coinList.addAll(response.data.data)
                 cache.cache(response.data)
-
             }
             CoinRateManager.init()
         }

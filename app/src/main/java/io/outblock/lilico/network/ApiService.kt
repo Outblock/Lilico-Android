@@ -55,6 +55,10 @@ interface ApiService {
 
     @PUT("/addressbook/external")
     @JvmSuppressWildcards
+    suspend fun addAddressBookExternal(@Body params: Map<String, Any?>): CommonResponse
+
+    @PUT("/addressbook/contact")
+    @JvmSuppressWildcards
     suspend fun addAddressBook(@Body params: Map<String, Any?>): CommonResponse
 
     @DELETE("/addressbook/contact")

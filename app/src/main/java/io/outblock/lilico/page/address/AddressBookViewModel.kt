@@ -2,6 +2,7 @@ package io.outblock.lilico.page.address
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.addressBookCache
 import io.outblock.lilico.cache.recentTransactionCache
@@ -15,7 +16,9 @@ import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.safeRun
+import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
+import io.outblock.lilico.wallet.toAddress
 
 class AddressBookViewModel : ViewModel() {
     private val addressBookList = mutableListOf<Any>()
@@ -40,11 +43,11 @@ class AddressBookViewModel : ViewModel() {
         viewModelIOScope(this) {
             val recentList = if (isSendPage) recentTransactionCache().read()?.contacts.orEmpty() else emptyList()
 
-            addressBookCache().read()?.contacts?.let { updateOriginAddressBook(parseAddressBook(merge(recentList, it))) }
+            addressBookCache().read()?.contacts?.removeRepeated()?.let { updateOriginAddressBook(parseAddressBook(merge(recentList, it))) }
 
             val service = retrofit().create(ApiService::class.java)
             val resp = service.getAddressBook()
-            resp.data.contacts?.let {
+            resp.data.contacts?.removeRepeated()?.let {
                 updateOriginAddressBook(parseAddressBook(merge(recentList, it)))
                 addressBookCache().cache(resp.data)
             }
@@ -71,7 +74,7 @@ class AddressBookViewModel : ViewModel() {
         }
     }
 
-    fun searchRemote(keyword: String, includeLocal: Boolean = false) {
+    fun searchRemote(keyword: String, includeLocal: Boolean = false, isAutoSearch: Boolean = false) {
         searchKeyword = keyword
         if (keyword.isBlank()) {
             addressBookLiveData.postValue(addressBookList)
@@ -89,12 +92,12 @@ class AddressBookViewModel : ViewModel() {
                 addressBookLiveData.postValue(data)
             }
 
-            searchUsers(keyword, data)
-
-            if (!keyword.contains(" ") && keyword.contains(".")) {
-                searchFindXyz(keyword, data)
-                searchFlowns(keyword, data)
+            if (!isAutoSearch) {
+                searchUsers(keyword, data)
             }
+
+            searchFindXyz(keyword, data)
+            searchFlowns(keyword, data)
 
             if (data.isEmpty()) {
                 remoteEmptyLiveData.postValue(true)
@@ -114,13 +117,14 @@ class AddressBookViewModel : ViewModel() {
             loadAddressBook()
             showProgressLiveData.postValue(false)
             val data = addressBookLiveData.value?.toMutableList() ?: return@viewModelIOScope
+            addressBookList.removeIf { it is AddressBookPersonModel && it.data == contact }
             data.removeIf { it is AddressBookPersonModel && it.data == contact }
             addressBookLiveData.postValue(data)
         }
     }
 
     fun isAddressBookContains(contact: AddressBookPersonModel): Boolean {
-        return addressBookList.contains(contact)
+        return addressBookList.filterIsInstance<AddressBookPersonModel>().firstOrNull { it.data.uniqueId() == contact.data.uniqueId() } != null
     }
 
     fun addFriend(data: AddressBookContact) {
@@ -128,12 +132,12 @@ class AddressBookViewModel : ViewModel() {
         viewModelIOScope(this) {
             val service = retrofit().create(ApiService::class.java)
             try {
-                val resp = service.addAddressBook(
+                val resp = service.addAddressBookExternal(
                     mapOf(
-                        "contact_name" to data.contactName,
-                        "address" to data.address,
-                        "domain" to data.domain?.value,
-                        "domain_type" to data.domain?.domainType,
+                        "contact_name" to data.name(),
+                        "address" to data.address?.toAddress(),
+                        "domain" to data.domain?.value.orEmpty(),
+                        "domain_type" to (data.domain?.domainType ?: 0),
                         "username" to data.username,
                     )
                 )
@@ -141,12 +145,19 @@ class AddressBookViewModel : ViewModel() {
                 if (resp.status == 200) {
                     addressBookList.add(AddressBookPersonModel(data = data))
 
-                    val list = addressBookLiveData.value ?: emptyList()
-                    list.filterIsInstance<AddressBookPersonModel>().firstOrNull { it.data == data }?.isFriend = true
+                    val list = (addressBookLiveData.value ?: emptyList()).toMutableList()
+                    val index = list.indexOfFirst { it is AddressBookPersonModel && it.data.uniqueId() == data.uniqueId() }
+                    if (index >= 0) {
+                        list[index] = AddressBookPersonModel(data = data, isFriend = true)
+                    }
                     addressBookLiveData.postValue(list)
+                    toast(msgRes = R.string.address_add_success)
+                } else {
+                    toast(msgRes = R.string.address_add_failed)
                 }
             } catch (e: Exception) {
                 loge(e)
+                toast(msgRes = R.string.address_add_failed)
             }
 
             showProgressLiveData.postValue(false)
@@ -170,18 +181,22 @@ class AddressBookViewModel : ViewModel() {
                 data.add(AddressBookCharModel(text = "Lilico user"))
                 data.addAll(users.map { AddressBookPersonModel(data = it.toContact()) })
             }
-            addressBookLiveData.postValue(data)
+            if (keyword == searchKeyword) {
+                addressBookLiveData.postValue(data)
+            }
         } catch (e: Exception) {
             loge(e)
         }
     }
 
     private fun searchFlowns(keyword: String, data: MutableList<Any>) {
-        if (!keyword.endsWith(".fns")) {
-            return
-        }
         safeRun {
             val address = FlowJvmHelper().getFlownsAddress(keyword) ?: return@safeRun
+            if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
+                    ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FLOWNS } != null
+            ) {
+                return@safeRun
+            }
             data.add(AddressBookCharModel(text = ".flowns"))
             data.add(
                 AddressBookPersonModel(
@@ -192,16 +207,20 @@ class AddressBookViewModel : ViewModel() {
                     )
                 )
             )
-            addressBookLiveData.postValue(data)
+            if (keyword == searchKeyword) {
+                addressBookLiveData.postValue(data)
+            }
         }
     }
 
     private fun searchFindXyz(keyword: String, data: MutableList<Any>) {
-        if (!keyword.endsWith(".find")) {
-            return
-        }
         safeRun {
             val address = FlowJvmHelper().getFindAddress(keyword.lowercase().removeSuffix(".find")) ?: return@safeRun
+            if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
+                    ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FIND_XYZ } != null
+            ) {
+                return@safeRun
+            }
             data.add(AddressBookCharModel(text = ".find"))
             data.add(
                 AddressBookPersonModel(
@@ -212,7 +231,9 @@ class AddressBookViewModel : ViewModel() {
                     )
                 )
             )
-            addressBookLiveData.postValue(data)
+            if (keyword == searchKeyword) {
+                addressBookLiveData.postValue(data)
+            }
         }
     }
 

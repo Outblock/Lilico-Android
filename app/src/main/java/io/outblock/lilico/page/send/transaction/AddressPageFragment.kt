@@ -21,7 +21,7 @@ class AddressPageFragment : Fragment() {
     private lateinit var binding: LayoutTransactionSendAddressListBinding
     private lateinit var viewModel: SelectSendAddressViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = LayoutTransactionSendAddressListBinding.inflate(inflater)
         return binding.root
     }

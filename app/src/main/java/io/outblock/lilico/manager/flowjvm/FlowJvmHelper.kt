@@ -10,6 +10,7 @@ import io.outblock.lilico.utils.loge
 class FlowJvmHelper {
 
     fun getFlownsAddress(domain: String, root: String = "fn"): String? {
+        logd(TAG, "getFlownsAddress()")
         val result = FlowApi.get().simpleFlowScript {
             script {
                 """
@@ -59,6 +60,7 @@ class FlowJvmHelper {
     }
 
     fun getFindAddress(domain: String): String? {
+        logd(TAG, "getFindAddress()")
         val result = FlowApi.get().simpleFlowScript {
             script {
                 """

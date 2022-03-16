@@ -34,7 +34,7 @@ class AddressAddViewModel : ViewModel() {
         val contact = contact ?: return
         val service = retrofit().create(ApiService::class.java)
         try {
-            val resp = service.addAddressBook(
+            val resp = service.addAddressBookExternal(
                 mapOf(
                     "id" to contact.id.orEmpty(),
                     "contact_name" to name,
@@ -54,7 +54,15 @@ class AddressAddViewModel : ViewModel() {
         val service = retrofit().create(ApiService::class.java)
         try {
             val resp =
-                service.addAddressBook(mapOf("contact_name" to name, "address" to address, "domain" to "", "domain_type" to 0, "username" to null))
+                service.addAddressBookExternal(
+                    mapOf(
+                        "contact_name" to name,
+                        "address" to address,
+                        "domain" to "",
+                        "domain_type" to 0,
+                        "username" to null
+                    )
+                )
             resultLiveData.postValue(resp.status == 200)
         } catch (e: Exception) {
             loge(e)

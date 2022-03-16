@@ -31,14 +31,14 @@ class AddressBookActivityPresenter(
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard()
-                    viewModel.searchLocal(text.toString().trim())
+                    viewModel.searchRemote(text.toString().trim(), includeLocal = true)
                     clearFocus()
                 }
                 return@setOnEditorActionListener false
             }
             doOnTextChanged { text, _, _, _ ->
                 if (isAddressBookAutoSearch(text)) {
-                    viewModel.searchRemote(text.toString().trim(), true)
+                    viewModel.searchRemote(text.toString().trim(), true, isAutoSearch = true)
                 } else {
                     viewModel.searchLocal(text.toString().trim())
                 }

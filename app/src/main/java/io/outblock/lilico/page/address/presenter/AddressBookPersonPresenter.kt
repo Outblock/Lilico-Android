@@ -15,6 +15,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemAddressBookPersonBinding
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.AddressBookDomain
+import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
@@ -26,6 +27,7 @@ import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.wallet.toAddress
 
 class AddressBookPersonPresenter(
     private val view: View,
@@ -38,6 +40,8 @@ class AddressBookPersonPresenter(
     private val isSendTransactionPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
 
     private val isSendNftPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == NftDetailActivity::class.java }
+
+    private val isAddressBookPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == AddressBookActivity::class.java }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: AddressBookPersonModel) {
@@ -58,9 +62,9 @@ class AddressBookPersonPresenter(
                 Glide.with(avatarView).load(avatar).into(avatarView)
             }
 
-            addressView.text = data.address.orEmpty()
+            addressView.text = data.address?.toAddress().orEmpty()
 
-            addButton.setVisible(!viewModel.isAddressBookContains(model))
+            addButton.setVisible(isAddressBookPage && !viewModel.isAddressBookContains(model))
 
             addButton.setOnClickListener { viewModel.addFriend(model.data) }
         }

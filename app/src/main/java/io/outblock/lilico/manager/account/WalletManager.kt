@@ -1,6 +1,7 @@
 package io.outblock.lilico.manager.account
 
 import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.network.retrofit
@@ -36,6 +37,7 @@ object WalletManager {
             // request success & wallet list is empty (wallet not create finish)
             if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
                 dispatchListeners(resp.data!!)
+                walletCache().cache(resp.data)
                 break
             }
 
