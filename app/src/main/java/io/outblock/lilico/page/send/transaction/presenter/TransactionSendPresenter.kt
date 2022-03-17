@@ -81,9 +81,9 @@ class TransactionSendPresenter(
             doOnTextChanged { input, _, _, _ ->
                 val text = input.toString().trim()
                 if (isAddressBookAutoSearch(text)) {
-                    searchViewModel.searchRemote(text, true, isAutoSearch = true)
+                    searchViewModel.searchRemote(text.trim(), true, isAutoSearch = true)
                 } else {
-                    searchViewModel.searchLocal(text)
+                    searchViewModel.searchLocal(text.trim())
                 }
 
                 binding.searchContainer.setVisible(text.isNotBlank())

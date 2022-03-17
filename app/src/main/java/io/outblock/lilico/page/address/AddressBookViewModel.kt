@@ -132,15 +132,27 @@ class AddressBookViewModel : ViewModel() {
         viewModelIOScope(this) {
             val service = retrofit().create(ApiService::class.java)
             try {
-                val resp = service.addAddressBookExternal(
-                    mapOf(
-                        "contact_name" to data.name(),
-                        "address" to data.address?.toAddress(),
-                        "domain" to data.domain?.value.orEmpty(),
-                        "domain_type" to (data.domain?.domainType ?: 0),
-                        "username" to data.username,
+                val resp = if (data.contactType == AddressBookContact.CONTACT_TYPE_USER) {
+                    service.addAddressBook(
+                        mapOf(
+                            "contact_name" to data.contactName,
+                            "address" to data.address?.toAddress(),
+                            "domain" to data.domain?.value.orEmpty(),
+                            "domain_type" to (data.domain?.domainType ?: 0),
+                            "username" to data.username,
+                        )
                     )
-                )
+                } else {
+                    service.addAddressBookExternal(
+                        mapOf(
+                            "contact_name" to data.name(),
+                            "address" to data.address?.toAddress(),
+                            "domain" to data.domain?.value.orEmpty(),
+                            "domain_type" to (data.domain?.domainType ?: 0),
+                            "username" to data.username,
+                        )
+                    )
+                }
 
                 if (resp.status == 200) {
                     addressBookList.add(AddressBookPersonModel(data = data))
@@ -203,7 +215,8 @@ class AddressBookViewModel : ViewModel() {
                     data = AddressBookContact(
                         address = address,
                         contactName = keyword,
-                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FLOWNS)
+                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FLOWNS, value = keyword.removeSuffix(".find")),
+                        contactType = AddressBookContact.CONTACT_TYPE_DOMAIN,
                     )
                 )
             )
@@ -227,7 +240,8 @@ class AddressBookViewModel : ViewModel() {
                     data = AddressBookContact(
                         address = address,
                         contactName = keyword,
-                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FIND_XYZ)
+                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FIND_XYZ, value = keyword),
+                        contactType = AddressBookContact.CONTACT_TYPE_DOMAIN,
                     )
                 )
             )

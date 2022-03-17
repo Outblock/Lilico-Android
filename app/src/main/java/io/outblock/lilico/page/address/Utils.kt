@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.address
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.UserInfoData
@@ -13,6 +14,7 @@ val addressBookDiffCallback = object : DiffUtil.ItemCallback<Any>() {
         return oldItem == newItem
     }
 
+    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         if (oldItem is AddressBookPersonModel && newItem is AddressBookPersonModel) {
             return oldItem.data == newItem.data && oldItem.isFriend == newItem.isFriend
@@ -23,9 +25,11 @@ val addressBookDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 
 fun UserInfoData.toContact(): AddressBookContact {
     return AddressBookContact(
+        contactName = nickname,
         address = address,
         username = username,
         avatar = avatar,
+        contactType = AddressBookContact.CONTACT_TYPE_USER,
     )
 }
 

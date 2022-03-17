@@ -52,7 +52,7 @@ class AddressBookPersonPresenter(
             namePrefixView.text = data.prefixName()
             namePrefixView.setVisible(data.prefixName().isNotEmpty())
 
-            if (data.domain?.domainType ?: 0 == 0) {
+            if ((data.domain?.domainType ?: 0) == 0) {
                 avatarView.setVisible(!data.avatar.isNullOrEmpty(), invisible = true)
                 avatarView.loadAvatar(data.avatar.orEmpty())
             } else {

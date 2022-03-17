@@ -32,6 +32,8 @@ data class AddressBookContact(
     val username: String? = null,
     @SerializedName("domain")
     val domain: AddressBookDomain? = null,
+    @SerializedName("contact_type")
+    val contactType: Int? = null,
     @SerializedName("id")
     val id: String? = null,
 ) : Parcelable {
@@ -47,7 +49,13 @@ data class AddressBookContact(
         return name.first().toString().uppercase()
     }
 
-    fun uniqueId() = "${address}--${domain?.domainType}--${name()}"
+    fun uniqueId() = "${address}-${domain?.domainType}-${name()}-$contactType"
+
+    companion object {
+        const val CONTACT_TYPE_EXTERNAL = 0
+        const val CONTACT_TYPE_USER = 1
+        const val CONTACT_TYPE_DOMAIN = 2
+    }
 }
 
 @Parcelize
