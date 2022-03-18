@@ -109,6 +109,10 @@
             android:name=".page.send.transaction.subpage.amount.SendAmountActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.receive.ReceiveActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

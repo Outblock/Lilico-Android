@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
@@ -22,6 +23,7 @@ object LaunchManager {
         application.startServiceSafe(Intent(application, MessagingService::class.java))
         PageLifecycleObserver.init(application)
         asyncInit()
+        initFirebaseConfig()
         setNightMode()
         runWorker(application)
         readCache()

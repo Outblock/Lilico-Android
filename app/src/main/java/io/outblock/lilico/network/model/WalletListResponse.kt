@@ -1,6 +1,8 @@
 package io.outblock.lilico.network.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 class WalletListResponse(
     @SerializedName("data")
@@ -41,6 +43,7 @@ data class WalletData(
     val walletId: Int
 )
 
+@Parcelize
 data class BlockchainData(
     @SerializedName("address")
     val address: String,
@@ -52,7 +55,7 @@ data class BlockchainData(
     val coins: List<String>,
     @SerializedName("name")
     val name: String
-)
+) : Parcelable
 
 data class CoinData(
     @SerializedName("decimal")

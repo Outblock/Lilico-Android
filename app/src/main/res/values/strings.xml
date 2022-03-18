@@ -169,4 +169,9 @@
     <string name="coin_send_processing">Process of Transaction</string>
     <string name="address_add_success">Add to address book successfully</string>
     <string name="address_add_failed">Failed to add to address book</string>
+    <string name="qr_code">QR Code</string>
+    <string name="qr_code_receive_tip">Shown your QR code to receive transactions.</string>
+    <string name="copy">Copy</string>
+    <string name="wallet">Wallet</string>
+    <string name="coins_count">1 Coins</string>
 </resources>

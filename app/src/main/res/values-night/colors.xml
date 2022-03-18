@@ -61,6 +61,8 @@
     <color name="warning4">#4C3735</color>
     <color name="warning5">#332524</color>
     <color name="button">#fafafa</color>
+    <color name="button_text">#1a1a1a</color>
+    <color name="deep_bg">#ffffff</color>
 
     <color name="primary10">#1a242430</color>
     <color name="primary30">#4f242430</color>
