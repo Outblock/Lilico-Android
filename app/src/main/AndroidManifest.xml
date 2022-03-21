@@ -113,6 +113,10 @@
             android:name=".page.receive.ReceiveActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.addtoken.AddTokenActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

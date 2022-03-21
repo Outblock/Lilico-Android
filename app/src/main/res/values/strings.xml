@@ -160,6 +160,7 @@
     <string name="shared_via">Shared via</string>
     <string name="send_nft">Send NFT</string>
     <string name="hold_to_send">Hold to Send</string>
+    <string name="hold_to_add">Hold to Add</string>
     <string name="transition_is_processing">The transition is processing</string>
     <string name="common_error_hint">Something went wrong, please try again later.</string>
     <string name="pending">Pending</string>
@@ -174,4 +175,7 @@
     <string name="copy">Copy</string>
     <string name="wallet">Wallet</string>
     <string name="coins_count">1 Coins</string>
+    <string name="add_token">Add Token</string>
+    <string name="search_token">Search Token</string>
+    <string name="confirmation">Confirmation</string>
 </resources>

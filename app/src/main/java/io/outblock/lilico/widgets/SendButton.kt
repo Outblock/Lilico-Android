@@ -12,6 +12,7 @@ import androidx.transition.Fade
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
 import com.google.android.material.card.MaterialCardView
+import io.outblock.lilico.R
 import io.outblock.lilico.databinding.WidgetSendButtonBinding
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
@@ -32,12 +33,25 @@ class SendButton : MaterialCardView {
 
     private var onProcessing: (() -> Unit)? = null
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr)
+    private var defaultText: String
+    private var processingText: String
 
-    init {
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet? = null) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
+        val array = context.obtainStyledAttributes(attrs, R.styleable.SendButton, defStyleAttr, 0)
+        defaultText = array.getString(R.styleable.SendButton_defaultText).orEmpty()
+        processingText = array.getString(R.styleable.SendButton_processingText).orEmpty()
+        array.recycle()
+        init()
+    }
+
+    private fun init() {
         addView(binding.root)
+        with(binding) {
+            holdToSend.text = defaultText
+            processingText.text = this@SendButton.processingText
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

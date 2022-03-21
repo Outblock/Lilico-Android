@@ -63,4 +63,9 @@
         </attr>
         <attr name="zoomSize" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="SendButton">
+        <attr name="defaultText" format="string|reference"/>
+        <attr name="processingText" format="string|reference"/>
+    </declare-styleable>
 </resources>
