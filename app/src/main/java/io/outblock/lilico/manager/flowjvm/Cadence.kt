@@ -82,27 +82,61 @@ const val CADENCE_ADD_TOKEN = """
 const val CADENCE_GET_BALANCE = """
     import FungibleToken from 0xFungibleToken
     import <Token> from <TokenAddress>
-    
-    transaction {
-    
-      prepare(signer: AuthAccount) {
-    
-    
-        if(signer.borrow<&<Token>.Vault>(from: <TokenStoragePath>) != nil) {
-          return
-        }
-        
-        signer.save(<-<Token>.createEmptyVault(), to: <TokenStoragePath>)
-    
-        signer.link<&<Token>.Vault{FungibleToken.Receiver}>(
-          <TokenReceiverPath>,
-          target: <TokenStoragePath>
-        )
-    
-        signer.link<&<Token>.Vault{FungibleToken.Balance}>(
-          <TokenBalancePath>,
-          target: <TokenStoragePath>
-        )
-      }
+
+    pub fun main(address: Address): UFix64 {
+      let account = getAccount(address)
+
+      let vaultRef = account
+        .getCapability(<TokenBalancePath>)
+        .borrow<&<Token>.Vault{FungibleToken.Balance}>()
+        ?? panic("Could not borrow Balance capability")
+
+      return vaultRef.balance
+ }
+"""
+
+const val CADENCE_QUERY_ADDRESS_BY_DOMAIN_FLOWNS = """
+  import Flowns from 0xFlowns
+  import Domains from 0xDomains
+  pub fun main(name: String, root: String) : Address? {
+    let prefix = "0x"
+    let rootHahsh = Flowns.hash(node: "", lable: root)
+    let namehash = prefix.concat(Flowns.hash(node: rootHahsh, lable: name))
+    var address = Domains.getRecords(namehash)
+    return address
+  }
+"""
+
+const val CADENCE_QUERY_DOMAIN_BY_ADDRESS_FLOWNS = """
+  import Domains from 0xDomains
+  // address: Flow address
+  pub fun main(address: Address): [Domains.DomainDetail] {
+    let account = getAccount(address)
+    let collectionCap = account.getCapability<&{Domains.CollectionPublic}>(Domains.CollectionPublicPath)
+    let collection = collectionCap.borrow()!
+    let domains:[Domains.DomainDetail] = []
+    let ids = collection.getIDs()
+    for id in ids {
+      let domain = collection.borrowDomain(id: id)
+      let detail = domain.getDetail()
+      domains.append(detail)
     }
+    return domains
+  }
+"""
+
+const val CADENCE_QUERY_ADDRESS_BY_ADDRESS_FIND = """
+  import FIND from 0xFind
+  //Check the status of a fin user
+  pub fun main(name: String) : Address? {
+      let status=FIND.status(name)
+      return status.owner
+  }
+"""
+
+const val CADENCE_QUERY_DOMAIN_BY_ADDRESS_FIND = """
+  import FIND from 0xFind
+  pub fun main(address: Address) : String?{
+    return FIND.reverseLookup(address)
+  }
 """

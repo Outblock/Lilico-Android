@@ -6,7 +6,8 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.addressBookCache
 import io.outblock.lilico.cache.recentTransactionCache
-import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
+import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFind
+import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFlowns
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.AddressBookDomain
@@ -203,7 +204,7 @@ class AddressBookViewModel : ViewModel() {
 
     private fun searchFlowns(keyword: String, data: MutableList<Any>) {
         safeRun {
-            val address = FlowJvmHelper().getFlownsAddress(keyword) ?: return@safeRun
+            val address = cadenceQueryAddressByDomainFlowns(keyword) ?: return@safeRun
             if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
                     ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FLOWNS } != null
             ) {
@@ -228,7 +229,7 @@ class AddressBookViewModel : ViewModel() {
 
     private fun searchFindXyz(keyword: String, data: MutableList<Any>) {
         safeRun {
-            val address = FlowJvmHelper().getFindAddress(keyword.lowercase().removeSuffix(".find")) ?: return@safeRun
+            val address = cadenceQueryAddressByDomainFind(keyword.lowercase().removeSuffix(".find")) ?: return@safeRun
             if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
                     ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FIND_XYZ } != null
             ) {

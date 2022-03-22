@@ -44,7 +44,7 @@ class AddressAddActivity : BaseActivity() {
             viewModel.save(binding.nameText.text.toString(), binding.addressText.text.toString())
         }
         binding.nameText.doOnTextChanged { _, _, _, _ -> updateSaveButtonState() }
-        binding.addressText.doOnTextChanged { text, _, _, _ -> viewModel.addressVerify(text.toString().lowercase().trim()) }
+        binding.addressText.doOnTextChanged { text, _, _, _ -> viewModel.checkAddressVerify(text.toString().lowercase().trim()) }
         updateAddressVerifyState(ADDRESS_VERIFY_STATE_IDLE)
 
         contact?.let {

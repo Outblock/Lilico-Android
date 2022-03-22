@@ -2,7 +2,7 @@ package io.outblock.lilico.page.addressadd
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
+import io.outblock.lilico.manager.flowjvm.addressVerify
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.retrofit
@@ -70,7 +70,7 @@ class AddressAddViewModel : ViewModel() {
         }
     }
 
-    fun addressVerify(address: String) {
+    fun checkAddressVerify(address: String) {
         val format = if (address.startsWith("0x")) address else "0x$address"
         this.address = format
         if (!addressPattern.matches(this.address)) {
@@ -80,7 +80,7 @@ class AddressAddViewModel : ViewModel() {
             addressVerifyStateLiveData.postValue(ADDRESS_VERIFY_STATE_PENDING)
         }
         viewModelIOScope(this) {
-            val isVerified = FlowJvmHelper().addressVerify(format)
+            val isVerified = addressVerify(format)
             if (format == this.address) {
                 addressVerifyStateLiveData.postValue(if (isVerified) ADDRESS_VERIFY_STATE_SUCCESS else ADDRESS_VERIFY_STATE_ERROR)
             }

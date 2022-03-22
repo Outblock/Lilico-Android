@@ -9,6 +9,7 @@ import com.nftco.flow.sdk.FlowTransactionResult
 import com.nftco.flow.sdk.FlowTransactionStatus
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
@@ -34,6 +35,8 @@ object TransactionStateManager {
         }
     }
 
+    fun getTransactionStateList() = stateData.data.toList()
+
     fun addOnTransactionStateChange(callback: OnTransactionStateChange) {
         onStateChangeCallbacks.add(WeakReference(callback))
     }
@@ -41,7 +44,7 @@ object TransactionStateManager {
     @MainThread
     fun newTransaction(transactionState: TransactionState) {
         stateData.data.add(transactionState)
-        ioScope { cache.cache(stateData) }
+        updateState(transactionState)
         loopState()
     }
 
@@ -50,6 +53,10 @@ object TransactionStateManager {
             it.state < FlowTransactionStatus.SEALED.num
               || (it.state == FlowTransactionStatus.SEALED.num && abs(it.updateTime - System.currentTimeMillis()) < 5000)
         }
+    }
+
+    fun getTransactionStateById(transactionId: String): TransactionState? {
+        return stateData.data.toList().firstOrNull { it.transactionId == transactionId }
     }
 
     private fun loopState() {
@@ -136,11 +143,14 @@ class TransactionState(
     companion object {
         const val TYPE_NFT = 1
         const val TYPE_COIN = 2
+        const val TYPE_ADD_TOKEN = 3
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)
 
     fun nftData() = Gson().fromJson(data, NftSendModel::class.java)
+
+    fun tokenData() = Gson().fromJson(data, FlowCoin::class.java)
 
     fun contact() = if (type == TYPE_COIN) coinData().target else nftData().target
 

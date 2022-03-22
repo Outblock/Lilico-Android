@@ -8,7 +8,7 @@ import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.CoinRateManager
-import io.outblock.lilico.manager.flowjvm.FlowJvmTransaction
+import io.outblock.lilico.manager.flowjvm.cadenceTransferToken
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.model.UserInfoData
@@ -46,8 +46,7 @@ class TransactionViewModel : ViewModel() {
 
     fun send() {
         viewModelIOScope(this) {
-            val tid =
-                FlowJvmTransaction().send(transaction.fromAddress.toAddress(), transaction.target.address.orEmpty().toAddress(), transaction.amount)
+            val tid = cadenceTransferToken(transaction.fromAddress.toAddress(), transaction.target.address.orEmpty().toAddress(), transaction.amount)
             resultLiveData.postValue(tid != null)
             if (tid.isNullOrBlank()) {
                 return@viewModelIOScope

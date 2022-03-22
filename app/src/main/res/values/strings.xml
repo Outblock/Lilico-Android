@@ -176,6 +176,7 @@
     <string name="wallet">Wallet</string>
     <string name="coins_count">1 Coins</string>
     <string name="add_token">Add Token</string>
+    <string name="add_token_failed">Add token failed</string>
     <string name="search_token">Search Token</string>
     <string name="confirmation">Confirmation</string>
 </resources>

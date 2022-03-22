@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutSendAddressSelectBinding
-import io.outblock.lilico.manager.flowjvm.FlowJvmHelper
+import io.outblock.lilico.manager.flowjvm.addressVerify
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.isAddressBookAutoSearch
@@ -109,7 +109,7 @@ class TransactionSendPresenter(
             binding.progressBar.setVisible()
             binding.searchIconView.setVisible(false, invisible = true)
             ioScope {
-                val isVerified = FlowJvmHelper().addressVerify(text)
+                val isVerified = addressVerify(text)
                 uiScope {
                     if (text == binding.editText.text.toString()) {
                         binding.progressBar.setVisible(false)

@@ -68,12 +68,10 @@ class FlowCoinStoragePath(
 ) : Parcelable
 
 fun FlowCoin.formatCadence(cadence: String): String {
-    var script = cadence
-    script = script.replace("<Token>", contractName)
-    script = script.replace("<TokenAddress>", address())
-    script = script.replace("<TokenReceiverPath>", storagePath.receiver)
-    script = script.replace("<TokenBalancePath>", storagePath.balance)
-    script = script.replace("<TokenStoragePath>", storagePath.vault)
-    return script
+    return cadence.replace("<Token>", contractName)
+        .replace("<TokenAddress>", address())
+        .replace("<TokenReceiverPath>", storagePath.receiver)
+        .replace("<TokenBalancePath>", storagePath.balance)
+        .replace("<TokenStoragePath>", storagePath.vault)
 }
 
