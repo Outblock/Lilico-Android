@@ -43,7 +43,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             dataList[0] = WalletHeaderModel(wallet, 0f)
         }
         dataListLiveData.postValue(dataList)
-        updateWalletBalance()
+        updateWalletHeader()
     }
 
     override fun onBalanceUpdate(balance: Balance) {
@@ -65,6 +65,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
                 dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f) })
                 logd(TAG, "loadCoinList:${newCoin.map { it.symbol }}")
                 dataListLiveData.postValue(dataList)
+                updateWalletHeader(count = coinList.size)
             }
 
             BalanceManager.addListener(this)
@@ -86,14 +87,16 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         }
         dataListLiveData.postValue(dataList)
         balanceList[balance.symbol] = balance.balance * rate
-        updateWalletBalance()
+        updateWalletHeader()
     }
 
-    private fun updateWalletBalance() {
+    private fun updateWalletHeader(count: Int? = null) {
         val header = (dataList.firstOrNull { it is WalletHeaderModel } as? WalletHeaderModel) ?: return
         dataList[0] = header.copy().apply {
             balance = balanceList.map { it.value }.sum()
-            coinCount = balanceList.count()
+            if (count != null) {
+                coinCount = count
+            }
         }
         dataListLiveData.postValue(dataList)
     }

@@ -7,6 +7,8 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
+import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.addtoken.AddTokenActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
@@ -29,7 +31,9 @@ class WalletHeaderPresenter(
             walletName.text = "Blowfish Wallet"
             address.text = model.walletList.primaryWalletAddress()?.toAddress()
             balanceNum.text = "$${model.balance.formatPrice()}"
-            coinCountView.text = view.context.getString(R.string.coins_count, model.coinCount)
+
+            val count = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.count()
+            coinCountView.text = view.context.getString(R.string.coins_count, count)
 
             sendButton.setOnClickListener { TransactionSendActivity.launch(view.context) }
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
