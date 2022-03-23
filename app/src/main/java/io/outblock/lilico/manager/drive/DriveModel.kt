@@ -13,13 +13,13 @@ class DriveModel(
 class DriveItem(
     @SerializedName("username")
     var username: String,
+    @SerializedName("version")
+    var version: String,
     @SerializedName("data")
     var data: String,
 ) : Parcelable
 
 class DriveData(
-    @SerializedName("version")
-    val version: String,
     @SerializedName("data")
     val data: String,
     @SerializedName("address")

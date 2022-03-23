@@ -118,10 +118,11 @@ private fun existingData(driveService: Drive): List<DriveItem> {
 private suspend fun addData(data: MutableList<DriveItem>, password: String) {
     val exist = data.firstOrNull { it.username == getUsername() }
     if (exist == null) {
-        val dataStr = Gson().toJson(DriveData(version = BuildConfig.VERSION_NAME, data = getMnemonic(), address = ""))
-        data.add(DriveItem(getUsername(), aesEncrypt(password, message = dataStr)))
+        val dataStr = Gson().toJson(DriveData(data = getMnemonic(), address = ""))
+        data.add(DriveItem(getUsername(), version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = dataStr)))
     } else {
-        exist.data = aesEncrypt(password, message = Gson().toJson(DriveData(version = BuildConfig.VERSION_NAME, data = getMnemonic(), address = "")))
+        exist.version = BuildConfig.VERSION_NAME
+        exist.data = aesEncrypt(password, message = Gson().toJson(DriveData(data = getMnemonic(), address = "")))
     }
 }
 
