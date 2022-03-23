@@ -36,7 +36,7 @@ fun cadenceQueryDomainByAddressFlowns(address: String): FlowScriptResponse? {
 
 fun cadenceQueryAddressByDomainFind(domain: String): String? {
     logd(TAG, "cadenceQueryAddressByDomainFind()")
-    val result = CADENCE_QUERY_ADDRESS_BY_ADDRESS_FIND.executeScript {
+    val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FIND.executeScript {
         arg { marshall { string(domain) } }
     }
     logd(TAG, "cadenceQueryAddressByDomainFind response:${String(result?.bytes ?: byteArrayOf())}")
@@ -53,16 +53,18 @@ fun cadenceQueryDomainByAddressFind(address: String): FlowScriptResponse? {
 }
 
 fun cadenceCheckTokenEnabled(coin: FlowCoin): Boolean? {
-    logd(TAG, "cadenceCheckTokenEnabled()")
+    logd(TAG, "cadenceCheckTokenEnabled() address:${coin.address()}")
+//    logd(TAG, "script:  ${coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED)}")
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     val result = coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED).executeScript {
-        arg { address(coin.address()) }
+        arg { address(walletAddress) }
     }
     logd(TAG, "cadenceCheckTokenEnabled response:${String(result?.bytes ?: byteArrayOf())}")
     return result?.parseBool()
 }
 
 fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
-    val walletAddress = walletCache().read()?.primaryWallet()?.blockchain?.first()?.address ?: return 0f
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return 0f
     logd(TAG, "cadenceQueryTokenBalance()")
     val result = coin.formatCadence(CADENCE_GET_BALANCE).executeScript {
         arg { address(walletAddress) }
@@ -73,9 +75,7 @@ fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
 
 fun cadenceEnableToken(coin: FlowCoin): String? {
     logd(TAG, "cadenceEnableToken()")
-    val transactionId = coin.formatCadence(CADENCE_ADD_TOKEN).transactionByMainWallet {
-        arg { address(coin.address()) }
-    }
+    val transactionId = coin.formatCadence(CADENCE_ADD_TOKEN).transactionByMainWallet {}
     logd(TAG, "cadenceEnableToken() transactionId:$transactionId")
     return transactionId
 }

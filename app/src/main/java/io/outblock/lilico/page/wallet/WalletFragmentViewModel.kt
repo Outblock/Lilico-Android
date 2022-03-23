@@ -2,24 +2,17 @@ package io.outblock.lilico.page.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.manager.account.BalanceManager
-import io.outblock.lilico.manager.account.OnBalanceUpdate
-import io.outblock.lilico.manager.account.OnWalletDataUpdate
-import io.outblock.lilico.manager.account.WalletManager
+import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.CoinMapManager
 import io.outblock.lilico.manager.coin.CoinRateManager
-import io.outblock.lilico.network.model.AddressInfoAccount
+import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
-import io.outblock.lilico.utils.Coin
-import io.outblock.lilico.utils.extensions.toSafeLong
-import io.outblock.lilico.utils.formatBalance
-import io.outblock.lilico.utils.name
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.viewModelIOScope
-import io.outblock.lilico.wallet.toAddress
-import wallet.core.jni.CoinType
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -33,20 +26,13 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
     init {
         WalletManager.addListener(this)
-        BalanceManager.addListener(this)
     }
 
     fun load() {
-        viewModelIOScope(this) { WalletManager.fetch() }
-    }
-
-    private fun loadAddress(walletData: WalletListData) {
         viewModelIOScope(this) {
-            val blockchainList = walletData.primaryWallet()?.blockchain ?: return@viewModelIOScope
-
-            for (blockchain in blockchainList) {
-                BalanceManager.getBalanceByAddress(blockchain.address.toAddress())
-            }
+            logd(TAG, "view model load")
+            WalletManager.fetch()
+            loadCoinList()
         }
     }
 
@@ -57,34 +43,62 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             dataList[0] = WalletHeaderModel(wallet, 0f)
         }
         dataListLiveData.postValue(dataList)
-        loadAddress(wallet)
+        updateWalletBalance()
     }
 
-    override fun onBalanceUpdate(balance: AddressInfoAccount) {
-        // TODO get coin type by address
-        // val wallet = (dataListLiveData.value?.first() as? WalletListData) ?: return
-        // val coinType = wallet.primaryWallet()?.blockchain?.firstOrNull { it.address.toAddress() == balance.address.toAddress() }
-        val coinType = Coin.FLOW.name()
-        CoinRateManager.coinRate(CoinMapManager.getCoinIdByName(coinType)) { rate -> updateBalanceLine(balance, rate) }
+    override fun onBalanceUpdate(balance: Balance) {
+        logd(TAG, "onBalanceUpdate:$balance")
+        if (balance.symbol.lowercase() == "fusd") {
+            updateBalanceLine(balance, forceRate = 1.0f)
+            return
+        }
+        CoinRateManager.coinRate(CoinMapManager.getCoinIdBySymbol(balance.symbol)) { rate -> updateBalanceLine(balance, rate) }
     }
 
-    private fun updateBalanceLine(balance: AddressInfoAccount, coinRate: CoinRate) {
-        val existIndex = dataList.indexOfFirst { it is WalletCoinItemModel && it.address.toAddress() == balance.address.toAddress() }
-        val rate = coinRate.usdRate()?.price ?: 0f
+    private fun loadCoinList() {
+        viewModelIOScope(this) {
+            val coinList = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }
+
+            val newCoin =
+                coinList.filter { coin -> dataList.filterIsInstance<WalletCoinItemModel>().indexOfFirst { coin.symbol == it.coin.symbol } < 0 }
+            if (newCoin.isNotEmpty()) {
+                dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f) })
+                logd(TAG, "loadCoinList:${newCoin.map { it.symbol }}")
+                dataListLiveData.postValue(dataList)
+            }
+
+            BalanceManager.addListener(this)
+
+            coinList.forEach { BalanceManager.getBalanceByCoin(it) }
+        }
+    }
+
+    private fun updateBalanceLine(balance: Balance, coinRate: CoinRate? = null, forceRate: Float? = null) {
+        logd(TAG, "updateBalanceLine :$balance")
+        val existIndex = dataList.indexOfFirst { it is WalletCoinItemModel && it.coin.symbol == balance.symbol }
+        val rate = (coinRate?.usdRate()?.price ?: forceRate) ?: 0f
+        val coin = FlowCoinListManager.coinList().first { it.symbol == balance.symbol }
+        val item = WalletCoinItemModel(coin, coin.address(), balance.balance, rate)
         if (existIndex >= 0) {
-            dataList[existIndex] = WalletCoinItemModel(CoinType.FLOW, balance.address, balance.balance.toSafeLong(), rate)
+            dataList[existIndex] = item
         } else {
-            dataList.add(WalletCoinItemModel(CoinType.FLOW, balance.address, balance.balance.toSafeLong(), rate))
+            dataList.add(item)
         }
         dataListLiveData.postValue(dataList)
-        balanceList[balance.address] = balance.balance.toSafeLong().formatBalance() * rate
+        balanceList[balance.symbol] = balance.balance * rate
         updateWalletBalance()
     }
 
     private fun updateWalletBalance() {
         val header = (dataList.firstOrNull { it is WalletHeaderModel } as? WalletHeaderModel) ?: return
-        header.balance = balanceList.map { it.value }.sum()
-        dataList[0] = header
+        dataList[0] = header.copy().apply {
+            balance = balanceList.map { it.value }.sum()
+            coinCount = balanceList.count()
+        }
         dataListLiveData.postValue(dataList)
+    }
+
+    companion object {
+        private val TAG = WalletFragmentViewModel::class.java.simpleName
     }
 }

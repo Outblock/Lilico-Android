@@ -26,10 +26,14 @@ object FlowCoinListManager {
                 coinList.clear()
                 coinList.addAll(list)
             }
+            TokenStateManager.fetchState()
+            CoinMapManager.reload(true)
         }
     }
 
     fun coinList() = coinList
+
+    fun getEnabledCoinList() = coinList.toList().filter { TokenStateManager.isTokenAdded(it.address()) }
 }
 
 @Parcelize

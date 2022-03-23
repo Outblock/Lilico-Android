@@ -8,7 +8,7 @@ import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
-import io.outblock.lilico.manager.coin.CoinMapManager
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.worker.JWTReloadWorker
@@ -38,9 +38,9 @@ object LaunchManager {
 
     private fun readCache() {
         WalletManager.init()
-        CoinMapManager.reload()
         BalanceManager.init()
         TransactionStateManager.init()
+        TokenStateManager.init()
     }
 
     private fun setNightMode() {

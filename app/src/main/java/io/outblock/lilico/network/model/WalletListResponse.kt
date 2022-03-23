@@ -28,6 +28,8 @@ data class WalletListData(
     fun primaryWallet(): WalletData? {
         return wallets?.firstOrNull { it.walletId == primaryWalletId }
     }
+
+    fun primaryWalletAddress(): String? = primaryWallet()?.blockchain?.firstOrNull()?.address
 }
 
 data class WalletData(

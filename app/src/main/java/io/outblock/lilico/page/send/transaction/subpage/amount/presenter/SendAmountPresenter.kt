@@ -67,7 +67,7 @@ class SendAmountPresenter(
         val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
         val coinRate = balance()?.coinRate ?: 0f
         val inputBalance = if (viewModel.convertCoin() == Coin.USD) amount else amount / (if (coinRate == 0f) 1f else coinRate)
-        val isOutOfBalance = inputBalance > (balance()?.balance ?: 0).formatBalance()
+        val isOutOfBalance = inputBalance > (balance()?.balance ?: 0f)
         if (isOutOfBalance && !binding.errorWrapper.isVisible()) {
             TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
         } else if (!isOutOfBalance && binding.errorWrapper.isVisible()) {
@@ -91,11 +91,11 @@ class SendAmountPresenter(
     @SuppressLint("SetTextI18n")
     private fun updateBalance(balance: SendBalanceModel) {
         with(binding) {
-            balanceAmountView.text = "${balance.balance.formatBalance().formatPrice()} Flow "
+            balanceAmountView.text = "${balance.balance.formatPrice()} Flow "
             balanceAmountConvertView.text =
                 activity.getString(
                     R.string.coin_rate_usd_convert,
-                    (if (balance.coinRate > 0) balance.coinRate * balance.balance.formatBalance() else 0f).formatPrice()
+                    (if (balance.coinRate > 0) balance.coinRate * balance.balance else 0f).formatPrice()
                 )
             transferAmountInput.text = transferAmountInput.text
             transferAmountInput.setSelection(transferAmountInput.text.length)
@@ -142,7 +142,7 @@ class SendAmountPresenter(
     }
 
     private fun setMaxAmount() {
-        val balance = balance()?.balance?.formatBalance() ?: 0f
+        val balance = balance()?.balance ?: 0f
         val coinRate = balance()?.coinRate ?: 0f
         val amount = (if (viewModel.convertCoin() == Coin.USD) balance else balance * coinRate).formatPrice()
         with(binding) {

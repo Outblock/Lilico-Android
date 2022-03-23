@@ -8,6 +8,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.TokenStateChangeListener
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.flowjvm.cadenceEnableToken
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
@@ -18,7 +19,7 @@ import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
-class AddTokenViewModel : ViewModel(), OnTransactionStateChange {
+class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChangeListener {
 
     val tokenListLiveData = MutableLiveData<List<TokenItem>>()
 
@@ -30,6 +31,7 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange {
 
     init {
         TransactionStateManager.addOnTransactionStateChange(this)
+        TokenStateManager.addListener(this)
     }
 
     fun load() {
@@ -39,8 +41,9 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange {
                 FlowCoinListManager.coinList().map { TokenItem(coin = it, isAdded = TokenStateManager.isTokenAdded(it.address()), isAdding = false) })
             tokenListLiveData.postValue(coinList.toList())
 
-            // TODO change to token state query
             onTransactionStateChange()
+
+            TokenStateManager.fetchState()
         }
     }
 
@@ -91,11 +94,15 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange {
                     coinList[index] = TokenItem(
                         coin = coinList[index].coin,
                         isAdding = state.isProcessing(),
-                        isAdded = state.isSuccess()
+                        isAdded = TokenStateManager.isTokenAdded(coin.address())
                     )
                 }
             }
             search(keyword)
         }
+    }
+
+    override fun onTokenStateChange(coin: FlowCoin, isEnable: Boolean) {
+        onTransactionStateChange()
     }
 }

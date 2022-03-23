@@ -125,7 +125,7 @@ const val CADENCE_QUERY_DOMAIN_BY_ADDRESS_FLOWNS = """
   }
 """
 
-const val CADENCE_QUERY_ADDRESS_BY_ADDRESS_FIND = """
+const val CADENCE_QUERY_ADDRESS_BY_DOMAIN_FIND = """
   import FIND from 0xFind
   //Check the status of a fin user
   pub fun main(name: String) : Address? {

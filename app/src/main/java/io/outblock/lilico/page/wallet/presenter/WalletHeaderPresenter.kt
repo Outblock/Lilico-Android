@@ -12,6 +12,7 @@ import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.textToClipboard
 import io.outblock.lilico.wallet.toAddress
 
@@ -26,8 +27,9 @@ class WalletHeaderPresenter(
         val wallet = model.walletList.primaryWallet() ?: return
         with(binding) {
             walletName.text = "Blowfish Wallet"
-            address.text = wallet.blockchain.first().address.toAddress()
-            balanceNum.text = "$${model.balance}"
+            address.text = model.walletList.primaryWalletAddress()?.toAddress()
+            balanceNum.text = "$${model.balance.formatPrice()}"
+            coinCountView.text = view.context.getString(R.string.coins_count, model.coinCount)
 
             sendButton.setOnClickListener { TransactionSendActivity.launch(view.context) }
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }

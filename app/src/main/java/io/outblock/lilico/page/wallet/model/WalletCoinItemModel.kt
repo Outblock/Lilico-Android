@@ -1,10 +1,10 @@
 package io.outblock.lilico.page.wallet.model
 
-import wallet.core.jni.CoinType
+import io.outblock.lilico.manager.coin.FlowCoin
 
 data class WalletCoinItemModel(
-    val type: CoinType,
+    val coin: FlowCoin,
     val address: String,
-    val balance: Long,
+    val balance: Float,
     val coinRate: Float,
 )

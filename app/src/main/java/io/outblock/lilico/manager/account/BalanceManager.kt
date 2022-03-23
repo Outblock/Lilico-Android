@@ -2,14 +2,13 @@ package io.outblock.lilico.manager.account
 
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
-import io.outblock.lilico.cache.walletCache
-import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.model.AddressInfoAccount
-import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.flowjvm.cadenceQueryTokenBalance
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.wallet.toAddress
 import java.lang.ref.WeakReference
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -18,63 +17,71 @@ object BalanceManager {
 
     private val listeners = CopyOnWriteArrayList<WeakReference<OnBalanceUpdate>>()
 
-    private val balanceList = CopyOnWriteArrayList<AddressInfoAccount>()
+    private val balanceList = CopyOnWriteArrayList<Balance>()
 
-    private val cache by lazy { CacheManager("BALANCE_CACHE", BalanceCache::class.java) }
+    private val cache by lazy { CacheManager("BALANCE_CACHE_v1.0", BalanceCache::class.java) }
 
     fun init() {
         ioScope {
             balanceList.addAll(cache.read()?.data ?: emptyList())
 
-            val blockchainList = walletCache().read()?.primaryWallet()?.blockchain ?: return@ioScope
-            for (blockchain in blockchainList) {
-                fetch(blockchain.address.toAddress())
-            }
+            FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.forEach { fetch(it) }
         }
     }
 
-    suspend fun getBalanceByAddress(address: String) {
-        balanceList.firstOrNull { it.address.toAddress() == address.toAddress() }?.let { dispatchListeners(it) }
-        fetch(address)
+    fun getBalanceByCoin(coin: FlowCoin) {
+        logd(TAG, "getBalanceByCoin:${coin.symbol}")
+        balanceList.firstOrNull { it.symbol == coin.symbol }?.let { dispatchListeners(coin, it.balance) }
+        fetch(coin)
     }
 
     fun addListener(callback: OnBalanceUpdate) {
+        if (listeners.firstOrNull { it.get() == callback } != null) {
+            return
+        }
         uiScope { this.listeners.add(WeakReference(callback)) }
     }
 
-    private fun dispatchListeners(balance: AddressInfoAccount) {
-        logd(TAG, "dispatchListeners:$balance")
+    private fun dispatchListeners(coin: FlowCoin, balance: Float) {
+        logd(TAG, "dispatchListeners ${coin.symbol}:$balance")
         uiScope {
             listeners.removeAll { it.get() == null }
-            listeners.forEach { it.get()?.onBalanceUpdate(balance) }
+            listeners.forEach { it.get()?.onBalanceUpdate(Balance(coin.symbol, balance)) }
         }
     }
 
     fun getBalanceList() = balanceList.toList()
 
-    private suspend fun fetch(address: String) {
-        val service = retrofit().create(ApiService::class.java)
-        val resp = service.getAddressInfo(address.toAddress())
-        if (resp.status == 200) {
-            val balance = resp.data.data.account
-            val existBalance = balanceList.firstOrNull { it.address.toAddress() == balance.address.toAddress() }
-            val isDiff = balanceList.isEmpty() || existBalance == null || existBalance.balance != balance.balance
-            if (isDiff) {
-                dispatchListeners(balance)
-                balanceList.removeAll { it.address.toAddress() == address.toAddress() }
-                balanceList.add(balance)
-                ioScope { cache.cache(BalanceCache(balanceList.toList())) }
+    private fun fetch(coin: FlowCoin) {
+        ioScope {
+            val balance = cadenceQueryTokenBalance(coin)
+            if (balance != null) {
+                val existBalance = balanceList.firstOrNull { coin.symbol == it.symbol }
+                val isDiff = balanceList.isEmpty() || existBalance == null || existBalance.balance != balance
+                if (isDiff) {
+                    dispatchListeners(coin, balance)
+                    balanceList.removeAll { it.symbol == coin.symbol }
+                    balanceList.add(Balance(coin.symbol, balance))
+                    ioScope { cache.cache(BalanceCache(balanceList.toList())) }
+                }
             }
         }
     }
 }
 
 interface OnBalanceUpdate {
-    fun onBalanceUpdate(balance: AddressInfoAccount)
+    fun onBalanceUpdate(balance: Balance)
 }
+
+data class Balance(
+    @SerializedName("symbol")
+    val symbol: String,
+    @SerializedName("balance")
+    val balance: Float,
+)
 
 private class BalanceCache(
     @SerializedName("data")
-    val data: List<AddressInfoAccount>,
+    val data: List<Balance>,
 )
 

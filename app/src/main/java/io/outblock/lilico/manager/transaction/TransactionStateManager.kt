@@ -10,6 +10,7 @@ import com.nftco.flow.sdk.FlowTransactionStatus
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
@@ -90,6 +91,9 @@ object TransactionStateManager {
         state.updateTime = System.currentTimeMillis()
         ioScope { cache.cache(stateData) }
         dispatchCallback()
+        if (state.type == TransactionState.TYPE_ADD_TOKEN && state.isSuccess()) {
+            TokenStateManager.fetchStateSingle(state.tokenData(), cache = true)
+        }
     }
 
     private fun dispatchCallback() {

@@ -30,11 +30,11 @@ internal fun FlowScriptResponse.parseBool(default: Boolean = false): Boolean? {
 }
 
 internal fun FlowScriptResponse?.parseFloat(default: Float = 0f): Float {
-    // {"type":"Bool","value":12.34}
+    // {"type":"UFix64","value":"12.34"}
     this ?: return default
     return try {
-        val json = Gson().fromJson<Map<String, Any>>(String(bytes), object : TypeToken<Map<String, Any>>() {}.type)
-        (json["value"] as? Float) ?: default
+        val json = Gson().fromJson<Map<String, String>>(String(bytes), object : TypeToken<Map<String, String>>() {}.type)
+        (json["value"]?.toFloatOrNull()) ?: default
     } catch (e: Exception) {
         loge(e)
         return default

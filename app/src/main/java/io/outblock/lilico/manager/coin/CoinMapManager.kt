@@ -32,5 +32,5 @@ object CoinMapManager {
         }
     }
 
-    fun getCoinIdByName(name: String): Int = coinList.toList().firstOrNull { it.name == name }?.id ?: -1
+    fun getCoinIdBySymbol(symbol: String): Int = coinList.toList().firstOrNull { it.symbol.lowercase() == symbol.lowercase() }?.id ?: -1
 }

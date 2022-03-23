@@ -1,16 +1,19 @@
 package io.outblock.lilico.manager.coin
 
 import android.text.format.DateUtils
+import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.CoinRateQuote
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import java.util.concurrent.ConcurrentHashMap
 
 object CoinRateManager {
+    private val TAG = CoinRateManager::class.java.simpleName
 
     private var coinRateMap = ConcurrentHashMap<Int, CoinRate>()
 
@@ -20,21 +23,25 @@ object CoinRateManager {
         ioScope {
             coinRateMap = cache.read()?.data ?: ConcurrentHashMap<Int, CoinRate>()
 
-            val service = retrofit().create(ApiService::class.java)
-            val response = service.coinRate(CoinMapManager.getCoinIdByName("Flow"))
-            response.data.data.values.forEach {
-                coinRateMap[it.id] = it
-                cache.cache(CoinRateCacheData(coinRateMap))
+            FlowCoinListManager.getEnabledCoinList().forEach { coin ->
+                runCatching {
+                    val service = retrofit().create(ApiService::class.java)
+                    val response = service.coinRate(CoinMapManager.getCoinIdBySymbol(coin.symbol))
+                    response.data.data.values.forEach {
+                        coinRateMap[it.id] = it
+                        cache.cache(CoinRateCacheData(coinRateMap))
+                    }
+                }
             }
         }
     }
 
-    fun usdAmount(coinName: String = "Flow", amount: Float, asyncCallback: (amount: Float) -> Unit): Float {
-        val quote = coinRateMap[CoinMapManager.getCoinIdByName(coinName)]?.usdRate()
+    fun usdAmount(symbol: String = "flow", amount: Float, asyncCallback: (amount: Float) -> Unit): Float {
+        val quote = coinRateMap[CoinMapManager.getCoinIdBySymbol(symbol)]?.usdRate()
         if (quote?.isExpire() != false) {
             ioScope {
                 val service = retrofit().create(ApiService::class.java)
-                val response = service.coinRate(CoinMapManager.getCoinIdByName(coinName))
+                val response = service.coinRate(CoinMapManager.getCoinIdBySymbol(symbol))
                 response.data.data.values.forEach {
                     updateCache(it.id, it)
                     uiScope { asyncCallback.invoke(it.usdRate()?.price!! * amount) }
@@ -46,13 +53,21 @@ object CoinRateManager {
     }
 
     fun coinRate(coinId: Int, asyncCallback: (coinRate: CoinRate) -> Unit) {
+        if (coinId < 0) {
+            return
+        }
+        logd(TAG, "coinRate() coinId:$coinId")
         val coinRate = coinRateMap[coinId]
+        logd(TAG, "coinRate $coinId exist")
         uiScope { coinRate?.let { asyncCallback.invoke(it) } }
         if (coinRate?.isExpire() != false) {
             ioScope {
+                logd(TAG, "coinRate $coinId expired")
+
                 val service = retrofit().create(ApiService::class.java)
                 val response = service.coinRate(coinId)
                 response.data.data.values.forEach {
+                    logd(TAG, "coinRate $coinId fetched from server")
                     updateCache(it.id, it)
                     uiScope { asyncCallback.invoke(it) }
                 }
@@ -70,5 +85,6 @@ object CoinRateManager {
 }
 
 private class CoinRateCacheData(
+    @SerializedName("data")
     var data: ConcurrentHashMap<Int, CoinRate>,
 )

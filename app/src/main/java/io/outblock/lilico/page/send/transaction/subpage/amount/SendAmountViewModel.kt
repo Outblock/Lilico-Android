@@ -2,18 +2,17 @@ package io.outblock.lilico.page.send.transaction.subpage.amount
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.manager.account.BalanceManager
-import io.outblock.lilico.manager.account.OnBalanceUpdate
-import io.outblock.lilico.manager.account.OnWalletDataUpdate
-import io.outblock.lilico.manager.account.WalletManager
+import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.CoinMapManager
 import io.outblock.lilico.manager.coin.CoinRateManager
+import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.network.model.AddressInfoAccount
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
-import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.toSafeLong
+import io.outblock.lilico.utils.Coin
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.viewModelIOScope
 
 class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate {
     private lateinit var contact: AddressBookContact
@@ -55,13 +54,15 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate {
         onCoinSwap.postValue(true)
     }
 
-    override fun onBalanceUpdate(balance: AddressInfoAccount) {
-        CoinRateManager.coinRate(CoinMapManager.getCoinIdByName(Coin.FLOW.name())) { rate ->
-            logd("onBalanceUpdate 2", rate.usdRate())
+    override fun onBalanceUpdate(balance: Balance) {
+        if (balance.symbol.lowercase() != "flow") {
+            return
+        }
+        CoinRateManager.coinRate(CoinMapManager.getCoinIdBySymbol(balance.symbol)) { rate ->
+            logd("onBalanceUpdate", rate.usdRate())
             balanceLiveData.postValue(
                 SendBalanceModel(
-                    address = balance.address,
-                    balance = balance.balance.toSafeLong(),
+                    balance = balance.balance,
                     coinRate = rate.usdRate()?.price ?: -1f,
                 )
             )
@@ -70,7 +71,7 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate {
 
     override fun onWalletDataUpdate(wallet: WalletListData) {
         ioScope {
-            wallet.primaryWallet()?.blockchain?.firstOrNull()?.address?.let { BalanceManager.getBalanceByAddress(it) }
+            FlowCoinListManager.getEnabledCoinList().forEach { BalanceManager.getBalanceByCoin(it) }
         }
     }
 }

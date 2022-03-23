@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.account
 
-import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.WalletListData
@@ -21,27 +20,28 @@ object WalletManager {
     private var wallet: WalletListData? = null
 
     private val apiService by lazy { retrofit().create(ApiService::class.java) }
-    private val cache by lazy { CacheManager("WALLET_CACHE", WalletListData::class.java) }
 
     fun init() {
-        ioScope { wallet = cache.read() }
+        ioScope { wallet = walletCache().read() }
     }
 
     suspend fun fetch(useCache: Boolean = true) {
-        if (useCache) {
-            wallet?.let { dispatchListeners(it) }
-        }
-        while (true) {
-            val resp = apiService.getWalletList()
-
-            // request success & wallet list is empty (wallet not create finish)
-            if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
-                dispatchListeners(resp.data!!)
-                walletCache().cache(resp.data)
-                break
+        ioScope {
+            if (useCache) {
+                wallet?.let { dispatchListeners(it) }
             }
+            while (true) {
+                val resp = apiService.getWalletList()
 
-            delay(2000)
+                // request success & wallet list is empty (wallet not create finish)
+                if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
+                    dispatchListeners(resp.data!!)
+                    walletCache().cache(resp.data)
+                    break
+                }
+
+                delay(2000)
+            }
         }
     }
 
