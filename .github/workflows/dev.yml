@@ -59,7 +59,7 @@ jobs:
         MAPPING_PATH=`find . -name 'mapping.txt' | grep app`
         echo $MAPPING_PATH
         echo "::set-output name=mapping_path::$MAPPING_PATH"
-        BUNDLE_PATH=`find . -name '*.aab' | grep release | grep -v intermediates`
+        BUNDLE_PATH=`find . -name '*.aab' | grep -v intermediates`
         echo ::set-output name=bundle_path::$BUNDLE_PATH
         BUNDLE_NAME=`basename $BUNDLE_PATH`
         echo ::set-output name=bundle_name::$BUNDLE_NAME
