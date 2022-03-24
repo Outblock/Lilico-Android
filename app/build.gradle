@@ -43,6 +43,7 @@ android {
             multiDexEnabled false
             debuggable false
             applicationIdSuffix = ".dev"
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -51,6 +52,7 @@ android {
             shrinkResources true
             multiDexEnabled false
             debuggable false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
