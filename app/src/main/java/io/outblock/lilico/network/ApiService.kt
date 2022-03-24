@@ -5,38 +5,38 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @POST("/register")
+    @POST("/v1/register")
     suspend fun register(@Body param: RegisterRequest): RegisterResponse
 
-    @POST("/user/address")
+    @POST("/v1/user/address")
     suspend fun createWallet(): CreateWalletResponse
 
-    @GET("/user/check")
+    @GET("/v1/user/check")
     suspend fun checkUsername(@Query("username") username: String): UsernameCheckResponse
 
-    @POST("/user/token")
+    @POST("/v1/user/token")
     suspend fun uploadPushToken(@Body token: Map<String, String>): CommonResponse
 
-    @GET("/user/wallet")
+    @GET("/v1/user/wallet")
     suspend fun getWalletList(): WalletListResponse
 
-    @GET("/user/search")
+    @GET("/v1/user/search")
     suspend fun searchUser(@Query("keyword") keyword: String): SearchUserResponse
 
-    @POST("/login")
+    @POST("/v1/login")
     suspend fun login(@Body params: Map<String, String>): LoginResponse
 
-    @GET("/account/info")
+    @GET("/v1/account/info")
     suspend fun getAddressInfo(@Query("address") address: String): AddressInfoResponse
 
-    @GET("/nft/list")
+    @GET("/v1/nft/list")
     suspend fun nftList(
         @Query("address") address: String,
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 100,
     ): NFTListResponse
 
-    @GET("/nft/meta")
+    @GET("/v1/nft/meta")
     suspend fun nftMeta(
         @Query("address") address: String,
         @Query("contractName") contractName: String,
@@ -44,33 +44,33 @@ interface ApiService {
         @Query("tokenId") tokenId: String,
     ): CommonResponse
 
-    @GET("/user/info")
+    @GET("/v1/user/info")
     suspend fun userInfo(): UserInfoResponse
 
-    @POST("/profile")
+    @POST("/v1/profile")
     suspend fun updateProfile(@Body params: Map<String, String>): CommonResponse
 
-    @GET("/addressbook/contact")
+    @GET("/v1/addressbook/contact")
     suspend fun getAddressBook(): AddressBookResponse
 
-    @PUT("/addressbook/external")
+    @PUT("/v1/addressbook/external")
     @JvmSuppressWildcards
     suspend fun addAddressBookExternal(@Body params: Map<String, Any?>): CommonResponse
 
-    @PUT("/addressbook/contact")
+    @PUT("/v1/addressbook/contact")
     @JvmSuppressWildcards
     suspend fun addAddressBook(@Body params: Map<String, Any?>): CommonResponse
 
-    @DELETE("/addressbook/contact")
+    @DELETE("/v1/addressbook/contact")
     suspend fun deleteAddressBook(@Query("id") contactId: String): CommonResponse
 
-    @POST("/addressbook/contact")
+    @POST("/v1/addressbook/contact")
     @JvmSuppressWildcards
     suspend fun editAddressBook(@Body params: Map<String, Any>): CommonResponse
 
-    @GET("/coin/rate")
+    @GET("/v1/coin/rate")
     suspend fun coinRate(@Query("coinId") coinId: Int): CoinRateResponse
 
-    @GET("/coin/map")
+    @GET("/v1/coin/map")
     suspend fun coinMap(): CoinMapResponse
 }
