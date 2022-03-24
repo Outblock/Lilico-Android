@@ -20,7 +20,7 @@ jobs:
       with:
         # https://github.com/actions/checkout/issues/116#issuecomment-644419389
         # MY_REPO_PAT: 
-        token: ${{ secrets.MY_REPO_PAT }}
+        token: ${{ secrets.LILICO_MY_REPO_PAT }}
         submodules: recursive
     - name: set up JDK 11
       uses: actions/setup-java@v2
@@ -89,7 +89,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.MY_REPO_PAT }}
+        GITHUB_TOKEN: ${{ secrets.LILICO_MY_REPO_PAT }}
       with:
         tag_name: build-${{ github.ref }}-${{github.run_number}}
         release_name: ${{ github.ref }} ${{github.run_number}}
@@ -102,7 +102,7 @@ jobs:
       if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.apk_path && steps.prepare_release.outputs.apk_name
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{secrets.MY_REPO_PAT}}
+        GITHUB_TOKEN: ${{secrets.LILICO_MY_REPO_PAT}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ${{steps.prepare_release.outputs.apk_path}}
@@ -113,7 +113,7 @@ jobs:
       if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.bundle_path && steps.prepare_release.outputs.bundle_name
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{secrets.MY_REPO_PAT}}
+        GITHUB_TOKEN: ${{secrets.LILICO_MY_REPO_PAT}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ${{steps.prepare_release.outputs.bundle_path}}
@@ -124,9 +124,26 @@ jobs:
       if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.bundle_path && steps.prepare_release.outputs.bundle_name
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{secrets.MY_REPO_PAT}}
+        GITHUB_TOKEN: ${{secrets.LILICO_MY_REPO_PAT}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ${{steps.prepare_release.outputs.mapping_path}}
         asset_name: mapping.txt
         asset_content_type: application/octet-stream
+        
+    - name: Upload to Google Play
+      uses: r0adkll/upload-google-play@v1.0.15
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.LILICO_SERVICE_ACCOUNT_JSON }}
+        packageName: io.outblock.lilico.dev
+        releaseFiles: ${{steps.prepare_release.outputs.bundle_path}}
+        # alpha, beta, internal, production, internalsharing
+        track: internal
+        # Google Play 使用 0 到 5 之间的整数值来确定优先级，其中 0 是默认值，5 代表最高优先级。
+        # https://developer.android.com/guide/playcore/in-app-updates/kotlin-java
+        inAppUpdatePriority: 1
+        # 发布百分比, 不设置为 100% 发布
+        # userFraction: 0.9
+        # 更新内容
+        # whatsNewDirectory: distribution/whatsnew
+        mappingFile: ${{steps.prepare_release.outputs.mapping_path}}
