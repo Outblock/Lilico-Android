@@ -60,14 +60,19 @@ class FlowCoin(
 
 @Parcelize
 class FlowCoinAddress(
+    @SerializedName("mainnet")
     val mainnet: String,
+    @SerializedName("testnet")
     val testnet: String,
 ) : Parcelable
 
 @Parcelize
 class FlowCoinStoragePath(
+    @SerializedName("balance")
     val balance: String,
+    @SerializedName("vault")
     val vault: String,
+    @SerializedName("receiver")
     val receiver: String,
 ) : Parcelable
 

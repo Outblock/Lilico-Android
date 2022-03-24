@@ -32,7 +32,6 @@ object LaunchManager {
     private fun asyncInit() {
         ioScope {
             System.loadLibrary("TrustWalletCore")
-            NftCollectionConfig.sync()
         }
     }
 

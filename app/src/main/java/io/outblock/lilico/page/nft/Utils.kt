@@ -46,7 +46,7 @@ fun Nft.cover(): String? {
     if (url.isNullOrEmpty()) {
         url = metadata.metadata.firstOrNull { it.name == "image" }?.value
     }
-    return url
+    return url ?: video()
 }
 
 fun Nft.name(): String? {
@@ -62,7 +62,12 @@ fun Nft.desc(): String? {
 }
 
 fun Nft.video(): String? {
-    return media?.firstOrNull { it.mimeType.startsWith("video/") }?.uri?.trim()?.removePrefix("ipfs://")
+    val media = media?.firstOrNull { it.mimeType.startsWith("video/") }?.uri?.trim()?.removePrefix("ipfs://")
+    if (media.isNullOrBlank()) {
+        val arLink = metadata.metadata.firstOrNull { it.name == "arLink" }?.value ?: return null
+        return "https://arweave.net/${arLink}"
+    }
+    return media
 }
 
 fun Nft.isSameNft(other: Nft): Boolean {
