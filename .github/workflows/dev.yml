@@ -45,7 +45,7 @@ jobs:
         path: ${{steps.find_mapping.outputs.apk_mapping_path}}
 
     - name: Build bundle
-      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleRelease
+      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleDev
     
     - name: Prepare Release
       id: prepare_release
