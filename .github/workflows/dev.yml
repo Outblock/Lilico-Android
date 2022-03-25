@@ -138,7 +138,7 @@ jobs:
         packageName: io.outblock.lilico.dev
         releaseFiles: ${{steps.prepare_release.outputs.bundle_path}}
         # alpha, beta, internal, production, internalsharing
-        track: internal
+        track: internalsharing
         # Google Play 使用 0 到 5 之间的整数值来确定优先级，其中 0 是默认值，5 代表最高优先级。
         # https://developer.android.com/guide/playcore/in-app-updates/kotlin-java
         inAppUpdatePriority: 1
