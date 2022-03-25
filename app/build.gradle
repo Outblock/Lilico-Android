@@ -4,6 +4,7 @@ plugins {
     id "kotlin-kapt"
     id("kotlin-parcelize")
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -139,6 +140,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics'
     /** firebase **/
 
     implementation "dev.chrisbanes:insetter-ktx:0.3.1"
