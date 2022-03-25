@@ -72,7 +72,8 @@ class DriveServerHelper(private val driveService: Drive) {
                 .setFields("nextPageToken, files(id, name)")
                 .setPageSize(10)
                 .execute()
-            for (file in files.files) {
+                .files.filterNotNull()
+            for (file in files) {
                 if (file.name == fileName) {
                     return file.id
                 }

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import kotlinx.parcelize.Parcelize
 
 object NftCollectionConfig {
@@ -17,6 +18,7 @@ object NftCollectionConfig {
     fun sync() {
         ioScope {
             val text = Firebase.remoteConfig.getString(KEY)
+            logd("NftCollectionConfig", text.take(300))
             config.clear()
             config.addAll(Gson().fromJson(text, object : TypeToken<List<NftCollection>>() {}.type))
         }

@@ -3,10 +3,7 @@ package io.outblock.lilico.page.wallet
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.manager.account.*
-import io.outblock.lilico.manager.coin.CoinMapManager
-import io.outblock.lilico.manager.coin.CoinRateManager
-import io.outblock.lilico.manager.coin.FlowCoinListManager
-import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.coin.*
 import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
@@ -16,7 +13,7 @@ import io.outblock.lilico.utils.viewModelIOScope
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
-class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate {
+class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, TokenStateChangeListener {
 
     val dataListLiveData = MutableLiveData<List<Any>>()
 
@@ -26,6 +23,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
     init {
         WalletManager.addListener(this)
+        TokenStateManager.addListener(this)
     }
 
     fun load() {
@@ -53,6 +51,10 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             return
         }
         CoinRateManager.coinRate(CoinMapManager.getCoinIdBySymbol(balance.symbol)) { rate -> updateBalanceLine(balance, rate) }
+    }
+
+    override fun onTokenStateChange(coin: FlowCoin, isEnable: Boolean) {
+        loadCoinList()
     }
 
     private fun loadCoinList() {

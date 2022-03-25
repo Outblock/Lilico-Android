@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.databinding.FragmentWalletBinding
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.page.wallet.presenter.WalletFragmentPresenter
 
@@ -32,5 +33,6 @@ class WalletFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.load()
+        TokenStateManager.fetchState()
     }
 }
