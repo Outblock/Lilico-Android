@@ -8,16 +8,20 @@ import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.CoinRateManager
+import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.flowjvm.cadenceTransferToken
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.toAddress
 
-class TransactionViewModel : ViewModel() {
+class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
 
     val userInfoLiveData = MutableLiveData<UserInfoData>()
 
@@ -26,6 +30,10 @@ class TransactionViewModel : ViewModel() {
     val resultLiveData = MutableLiveData<Boolean>()
 
     lateinit var transaction: TransactionModel
+
+    init {
+        CoinRateManager.addListener(this)
+    }
 
     fun bindTransaction(transaction: TransactionModel) {
         this.transaction = transaction
@@ -38,9 +46,9 @@ class TransactionViewModel : ViewModel() {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }
-            amountConvertLiveData.postValue(CoinRateManager.usdAmount(amount = transaction.amount) {
-                amountConvertLiveData.postValue(it)
-            })
+
+            val flow = FlowCoinListManager.coinList().first { it.symbol == "flow" }
+            CoinRateManager.fetchCoinRate(flow)
         }
     }
 
@@ -62,5 +70,12 @@ class TransactionViewModel : ViewModel() {
             )
             BaseActivity.getCurrentActivity()?.let { SendStateBubble.show(it) }
         }
+    }
+
+    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
+        if (!coin.isFlowCoin()) {
+            return
+        }
+        amountConvertLiveData.postValue((rate.usdRate()?.price ?: 0.0f) * transaction.amount)
     }
 }

@@ -56,6 +56,8 @@ class FlowCoin(
     val website: String,
 ) : Parcelable {
     fun address() = if (isDev()) address.testnet else address.mainnet
+
+    fun isFlowCoin() = symbol.lowercase() == "flow"
 }
 
 @Parcelize

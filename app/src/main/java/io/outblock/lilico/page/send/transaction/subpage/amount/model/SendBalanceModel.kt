@@ -1,6 +1,6 @@
 package io.outblock.lilico.page.send.transaction.subpage.amount.model
 
-class SendBalanceModel(
-    val balance: Float,
-    val coinRate: Float,
+data class SendBalanceModel(
+    val balance: Float = 0.0f,
+    val coinRate: Float = 0.0f,
 )

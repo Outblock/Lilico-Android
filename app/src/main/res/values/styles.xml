@@ -142,4 +142,11 @@
     <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/bg_popup_menu</item>
     </style>
+
+    <style name="AppSplash" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--        <item name="android:windowBackground">@drawable/bg_splash</item>-->
+        <item name="android:scaleType">fitXY</item>
+    </style>
 </resources>

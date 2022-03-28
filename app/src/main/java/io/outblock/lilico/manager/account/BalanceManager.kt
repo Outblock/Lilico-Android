@@ -24,9 +24,12 @@ object BalanceManager {
     fun init() {
         ioScope {
             balanceList.addAll(cache.read()?.data ?: emptyList())
-
-            FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.forEach { fetch(it) }
+            refresh()
         }
+    }
+
+    fun refresh() {
+        FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.forEach { fetch(it) }
     }
 
     fun getBalanceByCoin(coin: FlowCoin) {
@@ -46,7 +49,7 @@ object BalanceManager {
         logd(TAG, "dispatchListeners ${coin.symbol}:$balance")
         uiScope {
             listeners.removeAll { it.get() == null }
-            listeners.forEach { it.get()?.onBalanceUpdate(Balance(coin.symbol, balance)) }
+            listeners.forEach { it.get()?.onBalanceUpdate(coin, Balance(coin.symbol, balance)) }
         }
     }
 
@@ -54,6 +57,8 @@ object BalanceManager {
 
     private fun fetch(coin: FlowCoin) {
         ioScope {
+            balanceList.firstOrNull { it.symbol == coin.symbol }?.let { dispatchListeners(coin, it.balance) }
+
             val balance = cadenceQueryTokenBalance(coin)
             if (balance != null) {
                 val existBalance = balanceList.firstOrNull { coin.symbol == it.symbol }
@@ -70,7 +75,7 @@ object BalanceManager {
 }
 
 interface OnBalanceUpdate {
-    fun onBalanceUpdate(balance: Balance)
+    fun onBalanceUpdate(coin: FlowCoin, balance: Balance)
 }
 
 data class Balance(

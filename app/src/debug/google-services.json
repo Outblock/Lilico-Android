@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "246247206636",
+    "firebase_url": "https://lilico-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "lilico-dev",
     "storage_bucket": "lilico-dev.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "246247206636-3jao9q30fttoqqdli9shbel3btaaf80f.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "246247206636-srqmvc5l0fievp3ui5oshvsaml5a9pnb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.outblock.lilico.dev"
+              }
             }
           ]
         }

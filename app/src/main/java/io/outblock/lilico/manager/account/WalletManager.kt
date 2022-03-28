@@ -35,8 +35,9 @@ object WalletManager {
 
                 // request success & wallet list is empty (wallet not create finish)
                 if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
-                    dispatchListeners(resp.data!!)
-                    walletCache().cache(resp.data)
+                    walletCache().cache(resp.data!!)
+                    delay(300)
+                    dispatchListeners(resp.data)
                     break
                 }
 

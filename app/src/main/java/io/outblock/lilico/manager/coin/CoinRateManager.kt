@@ -10,81 +10,86 @@ import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
+import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 object CoinRateManager {
     private val TAG = CoinRateManager::class.java.simpleName
 
-    private var coinRateMap = ConcurrentHashMap<Int, CoinRate>()
+    private var coinRateMap = ConcurrentHashMap<String, CoinRate>()
+
+    private val listeners = CopyOnWriteArrayList<WeakReference<OnCoinRateUpdate>>()
 
     private val cache by lazy { CacheManager("COIN_RATE", CoinRateCacheData::class.java) }
 
     fun init() {
         ioScope {
-            coinRateMap = cache.read()?.data ?: ConcurrentHashMap<Int, CoinRate>()
+            coinRateMap = ConcurrentHashMap<String, CoinRate>(cache.read()?.data.orEmpty())
+            CoinMapManager.reload(true)
+            refresh()
+        }
+    }
 
-            FlowCoinListManager.getEnabledCoinList().forEach { coin ->
+    fun refresh() {
+        ioScope { FlowCoinListManager.getEnabledCoinList().forEach { coin -> fetchCoinRate(coin) } }
+    }
+
+    fun addListener(callback: OnCoinRateUpdate) {
+        if (listeners.firstOrNull { it.get() == callback } != null) {
+            return
+        }
+        uiScope { this.listeners.add(WeakReference(callback)) }
+    }
+
+    fun fetchCoinRate(coin: FlowCoin) {
+        CoinMapManager.reloadIfEmpty()
+        ioScope {
+            val cacheRate = coinRateMap[coin.symbol]
+            cacheRate?.let { dispatchListeners(coin, it) }
+            if (cacheRate.isExpire()) {
                 runCatching {
+                    val coinId = coin.coinId()
+                    if (coinId < 0) {
+                        return@ioScope
+                    }
                     val service = retrofit().create(ApiService::class.java)
-                    val response = service.coinRate(CoinMapManager.getCoinIdBySymbol(coin.symbol))
+                    val response = service.coinRate(coinId)
                     response.data.data.values.forEach {
-                        coinRateMap[it.id] = it
-                        cache.cache(CoinRateCacheData(coinRateMap))
+                        updateCache(coin, it)
+                        dispatchListeners(coin, it)
                     }
                 }
             }
         }
     }
 
-    fun usdAmount(symbol: String = "flow", amount: Float, asyncCallback: (amount: Float) -> Unit): Float {
-        val quote = coinRateMap[CoinMapManager.getCoinIdBySymbol(symbol)]?.usdRate()
-        if (quote?.isExpire() != false) {
-            ioScope {
-                val service = retrofit().create(ApiService::class.java)
-                val response = service.coinRate(CoinMapManager.getCoinIdBySymbol(symbol))
-                response.data.data.values.forEach {
-                    updateCache(it.id, it)
-                    uiScope { asyncCallback.invoke(it.usdRate()?.price!! * amount) }
-                }
-            }
-        }
+    private fun CoinRateQuote?.isExpire(): Boolean = this == null || System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
+    private fun CoinRate?.isExpire(): Boolean = this == null || System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
 
-        return (quote?.price ?: -1f) * amount
-    }
-
-    fun coinRate(coinId: Int, asyncCallback: (coinRate: CoinRate) -> Unit) {
-        if (coinId < 0) {
-            return
-        }
-        logd(TAG, "coinRate() coinId:$coinId")
-        val coinRate = coinRateMap[coinId]
-        logd(TAG, "coinRate $coinId exist")
-        uiScope { coinRate?.let { asyncCallback.invoke(it) } }
-        if (coinRate?.isExpire() != false) {
-            ioScope {
-                logd(TAG, "coinRate $coinId expired")
-
-                val service = retrofit().create(ApiService::class.java)
-                val response = service.coinRate(coinId)
-                response.data.data.values.forEach {
-                    logd(TAG, "coinRate $coinId fetched from server")
-                    updateCache(it.id, it)
-                    uiScope { asyncCallback.invoke(it) }
-                }
-            }
+    private fun updateCache(coin: FlowCoin, coinRate: CoinRate) {
+        ioScope {
+            coinRateMap[coin.symbol] = coinRate
+            cache.cache(CoinRateCacheData(coinRateMap))
         }
     }
 
-    private fun CoinRateQuote.isExpire(): Boolean = System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
-    private fun CoinRate.isExpire(): Boolean = System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
-
-    private fun updateCache(coinId: Int, coinRate: CoinRate) {
-        coinRateMap[coinId] = coinRate
-        cache.cache(CoinRateCacheData(coinRateMap))
+    private fun dispatchListeners(coin: FlowCoin, rate: CoinRate) {
+        logd(TAG, "dispatchListeners ${coin.symbol}:${rate.usdRate()?.price}")
+        uiScope {
+            listeners.removeAll { it.get() == null }
+            listeners.forEach { it.get()?.onCoinRateUpdate(coin, rate) }
+        }
     }
+
+    private fun FlowCoin.coinId() = CoinMapManager.getCoinIdBySymbol(symbol)
+}
+
+interface OnCoinRateUpdate {
+    fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate)
 }
 
 private class CoinRateCacheData(
     @SerializedName("data")
-    var data: ConcurrentHashMap<Int, CoinRate>,
+    var data: Map<String, CoinRate>,
 )

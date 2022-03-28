@@ -33,4 +33,12 @@ object CoinMapManager {
     }
 
     fun getCoinIdBySymbol(symbol: String): Int = coinList.toList().firstOrNull { it.symbol.lowercase() == symbol.lowercase() }?.id ?: -1
+
+    fun reloadIfEmpty() {
+        if (isCoinMapEmpty()) {
+            CoinMapManager.reload()
+        }
+    }
+
+    private fun isCoinMapEmpty() = coinList.isEmpty()
 }

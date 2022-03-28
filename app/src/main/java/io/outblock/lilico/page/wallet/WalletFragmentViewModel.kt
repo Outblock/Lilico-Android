@@ -13,9 +13,11 @@ import io.outblock.lilico.utils.viewModelIOScope
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
-class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, TokenStateChangeListener {
+class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener {
 
     val dataListLiveData = MutableLiveData<List<Any>>()
+
+    val headerLiveData = MutableLiveData<WalletHeaderModel>()
 
     private var balanceList = ConcurrentHashMap<String, Float>()
 
@@ -24,6 +26,8 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     init {
         WalletManager.addListener(this)
         TokenStateManager.addListener(this)
+        CoinRateManager.addListener(this)
+        BalanceManager.addListener(this)
     }
 
     fun load() {
@@ -35,26 +39,25 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     override fun onWalletDataUpdate(wallet: WalletListData) {
-        if (dataList.isEmpty()) {
-            dataList.add(WalletHeaderModel(wallet, 0f))
-        } else {
-            dataList[0] = WalletHeaderModel(wallet, 0f)
-        }
-        dataListLiveData.postValue(dataList)
+        headerLiveData.postValue(WalletHeaderModel(wallet, 0f))
         updateWalletHeader()
+        if (dataList.isEmpty()) {
+            loadCoinList()
+        }
+        TokenStateManager.fetchState()
     }
 
-    override fun onBalanceUpdate(balance: Balance) {
+    override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
         logd(TAG, "onBalanceUpdate:$balance")
-        if (balance.symbol.lowercase() == "fusd") {
-            updateBalanceLine(balance, forceRate = 1.0f)
-            return
-        }
-        CoinRateManager.coinRate(CoinMapManager.getCoinIdBySymbol(balance.symbol)) { rate -> updateBalanceLine(balance, rate) }
+        updateCoinBalance(coin, balance)
     }
 
     override fun onTokenStateChange(coin: FlowCoin, isEnable: Boolean) {
         loadCoinList()
+    }
+
+    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
+        updateCoinRate(coin, rate)
     }
 
     private fun loadCoinList() {
@@ -70,37 +73,41 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
                 updateWalletHeader(count = coinList.size)
             }
 
-            BalanceManager.addListener(this)
+            BalanceManager.refresh()
+            CoinRateManager.refresh()
 
-            coinList.forEach { BalanceManager.getBalanceByCoin(it) }
+            coinList.toList().firstOrNull { it.symbol == "fusd" }?.let { updateCoinRate(it, forceRate = 1.0f) }
         }
     }
 
-    private fun updateBalanceLine(balance: Balance, coinRate: CoinRate? = null, forceRate: Float? = null) {
-        logd(TAG, "updateBalanceLine :$balance")
-        val existIndex = dataList.indexOfFirst { it is WalletCoinItemModel && it.coin.symbol == balance.symbol }
-        val rate = (coinRate?.usdRate()?.price ?: forceRate) ?: 0f
-        val coin = FlowCoinListManager.coinList().first { it.symbol == balance.symbol }
-        val item = WalletCoinItemModel(coin, coin.address(), balance.balance, rate)
-        if (existIndex >= 0) {
-            dataList[existIndex] = item
-        } else {
-            dataList.add(item)
-        }
+    private fun updateCoinBalance(coin: FlowCoin, balance: Balance) {
+        logd(TAG, "updateCoinBalance :$balance")
+        val oldItem = (dataList.firstOrNull { it is WalletCoinItemModel && it.coin.symbol == balance.symbol } as? WalletCoinItemModel) ?: return
+        val item = oldItem.copy(balance = balance.balance)
+        dataList[dataList.indexOf(oldItem)] = item
         dataListLiveData.postValue(dataList)
-        balanceList[balance.symbol] = balance.balance * rate
+        updateWalletHeader()
+    }
+
+    private fun updateCoinRate(coin: FlowCoin, rate: CoinRate? = null, forceRate: Float? = null) {
+        val rate = (rate?.usdRate()?.price ?: forceRate) ?: 0f
+        logd(TAG, "updateCoinRate ${coin.symbol}:$rate")
+
+        val oldItem = (dataList.firstOrNull { it is WalletCoinItemModel && it.coin.symbol == coin.symbol } as? WalletCoinItemModel) ?: return
+        val item = oldItem.copy(coinRate = rate)
+        dataList[dataList.indexOf(oldItem)] = item
+        dataListLiveData.postValue(dataList)
         updateWalletHeader()
     }
 
     private fun updateWalletHeader(count: Int? = null) {
-        val header = (dataList.firstOrNull { it is WalletHeaderModel } as? WalletHeaderModel) ?: return
-        dataList[0] = header.copy().apply {
-            balance = balanceList.map { it.value }.sum()
+        val header = headerLiveData.value ?: return
+        headerLiveData.postValue(header.copy().apply {
+            balance = dataList.toList().filterIsInstance<WalletCoinItemModel>().map { it.balance * it.coinRate }.sum()
             if (count != null) {
                 coinCount = count
             }
-        }
-        dataListLiveData.postValue(dataList)
+        })
     }
 
     companion object {
