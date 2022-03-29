@@ -35,6 +35,7 @@ import io.outblock.lilico.page.nftdetail.shareNft
 import io.outblock.lilico.page.nftdetail.widget.NftMorePopupMenu
 import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.exoplayer.createExoPlayer
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.widgets.ProgressDialog
 import io.outblock.lilico.widgets.likebutton.LikeButton
@@ -55,7 +56,7 @@ class NftDetailPresenter(
 
     private val screenHeight by lazy { ScreenUtils.getScreenHeight() }
 
-    private val videoPlayer by lazy { ExoPlayer.Builder(activity).build() }
+    private val videoPlayer by lazy { createExoPlayer(activity) }
 
     private var coverRatio = "1:1"
 

@@ -6,11 +6,12 @@ import io.outblock.lilico.network.model.CoinMapData
 import io.outblock.lilico.network.model.CoinMapDataWrapper
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
+import java.util.concurrent.CopyOnWriteArrayList
 
 object CoinMapManager {
     private val cache by lazy { CacheManager("COIN_MAP", CoinMapDataWrapper::class.java) }
 
-    private val coinList = mutableListOf<CoinMapData>()
+    private val coinList = CopyOnWriteArrayList<CoinMapData>()
 
     fun reload(forceReload: Boolean = false) {
         ioScope {
@@ -21,12 +22,14 @@ object CoinMapManager {
                 return@ioScope
             }
 
-            val service = retrofit().create(ApiService::class.java)
-            val response = service.coinMap()
-            if (response.status == 200 && response.data.data.isNotEmpty()) {
-                coinList.clear()
-                coinList.addAll(response.data.data)
-                cache.cache(response.data)
+            runCatching {
+                val service = retrofit().create(ApiService::class.java)
+                val response = service.coinMap()
+                if (response.status == 200 && response.data.data.isNotEmpty()) {
+                    coinList.clear()
+                    coinList.addAll(response.data.data)
+                    cache.cache(response.data)
+                }
             }
             CoinRateManager.init()
         }
@@ -36,7 +39,7 @@ object CoinMapManager {
 
     fun reloadIfEmpty() {
         if (isCoinMapEmpty()) {
-            CoinMapManager.reload()
+            reload()
         }
     }
 

@@ -8,8 +8,8 @@ import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
+import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
-import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
@@ -40,6 +40,7 @@ object LaunchManager {
         BalanceManager.init()
         TransactionStateManager.init()
         TokenStateManager.init()
+        CoinRateManager.init()
     }
 
     private fun setNightMode() {
