@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentWalletRestoreDrivePasswordBinding
-import io.outblock.lilico.manager.drive.DriveData
 import io.outblock.lilico.manager.drive.DriveItem
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.walletrestore.requestWalletRestoreLogin
@@ -59,10 +57,8 @@ class WalletRestoreDrivePasswordFragment : Fragment() {
     private fun login() {
         try {
             binding.nextButton.setProgressVisible(true)
-            val str = aesDecrypt(binding.pwdText.text.toString(), message = data.data)
-            logd("data", str)
-            val driveData = Gson().fromJson(str, DriveData::class.java)
-            val mnemonic = driveData.data
+            val mnemonic = aesDecrypt(binding.pwdText.text.toString(), message = data.data)
+            logd("mnemonic", mnemonic)
             ioScope {
                 requestWalletRestoreLogin(mnemonic) { isSuccess, _ ->
                     uiScope {

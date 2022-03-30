@@ -18,10 +18,3 @@ class DriveItem(
     @SerializedName("data")
     var data: String,
 ) : Parcelable
-
-class DriveData(
-    @SerializedName("data")
-    val data: String,
-    @SerializedName("address")
-    val address: String,
-)
