@@ -8,7 +8,9 @@ import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.logv
 import io.outblock.lilico.wallet.getPrivateKey
+import io.outblock.lilico.wallet.toAddress
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
@@ -54,7 +56,6 @@ fun cadenceQueryDomainByAddressFind(address: String): FlowScriptResponse? {
 
 fun cadenceCheckTokenEnabled(coin: FlowCoin): Boolean? {
     logd(TAG, "cadenceCheckTokenEnabled() address:${coin.address()}")
-//    logd(TAG, "script:  ${coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED)}")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     val result = coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED).executeScript {
         arg { address(walletAddress) }
@@ -64,7 +65,7 @@ fun cadenceCheckTokenEnabled(coin: FlowCoin): Boolean? {
 }
 
 fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
-    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return 0f
+    val walletAddress = walletCache().read()?.primaryWalletAddress()?.toAddress() ?: return 0f
     logd(TAG, "cadenceQueryTokenBalance()")
     val result = coin.formatCadence(CADENCE_GET_BALANCE).executeScript {
         arg { address(walletAddress) }
@@ -84,13 +85,14 @@ fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float):
     logd(TAG, "cadenceTransferToken()")
     val transactionId = CADENCE_TRANSFER_TOKEN.transaction(fromAddress) {
         arg { ufix64(amount) }
-        arg { address(toAddress) }
+        arg { address(toAddress.toAddress()) }
     }
     logd(TAG, "cadenceTransferToken() transactionId:$transactionId")
     return transactionId
 }
 
 private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
+    logv(TAG, "executeScript:\n$this")
     return try {
         FlowApi.get().simpleFlowScript {
             script { this@executeScript.trimIndent() }
@@ -103,7 +105,7 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
 }
 
 private fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() -> Unit): String? {
-    val walletAddress = walletCache().read()?.primaryWallet()?.blockchain?.first()?.address ?: return null
+    val walletAddress = walletCache().read()?.primaryWallet()?.blockchain?.first()?.address?.toAddress() ?: return null
     return this.transaction(walletAddress, arguments)
 }
 
@@ -112,7 +114,7 @@ private fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuil
     try {
         val latestBlockId = FlowApi.get().getLatestBlockHeader().id
 
-        val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress))!!
+        val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
 
         val tx = flowTransaction {
             script { this@transaction }
@@ -128,7 +130,7 @@ private fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuil
                 sequenceNumber = payerAccount.keys[0].sequenceNumber.toLong()
             }
 
-            authorizers(mutableListOf(FlowAddress(fromAddress)))
+            authorizers(mutableListOf(FlowAddress(fromAddress.toAddress())))
             payerAddress = payerAccount.address
 
             signatures {

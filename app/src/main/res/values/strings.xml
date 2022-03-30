@@ -180,4 +180,10 @@
     <string name="search_token">Search Token</string>
     <string name="confirmation">Confirmation</string>
     <string name="app_initializing">Initializing</string>
+    <string name="developer_mode">Developer Mode</string>
+    <string name="network">Network</string>
+    <string name="selected">Selected</string>
+    <string name="mainnet">Mainnet</string>
+    <string name="testnet">Testnet</string>
+    <string name="switch_network_failed">Switch network failed</string>
 </resources>

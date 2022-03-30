@@ -1,6 +1,7 @@
 package io.outblock.lilico.cache
 
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.TokenStateCache
 import io.outblock.lilico.network.model.*
 
@@ -18,7 +19,7 @@ fun nftListCache(address: String?): CacheManager<NFTListData> {
 }
 
 fun walletCache(): CacheManager<WalletListData> {
-    return CacheManager(CACHE_WALLET, WalletListData::class.java)
+    return CacheManager("$CACHE_WALLET-${isMainnet()}", WalletListData::class.java)
 }
 
 fun nftSelectionCache(): CacheManager<NftSelections> {

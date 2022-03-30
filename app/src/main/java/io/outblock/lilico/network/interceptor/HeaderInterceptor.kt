@@ -4,10 +4,10 @@ import android.os.Build
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.R
 import io.outblock.lilico.firebase.auth.firebaseJwt
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.getJwtToken
-import io.outblock.lilico.utils.isDev
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -34,6 +34,6 @@ class HeaderInterceptor : Interceptor {
 
     private fun Interceptor.Chain.getNetWork(): String {
         val isNftRequest = this.request().url.toUrl().toString().contains("/nft/")
-        return if (isDev() && !isNftRequest) "testnet" else "mainnet"
+        return if (isTestnet() && !isNftRequest) "testnet" else "mainnet"
     }
 }

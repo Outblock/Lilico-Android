@@ -126,6 +126,10 @@
             android:name=".page.addtoken.AddTokenActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.developer.DeveloperModeActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

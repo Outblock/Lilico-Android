@@ -17,28 +17,24 @@ object WalletManager {
 
     private val listeners = CopyOnWriteArrayList<WeakReference<OnWalletDataUpdate>>()
 
-    private var wallet: WalletListData? = null
-
     private val apiService by lazy { retrofit().create(ApiService::class.java) }
-
-    fun init() {
-        ioScope { wallet = walletCache().read() }
-    }
 
     suspend fun fetch(useCache: Boolean = true) {
         ioScope {
             if (useCache) {
-                wallet?.let { dispatchListeners(it) }
+                walletCache().read()?.let { dispatchListeners(it) }
             }
             while (true) {
-                val resp = apiService.getWalletList()
+                runCatching {
+                    val resp = apiService.getWalletList()
 
-                // request success & wallet list is empty (wallet not create finish)
-                if (resp.status == 200 && !resp.data?.wallets.isNullOrEmpty()) {
-                    walletCache().cache(resp.data!!)
-                    delay(300)
-                    dispatchListeners(resp.data)
-                    break
+                    // request success & wallet list is empty (wallet not create finish)
+                    if (resp.status == 200 && !resp.data?.primaryWalletAddress().isNullOrBlank()) {
+                        walletCache().cache(resp.data!!)
+                        delay(300)
+                        dispatchListeners(resp.data)
+                        return@ioScope
+                    }
                 }
 
                 delay(2000)

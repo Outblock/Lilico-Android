@@ -5,21 +5,27 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="52dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    android:minHeight="52dp"
     android:padding="16dp">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/icon_view"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+    <FrameLayout
+        android:id="@+id/beginning_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:round="32dp"
-        tools:background="#999"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/icon_view"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:round="32dp"
+            tools:background="#999"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/title_view"
@@ -30,7 +36,7 @@
         android:textColor="@color/text"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/subtitle_view"
-        app:layout_constraintStart_toEndOf="@id/icon_view"
+        app:layout_constraintStart_toEndOf="@id/beginning_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_goneMarginStart="0dp"
@@ -47,7 +53,7 @@
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/icon_view"
+        app:layout_constraintStart_toEndOf="@id/beginning_container"
         app:layout_constraintTop_toBottomOf="@id/title_view"
         app:layout_goneMarginStart="0dp"
         tools:text="Backup"/>

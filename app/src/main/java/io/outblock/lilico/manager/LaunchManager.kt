@@ -6,8 +6,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.manager.account.BalanceManager
-import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
+import io.outblock.lilico.manager.app.refreshChainNetwork
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
@@ -23,6 +23,7 @@ object LaunchManager {
         application.startServiceSafe(Intent(application, MessagingService::class.java))
         PageLifecycleObserver.init(application)
         asyncInit()
+        readPreference()
         initFirebaseConfig()
         setNightMode()
         runWorker(application)
@@ -35,8 +36,11 @@ object LaunchManager {
         }
     }
 
+    private fun readPreference() {
+        refreshChainNetwork()
+    }
+
     private fun readCache() {
-        WalletManager.init()
         BalanceManager.init()
         TransactionStateManager.init()
         TokenStateManager.init()

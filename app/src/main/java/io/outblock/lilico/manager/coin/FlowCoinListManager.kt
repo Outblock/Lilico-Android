@@ -6,8 +6,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isDev
 import io.outblock.lilico.utils.logd
 import kotlinx.parcelize.Parcelize
 import java.util.concurrent.CopyOnWriteArrayList
@@ -55,7 +55,7 @@ class FlowCoin(
     @SerializedName("website")
     val website: String,
 ) : Parcelable {
-    fun address() = if (isDev()) address.testnet else address.mainnet
+    fun address() = if (isTestnet()) address.testnet else address.mainnet
 
     fun isFlowCoin() = symbol.lowercase() == "flow"
 }

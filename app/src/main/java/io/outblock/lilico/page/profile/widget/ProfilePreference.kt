@@ -35,6 +35,7 @@ open class ProfilePreference : FrameLayout {
     val descView: TextView by lazy { findViewById(R.id.desc_view) }
     private val arrowView by lazy { findViewById<View>(R.id.arrow_view) }
     private val extendContainer by lazy { findViewById<ViewGroup>(R.id.extend_container) }
+    private val beginningContainer by lazy { findViewById<ViewGroup>(R.id.beginning_container) }
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet? = null) : this(context, attrs, 0)
@@ -57,6 +58,11 @@ open class ProfilePreference : FrameLayout {
     fun setExtendView(view: View, layoutParams: ViewGroup.LayoutParams? = null) {
         extendContainer.setVisible(true)
         extendContainer.addView(view, layoutParams ?: view.layoutParams)
+    }
+
+    fun setBeginningView(view: View, layoutParams: ViewGroup.LayoutParams? = null) {
+        iconView.setVisible(false)
+        beginningContainer.addView(view, layoutParams ?: view.layoutParams)
     }
 
     fun setDesc(desc: String) {

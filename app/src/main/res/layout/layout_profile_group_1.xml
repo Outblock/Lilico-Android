@@ -35,5 +35,19 @@
             app:icon="@drawable/ic_profile_temp"
             app:isArrowVisible="true"
             app:title="@string/security"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@color/neutrals12"/>
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
+            android:id="@+id/developer_mode_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_profile_temp"
+            app:isArrowVisible="true"
+            app:title="@string/developer_mode"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>

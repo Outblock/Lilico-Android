@@ -26,6 +26,8 @@ private val KEY_BIOMETRIC_ENABLE = booleanPreferencesKey("KEY_BIOMETRIC_ENABLE")
 private val KEY_BACKUP_MANUALLY = booleanPreferencesKey("KEY_BACKUP_MANUALLY")
 private val KEY_BACKUP_GOOGLE_DRIVE = booleanPreferencesKey("KEY_BACKUP_GOOGLE_DRIVE")
 private val KEY_SEND_STATE_BUBBLE_POSITION = stringPreferencesKey("KEY_SEND_STATE_BUBBLE_POSITION")
+private val KEY_DEVELOPER_MODE_ENABLE = booleanPreferencesKey("KEY_DEVELOPER_MODE_ENABLE")
+private val KEY_CHAIN_NETWORK = intPreferencesKey("KEY_CHAIN_NETWORK")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -82,6 +84,22 @@ suspend fun isBackupGoogleDrive(): Boolean = dataStore.data.map { it[KEY_BACKUP_
 
 fun setBackupGoogleDrive(isBackuped: Boolean = true) {
     edit { dataStore.edit { it[KEY_BACKUP_GOOGLE_DRIVE] = isBackuped } }
+}
+
+suspend fun isDeveloperModeEnable(): Boolean = dataStore.data.map { it[KEY_DEVELOPER_MODE_ENABLE] ?: isDev() }.first()
+
+fun setDeveloperModeEnable(isEnable: Boolean) {
+    edit { dataStore.edit { it[KEY_DEVELOPER_MODE_ENABLE] = isEnable } }
+}
+
+suspend fun getChainNetworkPreference(): Int =
+    dataStore.data.map { it[KEY_CHAIN_NETWORK] ?: if (isDev()) NETWORK_TESTNET else NETWORK_MAINNET }.first()
+
+fun updateChainNetworkPreference(network: Int, callback: (() -> Unit)? = null) {
+    edit {
+        dataStore.edit { it[KEY_CHAIN_NETWORK] = network }
+        callback?.invoke()
+    }
 }
 
 suspend fun getSendStateBubblePosition(): Point {

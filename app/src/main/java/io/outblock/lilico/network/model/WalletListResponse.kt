@@ -2,6 +2,7 @@ package io.outblock.lilico.network.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.wallet.toAddress
 import kotlinx.parcelize.Parcelize
 
 class WalletListResponse(
@@ -29,7 +30,7 @@ data class WalletListData(
         return wallets?.firstOrNull { it.walletId == primaryWalletId }
     }
 
-    fun primaryWalletAddress(): String? = primaryWallet()?.blockchain?.firstOrNull()?.address
+    fun primaryWalletAddress(): String? = primaryWallet()?.blockchain?.firstOrNull()?.address?.toAddress()
 }
 
 data class WalletData(
