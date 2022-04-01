@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityDemoBinding
+import io.outblock.lilico.widgets.webview.LilicoWebView
 
 class DemoActivity : BaseActivity() {
 
@@ -14,6 +15,7 @@ class DemoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        LilicoWebView(binding.root, "https://outblock.github.io/harness/")
     }
 
     companion object {

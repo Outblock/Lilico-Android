@@ -10,6 +10,7 @@ import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.addtoken.AddTokenActivity
+import io.outblock.lilico.page.demo.DemoActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
@@ -39,6 +40,7 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
+            buyButton.setOnClickListener { DemoActivity.launch(view.context) }
         }
     }
 

@@ -170,6 +170,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"

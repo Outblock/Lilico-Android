@@ -64,3 +64,6 @@
 ##---------------End: proguard configuration for Gson  ----------
 -keep class wallet.core.** {*;}
 -keep class com.nftco.flow.** {*;}
+
+-keep class com.just.agentweb.** {*;}
+-dontwarn com.just.agentweb.**
