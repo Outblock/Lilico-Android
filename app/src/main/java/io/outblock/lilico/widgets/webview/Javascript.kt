@@ -1,6 +1,7 @@
 package io.outblock.lilico.widgets.webview
 
 const val ADDRESS_REPLACEMENT = "#address"
+const val SIGNATURE_REPLACEMENT = "#signature"
 
 private const val SERVICE = """
     {
@@ -23,7 +24,7 @@ private const val SERVICE = """
     }
 """
 
-val FCL_AUTHORIZATION_RESPONSE = """
+val FCL_AUTHN_RESPONSE = """
     {
       "f_type": "PollingResponse",
       "f_vsn": "1.0.0",
@@ -65,6 +66,23 @@ val FCL_AUTHORIZATION_RESPONSE = """
           }
         ],
         "paddr": null
+      },
+      "type": "FCL:VIEW:RESPONSE"
+    }
+""".trimIndent()
+
+val FCL_AUTHZ_RESPONSE = """
+    {
+      "f_type": "PollingResponse",
+      "f_vsn": "1.0.0",
+      "status": "APPROVED",
+      "reason": null,
+      "data": {
+        "f_type": "CompositeSignature",
+        "f_vsn": "1.0.0",
+        "addr": "$ADDRESS_REPLACEMENT",
+        "keyId": 0,
+        "signature": "$SIGNATURE_REPLACEMENT"
       },
       "type": "FCL:VIEW:RESPONSE"
     }

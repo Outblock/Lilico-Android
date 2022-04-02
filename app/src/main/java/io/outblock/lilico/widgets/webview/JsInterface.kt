@@ -2,7 +2,7 @@ package io.outblock.lilico.widgets.webview
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import io.outblock.lilico.utils.logd
+import io.outblock.lilico.widgets.webview.fcl.FclMessageHandler
 
 class JsInterface(
     private val webView: WebView,
@@ -12,7 +12,6 @@ class JsInterface(
 
     @JavascriptInterface
     fun message(data: String) {
-        logd(TAG, "message:$data")
         messageHandler.onHandleMessage(data)
     }
 

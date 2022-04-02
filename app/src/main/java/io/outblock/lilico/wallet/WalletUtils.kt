@@ -13,14 +13,14 @@ import wallet.core.jni.Hash
 private const val DERIVATION_PATH = "m/44'/539'/0'/0/0"
 
 fun getPublicKey(removePrefix: Boolean = true): String {
-    return HDWallet(getMnemonic(), "").getPublicKey(removePrefix)
+    return hdWallet().getPublicKey(removePrefix)
 }
 
 fun getPrivateKey(): String {
-    return HDWallet(getMnemonic(), "").getDerivedKey(CoinType.FLOW, 0, 0, 0).data().bytesToHex()
+    return hdWallet().getDerivedKey(CoinType.FLOW, 0, 0, 0).data().bytesToHex()
 }
 
-fun getWalletCore() = HDWallet(getMnemonic(), "")
+fun getWalletCore() = hdWallet()
 
 fun HDWallet.getPublicKey(removePrefix: Boolean = true): String {
     val privateKey = getDerivedKey(CoinType.FLOW, 0, 0, 0)
@@ -29,10 +29,17 @@ fun HDWallet.getPublicKey(removePrefix: Boolean = true): String {
     return if (removePrefix) publicKey.removePrefix("04") else publicKey
 }
 
-fun HDWallet.sign(text: String): String {
+fun hdWallet(): HDWallet {
+    return HDWallet(getMnemonic(), "")
+}
+
+fun HDWallet.sign(text: String, isNeedDomainTag: Boolean = true): String {
+    return signData(normalize("FLOW-V0.0-user") + text.encodeToByteArray())
+}
+
+fun HDWallet.signData(data: ByteArray): String {
     val privateKey = getDerivedKey(CoinType.FLOW, 0, 0, 0)
-    val data = text.encodeToByteArray()
-    val hashedData = Hash.sha256(normalize("FLOW-V0.0-user") + data)
+    val hashedData = Hash.sha256(data)
     val signature = privateKey.sign(hashedData, Curve.SECP256K1).dropLast(1).toByteArray()
     return signature.bytesToHex()
 }

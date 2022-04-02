@@ -1,4 +1,4 @@
-package io.outblock.lilico.widgets.webview.model
+package io.outblock.lilico.widgets.webview.fcl.model
 
 
 import com.google.gson.annotations.SerializedName
@@ -17,6 +17,8 @@ data class FclViewReadyResponse(
 ) {
 
     fun uniqueId() = service.type + body.extensions.first().id
+
+    fun serviceType() = service.type
 
     data class Body(
         @SerializedName("data")
