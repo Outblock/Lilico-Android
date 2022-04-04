@@ -1,14 +1,15 @@
 package io.outblock.lilico.widgets.webview.fcl
 
 import android.webkit.WebView
+import androidx.fragment.app.FragmentActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.cache.walletCache
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.safeRun
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.webview.TYPE_VIEW_READY
 import io.outblock.lilico.widgets.webview.TYPE_VIEW_RESPONSE
+import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
+import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclResponse
@@ -17,6 +18,8 @@ import io.outblock.lilico.widgets.webview.fcl.model.FclService
 class FclMessageHandler(
     private val webView: WebView,
 ) {
+
+    private val activity by lazy { findActivity(webView) as FragmentActivity }
 
     private var serviceType = ""
     private var message = ""
@@ -59,12 +62,23 @@ class FclMessageHandler(
     }
 
     private fun cadence(fcl: FclAuthzResponse) {
-        webView.postAuthzViewReadyResponse(fcl)
+        uiScope {
+            serviceType = ""
+            val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl)
+            if (approve) {
+                webView.postAuthzViewReadyResponse(fcl)
+            }
+        }
     }
 
     private fun connect(fcl: FclAuthnResponse) {
-        // TODO show ui then send response
-        walletCache().read()?.primaryWalletAddress()?.let { webView.postAuthnViewReadyResponse(it) }
+        uiScope {
+            serviceType = ""
+            val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl)
+            if (approve) {
+                walletCache().read()?.primaryWalletAddress()?.let { webView.postAuthnViewReadyResponse(it) }
+            }
+        }
     }
 
     private fun Map<String, Any>.isService(): Boolean {
