@@ -35,6 +35,8 @@ class ProfilePreferenceCheckbox : ProfilePreference {
         }
     }
 
+    fun isChecked() = checkbox.isChecked
+
     fun setOnCheckedChangeListener(listener: (isChecked: Boolean) -> Unit) {
         this.onCheckedChangeListener = listener
     }

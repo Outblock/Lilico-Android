@@ -56,7 +56,15 @@ class DeveloperModePresenter(
 
     override fun bind(model: DeveloperPageModel) {
         model.progressDialogVisible?.let { if (it) progressDialog.show() else progressDialog.dismiss() }
-        model.result?.let { if (!it) toast(msgRes = R.string.switch_network_failed) }
+        model.result?.let {
+            if (!it) {
+                toast(msgRes = R.string.switch_network_failed)
+                with(binding) {
+                    mainnetPreference.setChecked(isTestnet())
+                    testnetPreference.setChecked(isMainnet())
+                }
+            }
+        }
     }
 
     private fun changeNetwork(network: Int) {

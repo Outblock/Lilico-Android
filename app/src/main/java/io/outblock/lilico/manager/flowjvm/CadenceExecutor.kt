@@ -92,7 +92,7 @@ fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float):
 }
 
 private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
-    logv(TAG, "executeScript:\n$this")
+    logv(TAG, "executeScript:\n${Flow.DEFAULT_ADDRESS_REGISTRY.processScript(this, chainId = Flow.DEFAULT_CHAIN_ID)}")
     return try {
         FlowApi.get().simpleFlowScript {
             script { this@executeScript.trimIndent() }

@@ -7,9 +7,11 @@ private var isDeveloperMode = false
 
 fun refreshChainNetwork(callback: (() -> Unit)? = null) {
     cpuScope {
+        logd("refreshChainNetwork", "start")
         isDeveloperMode = isDeveloperModeEnable()
         network = getChainNetworkPreference()
         uiScope { callback?.invoke() }
+        logd("refreshChainNetwork", "end")
     }
 }
 

@@ -14,7 +14,6 @@ import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.profile.subpage.developer.model.DeveloperPageModel
 import io.outblock.lilico.page.profile.subpage.developer.presenter.DeveloperModePresenter
 import io.outblock.lilico.utils.isNightMode
-import kotlin.system.exitProcess
 
 class DeveloperModeActivity : BaseActivity() {
     private lateinit var binding: ActivityDeveloperModeSettingBinding
@@ -48,8 +47,7 @@ class DeveloperModeActivity : BaseActivity() {
 
     override fun onDestroy() {
         if (initNetWork != chainNetwork()) {
-            MainActivity.launch(this)
-            exitProcess(10)
+            MainActivity.relaunch(this)
         }
         super.onDestroy()
     }

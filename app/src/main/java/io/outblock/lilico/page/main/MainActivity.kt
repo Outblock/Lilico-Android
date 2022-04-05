@@ -57,6 +57,12 @@ class MainActivity : BaseActivity() {
             context.startActivity(Intent(context, MainActivity::class.java))
         }
 
+        fun relaunch(context: Context) {
+            INSTANCE?.finish()
+            INSTANCE?.overridePendingTransition(0, 0)
+            launch(context)
+        }
+
         fun getInstance() = INSTANCE
     }
 }
