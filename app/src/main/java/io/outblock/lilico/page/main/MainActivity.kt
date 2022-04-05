@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.main
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -61,6 +62,7 @@ class MainActivity : BaseActivity() {
             INSTANCE?.finish()
             INSTANCE?.overridePendingTransition(0, 0)
             launch(context)
+            (context as? Activity)?.overridePendingTransition(0, 0)
         }
 
         fun getInstance() = INSTANCE

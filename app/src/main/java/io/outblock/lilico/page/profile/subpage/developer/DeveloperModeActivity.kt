@@ -14,6 +14,7 @@ import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.profile.subpage.developer.model.DeveloperPageModel
 import io.outblock.lilico.page.profile.subpage.developer.presenter.DeveloperModePresenter
 import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.logd
 
 class DeveloperModeActivity : BaseActivity() {
     private lateinit var binding: ActivityDeveloperModeSettingBinding
@@ -35,6 +36,7 @@ class DeveloperModeActivity : BaseActivity() {
             progressVisibleLiveData.observe(this@DeveloperModeActivity) { presenter.bind(DeveloperPageModel(progressDialogVisible = it)) }
             resultLiveData.observe(this@DeveloperModeActivity) { presenter.bind(DeveloperPageModel(result = it)) }
         }
+        logd(TAG, "initNetWork:$initNetWork")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -45,11 +47,16 @@ class DeveloperModeActivity : BaseActivity() {
         return true
     }
 
-    override fun onDestroy() {
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
+    }
+
+    override fun finish() {
+        super.finish()
         if (initNetWork != chainNetwork()) {
             MainActivity.relaunch(this)
         }
-        super.onDestroy()
     }
 
     private fun setupToolbar() {
@@ -59,6 +66,7 @@ class DeveloperModeActivity : BaseActivity() {
     }
 
     companion object {
+        private val TAG = DeveloperModeActivity::class.java.simpleName
         fun launch(context: Context) {
             context.startActivity(Intent(context, DeveloperModeActivity::class.java))
         }
