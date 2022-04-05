@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:desc="USD"
-            app:icon="@drawable/ic_profile_temp"
+            app:icon="@drawable/ic_settings_currency"
             app:title="Currency"/>
 
         <View
@@ -30,11 +30,11 @@
             android:background="@color/neutrals12"/>
 
         <io.outblock.lilico.page.profile.widget.ProfilePreference
-            android:id="@+id/security_preference"
+            android:id="@+id/theme_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:desc="Light"
-            app:icon="@drawable/ic_profile_temp"
+            app:icon="@drawable/ic_settings_theme"
             app:title="Theme"/>
 
         <View
@@ -47,7 +47,7 @@
             android:id="@+id/notification_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_profile_temp"
+            app:icon="@drawable/ic_settings_notification"
             app:title="Notification"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>

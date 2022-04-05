@@ -19,7 +19,7 @@
             android:id="@+id/backup_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_profile_temp"
+            app:icon="@drawable/ic_settings_backup"
             app:title="@string/backup"/>
 
         <View
@@ -32,7 +32,7 @@
             android:id="@+id/security_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_profile_temp"
+            app:icon="@drawable/ic_settings_security"
             app:isArrowVisible="true"
             app:title="@string/security"/>
 

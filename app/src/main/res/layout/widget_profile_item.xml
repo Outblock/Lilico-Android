@@ -9,7 +9,8 @@
     android:clickable="true"
     android:focusable="true"
     android:minHeight="52dp"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="20dp">
 
     <FrameLayout
         android:id="@+id/beginning_container"
@@ -21,9 +22,10 @@
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/icon_view"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:round="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            app:round="24dp"
             tools:background="#999"/>
     </FrameLayout>
 
@@ -31,7 +33,7 @@
         android:id="@+id/title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/inter_medium"
         android:textColor="@color/text"
         android:textSize="16sp"
