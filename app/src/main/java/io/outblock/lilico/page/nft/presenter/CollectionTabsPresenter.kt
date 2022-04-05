@@ -44,6 +44,9 @@ class CollectionTabsPresenter(
 
     override fun bind(model: CollectionTabsModel) {
         model.collections?.let { adapter.setNewDiffData(it) }
-        model.isExpand?.let { (view.parent as View).setVisible(it) }
+        model.isExpand?.let {
+            (view.parent as View).setVisible(it)
+            view.setVisible(it)
+        }
     }
 }
