@@ -2,6 +2,7 @@ package io.outblock.lilico.manager
 
 import android.app.Application
 import android.content.Intent
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import io.outblock.lilico.firebase.config.initFirebaseConfig
@@ -13,8 +14,10 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.worker.JWTReloadWorker
 import io.outblock.lilico.service.MessagingService
+import io.outblock.lilico.utils.getThemeMode
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.startServiceSafe
+import io.outblock.lilico.utils.uiScope
 import java.util.concurrent.TimeUnit
 
 object LaunchManager {
@@ -48,12 +51,7 @@ object LaunchManager {
     }
 
     private fun setNightMode() {
-//        when (getNightModeSetting()) {
-//            NIGHT_MODE_LIGHT -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//            NIGHT_MODE_DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//            else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-//        }
-
+        uiScope { AppCompatDelegate.setDefaultNightMode(getThemeMode()) }
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 

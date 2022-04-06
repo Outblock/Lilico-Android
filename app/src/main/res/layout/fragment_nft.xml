@@ -26,7 +26,7 @@
             android:layout_height="0dp"
             android:alpha="0.24"
             android:background="@drawable/bg_round_corner"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/neutrals3"
             app:layout_constraintBottom_toBottomOf="@id/tabs"
             app:layout_constraintEnd_toEndOf="@id/tabs"
             app:layout_constraintStart_toStartOf="@id/tabs"
@@ -46,7 +46,7 @@
             app:tl_bar_stroke_width="0dp"
             app:tl_indicator_anim_enable="true"
             app:tl_indicator_bounce_enable="true"
-            app:tl_indicator_color="@color/white"
+            app:tl_indicator_color="@color/deep_bg"
             app:tl_indicator_corner_radius="14dp"
             app:tl_indicator_height="24dp"
             app:tl_indicator_margin_bottom="4dp"
@@ -58,7 +58,7 @@
             app:tl_textBold="BOTH"
             android:fontFamily="@font/inter_semi_bold"
             app:tl_textSelectColor="@color/text"
-            app:tl_textUnselectColor="@color/white_80"
+            app:tl_textUnselectColor="@color/front_color"
             app:tl_textsize="14sp"
             tools:layout_width="100dp"/>
 

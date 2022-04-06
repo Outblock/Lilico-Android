@@ -36,7 +36,7 @@ internal class T9Keyboard(
         if (container.childCount > 0) {
             return
         }
-        container.setBackgroundResource(R.color.colorPrimary)
+        container.setBackgroundResource(R.color.background)
 
         recyclerView = LayoutInflater.from(context).inflate(R.layout.widget_keyboard_t9, container, false) as RecyclerView
         container.addView(recyclerView)

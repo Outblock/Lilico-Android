@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_round_16dp"
-    android:backgroundTint="@color/colorPrimary"
+    android:backgroundTint="@color/background"
     android:paddingBottom="@dimen/wallet_create_button_margin">
 
     <TextView
@@ -55,10 +55,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_round_bottom_16dp"
+            android:backgroundTint="@color/neutrals1"
             android:fontFamily="@font/inter"
             android:paddingHorizontal="39dp"
             android:paddingVertical="7dp"
-            android:textColor="@color/white"
+            android:textColor="@color/brightest_text"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Flow"/>

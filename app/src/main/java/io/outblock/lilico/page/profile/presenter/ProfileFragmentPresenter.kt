@@ -12,6 +12,7 @@ import io.outblock.lilico.page.profile.subpage.accountsetting.AccountSettingActi
 import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
 import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
+import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.ioScope
@@ -37,6 +38,7 @@ class ProfileFragmentPresenter(
         binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
+        binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         updatePreferenceState()
     }
 

@@ -28,7 +28,7 @@ class LoadingMaterialButton : MaterialButton {
 
     private fun createProgressDrawable(): IndeterminateDrawable<CircularProgressIndicatorSpec> {
         val indicator = CircularProgressIndicatorSpec(context, null).apply {
-            indicatorColors = intArrayOf(R.color.white.res2color())
+            indicatorColors = intArrayOf(R.color.brightest_text.res2color())
             trackThickness = 2.dp2px().toInt()
             indicatorSize = 20.dp2px().toInt()
         }

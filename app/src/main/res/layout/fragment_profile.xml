@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/neutrals12">
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -70,11 +70,17 @@
             layout="@layout/layout_profile_group_1"
             android:id="@+id/group1"/>
 
-        <include layout="@layout/layout_profile_group_2"/>
+        <include
+            layout="@layout/layout_profile_group_2"
+            android:id="@+id/group2"/>
 
-        <include layout="@layout/layout_profile_group_3"/>
+        <include
+            layout="@layout/layout_profile_group_3"
+            android:id="@+id/group3"/>
 
-        <include layout="@layout/layout_profile_group_4"/>
+        <include
+            layout="@layout/layout_profile_group_4"
+            android:id="@+id/group4"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout_button"

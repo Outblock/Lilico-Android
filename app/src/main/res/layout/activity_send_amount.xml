@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="@color/transparent"
-            android:backgroundTint="@color/neutrals12"
+            android:backgroundTint="@color/background"
             android:digits="01234567890."
             android:fontFamily="@font/inter_medium"
             android:hint="@string/enter_amount"

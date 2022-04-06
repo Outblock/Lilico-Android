@@ -14,7 +14,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/neutrals12">
+            android:background="@color/background">
 
             <FrameLayout
                 android:id="@+id/background_wrapper"
@@ -75,7 +75,7 @@
                     android:id="@+id/collection_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/neutrals12"
+                    android:background="@color/background"
                     android:clipToPadding="false"
                     android:paddingHorizontal="@dimen/nft_list_divider_size"
                     tools:itemCount="3"
@@ -89,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/nft_list_divider_size"
                 android:background="@drawable/bg_top_radius_16dp"
+                android:backgroundTint="@color/front_color"
                 android:clipToPadding="false"
                 android:minHeight="600dp"
                 android:paddingTop="@dimen/nft_list_divider_size"

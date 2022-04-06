@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityBackupSettingBinding
 import io.outblock.lilico.manager.drive.ACTION_GOOGLE_DRIVE_DELETE_FINISH
@@ -35,6 +37,8 @@ class BackupSettingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBackupSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        UltimateBarX.with(this).fitWindow(true).colorRes(R.color.background).light(!isNightMode(this)).applyStatusBar()
+
         setupToolbar()
         with(binding) {
             drivePreference.setOnClickListener {

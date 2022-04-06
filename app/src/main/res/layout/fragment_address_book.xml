@@ -59,7 +59,7 @@
         android:id="@+id/empty_tip_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/background"
         android:orientation="horizontal"
         android:paddingTop="20dp"
         android:visibility="gone"

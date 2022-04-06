@@ -3,6 +3,7 @@ package io.outblock.lilico.utils
 import android.content.Context
 import android.graphics.Point
 import android.view.Gravity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -28,6 +29,7 @@ private val KEY_BACKUP_GOOGLE_DRIVE = booleanPreferencesKey("KEY_BACKUP_GOOGLE_D
 private val KEY_SEND_STATE_BUBBLE_POSITION = stringPreferencesKey("KEY_SEND_STATE_BUBBLE_POSITION")
 private val KEY_DEVELOPER_MODE_ENABLE = booleanPreferencesKey("KEY_DEVELOPER_MODE_ENABLE")
 private val KEY_CHAIN_NETWORK = intPreferencesKey("KEY_CHAIN_NETWORK")
+private val KEY_THEME_MODE = intPreferencesKey("KEY_THEME_MODE")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -111,6 +113,12 @@ suspend fun getSendStateBubblePosition(): Point {
 
 fun updateSendStateBubblePosition(point: Point) {
     edit { dataStore.edit { it[KEY_SEND_STATE_BUBBLE_POSITION] = "${point.x},${point.y}" } }
+}
+
+suspend fun getThemeMode(): Int = dataStore.data.map { it[KEY_THEME_MODE] ?: AppCompatDelegate.MODE_NIGHT_NO }.first()
+
+fun updateThemeMode(themeMode: Int) {
+    edit { dataStore.edit { it[KEY_THEME_MODE] = themeMode } }
 }
 
 private fun edit(unit: suspend () -> Unit) {

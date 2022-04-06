@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/background"
     tools:background="#aaaaaa">
 
     <FrameLayout
@@ -17,7 +17,7 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/background"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:alpha="0.2"
-                android:background="@color/colorPrimary"
+                android:background="@color/background"
                 app:layout_constraintBottom_toBottomOf="@id/background_image"
                 app:layout_constraintTop_toTopOf="@id/background_image"/>
 

@@ -28,7 +28,7 @@ class SecuritySettingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySecuritySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        UltimateBarX.with(this).fitWindow(false).colorRes(R.color.neutrals12).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(false).colorRes(R.color.background).light(!isNightMode(this)).applyStatusBar()
         binding.root.addStatusBarTopPadding()
         setupToolbar()
         setup()

@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityBackupManuallyBinding
+import io.outblock.lilico.utils.isNightMode
 
 class BackupManuallyActivity : BaseActivity() {
 
@@ -15,6 +18,7 @@ class BackupManuallyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBackupManuallyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        UltimateBarX.with(this).fitWindow(true).colorRes(R.color.background).light(!isNightMode(this)).applyStatusBar()
         setupToolbar()
     }
 

@@ -130,6 +130,10 @@
             android:name=".page.profile.subpage.developer.DeveloperModeActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.theme.ThemeSettingActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

@@ -5,6 +5,7 @@
     android:id="@+id/fragment_wallet_create_mnemonic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/deep_bg"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar

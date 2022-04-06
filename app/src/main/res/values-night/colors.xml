@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#242430</color>
-    <color name="colorPrimaryVariant">#32323D</color>
+    <color name="colorPrimaryVariant">@color/deep_bg</color>
     <color name="colorSecondary">#FF6E4F</color>
     <color name="colorSecondaryVariant">#FED100</color>
 
@@ -9,14 +9,25 @@
 
     <color name="disable">#888888</color>
 
-    <color name="bg">#2a2a33</color>
+    <color name="bg">@color/deep_bg</color>
     <color name="card_bg">#4d4d56</color>
+
+    <color name="border_1">#ffffff</color>
+    <color name="border_2">#454545</color>
+    <color name="border_3">#232323</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="neutrals10">#D9D9D9</color>
+    <color name="neutrals11">#E6E6E6</color>
+    <color name="neutrals12">#F2F2F2</color>
+    <color name="neutrals12_background">#0D0D0D</color>
 
-    <color name="front_color">#262626</color>
+    <color name="background">#121212</color>
+    <color name="button">#FAFAFA</color>
+    <color name="button_text">#333333</color>
+    <color name="front_color">#111111</color>
     <color name="mango_nft">#FAC832</color>
     <color name="mango1">#FAD157</color>
     <color name="mango3">#C79F28</color>
@@ -27,46 +38,46 @@
     <color name="navy3">#0B59BF</color>
     <color name="navy4">#08418C</color>
     <color name="navy5">#052A59</color>
-    <color name="neutrals10">#D9D9D9</color>
-    <color name="neutrals11">#E6E6E6</color>
-    <color name="neutrals12">#F2F2F2</color>
-    <color name="neutrals12_background">#0D0D0D</color>
-    <color name="neutrals4">#666666</color>
-    <color name="neutrals6">#999999</color>
-    <color name="neutrals7">#B2B2B2</color>
-    <color name="neutrals8">#BFBFBF</color>
-    <color name="neutrals9">#CCCCCC</color>
-    <color name="note">#808080</color>
+    <color name="neutrals1">#F2F2F2</color>
+    <color name="neutrals2">#E6E6E6</color>
+    <color name="neutrals3">#D9D9D9</color>
+    <color name="neutrals4">#CCCCCC</color>
+    <color name="neutrals5">#BFBFBF</color>
+    <color name="neutrals6">#B2B2B2</color>
+    <color name="neutrals7">#999999</color>
+    <color name="neutrals9">#666666</color>
+    <color name="note">#C4C4C4</color>
     <color name="outline">#4C4C4C</color>
     <color name="salmon_primary">#FC814A</color>
-    <color name="salmon1">#FF8F66</color>
-    <color name="salmon3">#CC643E</color>
-    <color name="salmon4">#994A2D</color>
-    <color name="salmon5">#66321F</color>
+    <color name="salmon1">#FCA47C</color>
+    <color name="salmon3">#E37542</color>
+    <color name="salmon4">#B05B33</color>
+    <color name="salmon5">#7D4024</color>
     <color name="shades2">#000000</color>
-    <color name="success1">#45E57B</color>
-    <color name="success2">#00E54D</color>
-    <color name="success3">#00B23C</color>
-    <color name="success4">#00802B</color>
-    <color name="success5">#004D1A</color>
-    <color name="text">#FFFFFF</color>
-    <color name="violet_discover">#7A7AFF</color>
-    <color name="violet1">#9494FF</color>
-    <color name="violet3">#4E4ECC</color>
-    <color name="violet4">#3A3A99</color>
-    <color name="violet5">#303080</color>
-    <color name="warning1">#FF5B4D</color>
-    <color name="warning2">#FF4433</color>
-    <color name="warning3">#CC3629</color>
+    <color name="success1">#40C900</color>
+    <color name="success2">#38B000</color>
+    <color name="success3">#309600</color>
+    <color name="success4">#287D00</color>
+    <color name="success5">#206300</color>
+    <color name="text">#E8E8E8</color>
+    <color name="violet_discover">#7D7AFF</color>
+    <color name="violet1">#9694FF</color>
+    <color name="violet3">#504ECC</color>
+    <color name="violet4">#3C3A99</color>
+    <color name="violet5">#323080</color>
+    <color name="warning1">#5E211A</color>
+    <color name="warning2">#C44536</color>
+    <color name="warning3">#DE6354</color>
     <color name="warning4">#4C3735</color>
-    <color name="warning5">#332524</color>
-    <color name="button">#fafafa</color>
-    <color name="button_text">#1a1a1a</color>
-    <color name="deep_bg">#ffffff</color>
+    <color name="warning5">#261C1B</color>
+    <color name="deep_bg">#000000</color>
+
+    <color name="bg_icon">#333333</color>
 
     <color name="primary10">#1a242430</color>
     <color name="primary30">#4f242430</color>
     <color name="primary48">#76242430</color>
     <color name="primary80">#cc242430</color>
+    <color name="brightest_text">#000000</color>
 </resources>
 

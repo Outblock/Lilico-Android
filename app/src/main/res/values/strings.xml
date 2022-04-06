@@ -190,4 +190,8 @@
     <string name="authn_desc">%1$s is requesting access to your wallet address, are you sure you want to disclose your wallet address to this website?</string>
     <string name="approve">Approve</string>
     <string name="authz_desc">%1$s is applying to implement Cadence, do you confirm the script for this site?</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="auto">Auto</string>
+    <string name="theme">Theme</string>
 </resources>

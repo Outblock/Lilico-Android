@@ -29,7 +29,7 @@ internal class NftGridFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
-        binding.root.setBackgroundResource(R.color.colorPrimary)
+        binding.root.setBackgroundResource(R.color.background)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
             loadGrid()

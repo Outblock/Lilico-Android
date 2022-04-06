@@ -92,7 +92,7 @@ class CollectionContentPresenter(
             ArgbEvaluator().evaluate(
                 progress,
                 R.color.transparent.res2color(),
-                R.color.colorPrimary.res2color(),
+                R.color.background.res2color(),
             ) as Int
         )
         binding.toolbar.setTitleTextColor(

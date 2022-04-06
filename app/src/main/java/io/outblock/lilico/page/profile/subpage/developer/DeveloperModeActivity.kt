@@ -28,7 +28,7 @@ class DeveloperModeActivity : BaseActivity() {
         binding = ActivityDeveloperModeSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        UltimateBarX.with(this).fitWindow(true).colorRes(R.color.neutrals12).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).colorRes(R.color.background).light(!isNightMode(this)).applyStatusBar()
         setupToolbar()
 
         presenter = DeveloperModePresenter(this, binding)

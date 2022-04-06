@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_round_16dp"
-    android:backgroundTint="@color/colorPrimary">
+    android:backgroundTint="@color/background">
 
     <TextView
         android:id="@+id/title_view"

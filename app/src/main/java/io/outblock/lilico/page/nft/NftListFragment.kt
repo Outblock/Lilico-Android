@@ -49,7 +49,7 @@ internal class NftListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         setupScrollView()
-        binding.root.setBackgroundResource(R.color.neutrals12)
+        binding.root.setBackgroundResource(R.color.background)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             listDataLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
             topSelectionLiveData.observe(viewLifecycleOwner) { data ->
