@@ -134,6 +134,10 @@
             android:name=".page.profile.subpage.theme.ThemeSettingActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.token.detail.TokenDetailActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

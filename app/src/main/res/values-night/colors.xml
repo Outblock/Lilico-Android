@@ -19,11 +19,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="neutrals10">#D9D9D9</color>
-    <color name="neutrals11">#E6E6E6</color>
-    <color name="neutrals12">#F2F2F2</color>
-    <color name="neutrals12_background">#0D0D0D</color>
-
     <color name="background">#121212</color>
     <color name="button">#FAFAFA</color>
     <color name="button_text">#333333</color>
@@ -46,6 +41,10 @@
     <color name="neutrals6">#B2B2B2</color>
     <color name="neutrals7">#999999</color>
     <color name="neutrals9">#666666</color>
+    <color name="neutrals10">#D9D9D9</color>
+    <color name="neutrals11">#282828</color>
+    <color name="neutrals12">#F2F2F2</color>
+    <color name="neutrals12_background">#0D0D0D</color>
     <color name="note">#C4C4C4</color>
     <color name="outline">#4C4C4C</color>
     <color name="salmon_primary">#FC814A</color>

@@ -58,6 +58,11 @@ class FlowCoin(
     fun address() = if (isTestnet()) address.testnet else address.mainnet
 
     fun isFlowCoin() = symbol.lowercase() == "flow"
+
+    companion object {
+        const val SYMBOL_FLOW = "flow"
+        const val SYMBOL_FLOW_USD = "fusd"
+    }
 }
 
 @Parcelize

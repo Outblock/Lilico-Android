@@ -171,6 +171,9 @@ dependencies {
     implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
+    implementation 'joda-time:joda-time:2.10.3'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"
