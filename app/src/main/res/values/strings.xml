@@ -198,4 +198,8 @@
     <string name="get_more_flow_desc">Stake tokens and earn rewards</string>
     <string name="usd_balance">$%1$s USD</string>
     <string name="recent_price">Recent Price</string>
+    <string name="market_binance">Binance</string>
+    <string name="market_huobi">Huobi</string>
+    <string name="market_kraken">Kraken</string>
+    <string name="data_from">DATA FROM</string>
 </resources>

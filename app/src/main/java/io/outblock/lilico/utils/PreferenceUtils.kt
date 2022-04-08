@@ -125,8 +125,8 @@ fun updateThemeMode(themeMode: Int) {
 
 suspend fun getQuoteMarket(): String = dataStore.data.map { it[KEY_QUOTE_MARKET] ?: QuoteMarket.binance.value }.first()
 
-fun updateQuoteMarket(market: String) {
-    edit { dataStore.edit { it[KEY_QUOTE_MARKET] = market } }
+suspend fun updateQuoteMarket(market: String) {
+    dataStore.edit { it[KEY_QUOTE_MARKET] = market }
 }
 
 

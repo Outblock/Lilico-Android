@@ -7,10 +7,11 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.coin.FlowCoin
-import io.outblock.lilico.page.token.detail.Quote
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
+import io.outblock.lilico.page.webview.WebViewActivity
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.formatPrice
 
 class TokenDetailPresenter(
@@ -27,21 +28,21 @@ class TokenDetailPresenter(
             nameView.text = coin.name
             coinTypeView.text = coin.symbol.uppercase()
             Glide.with(iconView).load(coin.icon).into(iconView)
-            chartWrapper.chartPeriodTabs.setOnTabClickListener { viewModel.changePeriod(it) }
+            nameWrapper.setOnClickListener { WebViewActivity.open(activity, coin.website) }
             getMoreWrapper.setOnClickListener { }
             sendButton.setOnClickListener { }
             receiveButton.setOnClickListener { }
+        }
+
+        if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FLOW_USD) {
+            binding.getMoreWrapper.setVisible(false)
+            binding.chartWrapper.root.setVisible(false)
         }
     }
 
     override fun bind(model: TokenDetailModel) {
         model.balanceAmount?.let { binding.balanceAmountView.text = it.formatPrice() }
         model.balancePrice?.let { binding.balancePriceView.text = activity.getString(R.string.usd_balance, it.formatPrice()) }
-        model.chartData?.let { updateChartData(it) }
-    }
-
-    private fun updateChartData(quotes: List<Quote>) {
-
     }
 
     private fun setupToolbar() {

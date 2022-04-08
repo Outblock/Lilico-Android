@@ -1,6 +1,7 @@
 package io.outblock.lilico.network
 
 import io.outblock.lilico.network.model.CryptowatchPriceResponse
+import io.outblock.lilico.network.model.CryptowatchSummaryResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -9,8 +10,8 @@ interface ApiCryptowatchService {
 
     // @doc https://docs.cryptowat.ch/rest-api/
     // @example https://api.cryptowat.ch/markets/binance/btcusdt/price
-    @GET("/markets/{exchange}/{pair}/price")
-    suspend fun price(@Path("exchange") exchange: String, @Path("pair") coinPair: String): CryptowatchPriceResponse
+    @GET("/markets/{market}/{pair}/price")
+    suspend fun price(@Path("market") market: String, @Path("pair") coinPair: String): CryptowatchPriceResponse
 
     // @doc https://docs.cryptowat.ch/rest-api/markets/ohlc
     // @example https://api.cryptowat.ch/markets/binance/btcusdt/ohlc
@@ -24,4 +25,8 @@ interface ApiCryptowatchService {
         @Query("after") after: Long? = null,
         @Query("periods") periods: IntArray? = null,
     ): Map<String, Any>
+
+    // @example https://api.cryptowat.ch/markets/binance/flowusdt/summary
+    @GET("/markets/{market}/{pair}/summary")
+    suspend fun summary(@Path("market") market: String, @Path("pair") coinPair: String): CryptowatchSummaryResponse
 }

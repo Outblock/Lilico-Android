@@ -14,8 +14,6 @@ data class CryptowatchPriceResponse(
         val cost: Double,
         @SerializedName("remaining")
         val remaining: Double,
-        @SerializedName("upgrade")
-        val upgrade: String
     )
 
     data class Result(

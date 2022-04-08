@@ -2,6 +2,7 @@ package io.outblock.lilico.utils.extensions
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import androidx.annotation.ColorInt
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.utils.Env
@@ -35,4 +36,22 @@ fun Int.res2color(context: Context? = null): Int {
 fun Float.dp2px(): Float {
     val scale = Resources.getSystem().displayMetrics.density
     return this * scale + 0.5f
+}
+
+fun Int.toHexColorString(withAlpha: Boolean = false): String {
+    return if (withAlpha) {
+        String.format("#%08X", this)
+    } else {
+        String.format("#%06X", 0xFFFFFF and this)
+    }
+}
+
+@ColorInt
+fun Int.alpha(alpha: Float): Int {
+    return Color.argb(
+        (alpha * 255).toInt(),
+        Color.red(this),
+        Color.green(this),
+        Color.blue(this)
+    )
 }

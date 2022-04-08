@@ -183,4 +183,8 @@
     <color name="bg_icon">#F4F4F7</color>
     <color name="nav_icon">#787878</color>
     <color name="brightest_text">#ffffff</color>
+    <color name="quote_up_opacity">#1C40C900</color>
+    <color name="quote_up">#40C900</color>
+    <color name="quote_down_opacity">#1CF75744</color>
+    <color name="quote_down">#F75744</color>
 </resources>

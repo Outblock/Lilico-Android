@@ -31,7 +31,7 @@ enum class PeriodFrequency(val value: Int) {
 
 enum class QuoteMarket(val value: String) {
     binance("binance"),
-    kakren("kraken"),
+    kraken("kraken"),
     huobi("huobi");
 
     companion object {
@@ -85,14 +85,14 @@ fun Period.getChartPeriodFrequency(): Int {
 
 fun QuoteMarket.getUSDCPricePair(): String {
     return when (this) {
-        QuoteMarket.kakren -> "usdcusd"
+        QuoteMarket.kraken -> "usdcusd"
         else -> "usdcusdt"
     }
 }
 
 fun QuoteMarket.getFlowPricePair(): String {
     return when (this) {
-        QuoteMarket.kakren -> "flowusd"
+        QuoteMarket.kraken -> "flowusd"
         else -> "flowusdt"
     }
 }
@@ -108,7 +108,7 @@ fun FlowCoin.getPricePair(market: QuoteMarket): String {
 @Suppress("UNCHECKED_CAST")
 fun Map<String, Any>.parseMarketQuoteData(period: Period): List<Quote> {
     try {
-        val array = (this["result"] as? Map<String, *>)?.get("${period.getChartPeriodFrequency()}") as? Array<Array<Number>> ?: return emptyList()
+        val array = (this["result"] as? Map<String, *>)?.get("${period.getChartPeriodFrequency()}") as? List<List<Number>> ?: return emptyList()
         return array.map { line ->
             Quote(
                 closeTime = line[0].toLong(),
