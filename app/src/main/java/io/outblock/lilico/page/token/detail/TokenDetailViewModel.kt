@@ -92,8 +92,8 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
                 periods = intArrayOf(period.getChartPeriodFrequency()),
             )
             val data = result.parseMarketQuoteData(period)
+            chartCache[period.value + market] = data
             if (this.period == period && this.market == market) {
-                chartCache[period.value + market] = data
                 charDataLiveData.postValue(data)
             }
         }
