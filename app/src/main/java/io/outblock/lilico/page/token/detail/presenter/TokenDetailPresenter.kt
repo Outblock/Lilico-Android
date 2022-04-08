@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
@@ -37,6 +38,8 @@ class TokenDetailPresenter(
         if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FLOW_USD) {
             binding.getMoreWrapper.setVisible(false)
             binding.chartWrapper.root.setVisible(false)
+        } else if (isTestnet()) {
+            binding.getMoreWrapper.setOnClickListener { WebViewActivity.open(activity, "https://testnet-faucet.onflow.org/fund-account") }
         }
     }
 

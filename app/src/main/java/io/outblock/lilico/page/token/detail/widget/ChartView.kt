@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+import com.github.mikephil.charting.charts.LineChart
 
 class ChartView : FrameLayout {
 
-    val chartView = AAChartView(context)
+    val chartView = LineChart(context)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)

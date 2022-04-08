@@ -75,7 +75,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     private fun refreshCharData(period: Period) {
         viewModelIOScope(this) {
-            val market = this.market ?: getQuoteMarket()
+            val market = getQuoteMarket()
             this.market = market
 
             if (chartCache[period.value + market] != null) {
@@ -101,8 +101,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     private fun refreshSummary(period: Period) {
         viewModelIOScope(this) {
-            val market = this.market ?: getQuoteMarket()
-            this.market = market
+            val market = getQuoteMarket()
             val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
             val result = service.summary(
                 market = market,

@@ -1,134 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chart_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
-    android:background="@drawable/bg_round_16dp"
-    android:backgroundTint="@color/background"
-    app:layout_constraintTop_toBottomOf="@id/get_more_wrapper"
-    tools:layout_height="200dp">
+    app:cardBackgroundColor="@color/background"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:layout_constraintTop_toBottomOf="@id/get_more_wrapper">
 
-    <TextView
-        android:id="@+id/title_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="18dp"
-        android:fontFamily="@font/inter_semi_bold"
-        android:text="@string/recent_price"
-        android:textColor="@color/text"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/price_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
-        android:text="$0.0"
-        android:textColor="@color/text"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_view"
-        tools:ignore="HardcodedText"
-        tools:text="$123.45"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/quote_change_wrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginStart="4dp"
-        android:background="@drawable/bg_round_4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="7dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/price_view"
-        app:layout_constraintStart_toEndOf="@id/price_view"
-        app:layout_constraintTop_toTopOf="@id/price_view"
-        tools:visibility="visible">
-
-        <ImageView
-            android:id="@+id/quote_change_icon_view"
-            android:layout_width="7dp"
-            android:layout_height="7dp"
-            android:layout_marginEnd="4dp"
-            android:scaleType="center"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_triangle_up"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/quote_change_view"
+            android:id="@+id/title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="18dp"
             android:fontFamily="@font/inter_semi_bold"
-            android:textColor="@color/success1"
-            android:textSize="12sp"
-            tools:text="%1.23"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <TextView
-        android:id="@+id/data_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
-        android:drawablePadding="3dp"
-        android:fontFamily="@font/inter_medium"
-        android:text="@string/data_from"
-        android:textColor="@color/neutrals5"
-        android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_baseline_arrow_down_18"
-        app:drawableTint="@color/neutrals5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/title_view"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/price_view"
-        app:layout_constraintEnd_toEndOf="@id/data_from"
-        app:layout_constraintTop_toTopOf="@id/price_view">
-
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/market_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginEnd="5dp"
-            tools:src="@drawable/ic_market_binance"/>
+            android:text="@string/recent_price"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/market_view"
+            android:id="@+id/price_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:text="$0.0"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_view"
+            tools:ignore="HardcodedText"
+            tools:text="$123.45"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/quote_change_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/bg_round_4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="7dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/price_view"
+            app:layout_constraintStart_toEndOf="@id/price_view"
+            app:layout_constraintTop_toTopOf="@id/price_view"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/quote_change_icon_view"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="4dp"
+                android:scaleType="center"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_triangle_up"/>
+
+            <TextView
+                android:id="@+id/quote_change_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/success1"
+                android:textSize="12sp"
+                tools:text="%1.23"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/data_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:drawablePadding="3dp"
             android:fontFamily="@font/inter_medium"
-            android:textColor="@color/neutrals3"
-            android:textSize="13sp"
-            tools:text="Binance"/>
+            android:text="@string/data_from"
+            android:textColor="@color/neutrals5"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_baseline_arrow_down_18"
+            app:drawableTint="@color/neutrals5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title_view"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/price_view"
+            app:layout_constraintEnd_toEndOf="@id/data_from"
+            app:layout_constraintTop_toTopOf="@id/price_view">
 
-    <io.outblock.lilico.page.token.detail.widget.TokenChartPeriodsTab
-        android:id="@+id/chart_period_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="18dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/price_view"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/market_icon"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="5dp"
+                tools:src="@drawable/ic_market_binance"/>
 
-    <io.outblock.lilico.page.token.detail.widget.ChartView
-        android:id="@+id/chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginEnd="-10dp"
-        app:layout_constraintDimensionRatio="339:271"
-        app:layout_constraintTop_toBottomOf="@id/chart_period_tabs"
-        tools:visibility="gone"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/market_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:textColor="@color/neutrals3"
+                android:textSize="13sp"
+                tools:text="Binance"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <io.outblock.lilico.page.token.detail.widget.TokenChartPeriodsTab
+            android:id="@+id/chart_period_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_view"
+            tools:layout_height="10dp"/>
+
+        <io.outblock.lilico.page.token.detail.widget.ChartView
+            android:id="@+id/chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintDimensionRatio="339:271"
+            app:layout_constraintTop_toBottomOf="@id/chart_period_tabs"
+            tools:visibility="visible"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

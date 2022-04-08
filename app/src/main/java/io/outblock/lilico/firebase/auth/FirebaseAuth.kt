@@ -58,7 +58,7 @@ suspend fun isJwtTokenExpire(): Boolean = abs(System.currentTimeMillis() - getJw
 
 private fun fetchJwtToken(currentUser: FirebaseUser?, onComplete: FirebaseAuthCallback? = null) {
     currentUser ?: return
-    currentUser.getIdToken(false).addOnCompleteListener { jwtTask ->
+    currentUser.getIdToken(true).addOnCompleteListener { jwtTask ->
         if (jwtTask.isSuccessful) {
             val token = jwtTask.result.token.orEmpty()
             saveJwtToken(token)

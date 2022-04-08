@@ -105,7 +105,7 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
 }
 
 private fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() -> Unit): String? {
-    val walletAddress = walletCache().read()?.primaryWallet()?.blockchain?.first()?.address?.toAddress() ?: return null
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     return this.transaction(walletAddress, arguments)
 }
 
