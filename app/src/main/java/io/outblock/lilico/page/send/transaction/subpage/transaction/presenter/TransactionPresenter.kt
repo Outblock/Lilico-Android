@@ -2,15 +2,18 @@ package io.outblock.lilico.page.send.transaction.subpage.transaction.presenter
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.recentTransactionCache
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
+import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.network.model.AddressBookContactBookList
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.send.transaction.subpage.bindUserInfo
 import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionDialog
 import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionViewModel
 import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
+import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope
@@ -24,6 +27,8 @@ class TransactionPresenter(
     private val viewModel by lazy { ViewModelProvider(fragment)[TransactionViewModel::class.java] }
 
     private val transaction by lazy { viewModel.transaction }
+
+    private val coin by lazy { FlowCoinListManager.getCoin(transaction.coinSymbol)!! }
     private val contact by lazy { viewModel.transaction.target }
 
     init {
@@ -56,7 +61,11 @@ class TransactionPresenter(
 
     @SuppressLint("SetTextI18n")
     private fun setupAmount() {
-        binding.amountView.text = "${transaction.amount.formatPrice()} Flow"
+        with(binding) {
+            amountView.text = "${transaction.amount.formatPrice()} ${coin.name.capitalizeV2()}"
+            coinNameView.text = coin.name
+            Glide.with(coinIconView).load(coin.icon).into(coinIconView)
+        }
     }
 
     private fun updateAmountConvert(amountConvert: Float) {

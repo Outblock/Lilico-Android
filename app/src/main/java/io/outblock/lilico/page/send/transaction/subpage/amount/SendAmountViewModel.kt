@@ -2,31 +2,30 @@ package io.outblock.lilico.page.send.transaction.subpage.amount
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.manager.account.*
+import io.outblock.lilico.manager.account.Balance
+import io.outblock.lilico.manager.account.BalanceManager
+import io.outblock.lilico.manager.account.OnBalanceUpdate
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.CoinRate
-import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
-import io.outblock.lilico.utils.Coin
-import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.COIN_USD_SYMBOL
 import io.outblock.lilico.utils.viewModelIOScope
 
-class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate {
+class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     private lateinit var contact: AddressBookContact
 
     val balanceLiveData = MutableLiveData<SendBalanceModel>()
 
     val onCoinSwap = MutableLiveData<Boolean>()
 
-    private var currentCoin = Coin.FLOW
-    private var convertCoin = Coin.USD
+    private var currentCoin = FlowCoin.SYMBOL_FLOW
+    private var convertCoin = COIN_USD_SYMBOL
 
     init {
-        WalletManager.addListener(this)
         BalanceManager.addListener(this)
         CoinRateManager.addListener(this)
     }
@@ -42,10 +41,10 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, On
 
     fun load() {
         viewModelIOScope(this) {
-            WalletManager.fetch()
-            val flow = FlowCoinListManager.coinList().first { it.isFlowCoin() }
-            BalanceManager.getBalanceByCoin(flow)
-            CoinRateManager.fetchCoinRate(flow)
+            val coin = FlowCoinListManager.getCoin(currentCoin) ?: return@viewModelIOScope
+            balanceLiveData.postValue(SendBalanceModel(symbol = coin.symbol))
+            BalanceManager.getBalanceByCoin(coin)
+            CoinRateManager.fetchCoinRate(coin)
         }
     }
 
@@ -56,30 +55,28 @@ class SendAmountViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, On
         onCoinSwap.postValue(true)
     }
 
-    fun changeCoin(coin: Coin) {
-        currentCoin = coin
-        onCoinSwap.postValue(true)
-    }
-
-    override fun onWalletDataUpdate(wallet: WalletListData) {
-        ioScope {
-            FlowCoinListManager.getEnabledCoinList().forEach { BalanceManager.getBalanceByCoin(it) }
+    fun changeCoin(coin: FlowCoin) {
+        if (currentCoin == coin.symbol) {
+            return
         }
+        currentCoin = coin.symbol
+        onCoinSwap.postValue(true)
+        load()
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
-        if (!coin.isFlowCoin()) {
+        if (coin.symbol != currentCoin) {
             return
         }
-        val data = balanceLiveData.value ?: SendBalanceModel()
+        val data = balanceLiveData.value ?: SendBalanceModel(coin.symbol)
         balanceLiveData.postValue(data.copy(balance = balance.balance))
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
-        if (!coin.isFlowCoin()) {
+        if (coin.symbol != currentCoin) {
             return
         }
-        val data = balanceLiveData.value ?: SendBalanceModel()
+        val data = balanceLiveData.value ?: SendBalanceModel(coin.symbol)
         balanceLiveData.postValue(data.copy(coinRate = rate.usdRate()?.price ?: 0.0f))
     }
 }

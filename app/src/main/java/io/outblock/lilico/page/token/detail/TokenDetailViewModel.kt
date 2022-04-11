@@ -25,7 +25,8 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     val balanceAmountLiveData = MutableLiveData<Float>()
     val balancePriceLiveData = MutableLiveData<Float>()
 
-    val charDataLiveData = MutableLiveData<List<Quote>>()
+    val chartDataLiveData = MutableLiveData<List<Quote>>()
+    val chartLoadingLiveData = MutableLiveData<Boolean>()
     val summaryLiveData = MutableLiveData<CryptowatchSummaryResponse.Result>()
 
     private var coinRate = 0.0f
@@ -79,23 +80,27 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             this.market = market
 
             if (chartCache[period.value + market] != null) {
-                charDataLiveData.postValue(chartCache[period.value + market])
+                chartDataLiveData.postValue(chartCache[period.value + market])
                 return@viewModelIOScope
             }
 
-            val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
-            val result = service.ohlc(
-                market = market,
-                coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
-                before = if (period == Period.ALL) System.currentTimeMillis() / 1000 else null,
-                after = if (period == Period.ALL) null else period.getChartPeriodTs(),
-                periods = intArrayOf(period.getChartPeriodFrequency()),
-            )
-            val data = result.parseMarketQuoteData(period)
-            chartCache[period.value + market] = data
-            if (this.period == period && this.market == market) {
-                charDataLiveData.postValue(data)
+            chartLoadingLiveData.postValue(true)
+            runCatching {
+                val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
+                val result = service.ohlc(
+                    market = market,
+                    coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
+                    before = if (period == Period.ALL) System.currentTimeMillis() / 1000 else null,
+                    after = if (period == Period.ALL) null else period.getChartPeriodTs(),
+                    periods = intArrayOf(period.getChartPeriodFrequency()),
+                )
+                val data = result.parseMarketQuoteData(period)
+                chartCache[period.value + market] = data
+                if (this.period == period && this.market == market) {
+                    chartDataLiveData.postValue(data)
+                }
             }
+            chartLoadingLiveData.postValue(false)
         }
     }
 

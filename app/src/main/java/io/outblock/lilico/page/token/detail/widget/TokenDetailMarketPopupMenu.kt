@@ -10,6 +10,7 @@ import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.popupMenu
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.popup.PopupListView
 
 class TokenDetailMarketPopupMenu(
     private val view: View,
@@ -21,12 +22,11 @@ class TokenDetailMarketPopupMenu(
         uiScope {
             popupMenu(
                 view,
-                titles = listOf(
-                    R.string.market_binance.res2String(),
-                    R.string.market_kraken.res2String(),
-                    R.string.market_huobi.res2String(),
+                items = listOf(
+                    PopupListView.ItemData(R.string.market_binance.res2String(), iconRes = R.drawable.ic_market_binance),
+                    PopupListView.ItemData(R.string.market_kraken.res2String(), iconRes = R.drawable.ic_market_kraken),
+                    PopupListView.ItemData(R.string.market_huobi.res2String(), iconRes = R.drawable.ic_market_huobi),
                 ),
-                icons = listOf(R.drawable.ic_market_binance, R.drawable.ic_market_kraken, R.drawable.ic_market_huobi),
                 selectListener = { _, text -> onMenuItemClick(text) },
             ).show()
         }

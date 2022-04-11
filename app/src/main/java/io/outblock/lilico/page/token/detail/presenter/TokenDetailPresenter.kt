@@ -8,6 +8,8 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.page.receive.ReceiveActivity
+import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
 import io.outblock.lilico.page.webview.WebViewActivity
@@ -31,8 +33,8 @@ class TokenDetailPresenter(
             Glide.with(iconView).load(coin.icon).into(iconView)
             nameWrapper.setOnClickListener { WebViewActivity.open(activity, coin.website) }
             getMoreWrapper.setOnClickListener { }
-            sendButton.setOnClickListener { }
-            receiveButton.setOnClickListener { }
+            sendButton.setOnClickListener { TransactionSendActivity.launch(activity) }
+            receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
         }
 
         if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FLOW_USD) {

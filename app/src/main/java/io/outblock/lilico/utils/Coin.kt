@@ -3,6 +3,9 @@ package io.outblock.lilico.utils
 import io.outblock.lilico.R
 
 
+const val COIN_USD_SYMBOL = "usd"
+const val COIN_USD_NAME = "USD"
+
 enum class Coin(val value: Int) {
     FLOW(1),
     FUSD(2),

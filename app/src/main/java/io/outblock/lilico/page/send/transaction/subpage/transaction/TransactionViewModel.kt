@@ -73,7 +73,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
-        if (!coin.isFlowCoin()) {
+        if (coin.symbol != transaction.coinSymbol) {
             return
         }
         amountConvertLiveData.postValue((rate.usdRate()?.price ?: 0.0f) * transaction.amount)

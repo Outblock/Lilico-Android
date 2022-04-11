@@ -6,6 +6,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import io.outblock.lilico.R
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.utils.logd
 
 
 fun initFirebaseConfig() {
@@ -14,7 +15,10 @@ fun initFirebaseConfig() {
         minimumFetchIntervalInSeconds = 3600
     }
     config.setConfigSettingsAsync(configSettings)
-    config.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener { onConfigLoadFinish() }
+    config.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
+        logd("initFirebaseConfig", "from local default")
+        onConfigLoadFinish()
+    }
     firebaseConfigFetch()
 }
 

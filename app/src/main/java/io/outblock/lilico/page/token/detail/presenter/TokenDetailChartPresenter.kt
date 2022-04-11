@@ -19,6 +19,7 @@ import io.outblock.lilico.page.token.detail.Quote
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailChartModel
+import io.outblock.lilico.page.token.detail.widget.ChartMarker
 import io.outblock.lilico.page.token.detail.widget.TokenDetailMarketPopupMenu
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
@@ -120,7 +121,7 @@ class TokenDetailChartPresenter(
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(false)
             }
-
+            marker = ChartMarker(activity).apply { chartView = this@with }
             invalidate()
         }
     }

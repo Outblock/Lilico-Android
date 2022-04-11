@@ -9,6 +9,7 @@ import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.popupMenu
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.popup.PopupListView
 
 class NftMorePopupMenu(
     private val view: View,
@@ -20,11 +21,10 @@ class NftMorePopupMenu(
         uiScope {
             popupMenu(
                 view,
-                titles = listOf(
-                    R.string.download.res2String(),
-                    R.string.view_on_web.res2String(),
+                items = listOf(
+                    PopupListView.ItemData(R.string.download.res2String(), iconRes = R.drawable.ic_download),
+                    PopupListView.ItemData(R.string.view_on_web.res2String(), iconRes = R.drawable.ic_web),
                 ),
-                icons = listOf(R.drawable.ic_download, R.drawable.ic_web),
                 selectListener = { _, text -> onMenuItemClick(text) },
             ).show()
         }

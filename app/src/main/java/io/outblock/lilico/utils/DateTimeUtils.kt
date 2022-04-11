@@ -12,6 +12,11 @@ fun String.gmtToTs(): Long {
     return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").apply { timeZone = TimeZone.getTimeZone("GMT") }.parse(this).time
 }
 
+@SuppressLint("SimpleDateFormat")
+fun Long.formatDate(format: String = "yyyy-MM-dd HH:mm"): String {
+    return SimpleDateFormat(format).format(this)
+}
+
 
 fun isToday(ts: Long): Boolean {
     if (Math.abs(System.currentTimeMillis() - ts) > DateUtils.DAY_IN_MILLIS) {

@@ -10,6 +10,7 @@ import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.popupMenu
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.popup.PopupListView
 
 class NftItemPopupMenu(
     private val view: View,
@@ -21,15 +22,10 @@ class NftItemPopupMenu(
         uiScope {
             popupMenu(
                 view,
-                titles = listOf(
-                    R.string.top_selection.res2String(),
-                    R.string.share.res2String(),
-                    R.string.send.res2String(),
-                ),
-                icons = listOf(
-                    R.drawable.ic_selection_star,
-                    R.drawable.ic_share,
-                    R.drawable.ic_send_simple,
+                items = listOf(
+                    PopupListView.ItemData(R.string.top_selection.res2String(), iconRes = R.drawable.ic_selection_star),
+                    PopupListView.ItemData(R.string.share.res2String(), iconRes = R.drawable.ic_share),
+                    PopupListView.ItemData(R.string.send.res2String(), iconRes = R.drawable.ic_send_simple),
                 ),
                 selectListener = { _, text -> onMenuItemClick(text) },
             ).show()
