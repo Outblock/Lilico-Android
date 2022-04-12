@@ -27,11 +27,10 @@ object FlowCoinListManager {
                 coinList.addAll(list)
             }
             TokenStateManager.fetchState()
-            CoinMapManager.reload(true)
         }
     }
 
-    fun coinList() = coinList
+    fun coinList() = coinList.toList()
 
     fun getCoin(symbol: String) = coinList.firstOrNull { it.symbol == symbol }
 

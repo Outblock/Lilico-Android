@@ -43,7 +43,6 @@ object CoinRateManager {
     }
 
     fun fetchCoinRate(coin: FlowCoin) {
-        CoinMapManager.reloadIfEmpty()
         ioScope {
             val cacheRate = coinRateMap[coin.symbol]
             cacheRate?.let { dispatchListeners(coin, it.price) }
@@ -82,8 +81,6 @@ object CoinRateManager {
             listeners.forEach { it.get()?.onCoinRateUpdate(coin, price) }
         }
     }
-
-    private fun FlowCoin.coinId() = CoinMapManager.getCoinIdBySymbol(symbol)
 }
 
 interface OnCoinRateUpdate {
