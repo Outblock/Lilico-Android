@@ -3,10 +3,11 @@ package io.outblock.lilico.manager.coin
 import android.text.format.DateUtils
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
-import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.model.CoinRate
-import io.outblock.lilico.network.model.CoinRateQuote
-import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.network.ApiCryptowatchService
+import io.outblock.lilico.network.cryptoWatchRetrofit
+import io.outblock.lilico.page.token.detail.QuoteMarket
+import io.outblock.lilico.page.token.detail.getPricePair
+import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
@@ -45,39 +46,40 @@ object CoinRateManager {
         CoinMapManager.reloadIfEmpty()
         ioScope {
             val cacheRate = coinRateMap[coin.symbol]
-            cacheRate?.let { dispatchListeners(coin, it) }
+            cacheRate?.let { dispatchListeners(coin, it.price) }
             if (cacheRate.isExpire()) {
                 runCatching {
-                    val coinId = coin.coinId()
-                    if (coinId < 0) {
+                    val market = QuoteMarket.fromMarketName(getQuoteMarket())
+                    val coinPair = coin.getPricePair(market)
+
+                    if (coinPair.isEmpty()) {
                         return@ioScope
                     }
-                    val service = retrofit().create(ApiService::class.java)
-                    val response = service.coinRate(coinId)
-                    response.data.data.values.forEach {
-                        updateCache(coin, it)
-                        dispatchListeners(coin, it)
-                    }
+
+                    val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
+                    val response = service.price(market.value, coin.getPricePair(market))
+                    val price = response.result.price
+                    updateCache(coin, price)
+                    dispatchListeners(coin, price)
                 }
             }
         }
     }
 
-    private fun CoinRateQuote?.isExpire(): Boolean = this == null || System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
-    private fun CoinRate?.isExpire(): Boolean = this == null || System.currentTimeMillis() - updateTime() > 30 * DateUtils.SECOND_IN_MILLIS
+    private fun CoinRate?.isExpire(): Boolean = this == null || System.currentTimeMillis() - updateTime > 30 * DateUtils.SECOND_IN_MILLIS
 
-    private fun updateCache(coin: FlowCoin, coinRate: CoinRate) {
+    private fun updateCache(coin: FlowCoin, price: Float) {
         ioScope {
-            coinRateMap[coin.symbol] = coinRate
+            coinRateMap[coin.symbol] = CoinRate(coin.symbol, price, System.currentTimeMillis())
             cache.cache(CoinRateCacheData(coinRateMap))
         }
     }
 
-    private fun dispatchListeners(coin: FlowCoin, rate: CoinRate) {
-        logd(TAG, "dispatchListeners ${coin.symbol}:${rate.usdRate()?.price}")
+    private fun dispatchListeners(coin: FlowCoin, price: Float) {
+        logd(TAG, "dispatchListeners ${coin.symbol}:${price}")
         uiScope {
             listeners.removeAll { it.get() == null }
-            listeners.forEach { it.get()?.onCoinRateUpdate(coin, rate) }
+            listeners.forEach { it.get()?.onCoinRateUpdate(coin, price) }
         }
     }
 
@@ -85,10 +87,19 @@ object CoinRateManager {
 }
 
 interface OnCoinRateUpdate {
-    fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate)
+    fun onCoinRateUpdate(coin: FlowCoin, price: Float)
 }
 
 private class CoinRateCacheData(
     @SerializedName("data")
     var data: Map<String, CoinRate>,
+)
+
+class CoinRate(
+    @SerializedName("symbol")
+    val symbol: String,
+    @SerializedName("price")
+    val price: Float,
+    @SerializedName("updateTime")
+    val updateTime: Long,
 )

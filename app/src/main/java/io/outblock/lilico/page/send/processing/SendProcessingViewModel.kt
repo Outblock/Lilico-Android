@@ -11,7 +11,6 @@ import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
-import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -54,8 +53,8 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
         stateChangeLiveData.postValue(state)
     }
 
-    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
-        amountConvertLiveData.postValue((rate.usdRate()?.price ?: 0.0f) * state.coinData().amount)
+    override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
+        amountConvertLiveData.postValue(price * state.coinData().amount)
     }
 
 }

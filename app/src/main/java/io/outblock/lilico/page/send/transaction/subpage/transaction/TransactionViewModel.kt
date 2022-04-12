@@ -14,7 +14,6 @@ import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.flowjvm.cadenceTransferToken
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
-import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
@@ -47,7 +46,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
                 }
             }
 
-            val flow = FlowCoinListManager.coinList().first { it.symbol == "flow" }
+            val flow = FlowCoinListManager.coinList().first { it.symbol == transaction.coinSymbol }
             CoinRateManager.fetchCoinRate(flow)
         }
     }
@@ -72,10 +71,10 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
         }
     }
 
-    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
+    override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
         if (coin.symbol != transaction.coinSymbol) {
             return
         }
-        amountConvertLiveData.postValue((rate.usdRate()?.price ?: 0.0f) * transaction.amount)
+        amountConvertLiveData.postValue(price * transaction.amount)
     }
 }

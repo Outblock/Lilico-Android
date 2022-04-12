@@ -10,7 +10,6 @@ import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
 import io.outblock.lilico.utils.COIN_USD_SYMBOL
 import io.outblock.lilico.utils.viewModelIOScope
@@ -72,12 +71,12 @@ class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         balanceLiveData.postValue(data.copy(balance = balance.balance))
     }
 
-    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
+    override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
         if (coin.symbol != currentCoin) {
             return
         }
         val data = balanceLiveData.value ?: SendBalanceModel(coin.symbol)
-        balanceLiveData.postValue(data.copy(coinRate = rate.usdRate()?.price ?: 0.0f))
+        balanceLiveData.postValue(data.copy(coinRate = price))
     }
 }
 

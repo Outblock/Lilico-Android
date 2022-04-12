@@ -10,7 +10,6 @@ import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.ApiCryptowatchService
 import io.outblock.lilico.network.cryptoWatchRetrofit
-import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.CryptowatchSummaryResponse
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
@@ -46,8 +45,8 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         balancePriceLiveData.postValue(coinRate * balance.balance)
     }
 
-    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
-        coinRate = rate.usdRate()?.price ?: 0f
+    override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
+        coinRate = price
         balancePriceLiveData.postValue(coinRate * (balanceAmountLiveData.value ?: 0f))
     }
 

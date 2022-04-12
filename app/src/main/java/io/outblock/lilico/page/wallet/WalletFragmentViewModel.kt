@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
-import io.outblock.lilico.network.model.CoinRate
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
@@ -56,8 +55,8 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         loadCoinList()
     }
 
-    override fun onCoinRateUpdate(coin: FlowCoin, rate: CoinRate) {
-        updateCoinRate(coin, rate)
+    override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
+        updateCoinRate(coin, price)
     }
 
     private fun loadCoinList() {
@@ -89,8 +88,8 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         updateWalletHeader()
     }
 
-    private fun updateCoinRate(coin: FlowCoin, rate: CoinRate? = null, forceRate: Float? = null) {
-        val rate = (rate?.usdRate()?.price ?: forceRate) ?: 0f
+    private fun updateCoinRate(coin: FlowCoin, price: Float? = null, forceRate: Float? = null) {
+        val rate = (price ?: forceRate) ?: 0f
         logd(TAG, "updateCoinRate ${coin.symbol}:$rate")
 
         val oldItem = (dataList.firstOrNull { it is WalletCoinItemModel && it.coin.symbol == coin.symbol } as? WalletCoinItemModel) ?: return
