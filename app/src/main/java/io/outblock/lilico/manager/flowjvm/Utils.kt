@@ -4,6 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.FlowScriptResponse
+import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
+import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.loge
 
 
@@ -29,6 +32,17 @@ internal fun FlowScriptResponse.parseBool(default: Boolean = false): Boolean? {
     }
 }
 
+internal fun FlowScriptResponse.parseBoolList(): List<Boolean>? {
+    // {"type":"Array","value":[{"type":"Bool","value":true},{"type":"Bool","value":true},{"type":"Bool","value":true},{"type":"Bool","value":true},{"type":"Bool","value":false}]}
+    return try {
+        val result = Gson().fromJson(String(bytes), FlowBoolListResult::class.java)
+        return result.value.map { it.value }
+    } catch (e: Exception) {
+        loge(e)
+        null
+    }
+}
+
 internal fun FlowScriptResponse?.parseFloat(default: Float = 0f): Float {
     // {"type":"UFix64","value":"12.34"}
     this ?: return default
@@ -51,4 +65,18 @@ fun addressVerify(address: String): Boolean {
         loge(e)
         false
     }
+}
+
+fun Nft.formatCadence(script: String): String {
+    val config = NftCollectionConfig.get(contract.address) ?: return script
+    return script.replace("<NFT>", config.contractName)
+        .replace("<NFTAddress>", config.address())
+        .replace("<CollectionStoragePath>", config.path.storagePath)
+        .replace("<CollectionPublic>", config.path.publicCollectionName)
+        .replace("<CollectionPublicPath>", config.path.publicPath)
+        .replace("<Token>", config.contractName)
+        .replace("<TokenAddress>", config.address())
+        .replace("<TokenCollectionStoragePath>", config.path.storagePath)
+        .replace("<TokenCollectionPublic>", config.path.publicCollectionName)
+        .replace("<TokenCollectionPublicPath>", config.path.publicPath)
 }

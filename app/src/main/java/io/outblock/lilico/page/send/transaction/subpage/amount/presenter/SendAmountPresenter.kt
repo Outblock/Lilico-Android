@@ -66,20 +66,6 @@ class SendAmountPresenter(
         }
     }
 
-    private fun checkAmount() {
-        val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
-        val coinRate = balance()?.coinRate ?: 0f
-        val inputBalance = if (viewModel.convertCoin() == COIN_USD_SYMBOL) amount else amount / (if (coinRate == 0f) 1f else coinRate)
-        val isOutOfBalance = inputBalance > (balance()?.balance ?: 0f)
-        if (isOutOfBalance && !binding.errorWrapper.isVisible()) {
-            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
-        } else if (!isOutOfBalance && binding.errorWrapper.isVisible()) {
-            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
-        }
-        binding.errorWrapper.setVisible(isOutOfBalance)
-        binding.nextButton.isEnabled = verifyAmount() && !isOutOfBalance
-    }
-
     override fun bind(model: SendAmountModel) {
         model.balance?.let { updateBalance(it) }
         model.onCoinSwap?.let { updateCoinState() }
@@ -99,6 +85,20 @@ class SendAmountPresenter(
             coinMoreArrowView.setVisible(viewModel.currentCoin() != COIN_USD_SYMBOL)
         }
         checkAmount()
+    }
+
+    private fun checkAmount() {
+        val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
+        val coinRate = balance()?.coinRate ?: 0f
+        val inputBalance = if (viewModel.convertCoin() == COIN_USD_SYMBOL) amount else amount / (if (coinRate == 0f) 1f else coinRate)
+        val isOutOfBalance = inputBalance > (balance()?.balance ?: 0f)
+        if (isOutOfBalance && !binding.errorWrapper.isVisible()) {
+            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
+        } else if (!isOutOfBalance && binding.errorWrapper.isVisible()) {
+            TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
+        }
+        binding.errorWrapper.setVisible(isOutOfBalance)
+        binding.nextButton.isEnabled = verifyAmount() && !isOutOfBalance
     }
 
     @SuppressLint("SetTextI18n")

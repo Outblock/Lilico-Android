@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.config
 
-import android.os.Parcelable
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
@@ -10,7 +9,6 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.readTextFromAssets
 import io.outblock.lilico.utils.safeRun
-import kotlinx.parcelize.Parcelize
 
 object NftCollectionConfig {
     private const val KEY = "nft_collections"
@@ -34,33 +32,42 @@ object NftCollectionConfig {
     }
 }
 
-class NftCollection(
-    @SerializedName("name")
-    val name: String,
-
+data class NftCollection(
     @SerializedName("address")
-    val address: NftCollectionAddress,
-
-    @SerializedName("logo")
-    val logo: String,
-
+    val address: Address,
     @SerializedName("banner")
     val banner: String,
-
-    @SerializedName("official_website")
-    val officialWebsite: String,
-
+    @SerializedName("contract_name")
+    val contractName: String,
+    @SerializedName("description")
+    val description: String,
+    @SerializedName("logo")
+    val logo: String,
     @SerializedName("marketplace")
     val marketplace: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("official_website")
+    val officialWebsite: String,
+    @SerializedName("path")
+    val path: Path
 ) {
-    //    fun address() = if (isDev()) address.testnet else address.mainnet
-    fun address() = address.mainnet
-}
 
-@Parcelize
-class NftCollectionAddress(
-    @SerializedName("mainnet")
-    val mainnet: String,
-    @SerializedName("testnet")
-    val testnet: String,
-) : Parcelable
+    fun address() = address.mainnet
+
+    data class Address(
+        @SerializedName("mainnet")
+        val mainnet: String,
+        @SerializedName("testnet")
+        val testnet: String
+    )
+
+    data class Path(
+        @SerializedName("public_collection_name")
+        val publicCollectionName: String,
+        @SerializedName("public_path")
+        val publicPath: String,
+        @SerializedName("storage_path")
+        val storagePath: String
+    )
+}

@@ -48,7 +48,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
         logd(TAG, "onBalanceUpdate:$balance")
-        updateCoinBalance(coin, balance)
+        updateCoinBalance(balance)
     }
 
     override fun onTokenStateChange(coin: FlowCoin, isEnable: Boolean) {
@@ -79,12 +79,12 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         }
     }
 
-    private fun updateCoinBalance(coin: FlowCoin, balance: Balance) {
+    private fun updateCoinBalance(balance: Balance) {
         logd(TAG, "updateCoinBalance :$balance")
         val oldItem = (dataList.firstOrNull { it is WalletCoinItemModel && it.coin.symbol == balance.symbol } as? WalletCoinItemModel) ?: return
         val item = oldItem.copy(balance = balance.balance)
         dataList[dataList.indexOf(oldItem)] = item
-        dataListLiveData.postValue(dataList)
+        dataListLiveData.value = dataList
         updateWalletHeader()
     }
 
@@ -95,7 +95,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         val oldItem = (dataList.firstOrNull { it is WalletCoinItemModel && it.coin.symbol == coin.symbol } as? WalletCoinItemModel) ?: return
         val item = oldItem.copy(coinRate = rate)
         dataList[dataList.indexOf(oldItem)] = item
-        dataListLiveData.postValue(dataList)
+        dataListLiveData.value = dataList
         updateWalletHeader()
     }
 

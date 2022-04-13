@@ -140,3 +140,76 @@ const val CADENCE_QUERY_DOMAIN_BY_ADDRESS_FIND = """
     return FIND.reverseLookup(address)
   }
 """
+
+const val CADENCE_NFT_CHECK_ENABLED = """
+    import NonFungibleToken from 0xNonFungibleToke
+    import <NFT> from <NFTAddress>
+    
+    // This transaction is for transferring and NFT from
+    // one account to another
+    
+    pub fun check<Token>Vault(address: Address) : Bool {
+        let account = getAccount(address)
+    
+        let vaultRef = account
+        .getCapability<&{NonFungibleToken.CollectionPublic}>(<TokenCollectionPublicPath>)
+        .check()
+    
+        return vaultRef
+    }
+"""
+
+const val CADENCE_NFT_ENABLE = """
+    import NonFungibleToken from 0xNonFungibleToken
+    import <NFT> from <NFTAddress>
+    
+    transaction {
+      prepare(signer: AuthAccount) {
+          // if the account doesn't already have a collection
+          if signer.borrow<&<NFT>.Collection>(from: <CollectionStoragePath>) == nil {
+    
+              // create a new empty collection
+              let collection <- <NFT>.createEmptyCollection()
+              
+              // save it to the account
+              signer.save(<-collection, to: <CollectionStoragePath>)
+    
+              // create a public capability for the collection
+              signer.link<&<NFT>.Collection{NonFungibleToken.CollectionPublic, <CollectionPublic>}>(<CollectionPublicPath>, target: <CollectionStoragePath>)
+          }
+      }
+    }
+"""
+
+const val CADENCE_NFT_TRANSFER = """
+    import NonFungibleToken from 0xNonFungibleToken
+    import <NFT> from <NFTAddress>
+    
+    // This transaction is for transferring and NFT from
+    // one account to another
+    
+    transaction(recipient: Address, withdrawID: UInt64) {
+    
+      prepare(signer: AuthAccount) {
+          // get the recipients public account object
+          let recipient = getAccount(recipient)
+    
+          // borrow a reference to the signer's NFT collection
+          let collectionRef = signer
+              .borrow<&NonFungibleToken.Collection>(from: <CollectionStoragePath>)
+              ?? panic("Could not borrow a reference to the owner's collection")
+    
+          // borrow a public reference to the receivers collection
+          let depositRef = recipient
+              .getCapability(<CollectionPublicPath>)
+              .borrow<&{<CollectionPublic>}>()
+              ?? panic("Could not borrow a reference to the receiver's collection")
+    
+          // withdraw the NFT from the owner's collection
+          let nft <- collectionRef.withdraw(withdrawID: withdrawID)
+    
+          // Deposit the NFT in the recipient's collection
+          depositRef.deposit(token: <-nft)
+      }
+    }
+"""

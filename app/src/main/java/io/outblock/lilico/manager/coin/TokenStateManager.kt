@@ -3,8 +3,10 @@ package io.outblock.lilico.manager.coin
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.tokenStateCache
 import io.outblock.lilico.manager.flowjvm.cadenceCheckTokenEnabled
+import io.outblock.lilico.manager.flowjvm.cadenceCheckTokenListEnabled
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.logw
 import io.outblock.lilico.utils.uiScope
 import java.lang.ref.WeakReference
 import java.util.concurrent.CopyOnWriteArrayList
@@ -24,7 +26,21 @@ object TokenStateManager {
 
     fun fetchState() {
         ioScope {
-            FlowCoinListManager.coinList().toList().forEach { coin -> fetchStateSingle(coin) }
+            val coinList = FlowCoinListManager.coinList()
+            val isEnableList = cadenceCheckTokenListEnabled(FlowCoinListManager.coinList())
+            if (coinList.size != isEnableList?.size) {
+                logw(TAG, "fetch error")
+                return@ioScope
+            }
+            coinList.forEachIndexed { index, coin ->
+                val isEnable = isEnableList[index]
+                val oldState = tokenStateList.firstOrNull { it.symbol == coin.symbol }
+                tokenStateList.remove(oldState)
+                tokenStateList.add(TokenState(coin.symbol, coin.address(), isEnable))
+                if (oldState?.isAdded != isEnable) {
+                    dispatchListeners(coin, isEnable)
+                }
+            }
             tokenStateCache().cache(TokenStateCache(tokenStateList.toList()))
         }
     }

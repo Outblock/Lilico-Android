@@ -68,7 +68,7 @@ class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             return
         }
         val data = balanceLiveData.value ?: SendBalanceModel(coin.symbol)
-        balanceLiveData.postValue(data.copy(balance = balance.balance))
+        balanceLiveData.value = data.copy(balance = balance.balance)
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
@@ -76,7 +76,7 @@ class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             return
         }
         val data = balanceLiveData.value ?: SendBalanceModel(coin.symbol)
-        balanceLiveData.postValue(data.copy(coinRate = price))
+        balanceLiveData.value = data.copy(coinRate = price)
     }
 }
 

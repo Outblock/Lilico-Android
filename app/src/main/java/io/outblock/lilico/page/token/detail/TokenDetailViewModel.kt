@@ -42,12 +42,12 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
         balanceAmountLiveData.postValue(balance.balance)
-        balancePriceLiveData.postValue(coinRate * balance.balance)
+        balancePriceLiveData.value = coinRate * balance.balance
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
         coinRate = price
-        balancePriceLiveData.postValue(coinRate * (balanceAmountLiveData.value ?: 0f))
+        balancePriceLiveData.value = coinRate * (balanceAmountLiveData.value ?: 0f)
     }
 
     fun setCoin(coin: FlowCoin) {

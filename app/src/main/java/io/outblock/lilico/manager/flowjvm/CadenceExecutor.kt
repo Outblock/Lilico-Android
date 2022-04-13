@@ -6,6 +6,8 @@ import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
+import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.nft.name
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
@@ -64,6 +66,55 @@ fun cadenceCheckTokenEnabled(coin: FlowCoin): Boolean? {
     return result?.parseBool()
 }
 
+fun cadenceCheckTokenListEnabled(coins: List<FlowCoin>): List<Boolean>? {
+    logd(TAG, "cadenceCheckTokenListEnabled()")
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
+
+    val tokenImports = coins.map { it.formatCadence("import <Token> from <TokenAddress>") }.joinToString("\r\n") { it }
+
+    val tokenFunctions = coins.map {
+        it.formatCadence(
+            """
+        pub fun check<Token>Vault(address: Address) : Bool {
+            let receiver: Bool = getAccount(address)
+            .getCapability<&<Token>.Vault{FungibleToken.Receiver}>(<TokenReceiverPath>)
+            .check()
+            let balance: Bool = getAccount(address)
+             .getCapability<&<Token>.Vault{FungibleToken.Balance}>(<TokenBalancePath>)
+             .check()
+             return receiver && balance
+          }
+    """.trimIndent()
+        )
+    }.joinToString("\r\n") { it }
+
+    val tokenCalls = coins.map {
+        it.formatCadence(
+            """
+        check<Token>Vault(address: address)
+    """.trimIndent()
+        )
+    }.joinToString(",") { it }
+
+    val cadence = """
+        import FungibleToken from 0xFungibleToken
+        <TokenImports>
+        <TokenFunctions>
+        pub fun main(address: Address) : [Bool] {
+            return [<TokenCall>]
+        }
+    """.trimIndent().replace("<TokenFunctions>", tokenFunctions)
+        .replace("<TokenImports>", tokenImports)
+        .replace("<TokenCall>", tokenCalls)
+
+
+    val result = cadence.executeScript {
+        arg { address(walletAddress) }
+    }
+    logd(TAG, "cadenceCheckTokenListEnabled response:${String(result?.bytes ?: byteArrayOf())}")
+    return result?.parseBoolList()
+}
+
 fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
     val walletAddress = walletCache().read()?.primaryWalletAddress()?.toAddress() ?: return 0f
     logd(TAG, "cadenceQueryTokenBalance()")
@@ -89,6 +140,63 @@ fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float):
     }
     logd(TAG, "cadenceTransferToken() transactionId:$transactionId")
     return transactionId
+}
+
+fun cadenceNftCheckEnabled(nft: Nft): Boolean? {
+    logd(TAG, "cadenceNftCheckEnabled() nft:${nft.name()}")
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
+    val result = nft.formatCadence(CADENCE_NFT_CHECK_ENABLED).executeScript {
+        arg { address(walletAddress) }
+    }
+    logd(TAG, "cadenceNftCheckEnabled response:${String(result?.bytes ?: byteArrayOf())}")
+    return result?.parseBool()
+}
+
+fun cadenceNftListCheckEnabled(nfts: List<Nft>): List<Boolean>? {
+    logd(TAG, "cadenceNftListCheckEnabled()")
+    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
+
+    val tokenImports = nfts.map { nft -> nft.formatCadence("import <Token> from <TokenAddress>") }.joinToString("\r\n") { it }
+    val tokenFunctions = nfts.map { nft ->
+        nft.formatCadence(
+            """
+            pub fun check<Token>Vault(address: Address) : Bool {
+                let account = getAccount(address)
+                let vaultRef = account
+                .getCapability<&{NonFungibleToken.CollectionPublic}>(<TokenCollectionPublicPath>)
+                .check()
+                return vaultRef
+            }
+        """.trimIndent()
+        )
+    }.joinToString("\r\n") { it }
+
+    val tokenCalls = nfts.map { nft ->
+        nft.formatCadence(
+            """
+        check<Token>Vault(address: address)
+        """.trimIndent()
+        )
+    }.joinToString(",") { it }
+
+
+    val cadence = """
+        import NonFungibleToken from 0xNonFungibleToken
+          <TokenImports>
+          <TokenFunctions>
+          pub fun main(address: Address) : [Bool] {
+            return [<TokenCall>]
+        }
+    """.trimIndent().replace("<TokenFunctions>", tokenFunctions)
+        .replace("<TokenImports>", tokenImports)
+        .replace("<TokenCall>", tokenCalls)
+
+    val result = cadence.executeScript {
+        arg { address(walletAddress) }
+    }
+
+    logd(TAG, "cadenceNftListCheckEnabled response:${String(result?.bytes ?: byteArrayOf())}")
+    return result?.parseBoolList()
 }
 
 private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
