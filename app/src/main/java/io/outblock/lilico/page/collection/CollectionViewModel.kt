@@ -3,7 +3,7 @@ package io.outblock.lilico.page.collection
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.nftListCache
-import io.outblock.lilico.page.nft.model.NFTItemModel
+import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
 import io.outblock.lilico.utils.viewModelIOScope
 
 class CollectionViewModel : ViewModel() {

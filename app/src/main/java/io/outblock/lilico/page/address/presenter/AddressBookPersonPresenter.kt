@@ -19,7 +19,7 @@ import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
-import io.outblock.lilico.page.nftdetail.NftDetailActivity
+import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
@@ -39,7 +39,7 @@ class AddressBookPersonPresenter(
 
     private val isSendTransactionPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == TransactionSendActivity::class.java }
 
-    private val isSendNftPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == NftDetailActivity::class.java }
+    private val isSendNftPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == io.outblock.lilico.page.nft.nftdetail.NftDetailActivity::class.java }
 
     private val isAddressBookPage by lazy { BaseActivity.getCurrentActivity()?.javaClass == AddressBookActivity::class.java }
 

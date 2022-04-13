@@ -12,7 +12,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.cover
+import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.loadAvatar
 

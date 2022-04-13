@@ -10,8 +10,8 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityEditAvatarBinding
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.page.nft.cover
-import io.outblock.lilico.page.nft.name
+import io.outblock.lilico.page.nft.nftlist.cover
+import io.outblock.lilico.page.nft.nftlist.name
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.logd

@@ -14,8 +14,8 @@ import io.outblock.lilico.databinding.ActivityCollectionBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.collection.model.CollectionContentModel
-import io.outblock.lilico.page.nft.adapter.NFTListAdapter
-import io.outblock.lilico.page.nft.model.NFTItemModel
+import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
+import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color

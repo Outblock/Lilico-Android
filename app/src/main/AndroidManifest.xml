@@ -58,7 +58,7 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".page.nftdetail.NftDetailActivity"
+            android:name=".page.nft.nftdetail.NftDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".page.collection.CollectionActivity"

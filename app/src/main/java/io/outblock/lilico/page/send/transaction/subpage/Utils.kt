@@ -9,8 +9,8 @@ import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.page.nft.cover
-import io.outblock.lilico.page.nft.name
+import io.outblock.lilico.page.nft.nftlist.cover
+import io.outblock.lilico.page.nft.nftlist.name
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.wallet.toAddress

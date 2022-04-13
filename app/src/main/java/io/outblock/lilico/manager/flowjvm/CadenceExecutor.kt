@@ -7,7 +7,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.name
+import io.outblock.lilico.page.nft.nftlist.name
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv

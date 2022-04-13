@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.main.MainActivity
-import io.outblock.lilico.page.nft.NFTFragment
+import io.outblock.lilico.page.nft.nftlist.NFTFragment
 import io.outblock.lilico.page.profile.ProfileFragment
 import io.outblock.lilico.page.wallet.fragment.WalletHomeFragment
 

@@ -3,7 +3,7 @@ package io.outblock.lilico.manager.nft
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.isSameNft
+import io.outblock.lilico.page.nft.nftlist.isSameNft
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.updateNftSelectionsPref
