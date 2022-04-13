@@ -50,6 +50,8 @@ class StickyScrollLayout : FrameLayout {
                 return@post
             }
 
+//            logd("xxx","stickyPosition:$stickyPosition, stickyParent.top:${stickyParent.top}, scrollY:$scrollY, offsetY:$offsetY")
+//            logd("xxx","stickyView:$stickyView, stickyParent:${stickyParent}, stickyView.parent:${stickyView.parent}, stickyHolder:${stickyHolder}")
             if (stickyPosition < 0 && stickyView.parent == stickyParent && stickyParent.top != 0) {
                 stickyPosition = stickyParent.top
             }

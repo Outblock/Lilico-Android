@@ -8,6 +8,7 @@ import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.viewModelIOScope
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -75,7 +76,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             BalanceManager.refresh()
             CoinRateManager.refresh()
 
-            coinList.toList().firstOrNull { it.symbol == "fusd" }?.let { updateCoinRate(it, forceRate = 1.0f) }
+            uiScope { coinList.toList().firstOrNull { it.symbol == "fusd" }?.let { updateCoinRate(it, forceRate = 1.0f) } }
         }
     }
 

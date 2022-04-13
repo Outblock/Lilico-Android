@@ -57,7 +57,6 @@ internal class NftListFragment : Fragment() {
                 if (data.data.isEmpty()) {
                     Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
                 }
-                binding.root.setStickyView(R.id.collection_tabs)
             }
             selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
             collectionTabsLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(it) }
