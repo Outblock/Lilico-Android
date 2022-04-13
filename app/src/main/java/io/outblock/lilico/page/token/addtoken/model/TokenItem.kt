@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken.model
+package io.outblock.lilico.page.token.addtoken.model
 
 import io.outblock.lilico.manager.coin.FlowCoin
 

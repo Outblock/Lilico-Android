@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken.presenter
+package io.outblock.lilico.page.token.addtoken.presenter
 
 import android.graphics.Color
 import android.transition.Scene
@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityAddTokenBinding
-import io.outblock.lilico.page.addtoken.AddTokenActivity
-import io.outblock.lilico.page.addtoken.AddTokenViewModel
-import io.outblock.lilico.page.addtoken.adapter.TokenListAdapter
-import io.outblock.lilico.page.addtoken.model.AddTokenModel
+import io.outblock.lilico.page.token.addtoken.AddTokenActivity
+import io.outblock.lilico.page.token.addtoken.AddTokenViewModel
+import io.outblock.lilico.page.token.addtoken.adapter.TokenListAdapter
+import io.outblock.lilico.page.token.addtoken.model.AddTokenModel
 import io.outblock.lilico.utils.extensions.*
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 

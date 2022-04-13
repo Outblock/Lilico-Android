@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken.presenter
+package io.outblock.lilico.page.token.addtoken.presenter
 
 import android.view.View
 import androidx.fragment.app.FragmentActivity
@@ -7,8 +7,8 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemTokenListBinding
-import io.outblock.lilico.page.addtoken.AddTokenConfirmDialog
-import io.outblock.lilico.page.addtoken.model.TokenItem
+import io.outblock.lilico.page.token.addtoken.AddTokenConfirmDialog
+import io.outblock.lilico.page.token.addtoken.model.TokenItem
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 

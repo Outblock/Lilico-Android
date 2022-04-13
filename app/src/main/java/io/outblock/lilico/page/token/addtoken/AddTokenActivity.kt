@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken
+package io.outblock.lilico.page.token.addtoken
 
 import android.content.Context
 import android.content.Intent
@@ -7,8 +7,8 @@ import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityAddTokenBinding
-import io.outblock.lilico.page.addtoken.model.AddTokenModel
-import io.outblock.lilico.page.addtoken.presenter.AddTokenPresenter
+import io.outblock.lilico.page.token.addtoken.model.AddTokenModel
+import io.outblock.lilico.page.token.addtoken.presenter.AddTokenPresenter
 
 class AddTokenActivity : BaseActivity() {
 

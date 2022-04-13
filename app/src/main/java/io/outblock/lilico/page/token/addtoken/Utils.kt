@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken
+package io.outblock.lilico.page.token.addtoken
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

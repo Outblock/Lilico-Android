@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken
+package io.outblock.lilico.page.token.addtoken
 
 import android.os.Bundle
 import android.view.LayoutInflater

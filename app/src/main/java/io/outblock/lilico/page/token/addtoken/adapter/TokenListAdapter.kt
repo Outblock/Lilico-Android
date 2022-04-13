@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken.adapter
+package io.outblock.lilico.page.token.addtoken.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
-import io.outblock.lilico.page.addtoken.model.TokenItem
-import io.outblock.lilico.page.addtoken.presenter.TokenItemPresenter
-import io.outblock.lilico.page.addtoken.tokenListDiffCallback
+import io.outblock.lilico.page.token.addtoken.model.TokenItem
+import io.outblock.lilico.page.token.addtoken.presenter.TokenItemPresenter
+import io.outblock.lilico.page.token.addtoken.tokenListDiffCallback
 
 class TokenListAdapter : BaseAdapter<Any>(tokenListDiffCallback) {
 

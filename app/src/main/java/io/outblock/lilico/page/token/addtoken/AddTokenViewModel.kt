@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.addtoken
+package io.outblock.lilico.page.token.addtoken
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +14,8 @@ import io.outblock.lilico.manager.flowjvm.cadenceEnableToken
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
-import io.outblock.lilico.page.addtoken.model.TokenItem
 import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
+import io.outblock.lilico.page.token.addtoken.model.TokenItem
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
