@@ -11,10 +11,12 @@ import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.uiScope
 import kotlinx.coroutines.delay
@@ -23,6 +25,8 @@ import java.lang.ref.WeakReference
 import kotlin.math.abs
 
 object TransactionStateManager {
+    private val TAG = TransactionStateManager::class.java.simpleName
+
     private val cache by lazy { CacheManager("transaction_state", TransactionStateData::class.java) }
 
     private lateinit var stateData: TransactionStateData
@@ -51,7 +55,7 @@ object TransactionStateManager {
 
     fun getLastVisibleTransaction(): TransactionState? {
         return stateData.data.toList().firstOrNull {
-            it.state < FlowTransactionStatus.SEALED.num
+            (it.state < FlowTransactionStatus.SEALED.num && it.state > FlowTransactionStatus.UNKNOWN.num)
               || (it.state == FlowTransactionStatus.SEALED.num && abs(it.updateTime - System.currentTimeMillis()) < 5000)
         }
     }
@@ -77,6 +81,7 @@ object TransactionStateManager {
                         ) { "Transaction with that id not found" }
                         if (ret.status.num != state.state) {
                             state.state = ret.status.num
+                            logd(TAG, "update state:${ret.status}")
                             updateState(state)
                         }
                     }
@@ -148,6 +153,7 @@ class TransactionState(
         const val TYPE_NFT = 1
         const val TYPE_COIN = 2
         const val TYPE_ADD_TOKEN = 3
+        const val TYPE_ENABLE_NFT = 4
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)
@@ -155,6 +161,8 @@ class TransactionState(
     fun nftData() = Gson().fromJson(data, NftSendModel::class.java)
 
     fun tokenData() = Gson().fromJson(data, FlowCoin::class.java)
+
+    fun nftCollectionData() = Gson().fromJson(data, NftCollection::class.java)
 
     fun contact() = if (type == TYPE_COIN) coinData().target else nftData().target
 

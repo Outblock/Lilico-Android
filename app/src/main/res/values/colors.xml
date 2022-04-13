@@ -175,6 +175,7 @@
     <color name="button_text">#ffffff</color>
     <color name="deep_bg">#ffffff</color>
 
+    <color name="primary0">#00ffffff</color>
     <color name="primary10">#1affffff</color>
     <color name="primary30">#4fffffff</color>
     <color name="primary48">#76ffffff</color>

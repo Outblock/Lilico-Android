@@ -7,6 +7,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentNftBinding
+import io.outblock.lilico.page.nft.collectionlist.NftCollectionListActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragment
 import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
 import io.outblock.lilico.page.nft.nftlist.adapter.NftListPageAdapter
@@ -32,6 +33,8 @@ class NFTFragmentPresenter(
         with(binding.viewPager) {
             adapter = NftListPageAdapter(fragment)
         }
+
+        binding.addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
         setupTabs()
     }
 

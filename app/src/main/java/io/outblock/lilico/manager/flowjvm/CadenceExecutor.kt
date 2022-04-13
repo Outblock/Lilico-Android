@@ -6,8 +6,7 @@ import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
-import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.nftlist.name
+import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
@@ -142,8 +141,8 @@ fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float):
     return transactionId
 }
 
-fun cadenceNftCheckEnabled(nft: Nft): Boolean? {
-    logd(TAG, "cadenceNftCheckEnabled() nft:${nft.name()}")
+fun cadenceNftCheckEnabled(nft: NftCollection): Boolean? {
+    logd(TAG, "cadenceNftCheckEnabled() nft:${nft.name}")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     val result = nft.formatCadence(CADENCE_NFT_CHECK_ENABLED).executeScript {
         arg { address(walletAddress) }
@@ -152,7 +151,14 @@ fun cadenceNftCheckEnabled(nft: Nft): Boolean? {
     return result?.parseBool()
 }
 
-fun cadenceNftListCheckEnabled(nfts: List<Nft>): List<Boolean>? {
+fun cadenceNftEnabled(nft: NftCollection): String? {
+    logd(TAG, "cadenceNftEnabled() nft:${nft.name}")
+    val transactionId = nft.formatCadence(CADENCE_NFT_ENABLE).transactionByMainWallet {}
+    logd(TAG, "cadenceEnableToken() transactionId:$transactionId")
+    return transactionId
+}
+
+fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
     logd(TAG, "cadenceNftListCheckEnabled()")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
 

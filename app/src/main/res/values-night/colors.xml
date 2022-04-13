@@ -73,6 +73,7 @@
 
     <color name="bg_icon">#333333</color>
 
+    <color name="primary0">#00242430</color>
     <color name="primary10">#1a242430</color>
     <color name="primary30">#4f242430</color>
     <color name="primary48">#76242430</color>

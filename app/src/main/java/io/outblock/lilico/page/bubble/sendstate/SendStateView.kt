@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.send.processing.SendProcessingDialog
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.uiScope
 import kotlinx.coroutines.delay
 
@@ -27,9 +28,14 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr)
 
     init {
+        setVisible(false)
         addView(binding.root)
         TransactionStateManager.addOnTransactionStateChange(this)
-        setOnClickListener { SendProcessingDialog.show() }
+        setOnClickListener {
+            if (transactionState?.type == TransactionState.TYPE_COIN) {
+                SendProcessingDialog.show()
+            }
+        }
     }
 
     override fun onTransactionStateChange() {
@@ -57,6 +63,7 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
     }
 
     private fun update(state: TransactionState) {
+        setVisible(true)
         with(binding) {
             progressBar.setProgressWithAnimation(state.progress(), duration = 200)
         }

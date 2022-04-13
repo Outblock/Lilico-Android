@@ -3,6 +3,7 @@ package io.outblock.lilico.cache
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.TokenStateCache
+import io.outblock.lilico.manager.nft.NftCollectionStateCache
 import io.outblock.lilico.network.model.*
 
 
@@ -13,6 +14,7 @@ const val USER_INFO = "user_info"
 const val ADDRESS_BOOK = "address_book"
 const val RECENT_ADDRESS_BOOK = "recent_address_book"
 const val TOKEN_STATE = "token_state"
+const val NFT_COLLECTION_STATE = "nft_collection_state"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST", NFTListData::class.java)
@@ -41,6 +43,10 @@ fun recentTransactionCache(): CacheManager<AddressBookContactBookList> {
 
 fun tokenStateCache(): CacheManager<TokenStateCache> {
     return CacheManager(TOKEN_STATE, TokenStateCache::class.java)
+}
+
+fun nftCollectionStateCache(): CacheManager<NftCollectionStateCache> {
+    return CacheManager(NFT_COLLECTION_STATE, NftCollectionStateCache::class.java)
 }
 
 data class NftSelections(
