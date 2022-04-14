@@ -7,8 +7,8 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.manager.transaction.TransactionState
-import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_COIN
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_NFT
+import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_COIN
 import io.outblock.lilico.page.send.processing.SendProcessingDialog
 import io.outblock.lilico.page.send.processing.model.SendProcessingDialogModel
 import io.outblock.lilico.page.send.transaction.subpage.bindNft
@@ -28,10 +28,10 @@ class SendProcessingPresenter(
     private val contact by lazy { transactionState.contact() }
 
     init {
-        binding.amountWrapper.setVisible(transactionState.type == TYPE_COIN)
+        binding.amountWrapper.setVisible(transactionState.type == TYPE_TRANSFER_COIN)
         binding.nftWrapper.setVisible(transactionState.type == TYPE_NFT)
         binding.sendButton.setVisible(false)
-        binding.titleView.setText(if (transactionState.type == TYPE_COIN) R.string.coin_send_processing else R.string.nft_send_processing)
+        binding.titleView.setText(if (transactionState.type == TYPE_TRANSFER_COIN) R.string.coin_send_processing else R.string.nft_send_processing)
         updateState(transactionState)
     }
 
@@ -39,7 +39,7 @@ class SendProcessingPresenter(
         model.userInfo?.let {
             binding.bindUserInfo(it, contact)
             when (transactionState.type) {
-                TYPE_COIN -> setupAmount()
+                TYPE_TRANSFER_COIN -> setupAmount()
                 TYPE_NFT -> ioScope {
                     val nft = transactionState.nftData().nft
                     uiScope { binding.bindNft(nft) }

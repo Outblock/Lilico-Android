@@ -151,9 +151,10 @@ class TransactionState(
 ) : Parcelable {
     companion object {
         const val TYPE_NFT = 1
-        const val TYPE_COIN = 2
+        const val TYPE_TRANSFER_COIN = 2
         const val TYPE_ADD_TOKEN = 3
         const val TYPE_ENABLE_NFT = 4
+        const val TYPE_TRANSFER_NFT = 5
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)
@@ -164,7 +165,9 @@ class TransactionState(
 
     fun nftCollectionData() = Gson().fromJson(data, NftCollection::class.java)
 
-    fun contact() = if (type == TYPE_COIN) coinData().target else nftData().target
+    fun nftSendData() = Gson().fromJson(data, NftSendModel::class.java)
+
+    fun contact() = if (type == TYPE_TRANSFER_COIN) coinData().target else nftData().target
 
     fun isSuccess() = state == FlowTransactionStatus.SEALED.num
 

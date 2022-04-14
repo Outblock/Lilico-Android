@@ -7,6 +7,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.manager.config.NftCollection
+import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
@@ -203,6 +204,16 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
 
     logd(TAG, "cadenceNftListCheckEnabled response:${String(result?.bytes ?: byteArrayOf())}")
     return result?.parseBoolList()
+}
+
+fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
+    logd(TAG, "cadenceTransferNft()")
+    val transactionId = nft.formatCadence(CADENCE_NFT_TRANSFER).transactionByMainWallet {
+        arg { address(toAddress.toAddress()) }
+        arg { uint64(nft.id.tokenId) }
+    }
+    logd(TAG, "cadenceTransferNft() transactionId:$transactionId")
+    return transactionId
 }
 
 private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {

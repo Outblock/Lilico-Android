@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import io.outblock.lilico.R
-import io.outblock.lilico.databinding.FragmentNftListBinding
+import io.outblock.lilico.databinding.FragmentNftGridBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 internal class NftGridFragment : Fragment() {
 
-    private lateinit var binding: FragmentNftListBinding
+    private lateinit var binding: FragmentNftGridBinding
     private lateinit var viewModel: NFTFragmentViewModel
 
     private val adapter by lazy { NFTListAdapter() }
@@ -23,7 +23,7 @@ internal class NftGridFragment : Fragment() {
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2dip().toDouble() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentNftListBinding.inflate(inflater)
+        binding = FragmentNftGridBinding.inflate(inflater)
         return binding.root
     }
 

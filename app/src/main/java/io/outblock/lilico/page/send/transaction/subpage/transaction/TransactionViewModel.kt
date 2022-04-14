@@ -63,7 +63,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
                     transactionId = tid,
                     time = System.currentTimeMillis(),
                     state = FlowTransactionStatus.PENDING.num,
-                    type = TransactionState.TYPE_COIN,
+                    type = TransactionState.TYPE_TRANSFER_COIN,
                     data = Gson().toJson(transaction),
                 )
             )

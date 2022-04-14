@@ -33,8 +33,10 @@ class WalletHomeFragment : Fragment() {
 
     private fun bindFragment() {
         uiScope {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment()).commit()
+            runCatching {
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment()).commit()
+            }
         }
     }
 

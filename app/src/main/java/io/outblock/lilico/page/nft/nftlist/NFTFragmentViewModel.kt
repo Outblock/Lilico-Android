@@ -2,7 +2,6 @@ package io.outblock.lilico.page.nft.nftlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
@@ -65,6 +64,11 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
             }
             loadGridData()
         }
+    }
+
+    fun refresh() {
+        loadList()
+        loadGrid()
     }
 
     fun updateLayoutMode(isGridMode: Boolean) {
@@ -175,10 +179,10 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0x2b06c41f44a05656
         //0xccea80173b51e028
         //0x4ab2b65a8b2be2aa
-        if (BuildConfig.DEBUG) {
-            return "0x2b06c41f44a05656"
-        }
-        return cacheWallet.read()?.primaryWallet()?.blockchain?.firstOrNull()?.address
+//        if (BuildConfig.DEBUG) {
+//            return "0x2b06c41f44a05656"
+//        }
+        return cacheWallet.read()?.primaryWalletAddress()
     }
 
     private fun loadSelectionCards() {

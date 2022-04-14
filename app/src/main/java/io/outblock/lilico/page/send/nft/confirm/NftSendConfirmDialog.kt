@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.nft.confirm.model.NftSendConfirmDialogModel
@@ -29,7 +31,12 @@ class NftSendConfirmDialog : BottomSheetDialogFragment() {
         viewModel = ViewModelProvider(this)[NftSendConfirmViewModel::class.java].apply {
             bindSendModel(this@NftSendConfirmDialog.nft)
             userInfoLiveData.observe(this@NftSendConfirmDialog) { presenter.bind(NftSendConfirmDialogModel(userInfo = it)) }
-            resultLiveData.observe(this@NftSendConfirmDialog) {
+            resultLiveData.observe(this@NftSendConfirmDialog) { isSuccess ->
+                presenter.bind(NftSendConfirmDialogModel(isSendSuccess = isSuccess))
+                if (!isSuccess) {
+                    Toast.makeText(requireContext(), R.string.common_error_hint, Toast.LENGTH_LONG).show()
+                    dismiss()
+                }
             }
             load()
         }

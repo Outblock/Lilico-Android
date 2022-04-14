@@ -18,9 +18,9 @@ import io.outblock.lilico.manager.flowjvm.addressVerify
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.isAddressBookAutoSearch
+import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.adapter.TransactionSendPageAdapter
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
-import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.addressPattern
 import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.isVisible
@@ -36,7 +36,7 @@ class TransactionSendPresenter(
     private val activity by lazy { findActivity(binding.root) as FragmentActivity }
 
     private val searchViewModel by lazy { ViewModelProvider(activity)[AddressBookViewModel::class.java] }
-
+    private val viewModel by lazy { ViewModelProvider(activity)[SelectSendAddressViewModel::class.java] }
     private val tabTitles by lazy {
         listOf(
             R.string.recent, R.string.address_book,
@@ -115,7 +115,7 @@ class TransactionSendPresenter(
                         binding.progressBar.setVisible(false)
                         binding.searchIconView.setVisible()
                         if (isVerified) {
-                            SendAmountActivity.launch(activity, AddressBookContact(address = text))
+                            viewModel.onAddressSelectedLiveData.postValue(AddressBookContact(address = text))
                         }
                     }
                 }

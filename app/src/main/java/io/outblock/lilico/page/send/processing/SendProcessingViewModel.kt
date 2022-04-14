@@ -39,7 +39,7 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }
-            if (state.type == TransactionState.TYPE_COIN) {
+            if (state.type == TransactionState.TYPE_TRANSFER_COIN) {
                 CoinRateManager.fetchCoinRate(FlowCoinListManager.coinList().first { it.isFlowCoin() })
             }
         }

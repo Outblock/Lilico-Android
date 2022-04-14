@@ -32,7 +32,7 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
         addView(binding.root)
         TransactionStateManager.addOnTransactionStateChange(this)
         setOnClickListener {
-            if (transactionState?.type == TransactionState.TYPE_COIN) {
+            if (transactionState?.type == TransactionState.TYPE_TRANSFER_COIN) {
                 SendProcessingDialog.show()
             }
         }

@@ -3,6 +3,7 @@ package io.outblock.lilico.page.nft.nftlist.presenter
 import android.animation.ArgbEvaluator
 import androidx.lifecycle.ViewModelProvider
 import com.flyco.tablayout.listener.OnTabSelectListener
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -27,14 +28,18 @@ class NFTFragmentPresenter(
     private var isTopSelectionExist = false
 
     init {
-        with(binding.toolbar) {
-            post { setPadding(paddingLeft, paddingTop + statusBarHeight, paddingRight, paddingBottom) }
-        }
-        with(binding.viewPager) {
-            adapter = NftListPageAdapter(fragment)
+        with(binding) {
+            with(toolbar) { post { setPadding(paddingLeft, paddingTop + statusBarHeight, paddingRight, paddingBottom) } }
+            actionWrapper.addStatusBarTopPadding()
+            viewPager.adapter = NftListPageAdapter(fragment)
+            addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
+
+            with(refreshLayout) {
+                setOnRefreshListener { viewModel.refresh() }
+                setColorSchemeColors(R.color.colorSecondary.res2color())
+            }
         }
 
-        binding.addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
         setupTabs()
     }
 
@@ -44,6 +49,7 @@ class NFTFragmentPresenter(
             updateToolbarBackground()
         }
         model.onListScrollChange?.let { updateToolbarBackground(it) }
+        model.listPageData?.let { binding.refreshLayout.isRefreshing = false }
     }
 
     private fun setupTabs() {
