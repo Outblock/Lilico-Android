@@ -2,7 +2,6 @@ package io.outblock.lilico.cache
 
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
-import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.utils.*
 import java.io.File
 
@@ -33,6 +32,10 @@ class CacheManager<T>(
             val str = Gson().toJson(data)
             str.saveToFile(file)
         }
+    }
+
+    fun clear() {
+        ioScope { file.delete() }
     }
 
     fun isCacheExist(): Boolean = file.exists() && file.length() > 0

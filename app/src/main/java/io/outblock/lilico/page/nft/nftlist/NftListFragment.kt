@@ -115,14 +115,16 @@ internal class NftListFragment : Fragment() {
     }
 
     private fun updateSelection(index: Int) {
+        if (index < 0) {
+            Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
+        }
         ioScope {
-            if (index < 0) {
-                Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
-            }
-
             val data = nftSelectionCache().read()?.data?.reversed() ?: return@ioScope
             val nft = data.getOrNull(index) ?: return@ioScope
             uiScope {
+                if (viewModel.selectionIndexLiveData.value != index) {
+                    return@uiScope
+                }
                 val oldUrl = binding.backgroundImage.tag as? String
                 Glide.with(binding.backgroundImage)
                     .load(nft.cover())

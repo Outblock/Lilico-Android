@@ -6,7 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import io.outblock.lilico.R
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
-import io.outblock.lilico.firebase.auth.firebaseJwt
+import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.*
@@ -91,23 +91,21 @@ private fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) ->
         if (it.isSuccessful) {
             firebaseCustomLogin(customToken) { isSuccessful, _ ->
                 if (isSuccessful) {
-                    firebaseJwt { _, _ ->
-                        callback(true)
-                    }
+                    callback(true)
                 } else callback(false)
             }
         } else callback(false)
     }
 }
 
-private fun getFirebaseUid(callback: (uid: String?) -> Unit) {
+private suspend fun getFirebaseUid(callback: (uid: String?) -> Unit) {
     val uid = Firebase.auth.currentUser?.uid
     if (!uid.isNullOrBlank()) {
         callback.invoke(uid)
         return
     }
 
-    firebaseJwt { _, _ ->
-        callback.invoke(Firebase.auth.currentUser?.uid)
-    }
+    getFirebaseJwt(true)
+
+    callback.invoke(Firebase.auth.currentUser?.uid)
 }

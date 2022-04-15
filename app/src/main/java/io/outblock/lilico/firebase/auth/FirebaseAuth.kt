@@ -1,16 +1,13 @@
 package io.outblock.lilico.firebase.auth
 
-import android.text.format.DateUtils
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import io.outblock.lilico.utils.*
-import kotlin.math.abs
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 private const val TAG = "FirebaseAuth"
-
-// TODO jwt token expire in 60 minutes
-private const val JWT_TOKEN_EXPIRE_TIME = DateUtils.MINUTE_IN_MILLIS * 50
 
 typealias FirebaseAuthCallback = (isSuccessful: Boolean, exception: Exception?) -> Unit
 
@@ -30,43 +27,31 @@ fun firebaseCustomLogin(token: String, onComplete: FirebaseAuthCallback) {
     }
 }
 
-fun firebaseJwt(onComplete: FirebaseAuthCallback? = null) {
-    val auth = Firebase.auth
-
+suspend fun getFirebaseJwt(forceRefresh: Boolean = false) = suspendCoroutine<String> { continuation ->
     ioScope {
-        if (getJwtToken().isNotBlank() && !isJwtTokenExpire()) {
-            logd(TAG, "JwtToken exist!!!")
-            onComplete?.invoke(true, null)
+        val auth = Firebase.auth
+        if (auth.currentUser == null) {
+            signInAnonymously()
+        }
+
+        val user = auth.currentUser
+        if (user == null) {
+            continuation.resume("")
             return@ioScope
         }
 
-        if (auth.currentUser != null) {
-            fetchJwtToken(auth.currentUser, onComplete)
-        } else {
-            auth.signInAnonymously().addOnCompleteListener { signInTask ->
-                if (signInTask.isSuccessful) {
-                    auth.currentUser?.let { fetchJwtToken(it, onComplete) }
-                } else {
-                    onComplete?.invoke(false, signInTask.exception)
-                }
+        user.getIdToken(forceRefresh).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                continuation.resume(task.result.token.orEmpty())
+            } else {
+                continuation.resume("")
             }
         }
     }
 }
 
-suspend fun isJwtTokenExpire(): Boolean = abs(System.currentTimeMillis() - getJwtRefreshTime()) >= JWT_TOKEN_EXPIRE_TIME
-
-private fun fetchJwtToken(currentUser: FirebaseUser?, onComplete: FirebaseAuthCallback? = null) {
-    currentUser ?: return
-    currentUser.getIdToken(true).addOnCompleteListener { jwtTask ->
-        if (jwtTask.isSuccessful) {
-            val token = jwtTask.result.token.orEmpty()
-            saveJwtToken(token)
-            updateJwtRefreshTime()
-            logd(TAG, "jwt token:$token")
-            onComplete?.invoke(true, null)
-        } else {
-            onComplete?.invoke(false, jwtTask.exception)
-        }
+private suspend fun signInAnonymously() = suspendCoroutine<Boolean> { continuation ->
+    Firebase.auth.signInAnonymously().addOnCompleteListener { signInTask ->
+        continuation.resume(signInTask.isSuccessful)
     }
 }

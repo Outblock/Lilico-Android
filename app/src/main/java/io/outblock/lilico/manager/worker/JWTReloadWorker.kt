@@ -3,7 +3,6 @@ package io.outblock.lilico.manager.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.utils.logd
 
 /**
@@ -13,7 +12,7 @@ class JWTReloadWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
     override fun doWork(): Result {
         logd(TAG, "doWork")
-        firebaseJwt()
+//        firebaseJwt()
         return Result.success()
     }
 

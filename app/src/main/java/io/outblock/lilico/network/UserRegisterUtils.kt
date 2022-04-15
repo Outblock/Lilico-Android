@@ -4,10 +4,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
-import io.outblock.lilico.firebase.auth.firebaseJwt
 import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
-import io.outblock.lilico.utils.clearJwtToken
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.wallet.getPublicKey
 
@@ -34,8 +32,6 @@ private suspend fun registerOutblockUserInternal(
     )
     logd(TAG, user.toString())
 
-    clearJwtToken()
-
     logd(TAG, "start delete user")
     FirebaseMessaging.getInstance().deleteToken()
     Firebase.auth.currentUser?.delete()?.addOnCompleteListener {
@@ -43,9 +39,7 @@ private suspend fun registerOutblockUserInternal(
         if (it.isSuccessful) {
             firebaseCustomLogin(user.data.customToken) { isSuccessful, _ ->
                 if (isSuccessful) {
-                    firebaseJwt { _, _ ->
-                        callback(true)
-                    }
+                    callback(true)
                 } else callback(false)
             }
         } else callback(false)

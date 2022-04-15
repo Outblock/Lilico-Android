@@ -2,6 +2,7 @@ package io.outblock.lilico.page.nft.nftlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
@@ -78,7 +79,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     fun isCollectionExpanded() = isCollectionExpanded
 
     fun updateSelectionIndex(position: Int) {
-        selectionIndexLiveData.postValue(position)
+        selectionIndexLiveData.value = position
     }
 
     fun isGridMode() = isGridMode
@@ -126,9 +127,14 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         val data = mutableListOf<Any>()
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
-        cacheNftList.cache(resp.data)
 
-        resp.data.nfts.parseToCollectionList().let { collections -> data.addCollections(collections) }
+        if (resp.data == null) {
+            cacheNftList.clear()
+        } else {
+            cacheNftList.cache(resp.data)
+        }
+
+        resp.data?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
         emptyLiveData.postValue(data.isEmpty())
 
@@ -167,10 +173,14 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         }
         val service = retrofit().create(ApiService::class.java)
         val resp = service.nftList(address!!, 0, 100)
-        cacheNftList.cache(resp.data)
-        emptyLiveData.postValue(resp.data.nfts.isEmpty())
+        if (resp.data == null) {
+            cacheNftList.clear()
+        } else {
+            cacheNftList.cache(resp.data)
+        }
+        emptyLiveData.postValue(resp.data?.nfts?.isNullOrEmpty() ?: true)
         gridDataLiveData.postValue(
-            resp.data.nfts.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
+            resp.data?.nfts?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.orEmpty()
         )
     }
 
@@ -179,9 +189,9 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0x2b06c41f44a05656
         //0xccea80173b51e028
         //0x4ab2b65a8b2be2aa
-//        if (BuildConfig.DEBUG) {
-//            return "0x2b06c41f44a05656"
-//        }
+        if (BuildConfig.DEBUG) {
+            return "0x2b06c41f44a05656"
+        }
         return cacheWallet.read()?.primaryWalletAddress()
     }
 

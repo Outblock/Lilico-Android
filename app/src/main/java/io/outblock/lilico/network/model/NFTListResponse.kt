@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 data class NFTListResponse(
     @SerializedName("data")
-    val data: NFTListData,
+    val data: NFTListData? = null,
 
     @SerializedName("message")
     val message: String,

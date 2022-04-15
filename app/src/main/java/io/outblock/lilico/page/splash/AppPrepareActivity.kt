@@ -5,11 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.firebase.auth.firebaseJwt
-import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.loge
-import io.outblock.lilico.utils.toast
 
 class AppPrepareActivity : BaseActivity() {
 
@@ -17,14 +13,14 @@ class AppPrepareActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_prepare)
         ioScope {
-            firebaseJwt { isSuccessful, exception ->
-                if (isSuccessful) {
-                    MainActivity.launch(this)
-                } else {
-                    toast(msg = "init failed")
-                }
-                loge(exception)
-            }
+//            firebaseJwt { isSuccessful, exception ->
+//                if (isSuccessful) {
+//                    MainActivity.launch(this)
+//                } else {
+//                    toast(msg = "init failed")
+//                }
+//                loge(exception)
+//            }
         }
     }
 
