@@ -23,7 +23,7 @@ data class NFTListData(
     @SerializedName("nftCount")
     val nftCount: Int,
     @SerializedName("nfts")
-    val nfts: List<Nft>,
+    var nfts: List<Nft>,
     @SerializedName("offset")
     val offset: Int,
     @SerializedName("ownerAddress")

@@ -9,9 +9,7 @@ import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
-import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTitleModel
@@ -125,16 +123,15 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     private suspend fun loadListDataFromServer() {
         val data = mutableListOf<Any>()
-        val service = retrofit().create(ApiService::class.java)
-        val resp = service.nftList(address!!, 0, 100)
+        val resp = requestNftListFromServer(address!!)
 
-        if (resp.data == null) {
+        if (resp == null) {
             cacheNftList.clear()
         } else {
-            cacheNftList.cache(resp.data)
+            cacheNftList.cache(resp)
         }
 
-        resp.data?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
+        resp?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
         emptyLiveData.postValue(data.isEmpty())
 
@@ -171,16 +168,15 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         cacheNftList.read()?.nfts?.toMutableList()?.let { nftList ->
             gridDataLiveData.postValue(nftList.removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
         }
-        val service = retrofit().create(ApiService::class.java)
-        val resp = service.nftList(address!!, 0, 100)
-        if (resp.data == null) {
+        val resp = requestNftListFromServer(address!!)
+        if (resp == null) {
             cacheNftList.clear()
         } else {
-            cacheNftList.cache(resp.data)
+            cacheNftList.cache(resp)
         }
-        emptyLiveData.postValue(resp.data?.nfts?.isNullOrEmpty() ?: true)
+        emptyLiveData.postValue(resp?.nfts?.isNullOrEmpty() ?: true)
         gridDataLiveData.postValue(
-            resp.data?.nfts?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.orEmpty()
+            resp?.nfts?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.orEmpty()
         )
     }
 

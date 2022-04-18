@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
@@ -96,4 +99,27 @@ fun List<Nft>.parseToCollectionList(): List<CollectionItemModel> {
 fun MutableList<Nft>.removeEmpty(): MutableList<Nft> {
     removeAll { it.name().isNullOrBlank() || it.uniqueId().isBlank() || NftCollectionConfig.get(it.contract.address) == null }
     return this
+}
+
+suspend fun requestNftListFromServer(address: String): NFTListData? {
+    val limit = 30
+    val service = retrofit().create(ApiService::class.java)
+    val resp = service.nftList(address, 0, limit)
+    val list = mutableListOf<Nft>()
+
+    val count = resp.data?.nftCount ?: 0
+    list.addAll(resp.data?.nfts.orEmpty())
+
+    if (count > limit) {
+        var index = resp.data?.nfts?.size ?: 0
+        while (index <= count) {
+            val r = service.nftList(address, index, index + limit)
+            list.addAll(r.data?.nfts.orEmpty())
+            index += limit
+        }
+    }
+
+    return resp.data?.apply {
+        nfts = list
+    }
 }
