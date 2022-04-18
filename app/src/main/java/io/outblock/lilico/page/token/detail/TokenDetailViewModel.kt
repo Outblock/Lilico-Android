@@ -8,7 +8,7 @@ import io.outblock.lilico.manager.account.OnBalanceUpdate
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
-import io.outblock.lilico.network.ApiCryptowatchService
+import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.cryptoWatchRetrofit
 import io.outblock.lilico.network.model.CryptowatchSummaryResponse
 import io.outblock.lilico.utils.getQuoteMarket
@@ -85,7 +85,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
             chartLoadingLiveData.postValue(true)
             runCatching {
-                val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
+                val service = cryptoWatchRetrofit().create(ApiService::class.java)
                 val result = service.ohlc(
                     market = market,
                     coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
@@ -106,7 +106,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     private fun refreshSummary(period: Period) {
         viewModelIOScope(this) {
             val market = getQuoteMarket()
-            val service = cryptoWatchRetrofit().create(ApiCryptowatchService::class.java)
+            val service = cryptoWatchRetrofit().create(ApiService::class.java)
             val result = service.summary(
                 market = market,
                 coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
