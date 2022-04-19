@@ -9,9 +9,12 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
 import io.outblock.lilico.page.address.AddressBookFragment
+import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
 import io.outblock.lilico.page.send.transaction.presenter.TransactionSendPresenter
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.launch
+import io.outblock.lilico.utils.registerBarcodeLauncher
 
 class TransactionSendActivity : BaseActivity() {
 
@@ -24,15 +27,16 @@ class TransactionSendActivity : BaseActivity() {
         binding = ActivityTransactionSendBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
         presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
         viewModel = ViewModelProvider(this)[SelectSendAddressViewModel::class.java].apply {
-
+            onAddressSelectedLiveData.observe(this@TransactionSendActivity) { presenter.bind(TransactionSendModel(selectedAddress = it)) }
         }
 
         setupToolbar()
+        val barcodeLauncher = registerBarcodeLauncher { presenter.bind(TransactionSendModel(qrcode = it)) }
+        binding.scanButton.setOnClickListener { barcodeLauncher.launch() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

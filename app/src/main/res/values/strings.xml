@@ -204,4 +204,5 @@
     <string name="data_from">DATA FROM</string>
     <string name="add_collection">Add Collection</string>
     <string name="search_nft_collection">Search NFT Collection</string>
+    <string name="scan_qr_code">Scan QR code</string>
 </resources>

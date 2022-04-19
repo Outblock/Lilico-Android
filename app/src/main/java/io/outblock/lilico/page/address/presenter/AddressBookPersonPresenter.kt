@@ -22,7 +22,6 @@ import io.outblock.lilico.page.addressadd.AddressAddActivity
 import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
-import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
@@ -73,7 +72,7 @@ class AddressBookPersonPresenter(
             ViewModelProvider(findActivity(view) as FragmentActivity)[SelectSendAddressViewModel::class.java]
                 .onAddressSelectedLiveData.postValue(data)
             when {
-                isSendTransactionPage -> SendAmountActivity.launch(view.context, data)
+                isSendTransactionPage -> {}
                 isSendNftPage -> {}
                 viewModel.isAddressBookContains(model) -> AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
             }

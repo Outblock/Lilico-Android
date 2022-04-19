@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.DialogSendNftAddressBinding
@@ -14,8 +16,11 @@ import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmDialog
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
+import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
 import io.outblock.lilico.page.send.transaction.presenter.TransactionSendPresenter
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.launch
+import io.outblock.lilico.utils.registerBarcodeLauncher
 import io.outblock.lilico.utils.uiScope
 
 class NftSendAddressDialog : BottomSheetDialogFragment() {
@@ -24,6 +29,12 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogSendNftAddressBinding
     private lateinit var presenter: TransactionSendPresenter
     private lateinit var viewModel: SelectSendAddressViewModel
+    private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        barcodeLauncher = registerBarcodeLauncher { presenter.bind(TransactionSendModel(qrcode = it)) }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogSendNftAddressBinding.inflate(inflater)
@@ -38,6 +49,7 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
             onAddressSelectedLiveData.observe(viewLifecycleOwner) { onAddressSelected(it) }
         }
         binding.closeButton.setOnClickListener { dismiss() }
+        binding.scanButton.setOnClickListener { barcodeLauncher.launch() }
     }
 
     private fun onAddressSelected(contact: AddressBookContact?) {

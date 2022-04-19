@@ -21,6 +21,7 @@ import io.outblock.lilico.page.address.isAddressBookAutoSearch
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.adapter.TransactionSendPageAdapter
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
+import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.utils.addressPattern
 import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.isVisible
@@ -66,6 +67,8 @@ class TransactionSendPresenter(
     }
 
     override fun bind(model: TransactionSendModel) {
+        model.qrcode?.let { binding.editText.setText(it) }
+        model.selectedAddress?.let { onAddressSelected(it) }
     }
 
     private fun setupSearchBox() {
@@ -121,6 +124,10 @@ class TransactionSendPresenter(
                 }
             }
         }
+    }
+
+    private fun onAddressSelected(address: AddressBookContact) {
+        SendAmountActivity.launch(activity, address)
     }
 
     private fun onSearchFocusChange(hasFocus: Boolean) {
