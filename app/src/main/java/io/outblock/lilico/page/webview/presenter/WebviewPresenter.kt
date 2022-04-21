@@ -1,14 +1,17 @@
 package io.outblock.lilico.page.webview.presenter
 
-import android.animation.ObjectAnimator
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
+import androidx.transition.Fade
+import androidx.transition.Scene
+import androidx.transition.TransitionManager
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityWebviewBinding
 import io.outblock.lilico.page.webview.model.WebviewModel
 import io.outblock.lilico.page.webview.widgets.WebViewLayout
 import io.outblock.lilico.page.webview.widgets.WebviewCallback
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.logd
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -45,16 +48,15 @@ class WebviewPresenter(
 
     override fun onProgressChange(progress: Float) {
         with(binding.progressBar) {
-            (layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = progress
-            if (progress == 1f) {
-                ObjectAnimator.ofFloat(this, View.ALPHA, 1f, 0f).apply {
-                    duration = 500
-                    start()
-                }
-            } else {
-                alpha = 1f
-            }
+            logd("webview", "onProgressChange:$progress")
+            val params = layoutParams as ConstraintLayout.LayoutParams
+            params.matchConstraintPercentWidth = progress
             requestLayout()
+            TransitionManager.go(Scene(binding.toolbarContent), Fade().apply {
+                duration = if (progress == 1f) 400 else 200
+                startDelay = if (progress == 1f) 400 else -1
+            })
+            postDelayed({ setVisible(progress != 1f) }, if (progress == 1f) 400 else 0)
         }
     }
 

@@ -16,9 +16,11 @@
         android:elevation="0dp"
         app:cardBackgroundColor="@color/black_20"
         app:cardCornerRadius="16dp"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:rippleColor="@color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -28,10 +30,13 @@
                 android:layout_height="0dp"
                 android:background="@drawable/bg_round_16dp"
                 android:backgroundTint="@color/salmon_primary"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_constraintWidth_percent="0.3"/>
+                app:layout_constraintWidth_percent="0.0"
+                tools:layout_constraintWidth_percent="0.3"
+                tools:visibility="visible"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/text_wrapper"

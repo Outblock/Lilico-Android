@@ -8,6 +8,7 @@ import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.webview.*
 
 
@@ -20,7 +21,6 @@ class WebViewLayout(
 
     private var callback: WebviewCallback? = null
 
-
     init {
         agentWeb = createWebView().apply {
             jsInterfaceHolder.addJavaObject("android", JsInterface(this.webCreator.webView))
@@ -30,7 +30,7 @@ class WebViewLayout(
         }
     }
 
-    fun webview() = agentWeb.webCreator.webView
+    fun webview(): WebView = agentWeb.webCreator.webView
 
     fun setWebViewCallback(callback: WebviewCallback) {
         this.callback = callback
@@ -58,11 +58,13 @@ class WebViewLayout(
         agentWeb.webCreator.webView.loadUrl(url)
     }
 
-
     private inner class WebChromeClient : com.just.agentweb.WebChromeClient() {
-        override fun onProgressChanged(view: WebView?, newProgress: Int) {
+        override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
-            callback?.onProgressChange(newProgress / 100f)
+            logd(TAG, "newProgress:$newProgress")
+            if (view.progress == newProgress) {
+                callback?.onProgressChange(view.progress / 100f)
+            }
         }
 
         override fun onReceivedTitle(view: WebView?, title: String?) {
@@ -86,6 +88,9 @@ class WebViewLayout(
         }
     }
 
+    companion object {
+        private val TAG = WebViewLayout::class.java.simpleName
+    }
 }
 
 interface WebviewCallback {
