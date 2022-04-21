@@ -36,4 +36,8 @@ class LilicoWebView(
             .ready()
             .go(url)
     }
+
+    fun updateUrl(url: String) {
+        agentWeb.webCreator.webView.loadUrl(url)
+    }
 }

@@ -3,18 +3,37 @@ package io.outblock.lilico.page.webview
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.FrameLayout
+import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.widgets.webview.LilicoWebView
+import io.outblock.lilico.databinding.ActivityWebviewBinding
+import io.outblock.lilico.page.webview.model.WebviewModel
+import io.outblock.lilico.page.webview.presenter.WebviewPresenter
 
 class WebViewActivity : BaseActivity() {
+    private lateinit var binding: ActivityWebviewBinding
+    private lateinit var presenter: WebviewPresenter
+    private lateinit var viewModel: WebviewViewModel
+
     private val url by lazy { intent.getStringExtra(EXTRA_URL)!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val root = FrameLayout(this)
-        setContentView(root)
-        LilicoWebView(root, url)
+        binding = ActivityWebviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        presenter = WebviewPresenter(this, binding)
+        viewModel = ViewModelProvider(this)[WebviewViewModel::class.java].apply {
+            urlLiveData.observe(this@WebViewActivity) { presenter.bind(WebviewModel(url = it)) }
+        }
+
+        presenter.bind(WebviewModel(url = url))
+    }
+
+    override fun onBackPressed() {
+        if (presenter.handleBackPressed()) {
+            return
+        }
+        super.onBackPressed()
     }
 
     companion object {
