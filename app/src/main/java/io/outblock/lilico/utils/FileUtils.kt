@@ -49,12 +49,18 @@ fun InputStream.toFile(file: File) {
     }
 }
 
-fun Bitmap.saveToFile(file: File, fileType: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG) {
+fun Bitmap.saveToFile(file: File, fileType: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG): File {
     file.parentFile?.let { if (!it.exists()) it.mkdirs() }
     file.outputStream().use {
         compress(fileType, 95, it)
         it.flush()
     }
+    return file
+}
+
+fun Bitmap.saveToCache(fileName: String, fileType: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG): File {
+    val file = File(CACHE_PATH, fileName)
+    return saveToFile(file, fileType)
 }
 
 @WorkerThread

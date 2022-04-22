@@ -8,6 +8,7 @@ import androidx.transition.TransitionManager
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityWebviewBinding
 import io.outblock.lilico.page.webview.model.WebviewModel
+import io.outblock.lilico.page.webview.saveRecentRecord
 import io.outblock.lilico.page.webview.widgets.WebViewLayout
 import io.outblock.lilico.page.webview.widgets.WebviewCallback
 import io.outblock.lilico.utils.extensions.setVisible
@@ -36,6 +37,7 @@ class WebviewPresenter(
 
     override fun bind(model: WebviewModel) {
         model.url?.let { webviewLayout.updateUrl(it) }
+        model.onPageClose?.let { webview().saveRecentRecord() }
     }
 
     override fun onScrollChange(scrollY: Int, offset: Int) {
@@ -75,5 +77,4 @@ class WebviewPresenter(
         }
         return false
     }
-
 }

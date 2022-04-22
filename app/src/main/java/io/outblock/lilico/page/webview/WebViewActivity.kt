@@ -8,6 +8,7 @@ import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityWebviewBinding
 import io.outblock.lilico.page.webview.model.WebviewModel
 import io.outblock.lilico.page.webview.presenter.WebviewPresenter
+import io.outblock.lilico.utils.logd
 
 class WebViewActivity : BaseActivity() {
     private lateinit var binding: ActivityWebviewBinding
@@ -34,6 +35,12 @@ class WebViewActivity : BaseActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    override fun finish() {
+        logd("webview", "finish")
+        presenter.bind(WebviewModel(onPageClose = true))
+        super.finish()
     }
 
     companion object {

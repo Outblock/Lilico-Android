@@ -67,3 +67,5 @@
 
 -keep class com.just.agentweb.** {*;}
 -dontwarn com.just.agentweb.**
+
+-keep class io.outblock.lilico.database.WebviewRecord {*;}

@@ -12,8 +12,12 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentWalletHomeBinding
 import io.outblock.lilico.page.main.MainActivityViewModel
+import io.outblock.lilico.page.scan.dispatchScanResult
 import io.outblock.lilico.page.wallet.WalletFragment
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.isRegistered
+import io.outblock.lilico.utils.launch
+import io.outblock.lilico.utils.registerBarcodeLauncher
+import io.outblock.lilico.utils.uiScope
 
 
 class WalletHomeFragment : Fragment() {
@@ -26,9 +30,7 @@ class WalletHomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        barcodeLauncher = registerBarcodeLauncher { result ->
-            toast(msg = result)
-        }
+        barcodeLauncher = registerBarcodeLauncher { result -> dispatchScanResult(requireContext(), result.orEmpty()) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
