@@ -14,8 +14,8 @@ import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
-import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.nft.collectionlist.model.NftCollectionItem
+import io.outblock.lilico.page.window.sendstate.SendStateBubble
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 

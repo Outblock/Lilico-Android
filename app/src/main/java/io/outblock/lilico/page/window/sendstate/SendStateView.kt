@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.bubble.sendstate
+package io.outblock.lilico.page.window.sendstate
 
 import android.animation.ObjectAnimator
 import android.content.Context

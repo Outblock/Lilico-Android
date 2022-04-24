@@ -1,43 +1,26 @@
 package io.outblock.lilico.widgets.webview
 
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import com.just.agentweb.AgentWeb
-import com.just.agentweb.DefaultWebClient
-import io.outblock.lilico.utils.findActivity
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.AttributeSet
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 
-class LilicoWebView(
-    private val parentView: ViewGroup,
-    private val url: String,
-) {
-    private lateinit var agentWeb: AgentWeb
+@SuppressLint("SetJavaScriptEnabled")
+class LilicoWebView : WebView {
 
-    private val activity by lazy { findActivity(parentView) as FragmentActivity }
-
-    private val webViewClient by lazy { WebViewClient() }
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+      : super(context, attrs, defStyleAttr)
 
     init {
-        agentWeb = createWebView().apply {
-            jsInterfaceHolder.addJavaObject("android", JsInterface(this.webCreator.webView))
-            webViewClient.bindAgentWeb(this)
+        with(settings) {
+            loadsImagesAutomatically = true
+            javaScriptEnabled = true
+            webViewClient = WebViewClient()
+            webChromeClient = WebChromeClient()
         }
-    }
-
-    private fun createWebView(): AgentWeb {
-        return AgentWeb.with(activity)
-            .setAgentWebParent(parentView, -1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-            .useDefaultIndicator(-1, 3)
-            .setAgentWebWebSettings(WebViewSettings())
-            .setWebViewClient(webViewClient)
-            .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-            .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-            .interceptUnkownUrl()
-            .createAgentWeb()
-            .ready()
-            .go(url)
-    }
-
-    fun updateUrl(url: String) {
-        agentWeb.webCreator.webView.loadUrl(url)
     }
 }

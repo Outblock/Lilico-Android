@@ -11,8 +11,8 @@ import io.outblock.lilico.manager.flowjvm.cadenceTransferNft
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.send.nft.NftSendModel
+import io.outblock.lilico.page.window.sendstate.SendStateBubble
 import io.outblock.lilico.utils.viewModelIOScope
 
 class NftSendConfirmViewModel : ViewModel() {

@@ -3,7 +3,7 @@ package io.outblock.lilico.manager.app
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
+import io.outblock.lilico.page.window.sendstate.SendStateBubble
 
 class PageLifecycleObserver : Application.ActivityLifecycleCallbacks {
 

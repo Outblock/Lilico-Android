@@ -15,8 +15,8 @@ import io.outblock.lilico.manager.flowjvm.cadenceTransferToken
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.model.UserInfoData
-import io.outblock.lilico.page.bubble.sendstate.SendStateBubble
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.window.sendstate.SendStateBubble
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.toAddress
 

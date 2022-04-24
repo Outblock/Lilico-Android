@@ -14,12 +14,12 @@ import io.outblock.lilico.utils.isNightMode
 
 class NftDetailActivity : BaseActivity() {
 
-    private val nftAddress by lazy { intent.getStringExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_NFT_ADDRESS)!! }
-    private val walletAddress by lazy { intent.getStringExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_WALLET_ADDRESS)!! }
-    private val tokenId by lazy { intent.getStringExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_TOKEN_ID)!! }
+    private val nftAddress by lazy { intent.getStringExtra(EXTRA_NFT_ADDRESS)!! }
+    private val walletAddress by lazy { intent.getStringExtra(EXTRA_WALLET_ADDRESS)!! }
+    private val tokenId by lazy { intent.getStringExtra(EXTRA_TOKEN_ID)!! }
     private lateinit var binding: ActivityNftDetailBinding
     private lateinit var presenter: NftDetailPresenter
-    private lateinit var viewModel: io.outblock.lilico.page.nft.nftdetail.NftDetailViewModel
+    private lateinit var viewModel: NftDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class NftDetailActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
 
         presenter = NftDetailPresenter(this, binding)
-        viewModel = ViewModelProvider(this)[io.outblock.lilico.page.nft.nftdetail.NftDetailViewModel::class.java].apply {
+        viewModel = ViewModelProvider(this)[NftDetailViewModel::class.java].apply {
             nftLiveData.observe(this@NftDetailActivity) { presenter.bind(NftDetailModel(nft = it)) }
             load(walletAddress, nftAddress, tokenId)
         }
@@ -68,10 +68,10 @@ class NftDetailActivity : BaseActivity() {
             address: String,
             tokenId: String,
         ) {
-            val intent = Intent(context, io.outblock.lilico.page.nft.nftdetail.NftDetailActivity::class.java)
-            intent.putExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_NFT_ADDRESS, address)
-            intent.putExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_WALLET_ADDRESS, walletAddress)
-            intent.putExtra(io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.Companion.EXTRA_TOKEN_ID, tokenId)
+            val intent = Intent(context, NftDetailActivity::class.java)
+            intent.putExtra(EXTRA_NFT_ADDRESS, address)
+            intent.putExtra(EXTRA_WALLET_ADDRESS, walletAddress)
+            intent.putExtra(EXTRA_TOKEN_ID, tokenId)
             context.startActivity(intent)
         }
     }
