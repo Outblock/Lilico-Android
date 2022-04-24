@@ -1,4 +1,4 @@
-package io.outblock.lilico.widgets.floatview
+package io.outblock.lilico.widgets.floatwindow
 
 import android.view.Gravity
 import android.view.View

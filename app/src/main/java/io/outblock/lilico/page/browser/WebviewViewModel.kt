@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview
+package io.outblock.lilico.page.browser
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

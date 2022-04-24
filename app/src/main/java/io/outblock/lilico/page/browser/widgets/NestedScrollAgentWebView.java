@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview.widgets;
+package io.outblock.lilico.page.browser.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

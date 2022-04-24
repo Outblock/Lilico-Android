@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview
+package io.outblock.lilico.page.browser
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

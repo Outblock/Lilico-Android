@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview.widgets
+package io.outblock.lilico.page.browser.widgets
 
 import android.view.ViewGroup
 import android.webkit.WebView

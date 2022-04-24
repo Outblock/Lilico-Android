@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview
+package io.outblock.lilico.page.browser
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityWebviewBinding
-import io.outblock.lilico.page.webview.model.WebviewModel
-import io.outblock.lilico.page.webview.presenter.WebviewPresenter
+import io.outblock.lilico.page.browser.model.WebviewModel
+import io.outblock.lilico.page.browser.presenter.WebviewPresenter
 import io.outblock.lilico.utils.logd
 
 class WebViewActivity : BaseActivity() {

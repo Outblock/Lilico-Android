@@ -9,11 +9,11 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.page.browser.WebViewActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
-import io.outblock.lilico.page.webview.WebViewActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.textToClipboard

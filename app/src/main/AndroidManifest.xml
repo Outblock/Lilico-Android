@@ -140,7 +140,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".page.webview.WebViewActivity"
+            android:name=".page.browser.WebViewActivity"
             android:screenOrientation="portrait"/>
 
         <activity

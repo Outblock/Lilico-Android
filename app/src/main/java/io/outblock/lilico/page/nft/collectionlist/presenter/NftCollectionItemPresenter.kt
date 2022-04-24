@@ -7,9 +7,9 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftCollectionListBinding
+import io.outblock.lilico.page.browser.WebViewActivity
 import io.outblock.lilico.page.nft.collectionlist.NftEnableConfirmDialog
 import io.outblock.lilico.page.nft.collectionlist.model.NftCollectionItem
-import io.outblock.lilico.page.webview.WebViewActivity
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 import jp.wasabeef.glide.transformations.BlurTransformation

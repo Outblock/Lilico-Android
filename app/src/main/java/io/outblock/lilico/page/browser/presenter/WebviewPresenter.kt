@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.webview.presenter
+package io.outblock.lilico.page.browser.presenter
 
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
@@ -7,10 +7,10 @@ import androidx.transition.Scene
 import androidx.transition.TransitionManager
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityWebviewBinding
-import io.outblock.lilico.page.webview.model.WebviewModel
-import io.outblock.lilico.page.webview.saveRecentRecord
-import io.outblock.lilico.page.webview.widgets.WebViewLayout
-import io.outblock.lilico.page.webview.widgets.WebviewCallback
+import io.outblock.lilico.page.browser.model.WebviewModel
+import io.outblock.lilico.page.browser.saveRecentRecord
+import io.outblock.lilico.page.browser.widgets.WebViewLayout
+import io.outblock.lilico.page.browser.widgets.WebviewCallback
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.logd
 import kotlin.math.abs

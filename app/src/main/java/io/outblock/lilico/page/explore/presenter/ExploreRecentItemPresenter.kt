@@ -6,10 +6,10 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.databinding.ItemExploreRecentBinding
-import io.outblock.lilico.page.webview.WebViewActivity
-import io.outblock.lilico.page.webview.faviconFileName
-import io.outblock.lilico.page.webview.screenshotFile
-import io.outblock.lilico.page.webview.screenshotFileName
+import io.outblock.lilico.page.browser.WebViewActivity
+import io.outblock.lilico.page.browser.faviconFileName
+import io.outblock.lilico.page.browser.screenshotFile
+import io.outblock.lilico.page.browser.screenshotFileName
 
 class ExploreRecentItemPresenter(
     private val view: View,
