@@ -1,6 +1,7 @@
 package io.outblock.lilico.widgets.floatwindow
 
 import android.app.Activity
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,17 @@ object FloatWindow {
         val contentView = config.contentView ?: LayoutInflater.from(Env.getApp()).inflate(config.layoutId, null)
         containerViews[config.tag] = contentView
         activity.rootView()?.addView(contentView, createParams(config))
+
+        FloatWindowPageObserver.register(Env.getApp() as Application)
+    }
+
+    internal fun onPageChange(activity: Activity) {
+        configs.forEach { (tag, config) ->
+            if (isShowing(tag)) {
+                dismiss(tag)
+                show(config, activity)
+            }
+        }
     }
 
     private fun Activity.rootView() = this.window?.decorView as? ViewGroup

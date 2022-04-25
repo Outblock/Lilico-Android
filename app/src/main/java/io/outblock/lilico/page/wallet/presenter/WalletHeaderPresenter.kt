@@ -9,12 +9,13 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
-import io.outblock.lilico.page.browser.WebViewActivity
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.textToClipboard
 import io.outblock.lilico.wallet.toAddress
@@ -39,7 +40,7 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
-            buyButton.setOnClickListener { WebViewActivity.open(view.context, "https://www.google.com/search?q=flow") }
+            buyButton.setOnClickListener { openBrowser(findActivity(view)!!, "https://www.google.com/search?q=flow") }
         }
     }
 

@@ -6,10 +6,11 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.databinding.ItemExploreRecentBinding
-import io.outblock.lilico.page.browser.WebViewActivity
 import io.outblock.lilico.page.browser.faviconFileName
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.browser.screenshotFile
 import io.outblock.lilico.page.browser.screenshotFileName
+import io.outblock.lilico.utils.findActivity
 
 class ExploreRecentItemPresenter(
     private val view: View,
@@ -22,7 +23,7 @@ class ExploreRecentItemPresenter(
             Glide.with(iconView).load(screenshotFile(faviconFileName(model.url))).into(iconView)
             titleView.text = model.title
 
-            view.setOnClickListener { WebViewActivity.open(view.context, model.url) }
+            view.setOnClickListener { openBrowser(findActivity(view)!!, model.url) }
         }
     }
 }

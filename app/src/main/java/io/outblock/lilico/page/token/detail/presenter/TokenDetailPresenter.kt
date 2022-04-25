@@ -8,7 +8,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
-import io.outblock.lilico.page.browser.WebViewActivity
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
@@ -31,7 +31,7 @@ class TokenDetailPresenter(
             nameView.text = coin.name
             coinTypeView.text = coin.symbol.uppercase()
             Glide.with(iconView).load(coin.icon).into(iconView)
-            nameWrapper.setOnClickListener { WebViewActivity.open(activity, coin.website) }
+            nameWrapper.setOnClickListener { openBrowser(activity, coin.website) }
             getMoreWrapper.setOnClickListener { }
             sendButton.setOnClickListener { TransactionSendActivity.launch(activity) }
             receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
@@ -41,7 +41,7 @@ class TokenDetailPresenter(
             binding.getMoreWrapper.setVisible(false)
             binding.chartWrapper.root.setVisible(false)
         } else if (isTestnet()) {
-            binding.getMoreWrapper.setOnClickListener { WebViewActivity.open(activity, "https://testnet-faucet.onflow.org/fund-account") }
+            binding.getMoreWrapper.setOnClickListener { openBrowser(activity, "https://testnet-faucet.onflow.org/fund-account") }
         }
     }
 

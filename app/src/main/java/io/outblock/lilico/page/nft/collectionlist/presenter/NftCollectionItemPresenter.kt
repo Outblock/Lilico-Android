@@ -7,7 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftCollectionListBinding
-import io.outblock.lilico.page.browser.WebViewActivity
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.nft.collectionlist.NftEnableConfirmDialog
 import io.outblock.lilico.page.nft.collectionlist.model.NftCollectionItem
 import io.outblock.lilico.utils.extensions.setVisible
@@ -32,7 +32,7 @@ class NftCollectionItemPresenter(
             }
             progressBar.setVisible(model.isAdding == true)
             stateButton.setVisible(model.isAdding != true)
-            titleWrapper.setOnClickListener { WebViewActivity.open(view.context, model.collection.officialWebsite) }
+            titleWrapper.setOnClickListener { openBrowser(findActivity(view)!!, model.collection.officialWebsite) }
             stateButton.setImageResource(if (model.isNormalState()) R.drawable.ic_baseline_add_24_salmon_primary else R.drawable.ic_check_round)
         }
     }

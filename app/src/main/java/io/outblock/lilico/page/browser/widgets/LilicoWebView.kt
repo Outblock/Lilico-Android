@@ -1,61 +1,37 @@
 package io.outblock.lilico.page.browser.widgets
 
-import android.view.ViewGroup
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.AttributeSet
 import android.webkit.WebView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.FragmentActivity
-import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
-import com.just.agentweb.AgentWeb
-import com.just.agentweb.DefaultWebClient
-import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.webview.*
 
-
-class WebViewLayout(
-    private val parentView: ViewGroup,
-) {
-    private lateinit var agentWeb: AgentWeb
-
-    private val activity by lazy { findActivity(parentView) as FragmentActivity }
-
+@SuppressLint("SetJavaScriptEnabled")
+class LilicoWebView : WebView {
     private var callback: WebviewCallback? = null
 
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+      : super(context, attrs, defStyleAttr)
+
     init {
-        agentWeb = createWebView().apply {
-            jsInterfaceHolder.addJavaObject("android", JsInterface(this.webCreator.webView))
+        with(settings) {
+            loadsImagesAutomatically = true
+            javaScriptEnabled = true
+            webViewClient = WebViewClient()
+            webChromeClient = WebChromeClient()
         }
-        agentWeb.webCreator.webView.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+
+        addJavascriptInterface(JsInterface(this), "android")
+        setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
             callback?.onScrollChange(scrollX, scrollY - oldScrollY)
         }
     }
 
-    fun webview(): WebView = agentWeb.webCreator.webView
-
     fun setWebViewCallback(callback: WebviewCallback) {
         this.callback = callback
-    }
-
-    private fun createWebView(): AgentWeb {
-        val lp = CoordinatorLayout.LayoutParams(-1, -1)
-        lp.behavior = ScrollingViewBehavior()
-        return AgentWeb.with(activity)
-            .setAgentWebParent(parentView, 0, lp)
-            .closeIndicator()
-            .setAgentWebWebSettings(WebViewSettings())
-            .setWebChromeClient(WebChromeClient())
-            .setWebViewClient(WebViewClient())
-            .setWebView(NestedScrollAgentWebView(activity))
-            .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK)
-            .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
-            .interceptUnkownUrl()
-            .createAgentWeb()
-            .ready()
-            .get()
-    }
-
-    fun updateUrl(url: String) {
-        agentWeb.webCreator.webView.loadUrl(url)
     }
 
     private inner class WebChromeClient : com.just.agentweb.WebChromeClient() {
@@ -89,7 +65,7 @@ class WebViewLayout(
     }
 
     companion object {
-        private val TAG = WebViewLayout::class.java.simpleName
+        private val TAG = LilicoWebView::class.java.simpleName
     }
 }
 

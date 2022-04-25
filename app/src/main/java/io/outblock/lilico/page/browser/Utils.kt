@@ -1,16 +1,46 @@
 package io.outblock.lilico.page.browser
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.view.Gravity
 import android.webkit.WebView
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
-import io.outblock.lilico.utils.CACHE_PATH
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.saveToFile
+import io.outblock.lilico.utils.*
+import io.outblock.lilico.widgets.floatwindow.FloatWindow
+import io.outblock.lilico.widgets.floatwindow.FloatWindowConfig
 import java.io.File
 
+internal const val BROWSER_TAG = "Browser"
+
+fun openBrowser(activity: Activity, url: String? = null) {
+    if (FloatWindow.isShowing(BROWSER_TAG)) {
+        url?.let {
+            getBrowser(activity, it).loadUrl(it)
+        }
+        return
+    }
+    FloatWindow.builder().apply {
+        setConfig(
+            FloatWindowConfig(
+                gravity = Gravity.TOP or Gravity.START,
+                contentView = getBrowser(activity, url),
+                tag = BROWSER_TAG,
+                isTouchEnable = true,
+                disableAnimation = true,
+                hardKeyEventEnable = true,
+                immersionStatusBar = true,
+                width = ScreenUtils.getScreenWidth(),
+                height = ScreenUtils.getScreenHeight(),
+                widthMatchParent = true,
+                heightMatchParent = true,
+                isFullScreen = true,
+            )
+        )
+        show(activity)
+    }
+}
 
 fun WebView.saveRecentRecord() {
     logd("webview", "saveRecentRecord start")

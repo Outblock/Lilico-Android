@@ -140,10 +140,6 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".page.browser.WebViewActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity
             android:name=".page.nft.collectionlist.NftCollectionListActivity"
             android:screenOrientation="portrait"/>
 

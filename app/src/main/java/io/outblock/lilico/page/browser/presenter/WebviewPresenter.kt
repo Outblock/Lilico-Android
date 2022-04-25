@@ -1,16 +1,23 @@
 package io.outblock.lilico.page.browser.presenter
 
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentActivity
 import androidx.transition.Fade
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
+import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.databinding.ActivityWebviewBinding
+import io.outblock.lilico.databinding.LayoutBrowserBinding
+import io.outblock.lilico.page.browser.Browser
 import io.outblock.lilico.page.browser.model.WebviewModel
+import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.saveRecentRecord
-import io.outblock.lilico.page.browser.widgets.WebViewLayout
+import io.outblock.lilico.page.browser.tools.expandWebView
+import io.outblock.lilico.page.browser.tools.shrinkWebView
 import io.outblock.lilico.page.browser.widgets.WebviewCallback
+import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.logd
 import kotlin.math.abs
@@ -18,26 +25,37 @@ import kotlin.math.max
 import kotlin.math.min
 
 class WebviewPresenter(
-    private val activity: FragmentActivity,
-    private val binding: ActivityWebviewBinding,
+    private val browser: Browser,
+    private val binding: LayoutBrowserBinding,
 ) : BasePresenter<WebviewModel>, WebviewCallback {
 
-    private var webviewLayout: WebViewLayout
-
-    private fun webview() = webviewLayout.webview()
+    private val webview = binding.webview
 
     init {
         with(binding) {
-            webviewLayout = WebViewLayout(binding.root).apply { setWebViewCallback(this@WebviewPresenter) }
-            refreshButton.setOnClickListener { webview().reload() }
-            backButton.setOnClickListener { if (webview().canGoBack()) webview().goBack() else activity.finish() }
-            homeButton.setOnClickListener { webview().loadUrl("https://google.com") }
+            binding.contentWrapper.addStatusBarTopPadding()
+//            binding.root.addNavigationBarBottomPadding()
+            (binding.toolbar.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = 40.dp2px().toInt() + navigationBarHeight
+
+            refreshButton.setOnClickListener { webview.reload() }
+            backButton.setOnClickListener { if (webview.canGoBack()) webview.goBack() else releaseBrowser() }
+            homeButton.setOnClickListener { releaseBrowser() }
+            floatButton.setOnClickListener { switchBubble() }
+            floatBubble.setOnClickListener { switchBubble() }
+            webview.setWebViewCallback(this@WebviewPresenter)
         }
     }
 
     override fun bind(model: WebviewModel) {
-        model.url?.let { webviewLayout.updateUrl(it) }
-        model.onPageClose?.let { webview().saveRecentRecord() }
+        model.url?.let { onOpenNewUrl(it) }
+        model.onPageClose?.let { webview.saveRecentRecord() }
+    }
+
+    private fun onOpenNewUrl(url: String) {
+        webview.loadUrl(url)
+        with(binding) {
+            switchBubble(true)
+        }
     }
 
     override fun onScrollChange(scrollY: Int, offset: Int) {
@@ -63,7 +81,7 @@ class WebviewPresenter(
     }
 
     override fun onTitleChange(title: String) {
-        binding.titleView.text = title.ifBlank { webview().url }
+        binding.titleView.text = title.ifBlank { webview.url }
     }
 
     override fun onPageUrlChange(url: String, isReload: Boolean) {
@@ -71,10 +89,27 @@ class WebviewPresenter(
     }
 
     fun handleBackPressed(): Boolean {
-        if (webview().canGoBack()) {
-            webview().goBack()
+        // bubble mode
+        if (!binding.contentWrapper.isVisible()) {
+            return false
+        }
+        // webview canGoBack
+        if (webview.canGoBack()) {
+            webview.goBack()
             return true
         }
-        return false
+
+        releaseBrowser()
+        return true
+    }
+
+    private fun switchBubble(isExpand: Boolean? = null) {
+        if (!binding.root.isAttachedToWindow) {
+            return
+        }
+        with(binding) {
+            val expand = isExpand ?: !contentWrapper.isVisible()
+            if (expand) expandWebView(contentWrapper, floatBubble) else shrinkWebView(contentWrapper, floatBubble)
+        }
     }
 }
