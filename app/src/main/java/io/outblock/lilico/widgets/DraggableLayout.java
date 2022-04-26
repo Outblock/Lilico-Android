@@ -33,6 +33,7 @@ public class DraggableLayout extends FrameLayout {
 
     private OnClickListener onClickListener;
 
+    private OnDragListener onDragListener;
 
     public DraggableLayout(Context context) {
         this(context, null);
@@ -72,6 +73,7 @@ public class DraggableLayout extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 updateViewPosition(event);
                 break;
+            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 clearPortraitY();
                 if (autoMoveToEdge) {
@@ -80,6 +82,7 @@ public class DraggableLayout extends FrameLayout {
                 if (isOnClickEvent()) {
                     dealClickEvent();
                 }
+                dealDragEndEvent();
                 break;
         }
         return true;
@@ -88,6 +91,18 @@ public class DraggableLayout extends FrameLayout {
     protected void dealClickEvent() {
         if (onClickListener != null) {
             onClickListener.onClick(this);
+        }
+    }
+
+    protected void dealDragMoveEvent() {
+        if (onDragListener != null) {
+            onDragListener.onDrag(mOriginalX, mOriginalY, getX(), getY());
+        }
+    }
+
+    protected void dealDragEndEvent() {
+        if (onDragListener != null) {
+            onDragListener.onDragEnd();
         }
     }
 
@@ -122,6 +137,8 @@ public class DraggableLayout extends FrameLayout {
             }
             setY(desY);
         }
+
+        dealDragMoveEvent();
     }
 
     private void changeOriginalTouchParams(MotionEvent event) {
@@ -257,6 +274,16 @@ public class DraggableLayout extends FrameLayout {
     @Override
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+    }
+
+    public void setOnDragListener(OnDragListener onDragListener) {
+        this.onDragListener = onDragListener;
+    }
+
+    public interface OnDragListener {
+        void onDrag(float originX, float originY, float x, float y);
+
+        void onDragEnd();
     }
 }
 

@@ -10,7 +10,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.Browser
-import io.outblock.lilico.page.browser.model.WebviewModel
+import io.outblock.lilico.page.browser.model.BrowserModel
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.saveRecentRecord
 import io.outblock.lilico.page.browser.tools.expandWebView
@@ -20,21 +20,23 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.widgets.floatwindow.widgets.WindowRemoveLayout
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class WebviewPresenter(
+class BrowserPresenter(
     private val browser: Browser,
     private val binding: LayoutBrowserBinding,
-) : BasePresenter<WebviewModel>, WebviewCallback {
+) : BasePresenter<BrowserModel>, WebviewCallback {
 
     private val webview = binding.webview
+
+    private val removeLayout by lazy { WindowRemoveLayout(binding.root, binding.floatBubble) { releaseBrowser() } }
 
     init {
         with(binding) {
             binding.contentWrapper.addStatusBarTopPadding()
-//            binding.root.addNavigationBarBottomPadding()
             (binding.toolbar.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = 40.dp2px().toInt() + navigationBarHeight
 
             refreshButton.setOnClickListener { webview.reload() }
@@ -42,11 +44,12 @@ class WebviewPresenter(
             homeButton.setOnClickListener { releaseBrowser() }
             floatButton.setOnClickListener { switchBubble() }
             floatBubble.setOnClickListener { switchBubble() }
-            webview.setWebViewCallback(this@WebviewPresenter)
+            floatBubble.setOnDragListener(removeLayout)
+            webview.setWebViewCallback(this@BrowserPresenter)
         }
     }
 
-    override fun bind(model: WebviewModel) {
+    override fun bind(model: BrowserModel) {
         model.url?.let { onOpenNewUrl(it) }
         model.onPageClose?.let { webview.saveRecentRecord() }
     }

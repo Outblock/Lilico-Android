@@ -16,7 +16,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:cardBackgroundColor="@color/red_1"
+            app:cardBackgroundColor="@color/salmon_primary"
             app:cardCornerRadius="60dp"/>
     </io.outblock.lilico.widgets.DraggableLayout>
 

@@ -1,8 +1,6 @@
 package io.outblock.lilico.utils.extensions
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
 import android.view.View
 import java.io.File
 
@@ -66,4 +64,15 @@ fun View.scale(scale: Float): View {
     scaleX = scale
     scaleY = scale
     return this
+}
+
+fun View.location(): Point {
+    val location = IntArray(2)
+    getLocationInWindow(location)
+    return Point(location[0], location[1])
+}
+
+fun View.rect(): Rect {
+    val location = location()
+    return Rect(location.x, location.y, location.x + width, location.y + height)
 }

@@ -6,12 +6,14 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.outblock.lilico.databinding.LayoutBrowserBinding
-import io.outblock.lilico.page.browser.model.WebviewModel
-import io.outblock.lilico.page.browser.presenter.WebviewPresenter
+import io.outblock.lilico.page.browser.model.BrowserModel
+import io.outblock.lilico.page.browser.presenter.BrowserInputPresenter
+import io.outblock.lilico.page.browser.presenter.BrowserPresenter
 
 class Browser : FrameLayout {
     private var binding: LayoutBrowserBinding = LayoutBrowserBinding.inflate(LayoutInflater.from(context))
-    private var presenter: WebviewPresenter
+    private var presenter: BrowserPresenter
+    private var inputPresenter: BrowserInputPresenter
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)
@@ -20,7 +22,8 @@ class Browser : FrameLayout {
     init {
         addView(binding.root)
 
-        presenter = WebviewPresenter(this, binding)
+        presenter = BrowserPresenter(this, binding)
+        inputPresenter = BrowserInputPresenter(binding)
     }
 
     override fun onAttachedToWindow() {
@@ -39,11 +42,11 @@ class Browser : FrameLayout {
 
     fun loadUrl(url: String) {
         focus()
-        presenter.bind(WebviewModel(url = url))
+        presenter.bind(BrowserModel(url = url))
     }
 
     fun onRelease() {
-        presenter.bind(WebviewModel(onPageClose = true))
+        presenter.bind(BrowserModel(onPageClose = true))
     }
 
     private fun focus() {

@@ -1,6 +1,5 @@
 package io.outblock.lilico.page.browser.tools
 
-import android.graphics.Point
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.transition.Fade
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
 import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.setVisible
 import kotlin.math.sqrt
 
@@ -48,10 +48,4 @@ private fun startAnimation(webviewContainer: ViewGroup, bubbleView: View, isExpa
             webviewContainer.setVisible()
         }
     }
-}
-
-private fun View.location(): Point {
-    val location = IntArray(2)
-    getLocationInWindow(location)
-    return Point(location[0], location[1])
 }
