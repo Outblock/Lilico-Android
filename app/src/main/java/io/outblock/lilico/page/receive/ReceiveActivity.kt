@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityReceiveBinding
 import io.outblock.lilico.page.receive.model.ReceiveModel
 import io.outblock.lilico.page.receive.presenter.ReceivePresenter
+import io.outblock.lilico.utils.isNightMode
 
 class ReceiveActivity : BaseActivity() {
 
@@ -20,6 +22,10 @@ class ReceiveActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityReceiveBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
+
         presenter = ReceivePresenter(this, binding)
         viewModel = ViewModelProvider(this)[ReceiveViewModel::class.java].apply {
             walletLiveData.observe(this@ReceiveActivity) { presenter.bind(ReceiveModel(data = it)) }

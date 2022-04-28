@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.coin.FlowCoin
@@ -12,6 +13,7 @@ import io.outblock.lilico.page.token.detail.model.TokenDetailChartModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
 import io.outblock.lilico.page.token.detail.presenter.TokenDetailChartPresenter
 import io.outblock.lilico.page.token.detail.presenter.TokenDetailPresenter
+import io.outblock.lilico.utils.isNightMode
 
 class TokenDetailActivity : BaseActivity() {
 
@@ -26,6 +28,9 @@ class TokenDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTokenDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
         presenter = TokenDetailPresenter(this, binding, coin)
         chartPresenter = TokenDetailChartPresenter(this, binding.chartWrapper)

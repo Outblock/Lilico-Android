@@ -10,6 +10,8 @@ import androidx.transition.Fade
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
+import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.walletCache
@@ -58,6 +60,8 @@ class SendAmountPresenter(
             }
         }
         with(binding) {
+            root.addStatusBarTopPadding()
+            root.addNavigationBarBottomPadding()
             nextButton.setOnClickListener { showSendDialog() }
             cancelButton.setOnClickListener { activity.finish() }
             swapButton.setOnClickListener { viewModel.swapCoin() }

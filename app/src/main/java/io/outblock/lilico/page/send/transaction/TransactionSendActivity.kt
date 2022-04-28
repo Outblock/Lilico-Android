@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
@@ -13,6 +15,7 @@ import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
 import io.outblock.lilico.page.send.transaction.presenter.TransactionSendPresenter
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.launch
 import io.outblock.lilico.utils.registerBarcodeLauncher
 
@@ -27,8 +30,12 @@ class TransactionSendActivity : BaseActivity() {
         binding = ActivityTransactionSendBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
+
         supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
+        binding.root.addStatusBarTopPadding()
         presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
         viewModel = ViewModelProvider(this)[SelectSendAddressViewModel::class.java].apply {
             onAddressSelectedLiveData.observe(this@TransactionSendActivity) { presenter.bind(TransactionSendModel(selectedAddress = it)) }

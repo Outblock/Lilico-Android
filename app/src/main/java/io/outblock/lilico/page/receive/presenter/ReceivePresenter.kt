@@ -2,6 +2,7 @@ package io.outblock.lilico.page.receive.presenter
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityReceiveBinding
@@ -21,6 +22,7 @@ class ReceivePresenter(
 
     init {
         setupToolbar()
+        binding.root.addStatusBarTopPadding()
     }
 
     override fun bind(model: ReceiveModel) {

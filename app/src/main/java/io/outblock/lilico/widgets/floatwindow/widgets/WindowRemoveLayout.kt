@@ -34,6 +34,11 @@ class WindowRemoveLayout(
             }
             translationX = size
             translationY = size
+
+//            with(layoutParams as ViewGroup.MarginLayoutParams) {
+//                bottomMargin = navigationBarHeight
+//                layoutParams = this
+//            }
         }
     }
 
@@ -42,6 +47,7 @@ class WindowRemoveLayout(
             val translation = min(size, max(0f, translationX - abs(originY - y)))
             translationX = translation
             translationY = translation
+            alpha = min(1.0f, (size - translation) / size)
         }
     }
 
@@ -49,6 +55,7 @@ class WindowRemoveLayout(
         with(binding.root) {
             ObjectAnimator.ofFloat(this, "translationX", translationX, size).apply { duration = 200 }.start()
             ObjectAnimator.ofFloat(this, "translationY", translationY, size).apply { duration = 200 }.start()
+            ObjectAnimator.ofFloat(this, "alpha", 1.0f, 0.0f).apply { duration = 200 }.start()
         }
 
         if (binding.root.rect().contains(windowView.rect())) {

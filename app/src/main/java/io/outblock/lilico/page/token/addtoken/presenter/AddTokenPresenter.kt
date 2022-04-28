@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityAddTokenBinding
@@ -30,6 +31,7 @@ class AddTokenPresenter(
     private val adapter by lazy { TokenListAdapter() }
 
     init {
+        binding.root.addStatusBarTopPadding()
         setupToolbar()
         setupEditText()
         setupRecyclerView()

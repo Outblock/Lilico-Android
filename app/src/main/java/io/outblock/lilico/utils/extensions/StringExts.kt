@@ -1,5 +1,7 @@
 package io.outblock.lilico.utils.extensions
 
+import java.net.URLEncoder
+
 
 fun String.indexOfAll(s: String): List<Int> {
     val result = mutableListOf<Int>()
@@ -17,3 +19,5 @@ fun String.capitalizeV2(): String = replaceFirstChar { if (it.isLowerCase()) it.
 fun String.removeUrlParams(): String {
     return this.split("?")[0]
 }
+
+fun String.urlEncode(): String = URLEncoder.encode(this)

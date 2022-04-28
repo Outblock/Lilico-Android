@@ -8,6 +8,7 @@ import android.webkit.WebView
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.urlEncode
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
 import io.outblock.lilico.widgets.floatwindow.FloatWindowConfig
 import java.io.File
@@ -80,3 +81,5 @@ fun WebView.screenshot(): Bitmap {
     draw(canvas)
     return bitmap
 }
+
+fun String.toSearchUrl(): String = "https://www.google.com/search?q=${this.trim().urlEncode()}"

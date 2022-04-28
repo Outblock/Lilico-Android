@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityAddAddressBinding
@@ -14,6 +16,7 @@ import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.widgets.ProgressDialog
 
 class AddressAddActivity : BaseActivity() {
@@ -30,6 +33,10 @@ class AddressAddActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
+
         setupToolbar()
 
         viewModel = ViewModelProvider(this)[AddressAddViewModel::class.java].apply {
@@ -37,7 +44,7 @@ class AddressAddActivity : BaseActivity() {
             resultLiveData.observe(this@AddressAddActivity) { onSaveResult(it) }
             addressVerifyStateLiveData.observe(this@AddressAddActivity) { updateAddressVerifyState(it) }
         }
-
+        binding.root.addStatusBarTopPadding()
         binding.saveButton.setOnClickListener {
             progressDialog.show()
             binding.nameText.hideKeyboard()

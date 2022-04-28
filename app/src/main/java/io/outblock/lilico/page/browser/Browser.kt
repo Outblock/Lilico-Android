@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.outblock.lilico.databinding.LayoutBrowserBinding
+import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.model.BrowserModel
 import io.outblock.lilico.page.browser.presenter.BrowserInputPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserPresenter
@@ -15,6 +16,8 @@ class Browser : FrameLayout {
     private var presenter: BrowserPresenter
     private var inputPresenter: BrowserInputPresenter
 
+    private val viewModel by lazy { BrowserViewModel() }
+
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr)
@@ -22,13 +25,28 @@ class Browser : FrameLayout {
     init {
         addView(binding.root)
 
-        presenter = BrowserPresenter(this, binding)
-        inputPresenter = BrowserInputPresenter(binding)
+        presenter = BrowserPresenter(this, binding, viewModel)
+        inputPresenter = BrowserInputPresenter(binding, viewModel)
+
+        with(viewModel) {
+            onUrlUpdateLiveData = {
+                presenter.bind(BrowserModel(url = it))
+                inputPresenter.bind(BrowserInputModel(onLoadNewUrl = it))
+            }
+            recommendWordsLiveData = { inputPresenter.bind(BrowserInputModel(recommendWords = it)) }
+            onHideInputPanel = { inputPresenter.bind(BrowserInputModel(onHideInputPanel = true)) }
+        }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         focus()
+        inputPresenter.bind(BrowserInputModel(onPageAttach = true))
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        inputPresenter.bind(BrowserInputModel(onPageDetach = true))
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

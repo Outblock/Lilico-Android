@@ -5,11 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendAmountModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.presenter.SendAmountPresenter
+import io.outblock.lilico.utils.isNightMode
 
 class SendAmountActivity : BaseActivity() {
 
@@ -23,6 +25,8 @@ class SendAmountActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySendAmountBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
+        UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
         presenter = SendAmountPresenter(this, binding, contact)
         viewModel = ViewModelProvider(this)[SendAmountViewModel::class.java].apply {
