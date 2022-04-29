@@ -84,6 +84,10 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/atomicfu.kotlin_module'
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
