@@ -13,6 +13,8 @@ class ExploreViewModel : ViewModel() {
     val recentLiveData = MutableLiveData<List<WebviewRecord>>()
     val bookmarkLiveData = MutableLiveData<List<Bookmark>>()
 
+    val onDAppClickLiveData = MutableLiveData<String>()
+
     @SuppressLint("StaticFieldLeak")
     private lateinit var activity: FragmentActivity
 
@@ -23,11 +25,15 @@ class ExploreViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            recentLiveData.postValue(AppDataBase.database().webviewRecordDao().findAll(limit = 40))
+            recentLiveData.postValue(AppDataBase.database().webviewRecordDao().findAll(limit = 4))
         }
     }
 
+    fun onDAppClick(url: String) {
+        onDAppClickLiveData.postValue(url)
+    }
+
     private fun registerObserve() {
-        AppDataBase.database().webviewRecordDao().findAllLive(limit = 40).observe(activity) { recentLiveData.postValue(it) }
+        AppDataBase.database().webviewRecordDao().findAllLive(limit = 4).observe(activity) { recentLiveData.postValue(it) }
     }
 }

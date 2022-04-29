@@ -35,8 +35,8 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.scanButton.setOnClickListener { barcodeLauncher.launch() }
-        presenter = ExplorePresenter(binding)
-        viewModel = ViewModelProvider(this)[ExploreViewModel::class.java].apply {
+        presenter = ExplorePresenter(this, binding)
+        viewModel = ViewModelProvider(requireActivity())[ExploreViewModel::class.java].apply {
             bindActivity(requireActivity())
             recentLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(recentList = it)) }
             bookmarkLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(bookmarkList = it)) }

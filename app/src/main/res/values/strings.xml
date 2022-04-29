@@ -208,4 +208,5 @@
     <string name="explore_search_hint">Site Name or URL</string>
     <string name="bookmark">Bookmark</string>
     <string name="drag_here_to_unpin">Drag Here To Unpin</string>
+    <string name="recent_history">Recent History</string>
 </resources>

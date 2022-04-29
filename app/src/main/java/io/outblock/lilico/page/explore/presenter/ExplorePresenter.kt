@@ -5,13 +5,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentExploreBinding
+import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
+import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
 class ExplorePresenter(
+    private val fragment: ExploreFragment,
     private val binding: FragmentExploreBinding,
 ) : BasePresenter<ExploreModel> {
 
@@ -23,6 +26,9 @@ class ExplorePresenter(
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 9.dp2px().toInt(), LinearLayoutManager.HORIZONTAL))
             adapter = recentAdapter
+        }
+        with(binding) {
+            recentMoreButton.setOnClickListener { RecentHistoryDialog.show(fragment.childFragmentManager) }
         }
     }
 
