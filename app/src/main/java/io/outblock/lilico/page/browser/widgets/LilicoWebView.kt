@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.webview.*
 
@@ -22,6 +23,10 @@ class LilicoWebView : WebView {
             javaScriptEnabled = true
             webViewClient = WebViewClient()
             webChromeClient = WebChromeClient()
+        }
+
+        if (BuildConfig.DEBUG) {
+            setWebContentsDebuggingEnabled(true)
         }
 
         addJavascriptInterface(JsInterface(this), "android")
