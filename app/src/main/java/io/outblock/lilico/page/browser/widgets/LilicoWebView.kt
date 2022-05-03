@@ -23,6 +23,7 @@ class LilicoWebView : WebView {
             javaScriptEnabled = true
             webViewClient = WebViewClient()
             webChromeClient = WebChromeClient()
+            domStorageEnabled = true
         }
 
         if (BuildConfig.DEBUG) {
