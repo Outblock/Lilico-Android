@@ -61,6 +61,7 @@ class BrowserPresenter(
     override fun bind(model: BrowserModel) {
         model.url?.let { onOpenNewUrl(it) }
         model.onPageClose?.let { webview.saveRecentRecord() }
+        model.searchBoxPosition?.let { }
     }
 
     private fun onOpenNewUrl(url: String) {

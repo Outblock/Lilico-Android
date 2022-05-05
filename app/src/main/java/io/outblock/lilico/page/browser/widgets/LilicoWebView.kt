@@ -25,10 +25,7 @@ class LilicoWebView : WebView {
             webChromeClient = WebChromeClient()
             domStorageEnabled = true
         }
-
-        if (BuildConfig.DEBUG) {
-            setWebContentsDebuggingEnabled(true)
-        }
+        setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
 
         addJavascriptInterface(JsInterface(this), "android")
         setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->

@@ -44,7 +44,7 @@ class BrowserInputPresenter(
         }
 
         with(inputBinding.inputView) {
-            doOnTextChanged { text, _, _, _ -> onKeywordChange() }
+            doOnTextChanged { _, _, _, _ -> onKeywordChange() }
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     val keyword = text.toString()
@@ -56,7 +56,6 @@ class BrowserInputPresenter(
         }
 
         with(inputBinding) {
-//            inputWrapper.post { inputWrapper.addNavigationBarBottomPadding() }
             clearButton.setOnClickListener { inputView.setText("") }
             cancelButton.setOnClickListener { clearPage() }
         }

@@ -5,11 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentExploreBinding
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -29,6 +31,7 @@ class ExplorePresenter(
         }
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(fragment.childFragmentManager) }
+            searchBox.setOnClickListener { openBrowser(fragment.requireActivity(), searchBoxPosition = searchBox.location()) }
         }
     }
 

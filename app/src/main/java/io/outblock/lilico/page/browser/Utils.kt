@@ -3,6 +3,7 @@ package io.outblock.lilico.page.browser
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Point
 import android.view.Gravity
 import android.webkit.WebView
 import io.outblock.lilico.database.AppDataBase
@@ -15,18 +16,22 @@ import java.io.File
 
 internal const val BROWSER_TAG = "Browser"
 
-fun openBrowser(activity: Activity, url: String? = null) {
+fun openBrowser(
+    activity: Activity,
+    url: String? = null,
+    searchBoxPosition: Point? = null,
+) {
     if (FloatWindow.isShowing(BROWSER_TAG)) {
-        url?.let {
-            getBrowser(activity, it).loadUrl(it)
-        }
+        val browser = getBrowser(activity, url)
+        url?.let { browser.loadUrl(it) }
+        browser.open(searchBoxPosition)
         return
     }
     FloatWindow.builder().apply {
         setConfig(
             FloatWindowConfig(
                 gravity = Gravity.TOP or Gravity.START,
-                contentView = getBrowser(activity, url),
+                contentView = getBrowser(activity, url, searchBoxPosition),
                 tag = BROWSER_TAG,
                 isTouchEnable = true,
                 disableAnimation = true,
