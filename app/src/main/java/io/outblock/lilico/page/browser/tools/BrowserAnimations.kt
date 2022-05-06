@@ -29,7 +29,7 @@ private fun startAnimation(webviewContainer: ViewGroup, bubbleView: View, isExpa
 
     TransitionManager.go(Scene(webviewContainer.parent as ViewGroup), Fade().apply { duration = 150 })
 
-    bubbleView.setVisible(!isExpand, invisible = true)
+    bubbleView.setVisible(!isExpand || browserTabsCount() > 1, invisible = true)
 
     val bubbleLocation = bubbleView.location()
 

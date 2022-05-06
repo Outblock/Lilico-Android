@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.webkit.WebView
 import io.outblock.lilico.BuildConfig
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.webview.*
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -33,14 +32,13 @@ class LilicoWebView : WebView {
         }
     }
 
-    fun setWebViewCallback(callback: WebviewCallback) {
+    fun setWebViewCallback(callback: WebviewCallback?) {
         this.callback = callback
     }
 
     private inner class WebChromeClient : com.just.agentweb.WebChromeClient() {
         override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
-            logd(TAG, "newProgress:$newProgress")
             if (view.progress == newProgress) {
                 callback?.onProgressChange(view.progress / 100f)
             }

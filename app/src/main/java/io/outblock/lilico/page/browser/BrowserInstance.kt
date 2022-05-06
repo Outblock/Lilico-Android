@@ -14,6 +14,8 @@ internal fun getBrowser(activity: Activity, url: String? = null, searchBoxPositi
     }
 }
 
+internal fun browserInstance() = browserInstance
+
 fun releaseBrowser() {
     FloatWindow.dismiss(BROWSER_TAG)
     browserInstance?.onRelease()

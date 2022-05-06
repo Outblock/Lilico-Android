@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.page.browser.model.DockDuckGoRecommend
 import io.outblock.lilico.page.browser.model.RecommendModel
+import io.outblock.lilico.page.browser.tools.BrowserTab
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
@@ -16,6 +17,13 @@ class BrowserViewModel {
     internal var onHideInputPanel: (() -> Unit)? = null
 
     internal var recommendWordsLiveData: ((List<RecommendModel>) -> Unit)? = null
+
+    internal var onRemoveBrowserTab: ((BrowserTab) -> Unit)? = null
+
+    internal var onShowFloatTabs: (() -> Unit)? = null
+    internal var onHideFloatTabs: (() -> Unit)? = null
+
+    internal var onTabChange: (() -> Unit)? = null
 
     private var searchKeyword = ""
 
@@ -47,5 +55,21 @@ class BrowserViewModel {
 
     fun hideInputPanel() {
         onHideInputPanel?.invoke()
+    }
+
+    fun popTab(tab: BrowserTab) {
+        onRemoveBrowserTab?.invoke(tab)
+    }
+
+    fun showFloatTabs() {
+        onShowFloatTabs?.invoke()
+    }
+
+    fun onHideFloatTabs() {
+        onHideFloatTabs?.invoke()
+    }
+
+    fun onTabChange() {
+        onTabChange?.invoke()
     }
 }

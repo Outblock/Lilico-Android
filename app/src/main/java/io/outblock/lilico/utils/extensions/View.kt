@@ -2,6 +2,10 @@ package io.outblock.lilico.utils.extensions
 
 import android.graphics.*
 import android.view.View
+import android.view.ViewGroup
+import androidx.transition.Fade
+import androidx.transition.Scene
+import androidx.transition.TransitionManager
 import java.io.File
 
 
@@ -75,4 +79,16 @@ fun View.location(): Point {
 fun View.rect(): Rect {
     val location = location()
     return Rect(location.x, location.y, location.x + width, location.y + height)
+}
+
+fun ViewGroup.fadeTransition(duration: Long = 0) {
+    TransitionManager.go(Scene(this), Fade().apply {
+        if (duration > 0) {
+            this.duration = duration
+        }
+    })
+}
+
+fun View.removeFromParent() {
+    (parent as? ViewGroup)?.removeViewInLayout(this)
 }

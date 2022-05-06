@@ -8,7 +8,12 @@ import android.view.Gravity
 import android.webkit.WebView
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
+import io.outblock.lilico.page.browser.tools.browserTabsCount
+import io.outblock.lilico.page.browser.tools.expandWebView
+import io.outblock.lilico.page.browser.tools.shrinkWebView
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.urlEncode
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
 import io.outblock.lilico.widgets.floatwindow.FloatWindowConfig
@@ -88,3 +93,40 @@ fun WebView.screenshot(): Bitmap {
 }
 
 fun String.toSearchUrl(): String = "https://www.google.com/search?q=${this.trim().urlEncode()}"
+
+fun browserViewModel() = browserInstance()?.viewModel()
+
+fun browserViewBinding() = browserInstance()?.binding()
+
+fun isBrowserWebViewVisible(): Boolean {
+    val binding = browserViewBinding() ?: return false
+    return binding.contentWrapper.isVisible() && binding.webviewContainer.childCount != 0
+}
+
+fun isBrowserActive() = FloatWindow.isShowing(BROWSER_TAG) && browserInstance() != null
+
+fun isBrowserCollapsed() = isBrowserActive() && !isBrowserWebViewVisible()
+
+fun onBrowserBubbleClick() {
+    val binding = browserViewBinding() ?: return
+    if (browserTabsCount() > 1) {
+        browserViewModel()?.showFloatTabs()
+        binding.floatBubble.setVisible(false, invisible = true)
+    } else if (!isBrowserWebViewVisible()) {
+        expandWebView(binding.contentWrapper, binding.floatBubble)
+    }
+}
+
+fun shrinkBrowser() {
+    val binding = browserViewBinding() ?: return
+    with(binding) {
+        shrinkWebView(contentWrapper, floatBubble)
+    }
+}
+
+fun expandBrowser() {
+    val binding = browserViewBinding() ?: return
+    with(binding) {
+        expandWebView(contentWrapper, floatBubble)
+    }
+}

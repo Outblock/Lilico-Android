@@ -7,8 +7,10 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.outblock.lilico.databinding.LayoutBrowserBinding
+import io.outblock.lilico.page.browser.model.BrowserFloatTabsModel
 import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.model.BrowserModel
+import io.outblock.lilico.page.browser.presenter.BrowserFloatTabsPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserInputPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserPresenter
 
@@ -16,6 +18,7 @@ class Browser : FrameLayout {
     private var binding: LayoutBrowserBinding = LayoutBrowserBinding.inflate(LayoutInflater.from(context))
     private var presenter: BrowserPresenter
     private var inputPresenter: BrowserInputPresenter
+    private var floatTabsPresenter: BrowserFloatTabsPresenter
 
     private val viewModel by lazy { BrowserViewModel() }
 
@@ -28,6 +31,7 @@ class Browser : FrameLayout {
 
         presenter = BrowserPresenter(this, binding, viewModel)
         inputPresenter = BrowserInputPresenter(binding, viewModel)
+        floatTabsPresenter = BrowserFloatTabsPresenter(binding, viewModel)
 
         with(viewModel) {
             onUrlUpdateLiveData = {
@@ -36,6 +40,16 @@ class Browser : FrameLayout {
             }
             recommendWordsLiveData = { inputPresenter.bind(BrowserInputModel(recommendWords = it)) }
             onHideInputPanel = { inputPresenter.bind(BrowserInputModel(onHideInputPanel = true)) }
+            onRemoveBrowserTab = {
+                presenter.bind(BrowserModel(removeTab = it))
+                floatTabsPresenter.bind(BrowserFloatTabsModel(removeTab = it))
+            }
+            onShowFloatTabs = { floatTabsPresenter.bind(BrowserFloatTabsModel(showTabs = true)) }
+            onHideFloatTabs = {
+                presenter.bind(BrowserModel(onFloatTabsHide = true))
+                floatTabsPresenter.bind(BrowserFloatTabsModel(closeTabs = true))
+            }
+            onTabChange = { presenter.bind(BrowserModel(onTabChange = true)) }
         }
     }
 
@@ -71,6 +85,10 @@ class Browser : FrameLayout {
     fun onRelease() {
         presenter.bind(BrowserModel(onPageClose = true))
     }
+
+    fun viewModel() = viewModel
+
+    fun binding() = binding
 
     private fun focus() {
         isFocusableInTouchMode = true

@@ -10,17 +10,12 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
-import io.outblock.lilico.page.browser.Browser
-import io.outblock.lilico.page.browser.BrowserViewModel
+import io.outblock.lilico.page.browser.*
 import io.outblock.lilico.page.browser.model.BrowserModel
-import io.outblock.lilico.page.browser.releaseBrowser
-import io.outblock.lilico.page.browser.saveRecentRecord
-import io.outblock.lilico.page.browser.tools.expandWebView
-import io.outblock.lilico.page.browser.tools.shrinkWebView
+import io.outblock.lilico.page.browser.tools.*
 import io.outblock.lilico.page.browser.widgets.WebviewCallback
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.widgets.floatwindow.widgets.WindowRemoveLayout
 import kotlin.math.abs
 import kotlin.math.max
@@ -32,7 +27,7 @@ class BrowserPresenter(
     private val viewModel: BrowserViewModel,
 ) : BasePresenter<BrowserModel>, WebviewCallback {
 
-    private val webview = binding.webview
+    private fun webview() = browserTabLast()?.webView
 
     private val removeLayout by lazy { WindowRemoveLayout(binding.root, binding.floatBubble) { releaseBrowser() } }
 
@@ -47,28 +42,23 @@ class BrowserPresenter(
                 }
             }
             with(binding.toolbar) {
-                refreshButton.setOnClickListener { webview.reload() }
-                backButton.setOnClickListener { if (webview.canGoBack()) webview.goBack() else releaseBrowser() }
+                refreshButton.setOnClickListener { webview()?.reload() }
+                backButton.setOnClickListener { if (webview()?.canGoBack() == true) webview()?.goBack() else releaseBrowser() }
                 homeButton.setOnClickListener { releaseBrowser() }
-                floatButton.setOnClickListener { switchBubble() }
+                floatButton.setOnClickListener { shrinkBrowser() }
             }
-            floatBubble.setOnClickListener { switchBubble() }
+            floatBubble.setOnClickListener { onBrowserBubbleClick() }
             floatBubble.setOnDragListener(removeLayout)
-            webview.setWebViewCallback(this@BrowserPresenter)
         }
     }
 
     override fun bind(model: BrowserModel) {
         model.url?.let { onOpenNewUrl(it) }
-        model.onPageClose?.let { webview.saveRecentRecord() }
+        model.onPageClose?.let { browserTabLast()?.webView?.saveRecentRecord() }
         model.searchBoxPosition?.let { }
-    }
-
-    private fun onOpenNewUrl(url: String) {
-        webview.loadUrl(url)
-        with(binding) {
-            switchBubble(true)
-        }
+        model.removeTab?.let { removeTab(it) }
+        model.onFloatTabsHide?.let { onFloatTabsHide() }
+        model.onTabChange?.let { onBrowserTabChange() }
     }
 
     override fun onScrollChange(scrollY: Int, offset: Int) {
@@ -81,7 +71,6 @@ class BrowserPresenter(
 
     override fun onProgressChange(progress: Float) {
         with(binding.toolbar.progressBar) {
-            logd("webview", "onProgressChange:$progress")
             val params = layoutParams as ConstraintLayout.LayoutParams
             params.matchConstraintPercentWidth = progress
             requestLayout()
@@ -94,11 +83,28 @@ class BrowserPresenter(
     }
 
     override fun onTitleChange(title: String) {
-        binding.toolbar.titleView.text = title.ifBlank { webview.url }
+        binding.toolbar.titleView.text = title.ifBlank { webview()?.url }
     }
 
     override fun onPageUrlChange(url: String, isReload: Boolean) {
         binding.toolbar.root.translationY = 0f
+    }
+
+    private fun removeTab(tab: BrowserTab) {
+        popBrowserTab(tab.id)
+        showBrowserLastTab()
+    }
+
+    private fun onOpenNewUrl(url: String) {
+        newAndPushBrowserTab(url)?.let { tab ->
+            tab.webView.setWebViewCallback(this@BrowserPresenter)
+            expandBrowser()
+            onTitleChange(tab.title() ?: (tab.url().orEmpty()))
+        }
+    }
+
+    private fun onBrowserTabChange() {
+        onTitleChange(webview()?.title.orEmpty())
     }
 
     fun handleBackPressed(): Boolean {
@@ -108,21 +114,16 @@ class BrowserPresenter(
         }
         when {
             isSearchBoxVisible() -> viewModel.hideInputPanel()
-            webview.canGoBack() -> webview.goBack()
+            webview()?.canGoBack() ?: false -> webview()?.goBack()
             else -> releaseBrowser()
         }
         return true
     }
 
-    private fun switchBubble(isExpand: Boolean? = null) {
-        if (!binding.root.isAttachedToWindow) {
-            return
-        }
-        with(binding) {
-            val expand = isExpand ?: !contentWrapper.isVisible()
-            if (expand) expandWebView(contentWrapper, floatBubble) else shrinkWebView(contentWrapper, floatBubble)
-        }
-    }
-
     private fun isSearchBoxVisible() = binding.inputLayout.root.isVisible()
+
+    private fun onFloatTabsHide() {
+        val isBubbleVisible = browserTabsCount() > 1 || isBrowserCollapsed()
+        binding.floatBubble.setVisible(isBubbleVisible, invisible = true)
+    }
 }
