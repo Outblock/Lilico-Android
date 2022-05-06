@@ -61,6 +61,10 @@ fun newAndPushBrowserTab(url: String? = null): BrowserTab? {
     return tab
 }
 
+fun clearBrowserTabs() {
+    tabs.clear()
+}
+
 fun browserTabs() = tabs.toList()
 
 fun browserTabsCount() = tabs.size
