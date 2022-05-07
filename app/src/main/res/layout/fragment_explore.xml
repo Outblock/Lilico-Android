@@ -136,31 +136,34 @@
                     app:layout_constraintStart_toEndOf="@id/recent_icon"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <com.google.android.material.button.MaterialButton
+                <LinearLayout
                     android:id="@+id/recent_more_button"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="wrap_content"
+                    android:layout_marginEnd="17dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:backgroundTint="@color/background"
-                    android:gravity="center_vertical"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:stateListAnimator="@null"
-                    android:text="@string/more"
-                    android:textAllCaps="false"
-                    android:textColor="@color/salmon_primary"
-                    android:textSize="14sp"
-                    app:cornerRadius="12dp"
-                    app:elevation="0dp"
-                    app:icon="@drawable/ic_arrow_right_1"
-                    app:iconGravity="textEnd"
-                    app:iconPadding="5dp"
-                    app:iconTint="@color/salmon_primary"
                     app:layout_constraintBottom_toBottomOf="@id/recent_title"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/recent_title"
-                    app:rippleColor="@color/transparent"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="@id/recent_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/more"
+                        android:textAllCaps="false"
+                        android:textColor="@color/salmon_primary"
+                        android:textSize="14sp"/>
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right_1"
+                        app:tint="@color/salmon_primary"
+                        android:layout_marginStart="6dp"/>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recent_list_view"

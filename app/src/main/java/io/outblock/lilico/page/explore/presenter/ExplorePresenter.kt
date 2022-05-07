@@ -22,6 +22,8 @@ class ExplorePresenter(
 
     private val recentAdapter by lazy { ExploreRecentAdapter() }
 
+    private val activity by lazy { fragment.requireActivity() }
+
     init {
         binding.root.addStatusBarTopPadding()
         with(binding.recentListView) {
@@ -30,8 +32,8 @@ class ExplorePresenter(
             adapter = recentAdapter
         }
         with(binding) {
-            recentMoreButton.setOnClickListener { RecentHistoryDialog.show(fragment.childFragmentManager) }
-            searchBox.setOnClickListener { openBrowser(fragment.requireActivity(), searchBoxPosition = searchBox.location()) }
+            recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
+            searchBox.setOnClickListener { openBrowser(activity, searchBoxPosition = searchBox.location()) }
         }
     }
 
