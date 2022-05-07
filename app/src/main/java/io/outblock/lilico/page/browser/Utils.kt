@@ -18,6 +18,7 @@ import io.outblock.lilico.utils.extensions.urlEncode
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
 import io.outblock.lilico.widgets.floatwindow.FloatWindowConfig
 import java.io.File
+import java.net.URL
 
 internal const val BROWSER_TAG = "Browser"
 
@@ -129,4 +130,9 @@ fun expandBrowser() {
     with(binding) {
         expandWebView(contentWrapper, floatBubble)
     }
+}
+
+fun String.toFavIcon(size: Int = 256): String {
+    val url = URL(this)
+    return "https://double-indigo-crab.b-cdn.net/${url.host}/$size"
 }

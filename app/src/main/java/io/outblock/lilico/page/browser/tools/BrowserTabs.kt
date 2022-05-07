@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.core.view.children
 import io.outblock.lilico.page.browser.browserViewBinding
+import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.widgets.LilicoWebView
 import io.outblock.lilico.utils.extensions.removeFromParent
 import java.util.*
@@ -18,6 +19,14 @@ fun popBrowserTab(tabId: String) {
     val tab = tabs.firstOrNull { it.id == tabId } ?: return
     tabs.removeAll { it.id == tabId }
     webViewContainer.removeWebView(tab.webView)
+
+    if (tabs.isEmpty()) {
+        releaseBrowser()
+    }
+}
+
+fun popBrowserLastTab() {
+    browserTabLast()?.let { popBrowserTab(it.id) }
 }
 
 fun pushBrowserTab(tab: BrowserTab) {

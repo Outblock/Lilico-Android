@@ -16,7 +16,6 @@ import io.outblock.lilico.page.browser.tools.*
 import io.outblock.lilico.page.browser.widgets.WebviewCallback
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.widgets.floatwindow.widgets.WindowRemoveLayout
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -28,8 +27,6 @@ class BrowserPresenter(
 ) : BasePresenter<BrowserModel>, WebviewCallback {
 
     private fun webview() = browserTabLast()?.webView
-
-    private val removeLayout by lazy { WindowRemoveLayout(binding.root, binding.floatBubble) { releaseBrowser() } }
 
     init {
         with(binding) {
@@ -44,11 +41,9 @@ class BrowserPresenter(
             with(binding.toolbar) {
                 refreshButton.setOnClickListener { webview()?.reload() }
                 backButton.setOnClickListener { if (webview()?.canGoBack() == true) webview()?.goBack() else releaseBrowser() }
-                homeButton.setOnClickListener { releaseBrowser() }
+                homeButton.setOnClickListener { popBrowserLastTab() }
                 floatButton.setOnClickListener { shrinkBrowser() }
             }
-            floatBubble.setOnClickListener { onBrowserBubbleClick() }
-            floatBubble.setOnDragListener(removeLayout)
         }
     }
 

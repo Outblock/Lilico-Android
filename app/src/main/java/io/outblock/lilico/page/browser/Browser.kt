@@ -10,6 +10,7 @@ import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.model.BrowserFloatTabsModel
 import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.model.BrowserModel
+import io.outblock.lilico.page.browser.presenter.BrowserBubblePresenter
 import io.outblock.lilico.page.browser.presenter.BrowserFloatTabsPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserInputPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserPresenter
@@ -19,6 +20,7 @@ class Browser : FrameLayout {
     private var presenter: BrowserPresenter
     private var inputPresenter: BrowserInputPresenter
     private var floatTabsPresenter: BrowserFloatTabsPresenter
+    private var bubblePresenter: BrowserBubblePresenter
 
     private val viewModel by lazy { BrowserViewModel() }
 
@@ -32,6 +34,7 @@ class Browser : FrameLayout {
         presenter = BrowserPresenter(this, binding, viewModel)
         inputPresenter = BrowserInputPresenter(binding, viewModel)
         floatTabsPresenter = BrowserFloatTabsPresenter(binding, viewModel)
+        bubblePresenter = BrowserBubblePresenter(binding, viewModel)
 
         with(viewModel) {
             onUrlUpdateLiveData = {

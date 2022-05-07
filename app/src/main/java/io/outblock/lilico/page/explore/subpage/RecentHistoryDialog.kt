@@ -27,6 +27,7 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.root.requestFocus()
         with(binding.recyclerView) {
             adapter = this@RecentHistoryDialog.adapter
             layoutManager = GridLayoutManager(context, 2)
