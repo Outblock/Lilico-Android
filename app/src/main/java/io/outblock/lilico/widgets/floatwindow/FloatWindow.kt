@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.outblock.lilico.utils.Env
+import java.util.concurrent.ConcurrentHashMap
 
 object FloatWindow {
     private val containerViews = mutableMapOf<String, View>()
-    private val configs = mutableMapOf<String, FloatWindowConfig>()
+    private val configs = ConcurrentHashMap<String, FloatWindowConfig>()
 
     fun builder(): FloatWindowBuilder = FloatWindowBuilder()
 

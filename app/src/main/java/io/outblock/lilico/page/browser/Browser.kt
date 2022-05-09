@@ -7,11 +7,8 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.outblock.lilico.databinding.LayoutBrowserBinding
-import io.outblock.lilico.page.browser.model.BrowserFloatTabsModel
 import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.model.BrowserModel
-import io.outblock.lilico.page.browser.presenter.BrowserBubblePresenter
-import io.outblock.lilico.page.browser.presenter.BrowserFloatTabsPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserInputPresenter
 import io.outblock.lilico.page.browser.presenter.BrowserPresenter
 
@@ -19,8 +16,6 @@ class Browser : FrameLayout {
     private var binding: LayoutBrowserBinding = LayoutBrowserBinding.inflate(LayoutInflater.from(context))
     private var presenter: BrowserPresenter
     private var inputPresenter: BrowserInputPresenter
-    private var floatTabsPresenter: BrowserFloatTabsPresenter
-    private var bubblePresenter: BrowserBubblePresenter
 
     private val viewModel by lazy { BrowserViewModel() }
 
@@ -33,8 +28,6 @@ class Browser : FrameLayout {
 
         presenter = BrowserPresenter(this, binding, viewModel)
         inputPresenter = BrowserInputPresenter(binding, viewModel)
-        floatTabsPresenter = BrowserFloatTabsPresenter(binding, viewModel)
-        bubblePresenter = BrowserBubblePresenter(binding, viewModel)
 
         with(viewModel) {
             onUrlUpdateLiveData = {
@@ -45,12 +38,9 @@ class Browser : FrameLayout {
             onHideInputPanel = { inputPresenter.bind(BrowserInputModel(onHideInputPanel = true)) }
             onRemoveBrowserTab = {
                 presenter.bind(BrowserModel(removeTab = it))
-                floatTabsPresenter.bind(BrowserFloatTabsModel(removeTab = it))
             }
-            onShowFloatTabs = { floatTabsPresenter.bind(BrowserFloatTabsModel(showTabs = true)) }
             onHideFloatTabs = {
                 presenter.bind(BrowserModel(onFloatTabsHide = true))
-                floatTabsPresenter.bind(BrowserFloatTabsModel(closeTabs = true))
             }
             onTabChange = { presenter.bind(BrowserModel(onTabChange = true)) }
         }

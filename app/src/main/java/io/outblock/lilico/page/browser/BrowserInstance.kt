@@ -2,25 +2,28 @@ package io.outblock.lilico.page.browser
 
 import android.app.Activity
 import android.graphics.Point
+import androidx.core.view.children
 import io.outblock.lilico.page.browser.tools.clearBrowserTabs
-import io.outblock.lilico.widgets.floatwindow.FloatWindow
+import io.outblock.lilico.page.window.WindowFrame
 
-private var browserInstance: Browser? = null
 
-internal fun getBrowser(activity: Activity, url: String? = null, searchBoxPosition: Point? = null): Browser {
-    return browserInstance ?: Browser(activity).apply {
-        browserInstance = this
-        url?.let { loadUrl(url) }
-        open(searchBoxPosition)
+internal fun browserInstance() = WindowFrame.browserContainer()?.children?.firstOrNull() as? Browser
+
+internal fun attachBrowser(activity: Activity, url: String? = null, searchBoxPosition: Point? = null) {
+    val browserContainer = WindowFrame.browserContainer() ?: return
+    if (browserContainer.childCount == 0) {
+        val browser = Browser(activity)
+        browserContainer.addView(browser)
+        with(browser) {
+            url?.let { loadUrl(url) }
+            open(searchBoxPosition)
+        }
     }
 }
 
-internal fun browserInstance() = browserInstance
-
 fun releaseBrowser() {
     clearBrowserTabs()
-    FloatWindow.dismiss(BROWSER_TAG)
-    browserInstance?.onRelease()
-    browserInstance = null
+    browserInstance()?.onRelease()
+    WindowFrame.browserContainer()?.removeAllViews()
 }
 

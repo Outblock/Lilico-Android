@@ -4,19 +4,19 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
-import android.view.Gravity
 import android.webkit.WebView
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
-import io.outblock.lilico.page.browser.tools.browserTabsCount
+import io.outblock.lilico.page.browser.tools.browserTabLast
 import io.outblock.lilico.page.browser.tools.expandWebView
 import io.outblock.lilico.page.browser.tools.shrinkWebView
-import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.isVisible
-import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
+import io.outblock.lilico.utils.CACHE_PATH
 import io.outblock.lilico.utils.extensions.urlEncode
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.saveToFile
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
-import io.outblock.lilico.widgets.floatwindow.FloatWindowConfig
 import java.io.File
 import java.net.URL
 
@@ -27,30 +27,13 @@ fun openBrowser(
     url: String? = null,
     searchBoxPosition: Point? = null,
 ) {
-    if (FloatWindow.isShowing(BROWSER_TAG)) {
-        val browser = getBrowser(activity, url)
+    if (browserInstance() != null) {
+        val browser = browserInstance()!!
         url?.let { browser.loadUrl(it) }
         browser.open(searchBoxPosition)
         return
-    }
-    FloatWindow.builder().apply {
-        setConfig(
-            FloatWindowConfig(
-                gravity = Gravity.TOP or Gravity.START,
-                contentView = getBrowser(activity, url, searchBoxPosition),
-                tag = BROWSER_TAG,
-                isTouchEnable = true,
-                disableAnimation = true,
-                hardKeyEventEnable = true,
-                immersionStatusBar = true,
-                width = ScreenUtils.getScreenWidth(),
-                height = ScreenUtils.getScreenHeight(),
-                widthMatchParent = true,
-                heightMatchParent = true,
-                isFullScreen = true,
-            )
-        )
-        show(activity)
+    } else {
+        attachBrowser(activity, url, searchBoxPosition)
     }
 }
 
@@ -108,27 +91,28 @@ fun isBrowserActive() = FloatWindow.isShowing(BROWSER_TAG) && browserInstance() 
 
 fun isBrowserCollapsed() = isBrowserActive() && !isBrowserWebViewVisible()
 
-fun onBrowserBubbleClick() {
-    val binding = browserViewBinding() ?: return
-    if (browserTabsCount() > 1) {
-        browserViewModel()?.showFloatTabs()
-        binding.floatBubble.setVisible(false, invisible = true)
-    } else if (!isBrowserWebViewVisible()) {
-        expandWebView(binding.contentWrapper, binding.floatBubble)
-    }
-}
+//fun onBrowserBubbleClick() {
+//    val binding = browserViewBinding() ?: return
+//    if (browserTabsCount() > 1) {
+//        browserViewModel()?.showFloatTabs()
+//        binding.floatBubble.setVisible(false, invisible = true)
+//    } else if (!isBrowserWebViewVisible()) {
+//        expandWebView(binding.contentWrapper, binding.floatBubble)
+//    }
+//}
 
 fun shrinkBrowser() {
+    browserTabLast()?.let { pushBubbleStack(it) }
     val binding = browserViewBinding() ?: return
     with(binding) {
-        shrinkWebView(contentWrapper, floatBubble)
+        shrinkWebView(contentWrapper)
     }
 }
 
 fun expandBrowser() {
     val binding = browserViewBinding() ?: return
     with(binding) {
-        expandWebView(contentWrapper, floatBubble)
+        expandWebView(contentWrapper)
     }
 }
 

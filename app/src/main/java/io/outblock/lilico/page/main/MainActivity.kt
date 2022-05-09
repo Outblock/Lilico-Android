@@ -9,6 +9,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
+import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.uiScope
@@ -34,6 +35,7 @@ class MainActivity : BaseActivity() {
         contentPresenter = MainContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         uiScope { isRegistered = isRegistered() }
+        WindowFrame.attach(this)
     }
 
     override fun onRestart() {
@@ -47,6 +49,7 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         INSTANCE = null
+        WindowFrame.release()
         super.onDestroy()
     }
 
