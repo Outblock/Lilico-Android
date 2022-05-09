@@ -1,12 +1,15 @@
 package io.outblock.lilico.page.window.bubble.presenter
 
 import android.view.View
+import com.bumptech.glide.Glide
+import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemBrowserFloatTabsBinding
 import io.outblock.lilico.page.window.bubble.model.BubbleItem
 import io.outblock.lilico.page.window.bubble.model.icon
 import io.outblock.lilico.page.window.bubble.model.title
+import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
 
 class FloatTabsItemPresenter(
     private val view: View,

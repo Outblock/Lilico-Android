@@ -1,6 +1,8 @@
 package io.outblock.lilico.page.window.bubble.presenter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.WindowBubbleBinding
 import io.outblock.lilico.page.window.bubble.BubbleViewModel
@@ -8,6 +10,9 @@ import io.outblock.lilico.page.window.bubble.adapter.FloatTabsAdapter
 import io.outblock.lilico.page.window.bubble.model.FloatTabsModel
 import io.outblock.lilico.page.window.bubble.tools.bubbleTabs
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.fadeTransition
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
 class FloatTabsPresenter(
     private val binding: WindowBubbleBinding,

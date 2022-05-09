@@ -5,6 +5,9 @@ import io.outblock.lilico.databinding.WindowBubbleBinding
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.window.bubble.BubbleViewModel
 import io.outblock.lilico.page.window.bubble.model.BubbleModel
+import io.outblock.lilico.page.window.bubble.tools.bubbleTabs
+import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.floatwindow.widgets.WindowRemoveLayout
 
 class BubblePresenter(
