@@ -31,7 +31,7 @@ private fun startAnimation(webviewContainer: ViewGroup, isExpand: Boolean) {
 
     TransitionManager.go(Scene(webviewContainer.parent as ViewGroup), Fade().apply { duration = 150 })
 
-    bubbleView.postOnAnimation {
+    bubbleView.post {
         val bubbleLocation = bubbleView.location()
 
         val centerX = bubbleLocation.x + bubbleView.width / 2
