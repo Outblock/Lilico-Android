@@ -6,6 +6,11 @@ import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemBrowserFloatTabsBinding
+import io.outblock.lilico.page.browser.browserViewModel
+import io.outblock.lilico.page.browser.expandBrowser
+import io.outblock.lilico.page.browser.tools.BrowserTab
+import io.outblock.lilico.page.browser.tools.changeBrowserTab
+import io.outblock.lilico.page.window.bubble.bubbleViewModel
 import io.outblock.lilico.page.window.bubble.model.BubbleItem
 import io.outblock.lilico.page.window.bubble.model.icon
 import io.outblock.lilico.page.window.bubble.model.title
@@ -23,11 +28,21 @@ class FloatTabsItemPresenter(
             titleView.text = model.title()
             closeButton.setOnClickListener { popBubbleStack(model.data) }
             contentView.setOnClickListener {
-//                changeBrowserTab(model.id)
-//                browserViewModel()?.onHideFloatTabs()
-//                browserViewModel()?.onTabChange()
-//                expandBrowser()
+                bubbleViewModel()?.onHideFloatTabs()
+                showTabContent(model.data)
             }
         }
+    }
+
+    private fun showTabContent(data: Any) {
+        when (data) {
+            is BrowserTab -> showBrowser(data)
+        }
+    }
+
+    private fun showBrowser(tab: BrowserTab) {
+        changeBrowserTab(tab.id)
+        browserViewModel()?.onTabChange()
+        expandBrowser()
     }
 }

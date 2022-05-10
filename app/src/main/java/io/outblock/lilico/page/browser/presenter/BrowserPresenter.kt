@@ -14,6 +14,8 @@ import io.outblock.lilico.page.browser.*
 import io.outblock.lilico.page.browser.model.BrowserModel
 import io.outblock.lilico.page.browser.tools.*
 import io.outblock.lilico.page.browser.widgets.WebviewCallback
+import io.outblock.lilico.page.window.WindowFrame
+import io.outblock.lilico.page.window.bubble.tools.inBubbleStack
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
 import kotlin.math.abs
@@ -40,7 +42,7 @@ class BrowserPresenter(
             }
             with(binding.toolbar) {
                 refreshButton.setOnClickListener { webview()?.reload() }
-                backButton.setOnClickListener { if (webview()?.canGoBack() == true) webview()?.goBack() else releaseBrowser() }
+                backButton.setOnClickListener { handleBackPressed() }
                 homeButton.setOnClickListener { popBrowserLastTab() }
                 floatButton.setOnClickListener { shrinkBrowser() }
             }
@@ -90,6 +92,7 @@ class BrowserPresenter(
     }
 
     private fun onOpenNewUrl(url: String) {
+        WindowFrame.browserContainer()?.setVisible(true)
         newAndPushBrowserTab(url)?.let { tab ->
             tab.webView.setWebViewCallback(this@BrowserPresenter)
             expandBrowser()
@@ -98,6 +101,7 @@ class BrowserPresenter(
     }
 
     private fun onBrowserTabChange() {
+        WindowFrame.browserContainer()?.setVisible(true)
         onTitleChange(webview()?.title.orEmpty())
     }
 
@@ -106,10 +110,13 @@ class BrowserPresenter(
         if (!binding.contentWrapper.isVisible()) {
             return false
         }
+        val lastTab = browserTabLast()
         when {
             isSearchBoxVisible() -> viewModel.hideInputPanel()
             webview()?.canGoBack() ?: false -> webview()?.goBack()
-            else -> releaseBrowser()
+            lastTab != null && inBubbleStack(lastTab) -> shrinkBrowser()
+            lastTab != null -> removeTabAndHideBrowser(lastTab.id)
+            else -> return false
         }
         return true
     }

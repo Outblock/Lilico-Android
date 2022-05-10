@@ -1,5 +1,7 @@
 package io.outblock.lilico.page.window.bubble.tools
 
+import io.outblock.lilico.page.browser.tools.BrowserTab
+import io.outblock.lilico.page.browser.tools.popBrowserTab
 import io.outblock.lilico.page.window.bubble.attachBubble
 import io.outblock.lilico.page.window.bubble.bubbleViewModel
 import io.outblock.lilico.page.window.bubble.model.BubbleItem
@@ -16,11 +18,16 @@ fun pushBubbleStack(data: Any) {
 
 fun popBubbleStack(data: Any) {
     tabs.removeAll { it.data == data }
+    if (data is BrowserTab) {
+        popBrowserTab(data.id)
+    }
     bubbleViewModel()?.onTabChange()
     if (tabs.isEmpty()) {
         releaseBubble()
     }
 }
+
+fun inBubbleStack(data: Any): Boolean = tabs.toList().firstOrNull { it.data == data } != null
 
 fun bubbleTabs() = tabs.toList()
 

@@ -7,7 +7,9 @@ import androidx.core.view.children
 import io.outblock.lilico.page.browser.browserViewBinding
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.widgets.LilicoWebView
+import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.extensions.removeFromParent
+import io.outblock.lilico.utils.extensions.setVisible
 import java.util.*
 
 
@@ -72,6 +74,17 @@ fun newAndPushBrowserTab(url: String? = null): BrowserTab? {
 
 fun clearBrowserTabs() {
     tabs.clear()
+}
+
+fun removeTabAndHideBrowser(tabId: String) {
+    popBrowserTab(tabId)
+    WindowFrame.browserContainer()?.setVisible(false)
+}
+
+fun removeLastTabAndHideBrowser() {
+    val tab = browserTabLast() ?: return
+    popBrowserTab(tab.id)
+    WindowFrame.browserContainer()?.setVisible(false)
 }
 
 fun browserTabs() = tabs.toList()
