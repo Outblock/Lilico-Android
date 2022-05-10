@@ -9,6 +9,7 @@ import io.outblock.lilico.page.window.bubble.model.BubbleModel
 import io.outblock.lilico.page.window.bubble.model.FloatTabsModel
 import io.outblock.lilico.page.window.bubble.presenter.BubblePresenter
 import io.outblock.lilico.page.window.bubble.presenter.FloatTabsPresenter
+import io.outblock.lilico.utils.extensions.fadeTransition
 
 class Bubble : FrameLayout {
     private var binding: WindowBubbleBinding = WindowBubbleBinding.inflate(LayoutInflater.from(context))
@@ -29,8 +30,20 @@ class Bubble : FrameLayout {
 
         with(viewModel) {
             onTabChange = {
-                bubblePresenter.bind(BubbleModel(onTabChange = true))
                 floatTabsPresenter.bind(FloatTabsModel(onTabChange = true))
+                bubblePresenter.bind(BubbleModel(onTabChange = true))
+            }
+
+            onShowFloatTabs = {
+                binding.root.fadeTransition(duration = 150)
+                floatTabsPresenter.bind(FloatTabsModel(showTabs = true))
+                bubblePresenter.bind(BubbleModel(onVisibleChange = false))
+            }
+
+            onHideFloatTabs = {
+                binding.root.fadeTransition(duration = 150)
+                floatTabsPresenter.bind(FloatTabsModel(closeTabs = true))
+                bubblePresenter.bind(BubbleModel(onVisibleChange = true))
             }
         }
     }

@@ -20,9 +20,6 @@ class BrowserViewModel {
 
     internal var onRemoveBrowserTab: ((BrowserTab) -> Unit)? = null
 
-    internal var onShowFloatTabs: (() -> Unit)? = null
-    internal var onHideFloatTabs: (() -> Unit)? = null
-
     internal var onTabChange: (() -> Unit)? = null
 
     private var searchKeyword = ""
@@ -55,18 +52,6 @@ class BrowserViewModel {
 
     fun hideInputPanel() {
         onHideInputPanel?.invoke()
-    }
-
-    fun popTab(tab: BrowserTab) {
-        onRemoveBrowserTab?.invoke(tab)
-    }
-
-    fun showFloatTabs() {
-        onShowFloatTabs?.invoke()
-    }
-
-    fun onHideFloatTabs() {
-        onHideFloatTabs?.invoke()
     }
 
     fun onTabChange() {

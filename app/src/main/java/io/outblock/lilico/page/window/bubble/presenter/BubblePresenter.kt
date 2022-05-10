@@ -5,6 +5,7 @@ import io.outblock.lilico.databinding.WindowBubbleBinding
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.window.bubble.BubbleViewModel
 import io.outblock.lilico.page.window.bubble.model.BubbleModel
+import io.outblock.lilico.page.window.bubble.onBubbleClick
 import io.outblock.lilico.page.window.bubble.tools.bubbleTabs
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
@@ -19,9 +20,7 @@ class BubblePresenter(
 
     init {
         with(binding) {
-            floatBubble.setOnClickListener {
-//                onBrowserBubbleClick()
-            }
+            floatBubble.setOnClickListener { onBubbleClick() }
             floatBubble.setOnDragListener(removeLayout)
             floatBubble.setVisible(bubbleTabs().isNotEmpty(), invisible = true)
         }
@@ -29,6 +28,11 @@ class BubblePresenter(
 
     override fun bind(model: BubbleModel) {
         model.onTabChange?.let { onTabChange() }
+        model.onVisibleChange?.let { onVisibleChange(it) }
+    }
+
+    private fun onVisibleChange(isVisible: Boolean) {
+        binding.floatBubble.setVisible(isVisible && bubbleTabs().isNotEmpty(), invisible = true)
     }
 
     private fun onTabChange() {

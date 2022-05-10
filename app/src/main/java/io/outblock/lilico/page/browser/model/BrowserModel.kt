@@ -8,6 +8,5 @@ class BrowserModel(
     val searchBoxPosition: Point? = null,
     val onPageClose: Boolean? = null,
     val removeTab: BrowserTab? = null,
-    val onFloatTabsHide: Boolean? = null,
     val onTabChange: Boolean? = null,
 )

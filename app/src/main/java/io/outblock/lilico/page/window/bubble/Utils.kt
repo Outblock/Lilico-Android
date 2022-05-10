@@ -7,3 +7,7 @@ fun bubbleLocation() = bubbleInstance()?.binding()?.floatBubble?.location()
 fun bubbleView() = bubbleInstance()?.binding()?.floatBubble
 
 fun bubbleViewModel() = bubbleInstance()?.viewModel()
+
+fun onBubbleClick() {
+    bubbleViewModel()?.showFloatTabs()
+}

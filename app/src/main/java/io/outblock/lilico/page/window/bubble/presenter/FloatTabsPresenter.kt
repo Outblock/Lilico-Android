@@ -10,7 +10,6 @@ import io.outblock.lilico.page.window.bubble.adapter.FloatTabsAdapter
 import io.outblock.lilico.page.window.bubble.model.FloatTabsModel
 import io.outblock.lilico.page.window.bubble.tools.bubbleTabs
 import io.outblock.lilico.utils.extensions.dp2px
-import io.outblock.lilico.utils.extensions.fadeTransition
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -34,9 +33,8 @@ class FloatTabsPresenter(
     }
 
     private fun showTabs() {
-        binding.root.fadeTransition(duration = 200)
-        binding.root.setVisible(true)
-        binding.root.setOnClickListener {
+        binding.bubbleStackWrapper.setVisible(true)
+        binding.bubbleStackWrapper.setOnClickListener {
             closeTabs()
             viewModel.onHideFloatTabs()
         }
@@ -50,8 +48,7 @@ class FloatTabsPresenter(
     private fun closeTabs() {
         adapter.setNewDiffData(emptyList())
         binding.recyclerView.adapter = adapter
-        binding.root.fadeTransition(duration = 200)
-        binding.root.setVisible(false)
+        binding.bubbleStackWrapper.setVisible(false)
     }
 
     private fun initRecyclerView() {

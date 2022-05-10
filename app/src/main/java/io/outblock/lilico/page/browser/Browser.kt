@@ -39,9 +39,6 @@ class Browser : FrameLayout {
             onRemoveBrowserTab = {
                 presenter.bind(BrowserModel(removeTab = it))
             }
-            onHideFloatTabs = {
-                presenter.bind(BrowserModel(onFloatTabsHide = true))
-            }
             onTabChange = { presenter.bind(BrowserModel(onTabChange = true)) }
         }
     }

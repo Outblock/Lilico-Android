@@ -52,7 +52,6 @@ class BrowserPresenter(
         model.onPageClose?.let { browserTabLast()?.webView?.saveRecentRecord() }
         model.searchBoxPosition?.let { }
         model.removeTab?.let { removeTab(it) }
-        model.onFloatTabsHide?.let { onFloatTabsHide() }
         model.onTabChange?.let { onBrowserTabChange() }
     }
 
@@ -116,9 +115,4 @@ class BrowserPresenter(
     }
 
     private fun isSearchBoxVisible() = binding.inputLayout.root.isVisible()
-
-    private fun onFloatTabsHide() {
-        val isBubbleVisible = browserTabsCount() > 1 || isBrowserCollapsed()
-        binding.floatBubble.setVisible(isBubbleVisible, invisible = true)
-    }
 }
