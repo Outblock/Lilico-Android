@@ -34,11 +34,6 @@ class WindowRemoveLayout(
             }
             translationX = size
             translationY = size
-
-//            with(layoutParams as ViewGroup.MarginLayoutParams) {
-//                bottomMargin = navigationBarHeight
-//                layoutParams = this
-//            }
         }
     }
 
@@ -64,5 +59,8 @@ class WindowRemoveLayout(
                 safeRun { onRemove.invoke() }
             }
         }
+    }
+
+    override fun onDragStart() {
     }
 }

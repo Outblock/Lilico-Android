@@ -12,6 +12,9 @@ import android.widget.FrameLayout;
 
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarXExposedKt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DraggableLayout extends FrameLayout {
 
@@ -33,7 +36,7 @@ public class DraggableLayout extends FrameLayout {
 
     private OnClickListener onClickListener;
 
-    private OnDragListener onDragListener;
+    private final List<OnDragListener> onDragListeners = new ArrayList<>();
 
     public DraggableLayout(Context context) {
         this(context, null);
@@ -69,6 +72,7 @@ public class DraggableLayout extends FrameLayout {
         }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                dealDragStartEvent();
                 break;
             case MotionEvent.ACTION_MOVE:
                 updateViewPosition(event);
@@ -94,15 +98,21 @@ public class DraggableLayout extends FrameLayout {
         }
     }
 
+    protected void dealDragStartEvent() {
+        for (OnDragListener listener : onDragListeners) {
+            listener.onDragStart();
+        }
+    }
+
     protected void dealDragMoveEvent() {
-        if (onDragListener != null) {
-            onDragListener.onDrag(mOriginalX, mOriginalY, getX(), getY());
+        for (OnDragListener listener : onDragListeners) {
+            listener.onDrag(mOriginalX, mOriginalY, getX(), getY());
         }
     }
 
     protected void dealDragEndEvent() {
-        if (onDragListener != null) {
-            onDragListener.onDragEnd();
+        for (OnDragListener listener : onDragListeners) {
+            listener.onDragEnd();
         }
     }
 
@@ -177,7 +187,7 @@ public class DraggableLayout extends FrameLayout {
         mPortraitY = 0;
     }
 
-    protected boolean isNearestLeft() {
+    public boolean isNearestLeft() {
         int middle = mScreenWidth / 2;
         isNearestLeft = getX() < middle;
         return isNearestLeft;
@@ -276,14 +286,16 @@ public class DraggableLayout extends FrameLayout {
         this.onClickListener = onClickListener;
     }
 
-    public void setOnDragListener(OnDragListener onDragListener) {
-        this.onDragListener = onDragListener;
+    public void addOnDragListener(OnDragListener onDragListener) {
+        this.onDragListeners.add(onDragListener);
     }
 
     public interface OnDragListener {
         void onDrag(float originX, float originY, float x, float y);
 
         void onDragEnd();
+
+        void onDragStart();
     }
 }
 

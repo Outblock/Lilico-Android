@@ -27,13 +27,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="200dp"
+        android:background="@drawable/bg_round_left_12dp"
+        android:backgroundTint="@color/deep_bg"
+        android:elevation="5dp"
         android:visibility="invisible"
         tools:visibility="visible">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardBackgroundColor="@color/salmon_primary"
-            app:cardCornerRadius="60dp"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/icon_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            app:round="60dp"
+            tools:src="@color/salmon_primary"/>
     </io.outblock.lilico.widgets.DraggableLayout>
 </FrameLayout>

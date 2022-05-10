@@ -34,5 +34,7 @@ fun bubbleTabs() = tabs.toList()
 fun bubbleTabCount() = tabs.size
 
 fun clearBubbleTabs() {
-    tabs.clear()
+    tabs.toList().forEach {
+        popBubbleStack(it.data)
+    }
 }
