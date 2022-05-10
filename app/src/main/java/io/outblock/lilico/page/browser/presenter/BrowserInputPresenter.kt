@@ -2,6 +2,7 @@ package io.outblock.lilico.page.browser.presenter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
@@ -15,8 +16,11 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.BrowserViewModel
 import io.outblock.lilico.page.browser.adapter.BrowserRecommendWordsAdapter
+import io.outblock.lilico.page.browser.browserViewModel
 import io.outblock.lilico.page.browser.model.BrowserInputModel
+import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.toSearchUrl
+import io.outblock.lilico.page.browser.tools.browserTabsCount
 import io.outblock.lilico.utils.extensions.*
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -80,6 +84,7 @@ class BrowserInputPresenter(
         model.recommendWords?.let { recommendAdapter.setNewDiffData(it) }
         model.onPageAttach?.let { observeKeyboardVisible() }
         model.onPageDetach?.let { removeObserveKeyboardVisible() }
+        model.searchBoxPosition?.let { openFromSearchBox(it) }
     }
 
     private fun observeKeyboardVisible() {
@@ -122,5 +127,15 @@ class BrowserInputPresenter(
         recommendAdapter.setNewDiffData(emptyList())
         recommendAdapter.notifyDataSetChanged()
         inputBinding.root.setVisible(false)
+        browserViewModel()?.onSearchBoxHide()
+        if (browserTabsCount() == 0) {
+            releaseBrowser()
+        }
+    }
+
+    private fun openFromSearchBox(point: Point) {
+        binding.inputLayout.root.setVisible()
+        binding.inputLayout.inputView.requestFocus()
+        binding.inputLayout.inputView.showKeyboard()
     }
 }

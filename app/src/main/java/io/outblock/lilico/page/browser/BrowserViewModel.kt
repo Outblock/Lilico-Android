@@ -22,6 +22,8 @@ class BrowserViewModel {
 
     internal var onTabChange: (() -> Unit)? = null
 
+    internal var onSearchBoxHide: (() -> Unit)? = null
+
     private var searchKeyword = ""
 
     fun updateUrl(url: String) {
@@ -56,5 +58,9 @@ class BrowserViewModel {
 
     fun onTabChange() {
         onTabChange?.invoke()
+    }
+
+    fun onSearchBoxHide() {
+        onSearchBoxHide?.invoke()
     }
 }

@@ -65,6 +65,8 @@
                     android:background="?attr/actionBarItemBackground"
                     android:padding="9dp"
                     android:scaleType="centerInside"
+                    android:visibility="visible"
+                    tools:visibility="visible"
                     android:src="@drawable/ic_username_error"
                     app:tint="@color/salmon_primary"/>
 

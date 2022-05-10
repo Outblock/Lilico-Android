@@ -40,6 +40,7 @@ class Browser : FrameLayout {
                 presenter.bind(BrowserModel(removeTab = it))
             }
             onTabChange = { presenter.bind(BrowserModel(onTabChange = true)) }
+            onSearchBoxHide = { focus() }
         }
     }
 
@@ -64,12 +65,15 @@ class Browser : FrameLayout {
     }
 
     fun loadUrl(url: String) {
-        focus()
         presenter.bind(BrowserModel(url = url))
     }
 
     fun open(searchBoxPosition: Point? = null) {
-        searchBoxPosition?.let { presenter.bind(BrowserModel(searchBoxPosition = it)) }
+        focus()
+        searchBoxPosition?.let {
+            presenter.bind(BrowserModel(searchBoxPosition = it))
+            inputPresenter.bind(BrowserInputModel(searchBoxPosition = it))
+        }
     }
 
     fun onRelease() {

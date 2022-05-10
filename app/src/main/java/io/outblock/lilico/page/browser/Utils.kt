@@ -10,9 +10,11 @@ import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.page.browser.tools.browserTabLast
 import io.outblock.lilico.page.browser.tools.expandWebView
 import io.outblock.lilico.page.browser.tools.shrinkWebView
+import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
 import io.outblock.lilico.utils.CACHE_PATH
 import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.urlEncode
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
@@ -36,6 +38,7 @@ fun openBrowser(
     } else {
         attachBrowser(activity, url, searchBoxPosition)
     }
+    WindowFrame.browserContainer()?.setVisible()
 }
 
 fun WebView.saveRecentRecord() {
