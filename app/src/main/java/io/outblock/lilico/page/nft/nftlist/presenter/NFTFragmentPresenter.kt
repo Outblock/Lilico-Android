@@ -3,7 +3,6 @@ package io.outblock.lilico.page.nft.nftlist.presenter
 import android.animation.ArgbEvaluator
 import androidx.lifecycle.ViewModelProvider
 import com.flyco.tablayout.listener.OnTabSelectListener
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -30,7 +29,6 @@ class NFTFragmentPresenter(
     init {
         with(binding) {
             with(toolbar) { post { setPadding(paddingLeft, paddingTop + statusBarHeight, paddingRight, paddingBottom) } }
-            actionWrapper.addStatusBarTopPadding()
             viewPager.adapter = NftListPageAdapter(fragment)
             addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
 

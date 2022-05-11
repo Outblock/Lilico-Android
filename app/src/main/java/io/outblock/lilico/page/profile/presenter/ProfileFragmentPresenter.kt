@@ -14,11 +14,8 @@ import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isBackupGoogleDrive
-import io.outblock.lilico.utils.loadAvatar
-import io.outblock.lilico.utils.uiScope
 
 class ProfileFragmentPresenter(
     private val fragment: ProfileFragment,
@@ -66,6 +63,7 @@ class ProfileFragmentPresenter(
                     setStateVisible(isBackupGoogleDrive)
                     setDesc(R.string.manually.res2String())
                 }
+                binding.group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
             }
         }
     }
