@@ -14,6 +14,7 @@ import io.outblock.lilico.databinding.DialogSendNftAddressBinding
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.address.AddressBookFragment
+import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmDialog
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
@@ -47,6 +48,9 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
         presenter = TransactionSendPresenter(childFragmentManager, binding.addressContent)
         viewModel = ViewModelProvider(requireActivity())[SelectSendAddressViewModel::class.java].apply {
             onAddressSelectedLiveData.observe(viewLifecycleOwner) { onAddressSelected(it) }
+        }
+        ViewModelProvider(requireActivity())[AddressBookViewModel::class.java].apply {
+            clearEditTextFocusLiveData.observe(this@NftSendAddressDialog) { presenter.bind(TransactionSendModel(isClearInputFocus = it)) }
         }
         binding.closeButton.setOnClickListener { dismiss() }
         binding.scanButton.setOnClickListener { barcodeLauncher.launch() }

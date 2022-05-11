@@ -17,8 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Demo"
-        android:visibility="gone"
         android:textColor="@color/text"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -27,13 +27,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/deep_bg"
-        android:elevation="8dp"
+        android:elevation="0dp"
         android:minHeight="?actionBarSize"
+        app:elevation="0dp"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@color/bottom_navigation_color"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation"/>
+
+    <io.outblock.lilico.widgets.MainTabCornerView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@id/navigation_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

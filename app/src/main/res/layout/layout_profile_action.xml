@@ -66,6 +66,7 @@
             app:iconGravity="textTop"
             app:iconPadding="7dp"
             app:iconSize="28dp"
+            android:visibility="gone"
             app:iconTint="@color/transparent"
             app:iconTintMode="add"/>
     </androidx.appcompat.widget.LinearLayoutCompat>

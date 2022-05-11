@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="16dp"
-            android:text="Write down or copy these words in the right order and save them somewhere safe."
+            android:text="@string/recovery_purchase_tips"
             android:textColor="@color/text_light"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/title"/>
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Do not share your secret phrase!"
+                android:text="@string/do_not_share_secret"
                 android:textColor="@color/error"
                 android:textSize="12sp"
                 android:textStyle="bold"/>
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_horizontal"
-                android:text="If someone has your secret phrase, they will have full control of your wallet."
+                android:text="@string/do_not_share_secret_desc"
                 android:textColor="@color/error"
                 android:textSize="12sp"/>
         </LinearLayout>

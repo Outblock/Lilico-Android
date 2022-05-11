@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
 
     <item
         android:id="@+id/bottom_navigation_home"
@@ -19,14 +21,14 @@
     <item
         android:id="@+id/bottom_navigation_explore"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_explore_24"
+        android:icon="@drawable/ic_explore"
         android:title="@string/explore"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/bottom_navigation_profile"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:icon="@drawable/ic_profile"
         android:title="@string/profile"
         app:showAsAction="always"/>
 </menu>

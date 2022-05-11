@@ -27,6 +27,8 @@ class ProfilePreferenceSwitch : ProfilePreference {
         uiScope { switchView.isChecked = isChecked }
     }
 
+    fun isChecked() = switchView.isChecked
+
     fun setOnCheckedChangeListener(listener: (isChecked: Boolean) -> Unit) {
         this.onCheckedChangeListener = listener
     }

@@ -11,7 +11,7 @@
         android:id="@+id/edit_text"
         style="@style/EditText"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="52dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="16dp"
@@ -83,6 +83,7 @@
         app:tabIndicatorColor="@color/send_tab_indicator"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
+        android:background="@color/transparent"
         app:tabTextAppearance="?attr/textAppearanceCaption"
         app:tabTextColor="@color/text"/>
 

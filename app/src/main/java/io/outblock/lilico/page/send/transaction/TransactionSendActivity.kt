@@ -11,6 +11,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
 import io.outblock.lilico.page.address.AddressBookFragment
+import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
 import io.outblock.lilico.page.send.transaction.presenter.TransactionSendPresenter
 import io.outblock.lilico.utils.extensions.res2String
@@ -39,6 +40,9 @@ class TransactionSendActivity : BaseActivity() {
         presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
         viewModel = ViewModelProvider(this)[SelectSendAddressViewModel::class.java].apply {
             onAddressSelectedLiveData.observe(this@TransactionSendActivity) { presenter.bind(TransactionSendModel(selectedAddress = it)) }
+        }
+        ViewModelProvider(this)[AddressBookViewModel::class.java].apply {
+            clearEditTextFocusLiveData.observe(this@TransactionSendActivity) { presenter.bind(TransactionSendModel(isClearInputFocus = it)) }
         }
 
         setupToolbar()

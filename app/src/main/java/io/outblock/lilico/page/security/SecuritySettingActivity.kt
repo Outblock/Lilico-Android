@@ -37,21 +37,23 @@ class SecuritySettingActivity : BaseActivity() {
     private fun setup() {
         with(binding) {
             pinPreference.setOnClickListener { SecurityPinActivity.launch(this@SecuritySettingActivity, SecurityPinActivity.TYPE_RESET) }
-            biometricsPreference.setOnCheckedChangeListener {
-                if (it) {
-                    BlockBiometricManager.showBiometricPrompt(this@SecuritySettingActivity) { isSuccess ->
-                        uiScope { biometricsPreference.setChecked(isSuccess) }
-                        if (isSuccess) {
-                            setBiometricEnable(true)
-                        } else {
-                            setBiometricEnable(false)
-                            Toast.makeText(this@SecuritySettingActivity, "Auth error", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+            biometricsPreference.setOnClickListener { toggleBiometricsChecked() }
+            privatePreference.setOnClickListener {
+                securityOpen(
+                    SecurityRecoveryActivity.launchIntent(
+                        this@SecuritySettingActivity,
+                        TYPE_PRIVATE_KEY
+                    )
+                )
             }
-            privatePreference.setOnClickListener { SecurityRecoveryActivity.launch(this@SecuritySettingActivity, TYPE_PRIVATE_KEY) }
-            recoveryPreference.setOnClickListener { SecurityRecoveryActivity.launch(this@SecuritySettingActivity, TYPE_PHRASES) }
+            recoveryPreference.setOnClickListener {
+                securityOpen(
+                    SecurityRecoveryActivity.launchIntent(
+                        this@SecuritySettingActivity,
+                        TYPE_PHRASES
+                    )
+                )
+            }
 
             uiScope { biometricsPreference.setChecked(isBiometricEnable()) }
         }
@@ -70,6 +72,23 @@ class SecuritySettingActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         title = R.string.security.res2String()
+    }
+
+    private fun ActivitySecuritySettingBinding.toggleBiometricsChecked() {
+        if (biometricsPreference.isChecked()) {
+            biometricsPreference.setChecked(false)
+            setBiometricEnable(false)
+        } else {
+            BlockBiometricManager.showBiometricPrompt(this@SecuritySettingActivity) { isSuccess ->
+                uiScope { biometricsPreference.setChecked(isSuccess) }
+                if (isSuccess) {
+                    setBiometricEnable(true)
+                } else {
+                    setBiometricEnable(false)
+                    Toast.makeText(this@SecuritySettingActivity, "Auth error", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     companion object {

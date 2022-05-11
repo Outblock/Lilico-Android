@@ -95,9 +95,11 @@ class SecurityRecoveryActivity : BaseActivity() {
         private const val EXTRA_TYPE = "EXTRA_TYPE"
 
         fun launch(context: Context, type: Int) {
-            context.startActivity(Intent(context, SecurityRecoveryActivity::class.java).apply {
-                putExtra(EXTRA_TYPE, type)
-            })
+            context.startActivity(launchIntent(context, type))
+        }
+
+        fun launchIntent(context: Context, type: Int): Intent = Intent(context, SecurityRecoveryActivity::class.java).apply {
+            putExtra(EXTRA_TYPE, type)
         }
     }
 }

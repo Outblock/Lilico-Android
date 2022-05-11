@@ -69,6 +69,10 @@ class TransactionSendPresenter(
     override fun bind(model: TransactionSendModel) {
         model.qrcode?.let { binding.editText.setText(it) }
         model.selectedAddress?.let { onAddressSelected(it) }
+        model.isClearInputFocus?.let {
+            binding.editText.clearFocus()
+            binding.editText.hideKeyboard()
+        }
     }
 
     private fun setupSearchBox() {

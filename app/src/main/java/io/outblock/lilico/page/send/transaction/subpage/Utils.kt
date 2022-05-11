@@ -26,9 +26,10 @@ fun DialogSendConfirmBinding.bindUserInfo(userInfo: UserInfoData, contact: Addre
     namePrefixView.text = contact.prefixName()
     namePrefixView.setVisible(contact.prefixName().isNotEmpty())
 
-    if (contact.domain?.domainType ?: 0 == 0) {
+    if ((contact.domain?.domainType ?: 0) == 0) {
         toAvatarView.setVisible(!contact.avatar.isNullOrEmpty(), invisible = true)
         toAvatarView.loadAvatar(contact.avatar.orEmpty())
+        namePrefixView.setVisible(false)
     } else {
         val avatar =
             if (contact.domain?.domainType == AddressBookDomain.DOMAIN_FIND_XYZ) R.drawable.ic_domain_logo_findxyz else R.drawable.ic_domain_logo_flowns
