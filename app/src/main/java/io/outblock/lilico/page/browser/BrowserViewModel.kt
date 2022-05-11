@@ -7,7 +7,6 @@ import io.outblock.lilico.page.browser.model.RecommendModel
 import io.outblock.lilico.page.browser.tools.BrowserTab
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.widgets.floatwindow.FloatWindow
 import java.net.URL
 import java.net.URLEncoder
 
@@ -40,7 +39,7 @@ class BrowserViewModel {
                 }
 
                 val list = queryRecommendWordInternal(keyword)
-                if (FloatWindow.isShowing(BROWSER_TAG) && searchKeyword == keyword) {
+                if (searchKeyword == keyword) {
                     uiScope { recommendWordsLiveData?.invoke(list.map { RecommendModel(it, keyword, this@BrowserViewModel) }) }
                 }
             }
