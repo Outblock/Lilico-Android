@@ -82,9 +82,9 @@ fun WebView.screenshot(): Bitmap {
 }
 
 fun String.toSearchUrl(): String {
-    val httpParse = if (startsWith("http://") || startsWith("https://")) this else "http://$this"
+    val httpParse = if (startsWith("http://") || startsWith("https://")) this else "https://$this"
     if (UrlValidator(arrayOf("http", "https")).isValid(httpParse)) {
-        return this
+        return httpParse
     }
 
     return "https://www.google.com/search?q=${this.trim().urlEncode()}"
