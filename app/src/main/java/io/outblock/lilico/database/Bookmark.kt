@@ -14,8 +14,6 @@ data class Bookmark(
 
     var url: String,
     var title: String,
-    // image path
-    var icon: String,
 
     var createTime: Long,
     var updateTime: Long = 0,

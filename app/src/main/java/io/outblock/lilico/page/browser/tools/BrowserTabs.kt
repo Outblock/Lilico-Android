@@ -6,6 +6,7 @@ import android.webkit.WebView
 import androidx.core.view.children
 import io.outblock.lilico.page.browser.browserViewBinding
 import io.outblock.lilico.page.browser.releaseBrowser
+import io.outblock.lilico.page.browser.saveRecentRecord
 import io.outblock.lilico.page.browser.widgets.LilicoWebView
 import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.extensions.removeFromParent
@@ -20,6 +21,9 @@ fun popBrowserTab(tabId: String) {
 
     val tab = tabs.firstOrNull { it.id == tabId } ?: return
     tabs.removeAll { it.id == tabId }
+
+    tab.webView.saveRecentRecord()
+
     webViewContainer.removeWebView(tab.webView)
 
     if (tabs.isEmpty()) {

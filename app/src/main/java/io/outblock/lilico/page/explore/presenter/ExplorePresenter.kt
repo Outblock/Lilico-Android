@@ -1,12 +1,14 @@
 package io.outblock.lilico.page.explore.presenter
 
 import android.graphics.Color
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentExploreBinding
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.explore.ExploreFragment
+import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
@@ -14,6 +16,7 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
+import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 class ExplorePresenter(
     private val fragment: ExploreFragment,
@@ -21,6 +24,7 @@ class ExplorePresenter(
 ) : BasePresenter<ExploreModel> {
 
     private val recentAdapter by lazy { ExploreRecentAdapter() }
+    private val bookmarkAdapter by lazy { ExploreBookmarkAdapter() }
 
     private val activity by lazy { fragment.requireActivity() }
 
@@ -30,6 +34,12 @@ class ExplorePresenter(
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 9.dp2px().toInt(), LinearLayoutManager.HORIZONTAL))
             adapter = recentAdapter
+        }
+
+        with(binding.bookmarkListView) {
+            layoutManager = GridLayoutManager(context, 5)
+            addItemDecoration(GridSpaceItemDecoration(horizontal = 14.dp2px().toDouble(), vertical = 16.dp2px().toDouble()))
+            adapter = bookmarkAdapter
         }
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
@@ -42,5 +52,7 @@ class ExplorePresenter(
             recentAdapter.setNewDiffData(it)
             binding.recentListView.post { binding.recentListView.scrollToPositionForce(0) }
         }
+
+        model.bookmarkList?.let { bookmarkAdapter.setNewDiffData(it) }
     }
 }

@@ -3,6 +3,7 @@ package io.outblock.lilico.network
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.network.interceptor.CryptoWatchHeaderInterceptor
 import io.outblock.lilico.network.interceptor.HeaderInterceptor
+import io.outblock.lilico.utils.isDev
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,7 +22,7 @@ fun retrofit(): Retrofit {
         readTimeout(10, TimeUnit.SECONDS)
         writeTimeout(10, TimeUnit.SECONDS)
 
-        if (BuildConfig.DEBUG) {
+        if (isDev()) {
             addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         }
     }.build()
@@ -38,7 +39,7 @@ fun cryptoWatchRetrofit(): Retrofit {
         readTimeout(10, TimeUnit.SECONDS)
         writeTimeout(10, TimeUnit.SECONDS)
 
-        if (BuildConfig.DEBUG) {
+        if (isDev()) {
             addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         }
     }.build()

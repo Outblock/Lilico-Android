@@ -62,6 +62,7 @@ class PopupListView(
                 val icon = item.iconRes ?: item.iconUrl
                 Glide.with(iconView).load(icon).into(iconView)
                 iconView.setVisible(icon != null)
+                item.iconTint?.let { iconView.setColorFilter(it) }
                 titleView.text = item.title
                 view.setOnClickListener {
                     selectListener?.onSelect(layoutPosition, item.title)
@@ -84,5 +85,6 @@ class PopupListView(
         val title: String,
         val iconRes: Int? = null,
         val iconUrl: String? = null,
+        val iconTint: Int? = null,
     )
 }

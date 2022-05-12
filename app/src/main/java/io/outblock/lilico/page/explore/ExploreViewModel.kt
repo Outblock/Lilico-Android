@@ -26,6 +26,7 @@ class ExploreViewModel : ViewModel() {
     fun load() {
         viewModelIOScope(this) {
             recentLiveData.postValue(AppDataBase.database().webviewRecordDao().findAll(limit = 4))
+            bookmarkLiveData.postValue(AppDataBase.database().bookmarkDao().findAll(limit = 10))
         }
     }
 
@@ -35,5 +36,6 @@ class ExploreViewModel : ViewModel() {
 
     private fun registerObserve() {
         AppDataBase.database().webviewRecordDao().findAllLive(limit = 4).observe(activity) { recentLiveData.postValue(it) }
+        AppDataBase.database().bookmarkDao().findAllLive(limit = 4).observe(activity) { bookmarkLiveData.postValue(it) }
     }
 }

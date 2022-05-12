@@ -210,4 +210,5 @@
     <string name="drag_here_to_unpin">Drag Here To Unpin</string>
     <string name="recent_history">Recent History</string>
     <string name="recovery_purchase_tips">Write down or copy these words in the right order and save them somewhere safe.</string>
+    <string name="open_in_browser">Open in browser</string>
 </resources>

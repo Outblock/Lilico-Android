@@ -91,7 +91,7 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: "libs", include: ["*.aar","*.jar"])
+    api fileTree(dir: "libs", include: ["*.aar", "*.jar"])
 
     /** Android Architecture **/
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -179,6 +179,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
     implementation 'joda-time:joda-time:2.10.3'
+    implementation 'commons-validator:commons-validator:1.7'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"

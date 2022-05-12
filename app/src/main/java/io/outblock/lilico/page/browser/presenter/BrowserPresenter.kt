@@ -13,6 +13,7 @@ import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.*
 import io.outblock.lilico.page.browser.model.BrowserModel
 import io.outblock.lilico.page.browser.tools.*
+import io.outblock.lilico.page.browser.widgets.BrowserPopupMenu
 import io.outblock.lilico.page.browser.widgets.WebviewCallback
 import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.page.window.bubble.tools.inBubbleStack
@@ -45,6 +46,7 @@ class BrowserPresenter(
                 backButton.setOnClickListener { handleBackPressed() }
                 homeButton.setOnClickListener { popBrowserLastTab() }
                 floatButton.setOnClickListener { shrinkBrowser() }
+                menuButton.setOnClickListener { browserTabLast()?.let { BrowserPopupMenu(menuButton, it).show() } }
             }
         }
     }

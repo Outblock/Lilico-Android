@@ -16,7 +16,7 @@
         android:paddingVertical="13dp"
         tools:ignore="UseCompoundDrawables,UselessParent">
 
-        <ImageView
+        <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/iv_image"
             android:layout_width="22dp"
             android:layout_height="22dp"

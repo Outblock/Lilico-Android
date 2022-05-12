@@ -20,6 +20,7 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.saveToFile
 import io.outblock.lilico.widgets.floatwindow.FloatWindow
+import org.apache.commons.validator.routines.UrlValidator
 import java.io.File
 import java.net.URL
 
@@ -80,7 +81,14 @@ fun WebView.screenshot(): Bitmap {
     return bitmap
 }
 
-fun String.toSearchUrl(): String = "https://www.google.com/search?q=${this.trim().urlEncode()}"
+fun String.toSearchUrl(): String {
+    val httpParse = if (startsWith("http://") || startsWith("https://")) this else "http://$this"
+    if (UrlValidator(arrayOf("http", "https")).isValid(httpParse)) {
+        return this
+    }
+
+    return "https://www.google.com/search?q=${this.trim().urlEncode()}"
+}
 
 fun browserViewModel() = browserInstance()?.viewModel()
 
