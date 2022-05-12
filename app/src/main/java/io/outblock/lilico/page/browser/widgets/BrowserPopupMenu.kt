@@ -6,6 +6,7 @@ import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.page.browser.tools.BrowserTab
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.openInSystemBrowser
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.ioScope
@@ -38,7 +39,7 @@ class BrowserPopupMenu(
         when (text) {
             R.string.bookmark.res2String() -> addToBookmark()
             R.string.share.res2String() -> browserTab.url()?.let { view.context.shareText(it) }
-            R.string.open_in_browser.res2String() -> {}
+            R.string.open_in_browser.res2String() -> browserTab.url()?.openInSystemBrowser(view.context)
         }
         return true
     }
