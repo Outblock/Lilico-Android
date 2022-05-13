@@ -41,7 +41,7 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
         }
 
         ViewModelProvider(requireActivity())[ExploreViewModel::class.java].apply {
-            onDAppClickLiveData.observe(this@RecentHistoryDialog) { dismiss() }
+            onDAppClickLiveData.observe(this@RecentHistoryDialog) { if (isResumed) dismiss() }
         }
 
         binding.closeButton.setOnClickListener { dismiss() }
@@ -50,7 +50,7 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
     companion object {
 
         fun show(fragmentManager: FragmentManager) {
-            RecentHistoryDialog().show(fragmentManager, "")
+            RecentHistoryDialog().showNow(fragmentManager, "")
         }
     }
 }

@@ -55,11 +55,11 @@
                 android:id="@+id/edit_text"
                 android:layout_width="0dp"
                 android:layout_height="52dp"
-                android:clickable="false"
-                android:focusable="false"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="16dp"
                 android:autofillHints="name"
+                android:clickable="false"
+                android:focusable="false"
                 android:fontFamily="@font/inter_semi_bold"
                 android:gravity="center_vertical"
                 android:insetTop="0dp"
@@ -141,12 +141,12 @@
                 <LinearLayout
                     android:id="@+id/recent_more_button"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="17dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/recent_title"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="17dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@id/recent_title"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/recent_title">
 
                     <TextView
@@ -162,9 +162,9 @@
                     <androidx.constraintlayout.utils.widget.ImageFilterView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
                         android:src="@drawable/ic_arrow_right_1"
-                        app:tint="@color/salmon_primary"
-                        android:layout_marginStart="6dp"/>
+                        app:tint="@color/salmon_primary"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -208,6 +208,35 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@id/bookmark_icon"
                     app:layout_constraintTop_toTopOf="parent"/>
+
+                <LinearLayout
+                    android:id="@+id/bookmark_more_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="17dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@id/bookmark_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/bookmark_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/more"
+                        android:textAllCaps="false"
+                        android:textColor="@color/salmon_primary"
+                        android:textSize="14sp"/>
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/ic_arrow_right_1"
+                        app:tint="@color/salmon_primary"/>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bookmark_list_view"
