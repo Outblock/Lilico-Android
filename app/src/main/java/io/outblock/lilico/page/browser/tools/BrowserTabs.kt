@@ -95,6 +95,10 @@ fun browserTabs() = tabs.toList()
 
 fun browserTabsCount() = tabs.size
 
+fun removeWebview() {
+    webViewContainer()?.cleanWebView()
+}
+
 private fun webViewContainer() = browserViewBinding()?.webviewContainer
 
 private fun ViewGroup.cleanWebView() {

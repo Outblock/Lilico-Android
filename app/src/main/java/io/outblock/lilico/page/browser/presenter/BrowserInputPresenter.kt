@@ -128,12 +128,18 @@ class BrowserInputPresenter(
         recommendAdapter.notifyDataSetChanged()
         inputBinding.root.setVisible(false)
         browserViewModel()?.onSearchBoxHide()
+
+        if (binding.webviewContainer.childCount == 0) {
+            binding.root.setVisible(false)
+        }
+
         if (browserTabsCount() == 0) {
             releaseBrowser()
         }
     }
 
     private fun openFromSearchBox(point: Point) {
+        binding.root.setVisible()
         binding.inputLayout.root.setVisible()
         binding.inputLayout.inputView.requestFocus()
         binding.inputLayout.inputView.showKeyboard()

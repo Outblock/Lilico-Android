@@ -117,14 +117,14 @@ fun shrinkBrowser() {
     browserTabLast()?.let { pushBubbleStack(it) }
     val binding = browserViewBinding() ?: return
     with(binding) {
-        shrinkWebView(contentWrapper)
+        shrinkWebView(root)
     }
 }
 
 fun expandBrowser() {
     val binding = browserViewBinding() ?: return
     with(binding) {
-        expandWebView(contentWrapper)
+        expandWebView(root)
     }
 }
 

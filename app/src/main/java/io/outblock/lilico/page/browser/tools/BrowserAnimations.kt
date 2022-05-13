@@ -51,7 +51,12 @@ private fun startAnimation(webviewContainer: ViewGroup, isExpand: Boolean) {
         ) {
             duration = 250
             interpolator = AccelerateDecelerateInterpolator()
-            doOnEnd { webviewContainer.setVisible(isExpand) }
+            doOnEnd {
+                webviewContainer.setVisible(isExpand)
+                if (!isExpand) {
+                    removeWebview()
+                }
+            }
             start()
             if (isExpand) {
                 webviewContainer.setVisible()

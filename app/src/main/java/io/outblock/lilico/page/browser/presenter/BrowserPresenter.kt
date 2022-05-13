@@ -35,10 +35,10 @@ class BrowserPresenter(
         with(binding) {
             contentWrapper.post {
                 contentWrapper.addStatusBarTopPadding()
-                contentWrapper.addNavigationBarBottomPadding()
-                with(contentWrapper.layoutParams as ViewGroup.MarginLayoutParams) {
+                root.addNavigationBarBottomPadding()
+                with(root.layoutParams as ViewGroup.MarginLayoutParams) {
                     bottomMargin = navigationBarHeight
-                    contentWrapper.layoutParams = this
+                    root.layoutParams = this
                 }
             }
             with(binding.toolbar) {
@@ -109,7 +109,7 @@ class BrowserPresenter(
 
     fun handleBackPressed(): Boolean {
         // bubble mode
-        if (!binding.contentWrapper.isVisible()) {
+        if (!binding.root.isVisible()) {
             return false
         }
         val lastTab = browserTabLast()
