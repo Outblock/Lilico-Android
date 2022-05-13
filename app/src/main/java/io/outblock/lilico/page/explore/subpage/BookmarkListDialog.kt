@@ -13,20 +13,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.database.AppDataBase
-import io.outblock.lilico.database.WebviewRecord
+import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.databinding.DialogRecentHistoryBinding
 import io.outblock.lilico.page.explore.ExploreViewModel
-import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
+import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
-class RecentHistoryDialog : BottomSheetDialogFragment() {
+class BookmarkListDialog : BottomSheetDialogFragment() {
 
     private lateinit var binding: DialogRecentHistoryBinding
 
-    private lateinit var viewModel: RecentHistoryViewModel
+    private lateinit var viewModel: BookmarkListViewModel
 
-    private val adapter by lazy { ExploreRecentAdapter() }
+    private val adapter by lazy { ExploreBookmarkAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogRecentHistoryBinding.inflate(inflater)
@@ -36,19 +36,19 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.root.requestFocus()
         with(binding.recyclerView) {
-            adapter = this@RecentHistoryDialog.adapter
+            adapter = this@BookmarkListDialog.adapter
             layoutManager = GridLayoutManager(context, 2)
             addItemDecoration(GridSpaceItemDecoration(vertical = 9.0, horizontal = 9.0))
         }
 
-        viewModel = ViewModelProvider(this)[RecentHistoryViewModel::class.java].apply {
-            recentLiveData.observe(this@RecentHistoryDialog) { adapter.setNewDiffData(it) }
-            bindFragment(this@RecentHistoryDialog)
+        viewModel = ViewModelProvider(this)[BookmarkListViewModel::class.java].apply {
+            bookmarkLiveData.observe(this@BookmarkListDialog) { adapter.setNewDiffData(it) }
+            bindFragment(this@BookmarkListDialog)
             load()
         }
 
         ViewModelProvider(requireActivity())[ExploreViewModel::class.java].apply {
-            onDAppClickLiveData.observe(this@RecentHistoryDialog) { if (isResumed) dismiss() }
+            onDAppClickLiveData.observe(this@BookmarkListDialog) { if (isResumed) dismiss() }
         }
 
         binding.closeButton.setOnClickListener { dismiss() }
@@ -57,13 +57,13 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
     companion object {
 
         fun show(fragmentManager: FragmentManager) {
-            RecentHistoryDialog().showNow(fragmentManager, "")
+            BookmarkListDialog().showNow(fragmentManager, "")
         }
     }
 }
 
-class RecentHistoryViewModel : ViewModel() {
-    val recentLiveData = MutableLiveData<List<WebviewRecord>>()
+class BookmarkListViewModel : ViewModel() {
+    val bookmarkLiveData = MutableLiveData<List<Bookmark>>()
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var fragment: Fragment
@@ -75,11 +75,11 @@ class RecentHistoryViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            recentLiveData.postValue(AppDataBase.database().webviewRecordDao().findAll(limit = 100))
+            bookmarkLiveData.postValue(AppDataBase.database().bookmarkDao().findAll(limit = 100))
         }
     }
 
     private fun registerObserve() {
-        AppDataBase.database().webviewRecordDao().findAllLive(limit = 40).observe(fragment.viewLifecycleOwner) { recentLiveData.postValue(it) }
+        AppDataBase.database().bookmarkDao().findAllLive(limit = 100).observe(fragment.viewLifecycleOwner) { bookmarkLiveData.postValue(it) }
     }
 }

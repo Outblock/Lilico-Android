@@ -11,6 +11,7 @@ import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
+import io.outblock.lilico.page.explore.subpage.BookmarkListDialog
 import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.location
@@ -38,11 +39,19 @@ class ExplorePresenter(
 
         with(binding.bookmarkListView) {
             layoutManager = GridLayoutManager(context, 5)
-            addItemDecoration(GridSpaceItemDecoration(horizontal = 14.dp2px().toDouble(), vertical = 16.dp2px().toDouble()))
+            addItemDecoration(
+                GridSpaceItemDecoration(
+                    start = 18.0,
+                    end = 18.0,
+                    horizontal = 14.0,
+                    vertical = 16.0,
+                )
+            )
             adapter = bookmarkAdapter
         }
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
+            bookmarkMoreButton.setOnClickListener { BookmarkListDialog.show(activity.supportFragmentManager) }
             searchBox.setOnClickListener { openBrowser(activity, searchBoxPosition = searchBox.location()) }
         }
     }
