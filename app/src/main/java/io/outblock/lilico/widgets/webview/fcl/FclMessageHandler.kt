@@ -32,18 +32,20 @@ class FclMessageHandler(
             logd(TAG, "message:$data")
             message = data
 
-            val json = Gson().fromJson<Map<String, Any>>(data, object : TypeToken<Map<String, Any>>() {}.type) ?: return@ioScope
+            runCatching {
+                val json = Gson().fromJson<Map<String, Any>>(data, object : TypeToken<Map<String, Any>>() {}.type) ?: return@ioScope
 
-            if (json.isService()) {
-                webView.postMessage("{type: '$TYPE_VIEW_READY'}")
-                val service = Gson().fromJson(data, FclService::class.java)
-                serviceType = service.service.type
-                return@ioScope
-            }
+                if (json.isService()) {
+                    webView.postMessage("{type: '$TYPE_VIEW_READY'}")
+                    val service = Gson().fromJson(data, FclService::class.java)
+                    serviceType = service.service.type
+                    return@ioScope
+                }
 
-            when (json["type"] as String) {
-                // TODO show ui then send response
-                TYPE_VIEW_RESPONSE -> dispatchViewReadyResponse(data)
+                when (json["type"] as String) {
+                    // TODO show ui then send response
+                    TYPE_VIEW_RESPONSE -> dispatchViewReadyResponse(data)
+                }
             }
         }
     }
