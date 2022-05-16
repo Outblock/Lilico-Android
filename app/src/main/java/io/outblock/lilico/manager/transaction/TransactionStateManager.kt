@@ -15,6 +15,8 @@ import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
+import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
+import io.outblock.lilico.page.window.bubble.tools.updateBubbleStack
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.safeRun
@@ -96,6 +98,13 @@ object TransactionStateManager {
         state.updateTime = System.currentTimeMillis()
         ioScope { cache.cache(stateData) }
         dispatchCallback()
+        updateBubbleStack(state)
+        if (state.isUnknown() || state.isSealed()) {
+            uiScope {
+                delay(3000)
+                popBubbleStack(state)
+            }
+        }
         if (state.type == TransactionState.TYPE_ADD_TOKEN && state.isSuccess()) {
             TokenStateManager.fetchStateSingle(state.tokenData(), cache = true)
         }
@@ -175,4 +184,7 @@ class TransactionState(
 
     fun isProcessing() = state > FlowTransactionStatus.UNKNOWN.num && state < FlowTransactionStatus.SEALED.num
 
+    fun isUnknown() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
+
+    fun isSealed() = state == FlowTransactionStatus.SEALED.num
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.R
-import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateChangeListener
@@ -15,7 +14,7 @@ import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.token.addtoken.model.TokenItem
-import io.outblock.lilico.page.window.sendstate.SendStateBubble
+import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -69,16 +68,15 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChang
             if (transactionId.isNullOrBlank()) {
                 toast(msgRes = R.string.add_token_failed)
             } else {
-                TransactionStateManager.newTransaction(
-                    TransactionState(
-                        transactionId = transactionId,
-                        time = System.currentTimeMillis(),
-                        state = FlowTransactionStatus.PENDING.num,
-                        type = TransactionState.TYPE_ADD_TOKEN,
-                        data = Gson().toJson(coin)
-                    )
+                val transactionState = TransactionState(
+                    transactionId = transactionId,
+                    time = System.currentTimeMillis(),
+                    state = FlowTransactionStatus.PENDING.num,
+                    type = TransactionState.TYPE_ADD_TOKEN,
+                    data = Gson().toJson(coin)
                 )
-                BaseActivity.getCurrentActivity()?.let { SendStateBubble.show(it) }
+                TransactionStateManager.newTransaction(transactionState)
+                pushBubbleStack(transactionState)
                 transactionIds.add(transactionId)
             }
         }

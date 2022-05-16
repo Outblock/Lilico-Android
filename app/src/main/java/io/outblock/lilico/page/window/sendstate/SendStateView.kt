@@ -15,8 +15,6 @@ import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.send.processing.SendProcessingDialog
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.utils.uiScope
-import kotlinx.coroutines.delay
 
 class SendStateView : MaterialCardView, OnTransactionStateChange {
     private val binding = WindowSendStateBubbleContentBinding.inflate(LayoutInflater.from(context))
@@ -40,10 +38,10 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
 
     override fun onTransactionStateChange() {
         transactionState = TransactionStateManager.getLastVisibleTransaction()
-        if (transactionState == null) {
-            SendStateBubble.dismiss()
-            return
-        }
+//        if (transactionState == null) {
+//            SendStateBubble.dismiss()
+//            return
+//        }
 
         transactionState?.let { update(it) }
     }
@@ -68,12 +66,12 @@ class SendStateView : MaterialCardView, OnTransactionStateChange {
             progressBar.setProgressWithAnimation(state.progress(), duration = 200)
         }
 
-        if (state.isUnknown() || state.isSealed()) {
-            uiScope {
-                delay(3000)
-                SendStateBubble.dismiss()
-            }
-        }
+//        if (state.isUnknown() || state.isSealed()) {
+//            uiScope {
+//                delay(3000)
+//                SendStateBubble.dismiss()
+//            }
+//        }
     }
 
     private fun TransactionState.progress(): Float {

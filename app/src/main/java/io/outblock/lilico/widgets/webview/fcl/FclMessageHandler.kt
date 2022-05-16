@@ -43,7 +43,6 @@ class FclMessageHandler(
                 }
 
                 when (json["type"] as String) {
-                    // TODO show ui then send response
                     TYPE_VIEW_RESPONSE -> dispatchViewReadyResponse(data)
                 }
             }
