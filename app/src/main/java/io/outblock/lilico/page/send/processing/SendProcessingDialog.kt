@@ -9,7 +9,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.manager.transaction.TransactionState
-import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.send.processing.model.SendProcessingDialogModel
 import io.outblock.lilico.page.send.processing.presenter.SendProcessingPresenter
 import io.outblock.lilico.utils.uiScope
@@ -53,10 +52,9 @@ class SendProcessingDialog : BottomSheetDialogFragment() {
             }
         }
 
-        fun show() {
+        fun show(state: TransactionState) {
             uiScope {
                 val activity = BaseActivity.getCurrentActivity() ?: return@uiScope
-                val state = TransactionStateManager.getLastVisibleTransaction() ?: return@uiScope
                 newInstance(state).show(activity.supportFragmentManager, "")
             }
         }

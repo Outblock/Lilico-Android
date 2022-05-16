@@ -14,10 +14,6 @@ internal object FlowApi {
 
     private var api: FlowAccessApi? = null
 
-    init {
-        refreshConfig()
-    }
-
     fun refreshConfig() {
         logd("FlowApi", "refreshConfig start")
         (api as? FlowAccessApiImpl)?.close()

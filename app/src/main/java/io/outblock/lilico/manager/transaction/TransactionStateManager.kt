@@ -97,6 +97,7 @@ object TransactionStateManager {
     private fun updateState(state: TransactionState) {
         state.updateTime = System.currentTimeMillis()
         ioScope { cache.cache(stateData) }
+        logd(TAG, "updateState:$state")
         dispatchCallback()
         updateBubbleStack(state)
         if (state.isUnknown() || state.isSealed()) {
@@ -137,7 +138,7 @@ class TransactionStateData(
 )
 
 @Parcelize
-class TransactionState(
+data class TransactionState(
     @SerializedName("transactionId")
     val transactionId: String,
     @SerializedName("time")
@@ -187,4 +188,14 @@ class TransactionState(
     fun isUnknown() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
 
     fun isSealed() = state == FlowTransactionStatus.SEALED.num
+
+    fun progress(): Float {
+        return when (state) {
+            FlowTransactionStatus.PENDING.num -> 0.25f
+            FlowTransactionStatus.FINALIZED.num -> 0.50f
+            FlowTransactionStatus.EXECUTED.num -> 0.75f
+            FlowTransactionStatus.SEALED.num -> 1.0f
+            else -> 0.0f
+        }
+    }
 }

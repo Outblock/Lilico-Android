@@ -220,7 +220,7 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
     logv(TAG, "executeScript:\n${Flow.DEFAULT_ADDRESS_REGISTRY.processScript(this, chainId = Flow.DEFAULT_CHAIN_ID)}")
     return try {
         FlowApi.get().simpleFlowScript {
-            script { this@executeScript.trimIndent() }
+            script { this@executeScript.trimIndent().replaceFlowAddress() }
             block()
         }
     } catch (e: Throwable) {
@@ -235,6 +235,7 @@ private fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() ->
 }
 
 private fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuilder.() -> Unit): String? {
+    logv(TAG, "transaction script:$this")
     updateSecurityProvider()
     try {
         val latestBlockId = FlowApi.get().getLatestBlockHeader().id
@@ -242,7 +243,7 @@ private fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuil
         val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
 
         val tx = flowTransaction {
-            script { this@transaction }
+            script { this@transaction.replaceFlowAddress() }
 
             arguments { arguments() }
 

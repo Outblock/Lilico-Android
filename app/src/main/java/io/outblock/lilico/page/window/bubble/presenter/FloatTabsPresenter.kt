@@ -53,7 +53,7 @@ class FloatTabsPresenter(
 
     private fun initRecyclerView() {
         with(binding.recyclerView) {
-            if (adapter == this@FloatTabsPresenter.adapter) {
+            if (adapter == this@FloatTabsPresenter.adapter && layoutManager != null) {
                 return
             }
             adapter = this@FloatTabsPresenter.adapter

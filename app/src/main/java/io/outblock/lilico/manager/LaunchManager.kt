@@ -9,6 +9,7 @@ import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.app.refreshChainNetwork
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.service.MessagingService
@@ -33,6 +34,7 @@ object LaunchManager {
     private fun asyncInit() {
         ioScope {
             System.loadLibrary("TrustWalletCore")
+            FlowApi.refreshConfig()
         }
     }
 
@@ -50,7 +52,6 @@ object LaunchManager {
 
     private fun setNightMode() {
         uiScope { AppCompatDelegate.setDefaultNightMode(getThemeMode()) }
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun runWorker(application: Application) {

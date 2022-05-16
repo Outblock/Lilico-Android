@@ -4,6 +4,7 @@ import com.bumptech.glide.Glide
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.WindowBubbleBinding
+import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.page.window.bubble.BubbleViewModel
 import io.outblock.lilico.page.window.bubble.model.BubbleModel
 import io.outblock.lilico.page.window.bubble.model.icon
@@ -46,6 +47,9 @@ class BubblePresenter(
             floatBubble.setVisible(bubbleTabs().isNotEmpty() && !bubbleStackWrapper.isVisible(), invisible = true)
             val tab = bubbleTabs().lastOrNull() ?: return
             Glide.with(Env.getApp()).load(tab.icon()).into(iconView)
+
+            progressBar.setVisible(tab.data is TransactionState)
+            (tab.data as? TransactionState)?.let { progressBar.setProgressWithAnimation(it.progress(), duration = 200) }
         }
     }
 
