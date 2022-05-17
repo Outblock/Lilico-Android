@@ -17,7 +17,7 @@
         android:paddingVertical="18dp"
         android:paddingStart="26dp"
         android:paddingEnd="0dp"
-        android:text="@string/recent_history"
+        android:text="@string/bookmark"
         android:textColor="@color/text"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -41,9 +41,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:paddingHorizontal="22dp"
         android:paddingBottom="100dp"
-        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/title_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

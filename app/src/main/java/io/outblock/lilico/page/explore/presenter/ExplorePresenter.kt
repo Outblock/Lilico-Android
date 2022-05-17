@@ -16,6 +16,7 @@ import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
@@ -59,6 +60,7 @@ class ExplorePresenter(
     override fun bind(model: ExploreModel) {
         model.recentList?.let {
             recentAdapter.setNewDiffData(it)
+            binding.recentWrapper.setVisible(it.isNotEmpty())
             binding.recentListView.post { binding.recentListView.scrollToPositionForce(0) }
         }
 

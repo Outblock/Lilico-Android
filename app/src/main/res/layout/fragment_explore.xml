@@ -114,58 +114,69 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/recent_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/recent_icon"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="18dp"
-                    android:src="@drawable/ic_recent"
-                    app:layout_constraintBottom_toBottomOf="@id/recent_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/recent_title"
-                    app:tint="@color/salmon_primary"/>
-
-                <TextView
-                    android:id="@+id/recent_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:text="@string/recent"
-                    android:textColor="@color/text"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@id/recent_icon"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp">
 
                 <LinearLayout
-                    android:id="@+id/recent_more_button"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/recent_title_wrapper"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="17dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="@id/recent_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/recent_title">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/more"
-                        android:textAllCaps="false"
-                        android:textColor="@color/salmon_primary"
-                        android:textSize="14sp"/>
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/recent_icon"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="18dp"
+                        android:src="@drawable/ic_recent"
+                        app:layout_constraintBottom_toBottomOf="@id/recent_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/recent_title"
+                        app:tint="@color/salmon_primary"/>
+
+                    <TextView
+                        android:id="@+id/recent_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/recent"
+                        android:textColor="@color/text"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/recent_icon"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <LinearLayout
+                        android:id="@+id/recent_more_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:src="@drawable/ic_arrow_right_1"
-                        app:tint="@color/salmon_primary"/>
+                        android:layout_marginEnd="17dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@id/recent_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/recent_title">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="3dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/more"
+                            android:textAllCaps="false"
+                            android:textColor="@color/salmon_primary"
+                            android:textSize="14sp"/>
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:src="@drawable/ic_arrow_right_1"
+                            app:tint="@color/salmon_primary"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -178,14 +189,13 @@
                     android:paddingEnd="0dp"
                     android:paddingBottom="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recent_title"/>
+                    app:layout_constraintTop_toBottomOf="@id/recent_title_wrapper"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bookmark_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
                     android:id="@+id/bookmark_icon"
