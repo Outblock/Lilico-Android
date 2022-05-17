@@ -212,4 +212,6 @@
     <string name="recovery_purchase_tips">Write down or copy these words in the right order and save them somewhere safe.</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="pending_transaction">Pending Transaction</string>
+    <string name="welcome_to_lilico">Welcome to Lilico!</string>
+    <string name="profile_sign_tips"><![CDATA[Join us and unlock all brilliant & new experiences!]]></string>
 </resources>

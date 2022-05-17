@@ -1,4 +1,7 @@
 package io.outblock.lilico.page.main.model
 
-class MainContentModel {
-}
+import io.outblock.lilico.page.main.HomeTab
+
+class MainContentModel(
+    val onChangeTab: HomeTab? = null,
+)

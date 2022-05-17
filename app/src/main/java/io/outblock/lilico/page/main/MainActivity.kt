@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
+import io.outblock.lilico.page.main.model.MainContentModel
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
 import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.isNightMode
@@ -33,7 +34,9 @@ class MainActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
         contentPresenter = MainContentPresenter(this, binding)
-        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java].apply {
+            changeTabLiveData.observe(this@MainActivity) { contentPresenter.bind(MainContentModel(onChangeTab = it)) }
+        }
         uiScope { isRegistered = isRegistered() }
         WindowFrame.attach(this)
     }

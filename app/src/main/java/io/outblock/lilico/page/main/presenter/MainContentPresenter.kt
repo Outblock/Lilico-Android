@@ -29,7 +29,7 @@ class MainContentPresenter(
     }
 
     override fun bind(model: MainContentModel) {
-
+        model.onChangeTab?.let { binding.viewPager.setCurrentItem(it.index, false) }
     }
 
     private fun setupListener() {

@@ -7,4 +7,9 @@ class MainActivityViewModel : ViewModel() {
 
     val walletRegisterSuccessLiveData = MutableLiveData<Boolean>()
 
+    internal val changeTabLiveData = MutableLiveData<HomeTab>()
+
+    fun changeTab(tab: HomeTab) {
+        changeTabLiveData.postValue(tab)
+    }
 }
