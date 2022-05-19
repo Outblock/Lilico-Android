@@ -45,55 +45,25 @@
                 app:layout_constraintTop_toTopOf="@id/title_view"/>
         </FrameLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_box"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:paddingHorizontal="18dp"
             android:paddingVertical="5dp"
             app:layout_scrollFlags="scroll|snap">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/edit_text"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginEnd="16dp"
-                android:autofillHints="name"
-                android:clickable="false"
-                android:focusable="false"
-                android:fontFamily="@font/inter_semi_bold"
-                android:gravity="center_vertical"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:maxLines="1"
-                android:paddingVertical="0dp"
-                android:paddingStart="44dp"
-                android:paddingEnd="16dp"
-                android:stateListAnimator="@null"
-                android:text="@string/explore_search_hint"
-                android:textAllCaps="false"
-                android:textColor="@color/text"
-                android:textSize="16sp"
-                app:cornerRadius="16dp"
-                app:elevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginEnd="18dp"
-                app:rippleColor="@color/black_10"
-                app:strokeColor="@color/salmon_primary"
-                app:strokeWidth="2dp"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input_border_radius_16dp_2">
 
-            <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="13dp"
-                android:src="@drawable/ic_baseline_search_24"
-                app:layout_constraintBottom_toBottomOf="@id/edit_text"
-                app:layout_constraintStart_toStartOf="@id/edit_text"
-                app:layout_constraintTop_toTopOf="@id/edit_text"
-                app:tint="@color/salmon_primary"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/search_box"
+                    layout="@layout/layout_explore_search_box"/>
+            </FrameLayout>
+
+        </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

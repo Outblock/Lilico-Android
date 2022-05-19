@@ -21,6 +21,7 @@ import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.toSearchUrl
 import io.outblock.lilico.page.browser.tools.browserTabsCount
+import io.outblock.lilico.page.browser.tools.startSearchBoxAnimation
 import io.outblock.lilico.utils.extensions.*
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -38,8 +39,8 @@ class BrowserInputPresenter(
     init {
         binding.toolbar.textWrapper.setOnClickListener {
             binding.inputLayout.root.setVisible()
-            inputBinding.inputView.requestFocus()
-            inputBinding.inputView.showKeyboard()
+            inputBinding.searchBox.inputView.requestFocus()
+            inputBinding.searchBox.inputView.showKeyboard()
         }
         with(inputBinding.recyclerView) {
             adapter = recommendAdapter
@@ -47,7 +48,7 @@ class BrowserInputPresenter(
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 5.dp2px().toInt(), ColorDividerItemDecoration.VERTICAL))
         }
 
-        with(inputBinding.inputView) {
+        with(inputBinding.searchBox.inputView) {
             doOnTextChanged { _, _, _, _ -> onKeywordChange() }
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -60,20 +61,20 @@ class BrowserInputPresenter(
         }
 
         with(inputBinding) {
-            clearButton.setOnClickListener { inputView.setText("") }
-            cancelButton.setOnClickListener { clearPage() }
+            searchBox.clearButton.setOnClickListener { searchBox.inputView.setText("") }
+            searchBox.cancelButton.setOnClickListener { clearPage() }
         }
     }
 
     private fun onKeywordChange() {
         with(inputBinding) {
-            val keyword = inputView.text.toString()
+            val keyword = searchBox.inputView.text.toString()
             viewModel.queryRecommendWord(keyword)
 
             val cancelVisible = keyword.isNotEmpty()
-            if (cancelWrapper.isVisible() != cancelVisible) {
+            if (searchBox.cancelWrapper.isVisible() != cancelVisible) {
                 TransitionManager.go(Scene(inputBinding.root), Fade().apply { duration = 150 })
-                cancelWrapper.setVisible(cancelVisible)
+                searchBox.cancelWrapper.setVisible(cancelVisible)
             }
         }
     }
@@ -120,7 +121,7 @@ class BrowserInputPresenter(
 
     @SuppressLint("NotifyDataSetChanged")
     private fun clearPage() {
-        with(inputBinding.inputView) {
+        with(inputBinding.searchBox.inputView) {
             hideKeyboard()
             setText("")
         }
@@ -139,9 +140,10 @@ class BrowserInputPresenter(
     }
 
     private fun openFromSearchBox(point: Point) {
+        startSearchBoxAnimation(binding.inputLayout, point)
         binding.root.setVisible()
         binding.inputLayout.root.setVisible()
-        binding.inputLayout.inputView.requestFocus()
-        binding.inputLayout.inputView.showKeyboard()
+        binding.inputLayout.searchBox.inputView.requestFocus()
+        binding.inputLayout.searchBox.inputView.showKeyboard()
     }
 }

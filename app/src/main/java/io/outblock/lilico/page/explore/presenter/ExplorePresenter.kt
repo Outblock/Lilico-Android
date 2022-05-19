@@ -17,8 +17,10 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
+import kotlinx.coroutines.delay
 
 class ExplorePresenter(
     private val fragment: ExploreFragment,
@@ -53,7 +55,14 @@ class ExplorePresenter(
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
             bookmarkMoreButton.setOnClickListener { BookmarkListDialog.show(activity.supportFragmentManager) }
-            searchBox.setOnClickListener { openBrowser(activity, searchBoxPosition = searchBox.location()) }
+            searchBox.root.setOnClickListener {
+                uiScope {
+                    searchBox.root.setVisible(false, invisible = true)
+                    delay(800)
+                    searchBox.root.setVisible(true)
+                }
+                openBrowser(activity, searchBoxPosition = searchBox.root.location())
+            }
         }
     }
 
