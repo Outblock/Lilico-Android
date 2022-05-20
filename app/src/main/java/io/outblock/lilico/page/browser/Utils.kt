@@ -31,6 +31,7 @@ fun openBrowser(
     url: String? = null,
     searchBoxPosition: Point? = null,
 ) {
+    WindowFrame.browserContainer()?.setVisible()
     if (browserInstance() != null) {
         val browser = browserInstance()!!
         url?.let { browser.loadUrl(it) }
@@ -39,7 +40,6 @@ fun openBrowser(
     } else {
         attachBrowser(activity, url, searchBoxPosition)
     }
-    WindowFrame.browserContainer()?.setVisible()
 }
 
 fun WebView.saveRecentRecord() {

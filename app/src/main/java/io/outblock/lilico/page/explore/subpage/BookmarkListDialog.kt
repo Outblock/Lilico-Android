@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.databinding.DialogRecentHistoryBinding
@@ -37,7 +38,7 @@ class BookmarkListDialog : BottomSheetDialogFragment() {
         binding.root.requestFocus()
         with(binding.recyclerView) {
             adapter = this@BookmarkListDialog.adapter
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 5)
             addItemDecoration(GridSpaceItemDecoration(vertical = 9.0, horizontal = 9.0))
         }
 
@@ -52,6 +53,7 @@ class BookmarkListDialog : BottomSheetDialogFragment() {
         }
 
         binding.closeButton.setOnClickListener { dismiss() }
+        binding.titleView.setText(R.string.bookmark)
     }
 
     companion object {

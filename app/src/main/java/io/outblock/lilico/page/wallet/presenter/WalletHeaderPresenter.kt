@@ -14,10 +14,8 @@ import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.findActivity
-import io.outblock.lilico.utils.formatPrice
-import io.outblock.lilico.utils.textToClipboard
 import io.outblock.lilico.wallet.toAddress
 
 class WalletHeaderPresenter(
@@ -30,8 +28,12 @@ class WalletHeaderPresenter(
     override fun bind(model: WalletHeaderModel) {
         with(binding) {
             walletName.text = "Blowfish Wallet"
-            address.text = model.walletList.primaryWalletAddress()?.toAddress()
-            balanceNum.text = "$${model.balance.formatPrice()}"
+            uiScope {
+                val isHideBalance = isHideWalletBalance()
+                address.text = if (isHideBalance) "******************" else model.walletList.primaryWalletAddress()?.toAddress()
+                balanceNum.text = if (isHideBalance) "****" else "$${model.balance.formatPrice()}"
+                hideButton.setImageResource(if (isHideBalance) R.drawable.ic_eye_off else R.drawable.ic_eye_on)
+            }
 
             val count = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.count()
             coinCountView.text = view.context.getString(R.string.coins_count, count)
@@ -41,6 +43,13 @@ class WalletHeaderPresenter(
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
             buyButton.setOnClickListener { openBrowser(findActivity(view)!!, "https://www.google.com/search?q=flow") }
+
+            hideButton.setOnClickListener {
+                uiScope {
+                    setHideWalletBalance(!isHideWalletBalance())
+                    bind(model)
+                }
+            }
         }
     }
 

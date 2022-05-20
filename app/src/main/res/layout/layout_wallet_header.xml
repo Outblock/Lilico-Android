@@ -87,7 +87,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="@dimen/activity_padding"
                 android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/ic_show_pwd_eye"
+                android:src="@drawable/ic_eye_on"
                 app:layout_constraintBottom_toBottomOf="@id/address"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/address"

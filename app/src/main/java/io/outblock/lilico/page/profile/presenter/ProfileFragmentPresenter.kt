@@ -51,9 +51,10 @@ class ProfileFragmentPresenter(
     }
 
     private fun bindUserInfo(userInfo: UserInfoData) {
+        val isAvatarChange = this.userInfo?.avatar != userInfo.avatar
         this.userInfo = userInfo
         with(binding.userInfo) {
-            avatarView.loadAvatar(userInfo.avatar)
+            if (isAvatarChange) avatarView.loadAvatar(userInfo.avatar)
             useridView.text = userInfo.username
             nicknameView.text = userInfo.nickname
 

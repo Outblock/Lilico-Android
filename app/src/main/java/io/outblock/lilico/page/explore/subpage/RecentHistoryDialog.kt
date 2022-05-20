@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.databinding.DialogRecentHistoryBinding
@@ -52,6 +53,7 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
         }
 
         binding.closeButton.setOnClickListener { dismiss() }
+        binding.titleView.setText(R.string.recent)
     }
 
     companion object {

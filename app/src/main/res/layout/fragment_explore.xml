@@ -54,6 +54,7 @@
             app:layout_scrollFlags="scroll|snap">
 
             <FrameLayout
+                android:id="@+id/search_box_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_input_border_radius_16dp_2">

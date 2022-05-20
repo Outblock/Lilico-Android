@@ -37,11 +37,7 @@ class BrowserInputPresenter(
     private val keyboardObserver by lazy { keyboardObserver() }
 
     init {
-        binding.toolbar.textWrapper.setOnClickListener {
-            binding.inputLayout.root.setVisible()
-            inputBinding.searchBox.inputView.requestFocus()
-            inputBinding.searchBox.inputView.showKeyboard()
-        }
+        binding.toolbar.textWrapper.setOnClickListener { openFromWebViewTitle() }
         with(inputBinding.recyclerView) {
             adapter = recommendAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
@@ -145,5 +141,15 @@ class BrowserInputPresenter(
         binding.inputLayout.root.setVisible()
         binding.inputLayout.searchBox.inputView.requestFocus()
         binding.inputLayout.searchBox.inputView.showKeyboard()
+    }
+
+    private fun openFromWebViewTitle() {
+        binding.inputLayout.root.setVisible()
+        with(inputBinding.searchBox) {
+            inputView.requestFocus()
+            inputView.showKeyboard()
+            exploreSearchBox.root.setVisible(false)
+            cancelWrapper.setVisible(true)
+        }
     }
 }

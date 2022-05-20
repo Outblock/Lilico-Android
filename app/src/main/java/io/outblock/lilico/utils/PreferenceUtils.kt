@@ -32,6 +32,7 @@ private val KEY_DEVELOPER_MODE_ENABLE = booleanPreferencesKey("KEY_DEVELOPER_MOD
 private val KEY_CHAIN_NETWORK = intPreferencesKey("KEY_CHAIN_NETWORK")
 private val KEY_THEME_MODE = intPreferencesKey("KEY_THEME_MODE")
 private val KEY_QUOTE_MARKET = stringPreferencesKey("KEY_QUOTE_MARKET")
+private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BALANCE")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -129,6 +130,11 @@ suspend fun updateQuoteMarket(market: String) {
     dataStore.edit { it[KEY_QUOTE_MARKET] = market }
 }
 
+suspend fun isHideWalletBalance(): Boolean = dataStore.data.map { it[KEY_HIDE_WALLET_BALANCE] ?: false }.first()
+
+suspend fun setHideWalletBalance(isHide: Boolean) {
+    dataStore.edit { it[KEY_HIDE_WALLET_BALANCE] = isHide }
+}
 
 private fun edit(unit: suspend () -> Unit) {
     scope.launch { unit.invoke() }

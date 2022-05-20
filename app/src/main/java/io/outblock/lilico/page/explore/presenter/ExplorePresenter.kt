@@ -57,9 +57,9 @@ class ExplorePresenter(
             bookmarkMoreButton.setOnClickListener { BookmarkListDialog.show(activity.supportFragmentManager) }
             searchBox.root.setOnClickListener {
                 uiScope {
-                    searchBox.root.setVisible(false, invisible = true)
+                    searchBoxWrapper.setVisible(false, invisible = true)
                     delay(800)
-                    searchBox.root.setVisible(true)
+                    searchBoxWrapper.setVisible(true)
                 }
                 openBrowser(activity, searchBoxPosition = searchBox.root.location())
             }
