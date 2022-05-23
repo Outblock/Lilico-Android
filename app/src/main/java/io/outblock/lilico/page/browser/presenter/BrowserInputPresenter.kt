@@ -49,8 +49,8 @@ class BrowserInputPresenter(
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     val keyword = text.toString()
-                    clearPage()
                     viewModel.updateUrl(keyword.toSearchUrl())
+                    clearPage()
                 }
                 return@setOnEditorActionListener false
             }
@@ -58,7 +58,7 @@ class BrowserInputPresenter(
 
         with(inputBinding) {
             searchBox.clearButton.setOnClickListener { searchBox.inputView.setText("") }
-            searchBox.cancelButton.setOnClickListener { clearPage() }
+            searchBox.cancelButton.setOnClickListener { clearPage(isCancel = true) }
         }
     }
 
@@ -116,21 +116,22 @@ class BrowserInputPresenter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun clearPage() {
+    private fun clearPage(isCancel: Boolean = false) {
         with(inputBinding.searchBox.inputView) {
             hideKeyboard()
             setText("")
         }
         recommendAdapter.setNewDiffData(emptyList())
         recommendAdapter.notifyDataSetChanged()
-        inputBinding.root.setVisible(false)
         browserViewModel()?.onSearchBoxHide()
 
         if (binding.webviewContainer.childCount == 0) {
             binding.root.setVisible(false)
         }
 
-        if (browserTabsCount() == 0) {
+        inputBinding.root.setVisible(false)
+
+        if (browserTabsCount() == 0 && isCancel) {
             releaseBrowser()
         }
     }
