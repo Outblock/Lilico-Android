@@ -4,11 +4,9 @@ import android.view.View
 import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.popupMenu
-import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.popup.PopupListView
 
 class BookmarkPopupMenu(
@@ -16,10 +14,13 @@ class BookmarkPopupMenu(
     val bookmark: Bookmark,
 ) {
 
+    private val activity = findActivity(view)
+
     fun show() {
         uiScope {
             popupMenu(
                 view,
+                context = activity,
                 items = listOf(
                     if (bookmark.isStarted) PopupListView.ItemData(
                         R.string.cancel_favourite.res2String(),
@@ -36,6 +37,8 @@ class BookmarkPopupMenu(
                         iconTint = R.color.salmon_primary.res2color()
                     ),
                 ),
+                offsetY = -view.height / 2,
+                offsetX = ScreenUtils.getScreenWidth() / 4,
                 selectListener = { _, text -> onMenuItemClick(text) },
                 isDialogMode = true,
             ).show()
@@ -47,11 +50,11 @@ class BookmarkPopupMenu(
             when (text) {
                 R.string.cancel_favourite.res2String() -> {
                     bookmark.isStarted = false
-                    AppDataBase.database().bookmarkDao().save(bookmark)
+                    AppDataBase.database().bookmarkDao().update(bookmark)
                 }
                 R.string.favourite.res2String() -> {
                     bookmark.isStarted = true
-                    AppDataBase.database().bookmarkDao().save(bookmark)
+                    AppDataBase.database().bookmarkDao().update(bookmark)
                 }
                 R.string.delete.res2String() -> AppDataBase.database().bookmarkDao().delete(bookmark)
             }
