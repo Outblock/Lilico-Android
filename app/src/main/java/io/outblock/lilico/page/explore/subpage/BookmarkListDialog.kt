@@ -86,8 +86,8 @@ class BookmarkListViewModel : ViewModel() {
     }
 
     private fun dispatchData(data: List<Bookmark>) {
-        val started = data.filter { it.isStarted }
-        val normal = data.filter { !it.isStarted }
+        val started = data.filter { it.isFavourite }
+        val normal = data.filter { !it.isFavourite }
 
         val list = mutableListOf<Any>().apply {
             if (started.isNotEmpty()) {

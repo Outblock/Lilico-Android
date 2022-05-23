@@ -22,7 +22,7 @@ class BookmarkPopupMenu(
                 view,
                 context = activity,
                 items = listOf(
-                    if (bookmark.isStarted) PopupListView.ItemData(
+                    if (bookmark.isFavourite) PopupListView.ItemData(
                         R.string.cancel_favourite.res2String(),
                         iconRes = R.drawable.ic_selection_star,
                         iconTint = R.color.salmon_primary.res2color(),
@@ -49,11 +49,11 @@ class BookmarkPopupMenu(
         ioScope {
             when (text) {
                 R.string.cancel_favourite.res2String() -> {
-                    bookmark.isStarted = false
+                    bookmark.isFavourite = false
                     AppDataBase.database().bookmarkDao().update(bookmark)
                 }
                 R.string.favourite.res2String() -> {
-                    bookmark.isStarted = true
+                    bookmark.isFavourite = true
                     AppDataBase.database().bookmarkDao().update(bookmark)
                 }
                 R.string.delete.res2String() -> AppDataBase.database().bookmarkDao().delete(bookmark)
