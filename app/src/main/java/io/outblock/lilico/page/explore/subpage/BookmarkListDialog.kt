@@ -10,16 +10,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.databinding.DialogRecentHistoryBinding
 import io.outblock.lilico.page.explore.ExploreViewModel
-import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
+import io.outblock.lilico.page.explore.adapter.ExploreBookmarkManageAdapter
+import io.outblock.lilico.page.explore.model.BookmarkTitleModel
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.viewModelIOScope
-import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 class BookmarkListDialog : BottomSheetDialogFragment() {
 
@@ -27,7 +28,7 @@ class BookmarkListDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: BookmarkListViewModel
 
-    private val adapter by lazy { ExploreBookmarkAdapter() }
+    private val adapter by lazy { ExploreBookmarkManageAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogRecentHistoryBinding.inflate(inflater)
@@ -38,8 +39,7 @@ class BookmarkListDialog : BottomSheetDialogFragment() {
         binding.root.requestFocus()
         with(binding.recyclerView) {
             adapter = this@BookmarkListDialog.adapter
-            layoutManager = GridLayoutManager(context, 5)
-            addItemDecoration(GridSpaceItemDecoration(vertical = 9.0, horizontal = 9.0))
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         viewModel = ViewModelProvider(this)[BookmarkListViewModel::class.java].apply {
@@ -65,7 +65,7 @@ class BookmarkListDialog : BottomSheetDialogFragment() {
 }
 
 class BookmarkListViewModel : ViewModel() {
-    val bookmarkLiveData = MutableLiveData<List<Bookmark>>()
+    val bookmarkLiveData = MutableLiveData<List<Any>>()
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var fragment: Fragment
@@ -77,11 +77,28 @@ class BookmarkListViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            bookmarkLiveData.postValue(AppDataBase.database().bookmarkDao().findAll(limit = 100))
+            dispatchData(AppDataBase.database().bookmarkDao().findAll(limit = 100))
         }
     }
 
     private fun registerObserve() {
-        AppDataBase.database().bookmarkDao().findAllLive(limit = 100).observe(fragment.viewLifecycleOwner) { bookmarkLiveData.postValue(it) }
+        AppDataBase.database().bookmarkDao().findAllLive(limit = 100).observe(fragment.viewLifecycleOwner) { load() }
+    }
+
+    private fun dispatchData(data: List<Bookmark>) {
+        val started = data.filter { it.isStarted }
+        val normal = data.filter { !it.isStarted }
+
+        val list = mutableListOf<Any>().apply {
+            if (started.isNotEmpty()) {
+                add(BookmarkTitleModel(R.drawable.ic_collection_star, R.string.favourite.res2String()))
+            }
+            addAll(started)
+
+            add(BookmarkTitleModel(R.drawable.ic_bookmark_list, R.string.list.res2String()))
+            addAll(normal)
+        }
+
+        bookmarkLiveData.postValue(list)
     }
 }

@@ -14,7 +14,7 @@ data class Bookmark(
 
     var url: String,
     var title: String,
-
+    var isStarted: Boolean = false,
     var createTime: Long,
     var updateTime: Long = 0,
 ) : Parcelable {

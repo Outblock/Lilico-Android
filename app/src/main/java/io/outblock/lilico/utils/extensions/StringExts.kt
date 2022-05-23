@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
+import java.net.URL
 import java.net.URLEncoder
 
 
@@ -28,4 +29,8 @@ fun String.urlEncode(): String = URLEncoder.encode(this)
 
 fun String.openInSystemBrowser(context: Context) {
     startActivity(context, Intent(Intent.ACTION_VIEW, Uri.parse(this)), null)
+}
+
+fun String.urlHost(): String {
+    return URL(this).host
 }

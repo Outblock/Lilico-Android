@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/icon_view"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_collection_star"
+        app:tint="@color/neutrals8"/>
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/inter_medium"
+        android:textAllCaps="true"
+        android:textColor="@color/neutrals6"
+        android:textSize="14sp"
+        tools:text="STARTED"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

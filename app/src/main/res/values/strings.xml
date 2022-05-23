@@ -214,4 +214,6 @@
     <string name="pending_transaction">Pending Transaction</string>
     <string name="welcome_to_lilico">Welcome to Lilico!</string>
     <string name="profile_sign_tips"><![CDATA[Join us and unlock all brilliant & new experiences!]]></string>
+    <string name="favourite">Favourite</string>
+    <string name="cancel_favourite">Cancel Favourite</string>
 </resources>
