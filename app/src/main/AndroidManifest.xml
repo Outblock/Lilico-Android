@@ -154,6 +154,11 @@
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.about.AboutActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".page.demo.DemoActivity"/>
 
         <provider

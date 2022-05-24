@@ -11,6 +11,7 @@ import io.outblock.lilico.page.main.HomeTab
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.profile.ProfileFragment
 import io.outblock.lilico.page.profile.model.ProfileFragmentModel
+import io.outblock.lilico.page.profile.subpage.about.AboutActivity
 import io.outblock.lilico.page.profile.subpage.accountsetting.AccountSettingActivity
 import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
 import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
@@ -42,6 +43,7 @@ class ProfileFragmentPresenter(
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
+        binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
         updatePreferenceState()
     }
 

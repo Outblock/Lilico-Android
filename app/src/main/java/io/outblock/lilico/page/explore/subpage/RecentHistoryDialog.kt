@@ -18,6 +18,7 @@ import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.databinding.DialogRecentHistoryBinding
 import io.outblock.lilico.page.explore.ExploreViewModel
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
+import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
@@ -40,6 +41,7 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
             adapter = this@RecentHistoryDialog.adapter
             layoutManager = GridLayoutManager(context, 2)
             addItemDecoration(GridSpaceItemDecoration(vertical = 9.0, horizontal = 9.0))
+            setPadding(22.dp2px().toInt(), paddingTop, 22.dp2px().toInt(), paddingBottom)
         }
 
         viewModel = ViewModelProvider(this)[RecentHistoryViewModel::class.java].apply {
