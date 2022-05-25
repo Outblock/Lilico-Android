@@ -123,3 +123,5 @@ suspend fun requestNftListFromServer(address: String): NFTListData? {
         nfts = list
     }
 }
+
+fun Nft.websiteUrl(walletAddress: String) = "https://lilico.app/nft/$walletAddress/${contract.address}/${contract.name}?tokenId=${id.tokenId}"

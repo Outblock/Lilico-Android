@@ -84,7 +84,9 @@ class NftDetailPresenter(
                 updateToolbarColor(scrollY)
             })
 
-            moreButton.setOnClickListener { NftMorePopupMenu(it, pageColor).show() }
+            moreButton.setOnClickListener {
+                nft?.let { NftMorePopupMenu(it, moreButton, pageColor).show() }
+            }
             collectButton.setLikeDrawableTint(R.color.colorSecondary.res2color())
             shareButton.setOnClickListener { showShareNft() }
             sendButton.setOnClickListener { NftSendAddressDialog.newInstance(nft!!).show(activity.supportFragmentManager, "") }

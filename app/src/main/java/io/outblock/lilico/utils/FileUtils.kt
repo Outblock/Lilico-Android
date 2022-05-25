@@ -1,13 +1,17 @@
 package io.outblock.lilico.utils
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import androidx.annotation.WorkerThread
 import androidx.core.content.FileProvider
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.net.URL
+import java.nio.file.Files
 
 val CACHE_PATH: File = Env.getApp().cacheDir.apply { if (!exists()) mkdirs() }
 
@@ -93,3 +97,28 @@ fun readTextFromAssets(path: String): String? {
         return null
     }
 }
+
+/**
+ * download file from net, and save to gallery
+ */
+fun String.downloadToGallery(toast: String = "") {
+    ioScope {
+        safeRun {
+            val fileName = "${System.currentTimeMillis()}${urlFileName()}"
+            val file = File(CACHE_PATH, fileName)
+            URL(this).openStream().use { Files.copy(it, file.toPath()) }
+            with(ContentValues()) {
+                put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.DATA, file.absolutePath)
+                Env.getApp().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, this)
+            }
+
+            if (toast.isNotBlank()) {
+                toast(msg = toast)
+            }
+        }
+    }
+}
+
+private fun String.urlFileName() = this.split("/").last()
