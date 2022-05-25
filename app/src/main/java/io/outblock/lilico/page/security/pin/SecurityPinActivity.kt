@@ -25,6 +25,7 @@ class SecurityPinActivity : BaseActivity() {
         private const val EXTRA_ACTION = "extra_action"
         const val TYPE_CHECK = 1
         const val TYPE_RESET = 2
+        const val TYPE_CREATE = 3
 
         fun launch(context: Context, type: Int = TYPE_CHECK, action: Intent? = null) {
             context.startActivity(Intent(context, SecurityPinActivity::class.java).apply {

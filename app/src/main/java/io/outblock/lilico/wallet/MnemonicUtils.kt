@@ -7,24 +7,28 @@ import wallet.core.jni.HDWallet
 import java.util.*
 
 fun getMnemonic(): String {
-    var str = aesDecrypt(getMnemonicAesKey(), message = getMnemonicFromPreference())
+    var str = aesDecrypt(mnemonicAesKey(), message = getMnemonicFromPreference())
 
     if (str.isBlank()) {
         str = HDWallet(128, "").mnemonic()
-        saveMnemonic(aesEncrypt(getMnemonicAesKey(), message = str))
+        saveMnemonic(aesEncrypt(mnemonicAesKey(), message = str))
     }
     return str
 }
 
-fun updateMnemonicAesKey(key: String) {
+fun updatePinCode(pinCode: String) {
     ioScope {
         val mnemonic = getMnemonic()
-        saveMnemonic(aesEncrypt(key, message = mnemonic))
-        updateAesLocalCode(key)
+        savePinCode(pinCode)
+        saveMnemonic(aesEncrypt(mnemonicAesKey(), message = mnemonic))
     }
 }
 
-fun getMnemonicAesKey(): String {
+fun mnemonicAesKey(): String {
+    return getPinCode() + randomCode()
+}
+
+private fun randomCode(): String {
     var key = getAesLocalCode()
     if (key.isEmpty()) {
         key = UUID.randomUUID().toString().take(16)

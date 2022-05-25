@@ -15,11 +15,8 @@ import io.outblock.lilico.page.security.pin.SecurityPinActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PHRASES
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PRIVATE_KEY
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.isBiometricEnable
-import io.outblock.lilico.utils.isNightMode
-import io.outblock.lilico.utils.setBiometricEnable
-import io.outblock.lilico.utils.uiScope
 
 class SecuritySettingActivity : BaseActivity() {
     private lateinit var binding: ActivitySecuritySettingBinding
@@ -36,7 +33,12 @@ class SecuritySettingActivity : BaseActivity() {
 
     private fun setup() {
         with(binding) {
-            pinPreference.setOnClickListener { SecurityPinActivity.launch(this@SecuritySettingActivity, SecurityPinActivity.TYPE_RESET) }
+            pinPreference.setOnClickListener {
+                SecurityPinActivity.launch(
+                    this@SecuritySettingActivity,
+                    if (getPinCode().isBlank()) SecurityPinActivity.TYPE_CREATE else SecurityPinActivity.TYPE_RESET
+                )
+            }
             biometricsPreference.setOnClickListener { toggleBiometricsChecked() }
             privatePreference.setOnClickListener {
                 securityOpen(

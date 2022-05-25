@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import io.outblock.lilico.manager.biometric.BlockBiometricManager
 import io.outblock.lilico.page.security.pin.SecurityPinActivity
+import io.outblock.lilico.utils.getPinCode
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isBiometricEnable
 import io.outblock.lilico.utils.uiScope
@@ -21,7 +22,13 @@ fun FragmentActivity.securityOpen(action: Intent) {
                 }
             }
         } else {
-            uiScope { SecurityPinActivity.launch(this, SecurityPinActivity.TYPE_CHECK, action = action) }
+            uiScope {
+                if (getPinCode().isBlank()) {
+                    startActivity(action)
+                } else {
+                    SecurityPinActivity.launch(this, SecurityPinActivity.TYPE_CHECK, action = action)
+                }
+            }
         }
     }
 }

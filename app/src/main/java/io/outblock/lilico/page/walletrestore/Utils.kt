@@ -11,8 +11,8 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.secret.aesEncrypt
-import io.outblock.lilico.wallet.getMnemonicAesKey
 import io.outblock.lilico.wallet.getPublicKey
+import io.outblock.lilico.wallet.mnemonicAesKey
 import io.outblock.lilico.wallet.sign
 import kotlinx.coroutines.runBlocking
 import wallet.core.jni.HDWallet
@@ -61,7 +61,7 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
                     } else {
                         firebaseLogin(resp.data?.customToken!!) { isSuccess ->
                             if (isSuccess) {
-                                saveMnemonic(aesEncrypt(getMnemonicAesKey(), message = mnemonic))
+                                saveMnemonic(aesEncrypt(mnemonicAesKey(), message = mnemonic))
                                 setRegistered()
                                 callback.invoke(true, null)
                             } else {

@@ -1,5 +1,7 @@
 package io.outblock.lilico.utils
 
+import android.annotation.SuppressLint
+import androidx.annotation.WorkerThread
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
@@ -15,6 +17,8 @@ private const val KEY_JWT_TOKEN = "jwt_token"
 private const val KEY_PUSH_TOKEN = "push_token"
 
 private const val KEY_AES_LOCAL_CODE = "key_aes_local_code"
+
+private const val KEY_PIN_CODE = "key_pin_code"
 
 private val preference by lazy {
     EncryptedSharedPreferences.create(
@@ -37,6 +41,14 @@ fun updateAesLocalCode(key: String) {
 }
 
 fun getAesLocalCode(): String = preference.getString(KEY_AES_LOCAL_CODE, "").orEmpty()
+
+@SuppressLint("ApplySharedPref")
+@WorkerThread
+fun savePinCode(key: String) {
+    preference.edit().putString(KEY_PIN_CODE, key).commit()
+}
+
+fun getPinCode(): String = preference.getString(KEY_PIN_CODE, "").orEmpty()
 
 fun saveJwtToken(jwt: String) {
     preference.edit().putString(KEY_JWT_TOKEN, jwt).apply()
