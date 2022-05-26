@@ -33,7 +33,10 @@ class WalletRestoreContentPresenter(
         val fragment = when (step) {
             WALLET_RESTORE_STEP_GUIDE -> WalletRestoreGuideFragment()
             WALLET_RESTORE_STEP_DRIVE_USERNAME -> WalletRestoreDriveUsernameFragment.instance(arguments as? ArrayList<DriveItem>)
-            WALLET_RESTORE_STEP_DRIVE_PASSWORD -> WalletRestoreDrivePasswordFragment.instance((arguments as? List<DriveItem>)?.firstOrNull())
+            WALLET_RESTORE_STEP_DRIVE_PASSWORD -> {
+                val data = if (arguments is DriveItem) arguments else (arguments as? List<DriveItem>)?.firstOrNull()
+                WalletRestoreDrivePasswordFragment.instance(data)
+            }
             WALLET_RESTORE_STEP_MNEMONIC -> WalletRestoreMnemonicFragment()
             else -> WalletRestoreGuideFragment()
         }

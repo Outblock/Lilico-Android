@@ -1,7 +1,7 @@
 package io.outblock.lilico.utils.secret
 
-import android.util.Base64
 import com.nftco.flow.sdk.bytesToHex
+import com.nftco.flow.sdk.hexToBytes
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -15,15 +15,15 @@ fun aesEncrypt(key: String, iv: String = "0102030405060708", message: String): S
     val sKey = SecretKeySpec(key.parseKey(), "AES")
     val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
     cipher.init(Cipher.ENCRYPT_MODE, sKey, IvParameterSpec(iv.parseKey()))
-    return Base64.encodeToString(cipher.doFinal(message.toByteArray()), Base64.NO_WRAP)
+    return cipher.doFinal(message.toByteArray()).bytesToHex()
 }
 
 fun aesDecrypt(key: String, iv: String = "0102030405060708", message: String): String {
     val sKey = SecretKeySpec(key.parseKey(), "AES")
     val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
-    val data = Base64.decode(message, Base64.NO_WRAP)
+    val data = message.hexToBytes()
     cipher.init(Cipher.DECRYPT_MODE, sKey, IvParameterSpec(iv.parseKey()))
     return String(cipher.doFinal(data))
 }
 
-private fun String.parseKey(): ByteArray = padEnd(16, '0').toByteArray().take(16).toByteArray()
+private fun String.parseKey(): ByteArray = toByteArray().copyOf(16).take(16).toByteArray()

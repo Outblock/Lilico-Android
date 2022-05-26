@@ -41,7 +41,7 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
 
         addData(data, password)
 
-        driveServiceHelper.writeStringToFile(FILE_NAME, aesEncrypt(AES_KEY, message = Gson().toJson(data)))
+        driveServiceHelper.writeStringToFile(FILE_NAME, "\"${aesEncrypt(AES_KEY, message = Gson().toJson(data))}\"")
 
         if (BuildConfig.DEBUG) {
             val readText = driveServiceHelper.readFile(driveServiceHelper.getFileId(FILE_NAME)!!)
@@ -78,7 +78,7 @@ fun deleteMnemonicFromGoogleDrive(driveService: Drive) {
             val username = userInfoCache().read()?.username
             data.removeIf { it.username == username }
 
-            driveServiceHelper.writeStringToFile(FILE_NAME, aesEncrypt(AES_KEY, message = Gson().toJson(data)))
+            driveServiceHelper.writeStringToFile(FILE_NAME, "\"${aesEncrypt(AES_KEY, message = Gson().toJson(data))}\"")
 
             if (BuildConfig.DEBUG) {
                 val readText = driveServiceHelper.readFile(driveServiceHelper.getFileId(FILE_NAME)!!)
@@ -99,12 +99,13 @@ private fun existingData(driveService: Drive): List<DriveItem> {
     if (BuildConfig.DEBUG) {
         driveServiceHelper.fileList()?.files?.map {
             logd(TAG, "file list:${it.name}")
+//            driveServiceHelper.deleteFile(it.id)
         }
     }
 
     return try {
         logd(TAG, "existingData fileId:$fileId")
-        val content = driveServiceHelper.readFile(fileId).second
+        val content = driveServiceHelper.readFile(fileId).second.trim { it == '"' }
         logd(TAG, "existingData content:$content")
         val json = aesDecrypt(AES_KEY, message = content)
         logd(TAG, "existingData:$json")
