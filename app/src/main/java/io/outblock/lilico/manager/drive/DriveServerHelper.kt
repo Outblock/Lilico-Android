@@ -57,7 +57,7 @@ class DriveServerHelper(private val driveService: Drive) {
         val metadata = File().setName(name)
 
         // Convert content to an AbstractInputStreamContent instance.
-        val contentStream = ByteArrayContent.fromString("text/plain", content)
+        val contentStream = ByteArrayContent.fromString("application/json", content)
 
         // Update the metadata and contents.
         driveService.files().update(fileId, metadata, contentStream).execute()
