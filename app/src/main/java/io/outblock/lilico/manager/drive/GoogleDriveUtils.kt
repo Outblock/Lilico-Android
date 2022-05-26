@@ -57,7 +57,7 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
 @WorkerThread
 fun restoreMnemonicFromGoogleDrive(driveService: Drive) {
     try {
-        logd(TAG, "uploadMnemonicToGoogleDrive")
+        logd(TAG, "restoreMnemonicFromGoogleDrive")
         val data = existingData(driveService)
         LocalBroadcastManager.getInstance(Env.getApp()).sendBroadcast(Intent(ACTION_GOOGLE_DRIVE_RESTORE_FINISH).apply {
             putParcelableArrayListExtra(EXTRA_CONTENT, data.toCollection(ArrayList()))

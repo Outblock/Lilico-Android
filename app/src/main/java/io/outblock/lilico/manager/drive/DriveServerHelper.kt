@@ -22,7 +22,7 @@ class DriveServerHelper(private val driveService: Drive) {
     fun createFile(fileName: String): String {
         val metadata = File()
             .setParents(Collections.singletonList("appDataFolder"))
-            .setMimeType("text/plain")
+            .setMimeType("application/json")
             .setName(fileName)
         val googleFile: File = driveService.files().create(metadata).execute()
             ?: throw IOException("Null result when requesting file creation.")
@@ -113,8 +113,14 @@ class DriveServerHelper(private val driveService: Drive) {
         saveFile(fileId!!, fileName, content)
     }
 
+    @Throws(IOException::class)
+    @WorkerThread
+    fun deleteFile(fileId: String) {
+        driveService.files().delete(fileId).execute()
+    }
+
     private fun metadata(fileName: String) = File()
         .setParents(Collections.singletonList("appDataFolder"))
-        .setMimeType("text/plain")
+        .setMimeType("application/json")
         .setName(fileName)
 }

@@ -20,6 +20,7 @@ import io.outblock.lilico.page.walletrestore.WALLET_RESTORE_STEP_DRIVE_PASSWORD
 import io.outblock.lilico.page.walletrestore.WALLET_RESTORE_STEP_DRIVE_USERNAME
 import io.outblock.lilico.page.walletrestore.WALLET_RESTORE_STEP_MNEMONIC
 import io.outblock.lilico.page.walletrestore.WalletRestoreViewModel
+import io.outblock.lilico.utils.toast
 
 class WalletRestoreGuideFragment : Fragment() {
 
@@ -31,7 +32,11 @@ class WalletRestoreGuideFragment : Fragment() {
         object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val data = intent?.getParcelableArrayListExtra<DriveItem>(EXTRA_CONTENT) ?: return
-                pageViewModel.changeStep(if (data.size > 1) WALLET_RESTORE_STEP_DRIVE_USERNAME else WALLET_RESTORE_STEP_DRIVE_PASSWORD, data)
+                if (data.isEmpty()) {
+                    onRestoreEmpty()
+                } else {
+                    pageViewModel.changeStep(if (data.size > 1) WALLET_RESTORE_STEP_DRIVE_USERNAME else WALLET_RESTORE_STEP_DRIVE_PASSWORD, data)
+                }
             }
         }
     }
@@ -62,4 +67,10 @@ class WalletRestoreGuideFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun onRestoreEmpty() {
+        toast(msg = "No backup found")
+        with(binding.driveRestore) {
+            setProgressVisible(false)
+        }
+    }
 }

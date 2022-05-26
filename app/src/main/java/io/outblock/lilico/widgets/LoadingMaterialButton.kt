@@ -37,14 +37,14 @@ class LoadingMaterialButton : MaterialButton {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        if (progressVisible) {
-            xShift = (width
+        xShift = if (progressVisible) {
+            (width
               - icon.intrinsicWidth
               - paint.measureText(text.toString())
               - iconPadding
               - ViewCompat.getPaddingStart(this)
               - ViewCompat.getPaddingEnd(this)) / 2f
-        }
+        } else 0f
     }
 
     override fun onDraw(canvas: Canvas) {

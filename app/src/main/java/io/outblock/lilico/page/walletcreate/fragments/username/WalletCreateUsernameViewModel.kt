@@ -41,7 +41,7 @@ class WalletCreateUsernameViewModel : ViewModel() {
             logd(TAG, "verifyUsernameRemote resp:$resp")
             logd(TAG, "verifyUsernameRemote resp data:${resp.data}")
             logd(TAG, "verifyUsernameRemote resp username:${resp.data.username}")
-            if (resp.data.username == username) {
+            if (resp.data.username.lowercase() == username.lowercase()) {
                 val msg = if (resp.data.unique) R.string.username_success.res2String() else R.string.username_exist.res2String()
                 usernameStateLiveData.postValue(Pair(resp.data.unique, msg))
             }
