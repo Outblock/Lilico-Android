@@ -17,13 +17,13 @@ fun getPublicKey(removePrefix: Boolean = true): String {
 }
 
 fun getPrivateKey(): String {
-    return hdWallet().getDerivedKey(CoinType.FLOW, 0, 0, 0).data().bytesToHex()
+    return hdWallet().getCurveKey(Curve.SECP256K1, DERIVATION_PATH).data().bytesToHex()
 }
 
 fun getWalletCore() = hdWallet()
 
 fun HDWallet.getPublicKey(removePrefix: Boolean = true): String {
-    val privateKey = getDerivedKey(CoinType.FLOW, 0, 0, 0)
+    val privateKey = getCurveKey(Curve.SECP256K1, DERIVATION_PATH)
     val publicKey = privateKey.getPublicKeySecp256k1(false).data().bytesToHex()
 
     return if (removePrefix) publicKey.removePrefix("04") else publicKey
@@ -38,7 +38,7 @@ fun HDWallet.sign(text: String, isNeedDomainTag: Boolean = true): String {
 }
 
 fun HDWallet.signData(data: ByteArray): String {
-    val privateKey = getDerivedKey(CoinType.FLOW, 0, 0, 0)
+    val privateKey = getCurveKey(Curve.SECP256K1, DERIVATION_PATH)
     val hashedData = Hash.sha256(data)
     val signature = privateKey.sign(hashedData, Curve.SECP256K1).dropLast(1).toByteArray()
     return signature.bytesToHex()

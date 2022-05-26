@@ -7,6 +7,7 @@ import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
 import com.nftco.flow.sdk.simpleFlowScript
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import wallet.core.jni.*
@@ -95,17 +96,26 @@ class TestWallet {
 
     @Test
     fun testSecp256k1_SHA256() {
-        val wallet = HDWallet(MNEMONIC, "")
+        val wallet = HDWallet("attract loyal increase butter clay embrace mask photo blind child pepper mimic", "")
         val privateKey = wallet.getCurveKey(Curve.SECP256K1, DERIVATION_PATH)
-        assertEquals("9c33a65806715a537d7f67cf7bf8a020cbdac8a1019664a2fa34da42d1ddbc7d", privateKey.data().bytesToHex())
+//        assertEquals("9c33a65806715a537d7f67cf7bf8a020cbdac8a1019664a2fa34da42d1ddbc7d", privateKey.data().bytesToHex())
         val publicKey = privateKey.getPublicKeySecp256k1(false)
-        assertEquals("04ad94008dea1505863fc92bd2db5b9fbf52a57f2a05d34fedb693c714bdc731cca57be95775517a9df788a564f2d7491d2c9716d1c0411a5a64155895749d47bc",
+
+        val privateKey1 = wallet.getDerivedKey(CoinType.FLOW, 0, 0, 0)
+        val publicKey1 = privateKey1.getPublicKeySecp256k1(false)
+
+        assertNotEquals(privateKey, privateKey1)
+
+        assertEquals("04dc53c98e95c01f34ade33a57bfb3841b7cde380407f5dff2aef3e80a008f46b64960153465077d3c98381437eefb972de1cb01baac5029c849f7eb38a2acf06c",
             publicKey.data().bytesToHex())
+
+        assertNotEquals("04dc53c98e95c01f34ade33a57bfb3841b7cde380407f5dff2aef3e80a008f46b64960153465077d3c98381437eefb972de1cb01baac5029c849f7eb38a2acf06c",
+            publicKey1.data().bytesToHex())
 
         val data = "hello schnorr".encodeToByteArray()
         val hashedData = Hash.sha256(data)
         val signature = privateKey.sign(hashedData, Curve.SECP256K1)
-        assertEquals("7c2e835850eee7375fa9540ddb7828c786338c84a6424b592be2388b1663a5fd27862167e21fd4a771c54abcc5ed3a23371265072129315aab93022e35f77ebe01",
+        assertEquals("804c7eacbe873a3f7d916484e8050755ea4f68c4202650a6ac821c1d4a36ddca577953f1c7191a96a4559fce079e046c182219435ba6b20bae5f76ad4fad703400",
             signature.bytesToHex())
     }
 
