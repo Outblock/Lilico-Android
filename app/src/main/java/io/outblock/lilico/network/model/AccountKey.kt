@@ -6,7 +6,7 @@ import com.nftco.flow.sdk.SignatureAlgorithm
 
 data class AccountKey(
     @SerializedName("hash_algo")
-    val hashAlgo: Int = HashAlgorithm.SHA3_256.index,
+    val hashAlgo: Int = HashAlgorithm.SHA2_256.index,
 
     @SerializedName("sign_algo")
     val signAlgo: Int = SignatureAlgorithm.ECDSA_SECP256k1.index,

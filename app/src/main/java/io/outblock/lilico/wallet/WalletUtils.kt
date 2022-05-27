@@ -5,7 +5,6 @@ import com.nftco.flow.sdk.bytesToHex
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
-import wallet.core.jni.CoinType
 import wallet.core.jni.Curve
 import wallet.core.jni.HDWallet
 import wallet.core.jni.Hash
@@ -17,7 +16,11 @@ fun getPublicKey(removePrefix: Boolean = true): String {
 }
 
 fun getPrivateKey(): String {
-    return hdWallet().getCurveKey(Curve.SECP256K1, DERIVATION_PATH).data().bytesToHex()
+    return hdWallet().getPrivateKey()
+}
+
+fun HDWallet.getPrivateKey(): String {
+    return getCurveKey(Curve.SECP256K1, DERIVATION_PATH).data().bytesToHex()
 }
 
 fun getWalletCore() = hdWallet()
