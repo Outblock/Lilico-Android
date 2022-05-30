@@ -102,6 +102,8 @@
         android:layout_height="145dp"
         android:layout_marginTop="-10dp"
         android:elevation="9dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:src="@drawable/ic_blow_fish_2k"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

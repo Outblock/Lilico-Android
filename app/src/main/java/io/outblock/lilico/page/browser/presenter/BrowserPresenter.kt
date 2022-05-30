@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.browser.presenter
 
+import android.animation.ObjectAnimator
 import android.view.ViewGroup
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
@@ -16,8 +17,6 @@ import io.outblock.lilico.page.window.bubble.tools.inBubbleStack
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 class BrowserPresenter(
     private val browser: Browser,
@@ -26,6 +25,8 @@ class BrowserPresenter(
 ) : BasePresenter<BrowserModel>, WebviewCallback {
 
     private fun webview() = browserTabLast()?.webView
+
+    private var toolbarTranslationAnimator: ObjectAnimator? = null
 
     init {
         with(binding) {
@@ -59,7 +60,15 @@ class BrowserPresenter(
         if (abs(offset) > 300) return
         val max = binding.toolbar.root.height * 2f
         with(binding.toolbar.root) {
-            translationY = min(max, max(0f, translationY + offset))
+            // offset > 0 -> scroll up
+            if (toolbarTranslationAnimator?.isRunning == true || (offset > 0 && translationY > 0) || (offset < 0 && translationY == 0.0f)) {
+                return
+            }
+            val toTranslationY = if (offset > 0) height.toFloat() * 2 else 0.0f
+            toolbarTranslationAnimator = ObjectAnimator.ofFloat(this, "translationY", translationY, toTranslationY).apply {
+                duration = 200
+                start()
+            }
         }
     }
 

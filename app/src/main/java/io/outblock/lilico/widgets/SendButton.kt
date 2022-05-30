@@ -21,7 +21,7 @@ import kotlin.math.min
 
 class SendButton : MaterialCardView {
 
-    private val duration = 2 * DateUtils.SECOND_IN_MILLIS
+    private val duration = 1.2f * DateUtils.SECOND_IN_MILLIS
 
     private var binding = WidgetSendButtonBinding.inflate(LayoutInflater.from(context))
 

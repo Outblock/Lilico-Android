@@ -27,7 +27,7 @@ class WalletHeaderPresenter(
     @SuppressLint("SetTextI18n")
     override fun bind(model: WalletHeaderModel) {
         with(binding) {
-            walletName.text = "Blowfish Wallet"
+            walletName.text = "Wallet"
             uiScope {
                 val isHideBalance = isHideWalletBalance()
                 address.text = if (isHideBalance) "******************" else model.walletList.primaryWalletAddress()?.toAddress()

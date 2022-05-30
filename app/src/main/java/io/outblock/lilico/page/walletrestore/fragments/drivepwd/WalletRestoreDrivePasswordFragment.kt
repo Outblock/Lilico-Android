@@ -67,6 +67,7 @@ class WalletRestoreDrivePasswordFragment : Fragment() {
                             Toast.makeText(requireContext(), "Network error", Toast.LENGTH_SHORT).show()
                         } else {
                             delay(200)
+                            setBackupGoogleDrive(true)
                             MainActivity.launch(requireContext())
                         }
                     }
