@@ -1,10 +1,6 @@
 package io.outblock.lilico.page.browser.presenter
 
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.transition.Fade
-import androidx.transition.Scene
-import androidx.transition.TransitionManager
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
@@ -68,16 +64,7 @@ class BrowserPresenter(
     }
 
     override fun onProgressChange(progress: Float) {
-        with(binding.toolbar.progressBar) {
-            val params = layoutParams as ConstraintLayout.LayoutParams
-            params.matchConstraintPercentWidth = progress
-            requestLayout()
-            TransitionManager.go(Scene(binding.toolbar.toolbarContent), Fade().apply {
-                duration = if (progress == 1f) 400 else 200
-                startDelay = if (progress == 1f) 400 else -1
-            })
-            postDelayed({ setVisible(progress != 1f) }, if (progress == 1f) 400 else 0)
-        }
+        binding.toolbar.progressBar.setProgress(progress)
     }
 
     override fun onTitleChange(title: String) {

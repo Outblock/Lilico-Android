@@ -112,6 +112,7 @@
                 android:textColor="@color/text"
                 android:textSize="14sp"
                 app:cornerRadius="12dp"
+                android:visibility="gone"
                 app:elevation="0dp"
                 app:icon="@drawable/ic_share"
                 app:iconTint="@color/colorSecondary"

@@ -12,6 +12,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityCollectionBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.collection.model.CollectionContentModel
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
@@ -74,6 +75,10 @@ class CollectionContentPresenter(
             subtitleView.text = activity.getString(R.string.collections_count, data.size)
 
             toolbar.title = config.name
+
+            NftCollectionConfig.get(data.first().nft.contract.address)?.officialWebsite?.let { url ->
+                exploreButton.setOnClickListener { openBrowser(activity, url) }
+            }
         }
     }
 
