@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <io.outblock.lilico.page.profile.widget.ProfilePreferenceState
+            <io.outblock.lilico.page.profile.widget.ProfilePreferenceProgressState
                 android:id="@+id/drive_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

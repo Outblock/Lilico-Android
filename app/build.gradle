@@ -180,6 +180,7 @@ dependencies {
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
     implementation 'joda-time:joda-time:2.10.3'
     implementation 'commons-validator:commons-validator:1.7'
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"

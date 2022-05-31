@@ -11,9 +11,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.ActivityBackupSettingBinding
-import io.outblock.lilico.manager.drive.ACTION_GOOGLE_DRIVE_DELETE_FINISH
-import io.outblock.lilico.manager.drive.EXTRA_SUCCESS
+import io.outblock.lilico.manager.drive.*
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PHRASES
 import io.outblock.lilico.utils.*
@@ -27,7 +27,22 @@ class BackupSettingActivity : BaseActivity() {
     private val driveDeleteReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
             val isSuccess = intent?.getBooleanExtra(EXTRA_SUCCESS, false) ?: return
-            onUploadCallback(isSuccess)
+            onDeleteCallback(isSuccess)
+        }
+    }
+
+    private val driveRestoreReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val data = intent?.getParcelableArrayListExtra<DriveItem>(EXTRA_CONTENT) ?: return
+                ioScope {
+                    setBackupGoogleDrive(data.firstOrNull { it.username.lowercase() == userInfoCache().read()?.username?.lowercase() } != null)
+                    delay(100)
+                    uiScope {
+                        binding.drivePreference.setChecked(isBackupGoogleDrive())
+                    }
+                }
+            }
         }
     }
 
@@ -58,7 +73,10 @@ class BackupSettingActivity : BaseActivity() {
             }
         }
 
-        LocalBroadcastManager.getInstance(Env.getApp()).registerReceiver(driveDeleteReceiver, IntentFilter(ACTION_GOOGLE_DRIVE_DELETE_FINISH))
+        binding.drivePreference.showProgress()
+        GoogleDriveAuthActivity.restoreMnemonic(this)
+        LocalBroadcastManager.getInstance(this).registerReceiver(driveRestoreReceiver, IntentFilter(ACTION_GOOGLE_DRIVE_RESTORE_FINISH))
+        LocalBroadcastManager.getInstance(this).registerReceiver(driveDeleteReceiver, IntentFilter(ACTION_GOOGLE_DRIVE_DELETE_FINISH))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,11 +93,12 @@ class BackupSettingActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        LocalBroadcastManager.getInstance(Env.getApp()).unregisterReceiver(driveDeleteReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(driveDeleteReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(driveRestoreReceiver)
         super.onDestroy()
     }
 
-    private fun onUploadCallback(isSuccess: Boolean) {
+    private fun onDeleteCallback(isSuccess: Boolean) {
         progressDialog.dismiss()
         if (isSuccess) {
             setBackupGoogleDrive(false)
@@ -94,10 +113,7 @@ class BackupSettingActivity : BaseActivity() {
 
     private fun updateState() {
         uiScope {
-            with(binding) {
-                drivePreference.setStateVisible(isBackupGoogleDrive())
-                manuallyPreference.setStateVisible(isBackupManually())
-            }
+            binding.manuallyPreference.setStateVisible(isBackupManually())
         }
     }
 

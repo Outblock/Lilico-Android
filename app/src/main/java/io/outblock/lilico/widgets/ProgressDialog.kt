@@ -10,12 +10,13 @@ import io.outblock.lilico.R
 
 class ProgressDialog(
     private val context: Context,
+    private val cancelable: Boolean = false,
 ) {
     private var dialog: Dialog? = null
     fun show(): Dialog {
         with(AlertDialog.Builder(context)) {
             setView(DialogView(context) { dialog?.cancel() })
-            setCancelable(false)
+            setCancelable(cancelable)
             with(create()) {
                 dialog = this
                 window?.setBackgroundDrawableResource(R.color.transparent)
