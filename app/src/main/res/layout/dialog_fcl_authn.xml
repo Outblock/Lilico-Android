@@ -10,8 +10,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="18dp"
     android:paddingTop="18dp"
-    android:paddingBottom="@dimen/wallet_create_button_margin"
-    tools:backgroundTint="@color/neutrals4">
+    android:paddingBottom="@dimen/wallet_create_button_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -158,10 +157,10 @@
             android:layout_width="0dp"
             android:layout_height="58dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/salmon5"
+            android:backgroundTint="@color/neutrals10"
             android:text="@string/cancel"
             android:textAllCaps="false"
-            android:textColor="@color/salmon_primary"
+            android:textColor="@color/text"
             app:cornerRadius="16dp"/>
 
         <com.google.android.material.button.MaterialButton
