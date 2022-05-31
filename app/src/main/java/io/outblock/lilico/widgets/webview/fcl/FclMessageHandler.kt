@@ -65,7 +65,7 @@ class FclMessageHandler(
     private fun cadence(fcl: FclAuthzResponse) {
         uiScope {
             serviceType = ""
-            val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl)
+            val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
             if (approve) {
                 webView.postAuthzViewReadyResponse(fcl)
             }
@@ -75,7 +75,7 @@ class FclMessageHandler(
     private fun connect(fcl: FclAuthnResponse) {
         uiScope {
             serviceType = ""
-            val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl)
+            val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
             if (approve) {
                 walletCache().read()?.primaryWalletAddress()?.let { webView.postAuthnViewReadyResponse(it) }
             }

@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthnBinding
+import io.outblock.lilico.page.browser.toFavIcon
+import io.outblock.lilico.utils.extensions.urlHost
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -18,6 +20,8 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
 
     private var data: FclAuthnResponse? = null
     private var result: Continuation<Boolean>? = null
+    private var url: String? = null
+    private var title: String? = null
 
     private lateinit var binding: DialogFclAuthnBinding
 
@@ -31,13 +35,9 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
             return
         }
         with(binding) {
-            Glide.with(iconView).load("").placeholder(R.drawable.placeholder).into(iconView)
-            nameView.text = "Website"
-            descView.text = getString(R.string.authn_desc, "Website")
-            closeButton.setOnClickListener {
-                dismiss()
-                result?.resume(false)
-            }
+            Glide.with(iconView).load(url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            nameView.text = title
+            urlView.text = url?.urlHost()
             cancelButton.setOnClickListener {
                 dismiss()
                 result?.resume(false)
@@ -49,9 +49,16 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
         }
     }
 
-    suspend fun show(fragmentManager: FragmentManager, data: FclAuthnResponse) = suspendCoroutine<Boolean> { result ->
+    suspend fun show(
+        fragmentManager: FragmentManager,
+        data: FclAuthnResponse,
+        url: String?,
+        title: String?,
+    ) = suspendCoroutine<Boolean> { result ->
         this.data = data
         this.result = result
+        this.url = url
+        this.title = title
         show(fragmentManager, "")
     }
 
@@ -61,4 +68,5 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
         }
         super.onResume()
     }
+
 }

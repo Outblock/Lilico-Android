@@ -1,97 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_round_16dp"
-    android:backgroundTint="@color/card_bg"
-    android:paddingBottom="@dimen/wallet_create_button_margin">
+    android:backgroundTint="@color/deep_bg"
+    android:orientation="vertical"
+    android:paddingHorizontal="18dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="@dimen/wallet_create_button_margin"
+    tools:backgroundTint="@color/neutrals4">
 
-    <TextView
-        android:id="@+id/title_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:fontFamily="@font/inter"
-        android:gravity="center"
-        android:paddingVertical="18dp"
-        android:paddingStart="26dp"
-        android:paddingEnd="0dp"
-        android:text="@string/request_authorization"
-        android:textColor="@color/text"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.constraintlayout.utils.widget.ImageFilterButton
-        android:id="@+id/close_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="22dp"
-        android:background="?attr/actionBarItemBackground"
-        android:padding="6dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_baseline_close_24"
-        app:layout_constraintBottom_toBottomOf="@id/title_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/title_view"
-        app:tint="@color/neutrals8"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/content_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="18dp"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/bg_round_16dp"
-        android:backgroundTint="@color/background"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/title_view">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/icon_view"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="29dp"
             android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:round="80dp"
             tools:background="#999"/>
+
+        <TextView
+            android:id="@+id/title_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:text="@string/connecting_to"
+            android:textColor="@color/note"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/name_view"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toTopOf="@id/icon_view"
+            app:layout_constraintVertical_chainStyle="packed"/>
 
         <TextView
             android:id="@+id/name_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="7dp"
-            android:fontFamily="@font/inter"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/montsettat"
             android:textColor="@color/text"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            tools:text="Flow"/>
+            app:layout_constraintBottom_toBottomOf="@id/icon_view"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toBottomOf="@id/title_1"
+            tools:text="NBA Top Shot Marketplace"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/neutrals10"
+        android:orientation="horizontal"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="14dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_website"/>
 
         <TextView
-            android:id="@+id/desc_view"
+            android:id="@+id/url_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/inter"
-            android:gravity="center_horizontal"
-            android:paddingHorizontal="39dp"
-            android:paddingVertical="7dp"
+            android:layout_marginStart="18dp"
             android:textColor="@color/text"
-            android:textSize="15sp"
-            tools:text="@string/authz_desc"/>
+            android:textSize="14sp"
+            tools:text="google.com"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/neutrals10"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:text="@string/script"
+            android:textAllCaps="true"
+            android:textColor="@color/neutrals5"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/script_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_round_16dp"
-            android:backgroundTint="@color/border_3"
-            android:padding="8dp"
+            android:maxHeight="244dp"
+            android:scrollbars="vertical"
             android:textColor="@color/text"
             tools:text="\n      transaction() {\n        prepare(acct: AuthAccount) {\n          log(acct)\n        }\n      }\n    "/>
 
@@ -109,7 +124,6 @@
             android:id="@+id/cancel_button"
             android:layout_width="0dp"
             android:layout_height="58dp"
-            android:layout_marginStart="18dp"
             android:layout_weight="1"
             android:backgroundTint="@color/salmon5"
             android:text="@string/cancel"
@@ -122,7 +136,6 @@
             android:layout_width="0dp"
             android:layout_height="58dp"
             android:layout_marginStart="18dp"
-            android:layout_marginEnd="18dp"
             android:layout_weight="1"
             android:backgroundTint="@color/salmon_primary"
             android:text="@string/approve"
@@ -130,4 +143,4 @@
             android:textColor="@color/white"
             app:cornerRadius="16dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
