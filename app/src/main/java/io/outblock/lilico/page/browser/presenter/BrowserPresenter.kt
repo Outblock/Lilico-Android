@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
+import eightbitlab.com.blurview.RenderScriptBlur
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.*
@@ -44,6 +45,8 @@ class BrowserPresenter(
                 homeButton.setOnClickListener { popBrowserLastTab() }
                 floatButton.setOnClickListener { shrinkBrowser() }
                 menuButton.setOnClickListener { browserTabLast()?.let { BrowserPopupMenu(menuButton, it).show() } }
+                blurView.setupWith(binding.webviewContainer)
+                    .setBlurAlgorithm(RenderScriptBlur(root.context)).setBlurAutoUpdate(true).setBlurRadius(20.0f)
             }
         }
     }

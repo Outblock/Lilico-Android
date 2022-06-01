@@ -189,4 +189,5 @@
     <color name="quote_up">#40C900</color>
     <color name="quote_down_opacity">#1CF75744</color>
     <color name="quote_down">#F75744</color>
+    <color name="blur">#26000000</color>
 </resources>

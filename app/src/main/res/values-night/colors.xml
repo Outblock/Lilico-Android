@@ -80,5 +80,6 @@
     <color name="primary48">#76242430</color>
     <color name="primary80">#cc242430</color>
     <color name="brightest_text">#000000</color>
+    <color name="blur">#26ffffff</color>
 </resources>
 
