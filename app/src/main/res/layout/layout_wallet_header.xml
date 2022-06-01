@@ -185,6 +185,7 @@
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:text="@string/swap"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@color/note"
                 app:cornerRadius="16dp"

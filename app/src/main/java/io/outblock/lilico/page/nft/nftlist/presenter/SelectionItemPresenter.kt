@@ -73,13 +73,13 @@ class SelectionItemPresenter(
     override fun bind(model: NftSelections) {
         val list = model.data.reversed()
         currentIndex = 0
-//        view.setVisible(list.isNotEmpty())
         updateData(list)
     }
 
     private fun updateData(list: List<Nft>) {
         uiScope {
             this.data = list
+            view.setVisible(list.isNotEmpty())
             binding.titleWrapper.setVisible(list.isNotEmpty())
             binding.motionLayout.setVisible(list.isNotEmpty())
             binding.carousel.setAdapter(SelectionsAdapter(list))

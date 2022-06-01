@@ -226,4 +226,5 @@
     <string name="fcl_permission_read_balance">View your wallet balance and activity</string>
     <string name="fcl_permission_transaction">Request approval for transactions</string>
     <string name="script">Script</string>
+    <string name="future_coming_soon">Feature coming soon alter</string>
 </resources>

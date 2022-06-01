@@ -9,7 +9,6 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
-import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
@@ -42,7 +41,7 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
-            buyButton.setOnClickListener { openBrowser(findActivity(view)!!, "https://www.google.com/search?q=flow") }
+            buyButton.setOnClickListener { toast(msgRes = R.string.future_coming_soon) }
 
             hideButton.setOnClickListener {
                 uiScope {
