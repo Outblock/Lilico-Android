@@ -21,9 +21,14 @@ class WalletCoinItemPresenter(
         with(binding) {
             Glide.with(coinIcon).load(model.coin.icon).into(coinIcon)
             coinName.text = model.coin.name
-            coinBalance.text = "${model.balance} ${model.coin.symbol.uppercase()}"
+            if (model.isHideBalance) {
+                coinBalance.text = "**** ${model.coin.symbol.uppercase()}"
+                coinBalancePrice.text = "****"
+            } else {
+                coinBalance.text = "${model.balance} ${model.coin.symbol.uppercase()}"
+                coinBalancePrice.text = "$${(model.balance * model.coinRate).formatPrice()}"
+            }
             coinPrice.text = "$" + model.coinRate.formatPrice()
-            coinBalancePrice.text = "$${(model.balance * model.coinRate).formatPrice()}"
             view.setOnClickListener { TokenDetailActivity.launch(view.context, model.coin) }
         }
     }

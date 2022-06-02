@@ -27,7 +27,7 @@ class WalletFragment : BaseFragment() {
         presenter = WalletFragmentPresenter(this, binding)
         headerPresenter = WalletHeaderPresenter(binding.walletHeader.root)
 
-        viewModel = ViewModelProvider(this)[WalletFragmentViewModel::class.java].apply {
+        viewModel = ViewModelProvider(requireActivity())[WalletFragmentViewModel::class.java].apply {
             dataListLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletFragmentModel(data = it)) }
             headerLiveData.observe(viewLifecycleOwner) { headerPresenter.bind(it) }
         }

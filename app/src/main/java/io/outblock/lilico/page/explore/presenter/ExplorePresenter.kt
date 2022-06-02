@@ -73,6 +73,9 @@ class ExplorePresenter(
             binding.recentListView.post { binding.recentListView.scrollToPositionForce(0) }
         }
 
-        model.bookmarkList?.let { bookmarkAdapter.setNewDiffData(it) }
+        model.bookmarkList?.let {
+            bookmarkAdapter.setNewDiffData(it)
+            binding.bookmarkWrapper.setVisible(it.isNotEmpty())
+        }
     }
 }

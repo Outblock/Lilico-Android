@@ -33,6 +33,7 @@ private val KEY_CHAIN_NETWORK = intPreferencesKey("KEY_CHAIN_NETWORK")
 private val KEY_THEME_MODE = intPreferencesKey("KEY_THEME_MODE")
 private val KEY_QUOTE_MARKET = stringPreferencesKey("KEY_QUOTE_MARKET")
 private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BALANCE")
+private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -134,6 +135,12 @@ suspend fun isHideWalletBalance(): Boolean = dataStore.data.map { it[KEY_HIDE_WA
 
 suspend fun setHideWalletBalance(isHide: Boolean) {
     dataStore.edit { it[KEY_HIDE_WALLET_BALANCE] = isHide }
+}
+
+suspend fun isBookmarkPrepopulateFilled(): Boolean = dataStore.data.map { it[KEY_BOOKMARK_PREPOPULATE_FILLED] ?: false }.first()
+
+suspend fun setBookmarkPrepopulateFilled(isFilled: Boolean) {
+    dataStore.edit { it[KEY_BOOKMARK_PREPOPULATE_FILLED] = isFilled }
 }
 
 private fun edit(unit: suspend () -> Unit) {

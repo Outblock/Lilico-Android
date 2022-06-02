@@ -3,6 +3,8 @@ package io.outblock.lilico.page.wallet.presenter
 import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
@@ -12,6 +14,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
+import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
@@ -22,6 +25,8 @@ class WalletHeaderPresenter(
 ) : BaseViewHolder(view), BasePresenter<WalletHeaderModel> {
 
     private val binding by lazy { LayoutWalletHeaderBinding.bind(view) }
+
+    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[WalletFragmentViewModel::class.java] }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: WalletHeaderModel) {
@@ -47,6 +52,7 @@ class WalletHeaderPresenter(
                 uiScope {
                     setHideWalletBalance(!isHideWalletBalance())
                     bind(model)
+                    viewModel.onBalanceHideStateUpdate()
                 }
             }
         }

@@ -9,4 +9,19 @@
             Coin","address":{"mainnet":"0xb19436aae4d94622","testnet":"0xa983fecbed621163"},"contract_name":"FiatToken","storage_path":{"balance":"/public/USDCVaultBalance","vault":"/storage/USDCVault","receiver":"/public/USDCVaultReceiver"},"decimal":8,"icon":"https://raw.githubusercontent.com/Outblock/Assets/main/ft/usdc/logo.png","symbol":"usdc","website":"https://www.circle.com/en/"},{"name":"My","address":{"mainnet":"0x348fe2042c8a70d8","testnet":"0x40212f3e288efd03"},"contract_name":"MyToken","storage_path":{"balance":"/public/mytokenBalance","vault":"/storage/mytokenVault","receiver":"/public/mytokenReceiver"},"decimal":8,"icon":"https://raw.githubusercontent.com/Outblock/Assets/main/ft/my/logo.png","symbol":"my","website":"https://mynft.io/"}]
         </value>
     </entry>
+
+    <entry>
+        <key>dapp</key>
+        <value>
+            [{"name":"Flowns","url":"https://flowns.org","testnet_url":"https://testnet.flowns.org","description":"Flow-based Domain Name Service
+            where every domain is an
+            NFT","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/flowns/logo.png","category":"Domain"},{"name":"Find","url":"https://find.xyz/","testnet_url":"https://test.find.xyz/","description":"A
+            place to find people and things on the Flow
+            Blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/find/logo.png","category":"Domain"},{"name":"FLOAT","url":"https://www.ecdao.org/","testnet_url":"https://testnet.floats.city/","description":"A
+            Flow-enabled proof of attendance platform built by Emerald
+            DAO","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/float/logo.png","category":"Domain"},{"name":"Increment","url":"https://swap.increment.fi/swap","testnet_url":"https://demo.increment.fi/swap","description":"Decentralized
+            money market and one-stop DeFi suites to boost yield &amp; liquidity opportunities on the Flow
+            blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/increment/logo.jpeg","category":"Domain"}]
+        </value>
+    </entry>
 </defaultsMap>

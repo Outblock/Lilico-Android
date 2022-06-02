@@ -7,10 +7,10 @@ import io.outblock.lilico.manager.coin.*
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
+import io.outblock.lilico.utils.isHideWalletBalance
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.viewModelIOScope
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener {
@@ -18,8 +18,6 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     val dataListLiveData = MutableLiveData<List<Any>>()
 
     val headerLiveData = MutableLiveData<WalletHeaderModel>()
-
-    private var balanceList = ConcurrentHashMap<String, Float>()
 
     private val dataList = CopyOnWriteArrayList<Any>()
 
@@ -60,6 +58,15 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         updateCoinRate(coin, price)
     }
 
+    fun onBalanceHideStateUpdate() {
+        viewModelIOScope(this) {
+            val isHideBalance = isHideWalletBalance()
+            val data = dataList.toList().map { if (it is WalletCoinItemModel) it.copy(isHideBalance = isHideBalance) else it }
+
+            dataListLiveData.postValue(data)
+        }
+    }
+
     private fun loadCoinList() {
         viewModelIOScope(this) {
             val coinList = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }
@@ -67,7 +74,8 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             val newCoin =
                 coinList.filter { coin -> dataList.filterIsInstance<WalletCoinItemModel>().indexOfFirst { coin.symbol == it.coin.symbol } < 0 }
             if (newCoin.isNotEmpty()) {
-                dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f) })
+                val isHideBalance = isHideWalletBalance()
+                dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance) })
                 logd(TAG, "loadCoinList:${newCoin.map { it.symbol }}")
                 dataListLiveData.postValue(dataList)
                 updateWalletHeader(count = coinList.size)
