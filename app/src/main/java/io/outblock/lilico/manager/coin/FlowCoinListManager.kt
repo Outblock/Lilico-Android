@@ -56,7 +56,7 @@ class FlowCoin(
     @SerializedName("website")
     val website: String,
 ) : Parcelable {
-    fun address() = if (isTestnet()) address.testnet else address.mainnet
+    fun address() = if (isTestnet()) address.testnet.orEmpty() else address.mainnet
 
     fun isFlowCoin() = symbol.lowercase() == "flow"
 
@@ -71,7 +71,7 @@ class FlowCoinAddress(
     @SerializedName("mainnet")
     val mainnet: String,
     @SerializedName("testnet")
-    val testnet: String,
+    val testnet: String?,
 ) : Parcelable
 
 @Parcelize
