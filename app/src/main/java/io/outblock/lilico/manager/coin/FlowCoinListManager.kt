@@ -24,7 +24,7 @@ object FlowCoinListManager {
             val list = Gson().fromJson<List<FlowCoin>>(jsonStr, object : TypeToken<List<FlowCoin>>() {}.type)
             if (list.isNotEmpty()) {
                 coinList.clear()
-                coinList.addAll(list)
+                coinList.addAll(list.filter { it.address().isNotBlank() })
             }
             TokenStateManager.fetchState()
         }
