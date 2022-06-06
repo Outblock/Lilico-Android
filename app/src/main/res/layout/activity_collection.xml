@@ -111,8 +111,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/text"
                 android:textSize="14sp"
-                app:cornerRadius="12dp"
                 android:visibility="gone"
+                app:cornerRadius="12dp"
                 app:elevation="0dp"
                 app:icon="@drawable/ic_share"
                 app:iconTint="@color/colorSecondary"
@@ -124,9 +124,10 @@
                 android:id="@+id/explore_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="0dp"
                 android:backgroundTint="@color/primary48"
                 android:fontFamily="@font/inter_semi_bold"
+                android:letterSpacing="0"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:paddingHorizontal="10dp"
@@ -160,11 +161,13 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/transparent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

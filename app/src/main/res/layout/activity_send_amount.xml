@@ -7,13 +7,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/send_to"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/text"/>
 
     <FrameLayout
@@ -117,6 +119,7 @@
             android:paddingStart="58dp"
             android:paddingEnd="30dp"
             android:textColor="@color/text"
+            android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="LabelFor"
             tools:text="123456"/>
@@ -154,8 +157,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/bg_icon"
+            android:fontFamily="@font/inter_medium"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:letterSpacing="0"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingHorizontal="10dp"
@@ -164,7 +169,7 @@
             android:text="@string/max"
             android:textAllCaps="false"
             android:textColor="@color/text"
-            android:textSize="10sp"
+            android:textSize="14sp"
             app:cornerRadius="16dp"
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +240,7 @@
         android:layout_marginTop="40dp"
         android:fontFamily="@font/inter_medium"
         android:text="@string/amount_balance"
-        android:textColor="@color/text"
+        android:textColor="@color/note"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/error_wrapper"/>

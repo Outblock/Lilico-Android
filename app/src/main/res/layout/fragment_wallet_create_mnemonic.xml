@@ -76,7 +76,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/do_not_share_secret"
                 android:textColor="@color/error"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -86,7 +86,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/do_not_share_secret_desc"
                 android:textColor="@color/error"
-                android:textSize="12sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton

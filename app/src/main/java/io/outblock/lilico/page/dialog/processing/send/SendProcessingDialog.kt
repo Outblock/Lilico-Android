@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.processing
+package io.outblock.lilico.page.dialog.processing.send
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.manager.transaction.TransactionState
-import io.outblock.lilico.page.send.processing.model.SendProcessingDialogModel
-import io.outblock.lilico.page.send.processing.presenter.SendProcessingPresenter
+import io.outblock.lilico.page.dialog.processing.send.model.SendProcessingDialogModel
+import io.outblock.lilico.page.dialog.processing.send.presenter.SendProcessingPresenter
 import io.outblock.lilico.utils.uiScope
 
 class SendProcessingDialog : BottomSheetDialogFragment() {

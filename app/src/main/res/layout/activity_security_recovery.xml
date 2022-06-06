@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -70,7 +72,7 @@
             android:gravity="center_horizontal"
             android:text="@string/do_not_share_secret"
             android:textColor="@color/error"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -80,6 +82,6 @@
             android:gravity="center_horizontal"
             android:text="@string/do_not_share_secret_desc"
             android:textColor="@color/error"
-            android:textSize="12sp"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 </LinearLayout>

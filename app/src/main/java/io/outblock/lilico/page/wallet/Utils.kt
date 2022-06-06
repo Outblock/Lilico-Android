@@ -12,7 +12,7 @@ val walletListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
         }
 
         if (oldItem is WalletCoinItemModel && newItem is WalletCoinItemModel) {
-            return oldItem.address == newItem.address
+            return oldItem.coin.symbol == newItem.coin.symbol
         }
         return false
     }

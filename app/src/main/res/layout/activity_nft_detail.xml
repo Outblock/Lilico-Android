@@ -259,12 +259,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/transparent"/>
 
     <com.google.android.material.button.MaterialButton
@@ -275,6 +277,7 @@
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/inter_semi_bold"
+        android:letterSpacing="0"
         android:text="@string/more"
         android:textAllCaps="false"
         android:textColor="@color/text"
@@ -296,6 +299,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/inter_semi_bold"
+        android:letterSpacing="0"
         android:text="@string/send"
         android:textAllCaps="false"
         android:textColor="@color/text"

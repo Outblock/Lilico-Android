@@ -18,7 +18,7 @@
         android:paddingVertical="18dp"
         android:paddingStart="26dp"
         android:paddingEnd="0dp"
-        android:text="@string/confirmation"
+        android:text="@string/process_of_enabling_coin"
         android:textColor="@color/text"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -37,6 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/title_view"
         app:tint="@color/neutrals8"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_wrapper"
@@ -77,6 +78,23 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Flow"/>
 
+        <TextView
+            android:id="@+id/processing_state_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_round_corner"
+            android:backgroundTint="@color/salmon5"
+            android:fontFamily="@font/inter_semi_bold"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="2dp"
+            android:textColor="@color/salmon_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/token_name_view"
+            tools:text="Pending"/>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/icon_view"
@@ -96,18 +114,4 @@
             app:layout_constraintTop_toBottomOf="@id/icon_view"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <io.outblock.lilico.widgets.SendButton
-        android:id="@+id/action_button"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="18dp"
-        android:layout_marginTop="40dp"
-        app:cardBackgroundColor="@color/button_color"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="3dp"
-        app:defaultText="@string/hold_to_add"
-        app:layout_constraintTop_toBottomOf="@id/content_wrapper"
-        app:processingText="@string/transition_is_processing"
-        app:rippleColor="@color/primary10"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

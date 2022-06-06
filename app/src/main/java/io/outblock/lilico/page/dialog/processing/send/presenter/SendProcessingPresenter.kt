@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.processing.presenter
+package io.outblock.lilico.page.dialog.processing.send.presenter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -9,8 +9,8 @@ import io.outblock.lilico.databinding.DialogSendConfirmBinding
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_NFT
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_COIN
-import io.outblock.lilico.page.send.processing.SendProcessingDialog
-import io.outblock.lilico.page.send.processing.model.SendProcessingDialogModel
+import io.outblock.lilico.page.dialog.processing.send.SendProcessingDialog
+import io.outblock.lilico.page.dialog.processing.send.model.SendProcessingDialogModel
 import io.outblock.lilico.page.send.transaction.subpage.bindNft
 import io.outblock.lilico.page.send.transaction.subpage.bindUserInfo
 import io.outblock.lilico.utils.extensions.res2color

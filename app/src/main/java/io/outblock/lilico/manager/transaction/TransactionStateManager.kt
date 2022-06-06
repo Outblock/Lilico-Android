@@ -8,6 +8,7 @@ import com.nftco.flow.sdk.FlowId
 import com.nftco.flow.sdk.FlowTransactionResult
 import com.nftco.flow.sdk.FlowTransactionStatus
 import com.nftco.flow.sdk.hexToBytes
+import io.outblock.lilico.R
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.TokenStateManager
@@ -17,6 +18,7 @@ import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
 import io.outblock.lilico.page.window.bubble.tools.updateBubbleStack
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.safeRun
@@ -188,6 +190,14 @@ data class TransactionState(
     fun isUnknown() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
 
     fun isSealed() = state == FlowTransactionStatus.SEALED.num
+
+    fun stateStr() = if (isSuccess()) {
+        R.string.success.res2String()
+    } else if (isFailed()) {
+        R.string.failed.res2String()
+    } else {
+        R.string.pending.res2String()
+    }
 
     fun progress(): Float {
         return when (state) {

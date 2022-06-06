@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:fontFamily="@font/inter"
-        android:gravity="center_vertical|start"
+        android:gravity="center"
         android:paddingVertical="18dp"
         android:paddingStart="26dp"
         android:paddingEnd="0dp"

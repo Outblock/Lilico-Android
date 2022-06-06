@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.send.processing.model
+package io.outblock.lilico.page.dialog.processing.send.model
 
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.network.model.UserInfoData

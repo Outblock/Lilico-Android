@@ -8,7 +8,9 @@
     android:background="@color/deep_bg"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

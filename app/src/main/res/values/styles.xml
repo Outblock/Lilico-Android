@@ -77,8 +77,10 @@
         <item name="android:paddingVertical">13dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:backgroundTint">@color/button_color</item>
         <item name="cornerRadius">16dp</item>
+        <item name="android:fontFamily">@font/inter_semi_bold</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:padding">0dp</item>
         <item name="android:layout_height">58dp</item>
@@ -88,7 +90,9 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:paddingVertical">13dp</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
         <item name="strokeColor">@color/button</item>
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">16dp</item>
@@ -99,6 +103,7 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:paddingVertical">13dp</item>
@@ -111,6 +116,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:stateListAnimator">@null</item>
+        <item name="android:letterSpacing">0</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
@@ -165,5 +171,11 @@
         <item name="android:paddingVertical">3dp</item>
         <item name="rippleColor">@color/brightest_text</item>
         <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="ToolbarTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/inter_semi_bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

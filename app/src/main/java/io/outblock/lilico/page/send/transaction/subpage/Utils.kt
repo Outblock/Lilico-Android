@@ -22,7 +22,7 @@ fun DialogSendConfirmBinding.bindUserInfo(userInfo: UserInfoData, contact: Addre
     fromNameView.text = userInfo.nickname
     fromAddressView.text = "(${userInfo.address?.toAddress()})"
 
-    toNameView.text = "${contact.name()} ${if (!contact.username.isNullOrEmpty()) "  (@${contact.username})" else ""}"
+    toNameView.text = "${contact.name()} ${if (!contact.username.isNullOrEmpty()) " (@${contact.username})" else ""}"
     namePrefixView.text = contact.prefixName()
     namePrefixView.setVisible(contact.prefixName().isNotEmpty())
 
