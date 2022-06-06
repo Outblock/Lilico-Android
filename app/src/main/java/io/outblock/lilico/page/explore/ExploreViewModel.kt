@@ -7,19 +7,18 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.database.WebviewRecord
+import io.outblock.lilico.page.explore.model.DAppModel
 import io.outblock.lilico.utils.cpuScope
-import io.outblock.lilico.utils.isBookmarkPrepopulateFilled
-import io.outblock.lilico.utils.setBookmarkPrepopulateFilled
 import io.outblock.lilico.utils.viewModelIOScope
 
 class ExploreViewModel : ViewModel() {
     val recentLiveData = MutableLiveData<List<WebviewRecord>>()
     val bookmarkLiveData = MutableLiveData<List<Bookmark>>()
+    val dAppsLiveData = MutableLiveData<List<DAppModel>>()
 
     val onDAppClickLiveData = MutableLiveData<String>()
 
@@ -35,6 +34,7 @@ class ExploreViewModel : ViewModel() {
         viewModelIOScope(this) {
             recentLiveData.postValue(AppDataBase.database().webviewRecordDao().findAll(limit = 4))
             refreshBookmark()
+            refreshDApps()
         }
     }
 
@@ -49,39 +49,14 @@ class ExploreViewModel : ViewModel() {
 
     private fun refreshBookmark() {
         cpuScope {
-            if (!isBookmarkPrepopulateFilled()) {
-                val json = Firebase.remoteConfig.getString("dapp")
-                Gson().fromJson<List<DApp>>(json, object : TypeToken<List<DApp>>() {}.type).forEach { dapp ->
-                    AppDataBase.database().bookmarkDao()
-                        .save(
-                            Bookmark(
-                                url = dapp.url,
-                                title = dapp.name,
-                                isFavourite = false,
-                                createTime = System.currentTimeMillis(),
-                            )
-                        )
-                }
-                setBookmarkPrepopulateFilled(true)
-            }
-
             val data = AppDataBase.database().bookmarkDao().findAll(limit = 10)
             bookmarkLiveData.postValue(data)
         }
     }
-}
 
-private data class DApp(
-    @SerializedName("category")
-    val category: String,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("logo")
-    val logo: String,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("testnet_url")
-    val testnetUrl: String,
-    @SerializedName("url")
-    val url: String
-)
+    private fun refreshDApps() {
+        val json = Firebase.remoteConfig.getString("dapp")
+        val dApps = Gson().fromJson<List<DAppModel>>(json, object : TypeToken<List<DAppModel>>() {}.type)
+        dAppsLiveData.postValue(dApps)
+    }
+}

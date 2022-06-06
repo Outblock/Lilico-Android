@@ -4,8 +4,7 @@ import android.animation.ObjectAnimator
 import android.view.ViewGroup
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
-import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
-import eightbitlab.com.blurview.RenderScriptBlur
+import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.*
@@ -17,6 +16,7 @@ import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.page.window.bubble.tools.inBubbleStack
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.widgets.RenderScriptBlur2
 import kotlin.math.abs
 
 class BrowserPresenter(
@@ -35,7 +35,7 @@ class BrowserPresenter(
                 contentWrapper.addStatusBarTopPadding()
                 root.addNavigationBarBottomPadding()
                 with(root.layoutParams as ViewGroup.MarginLayoutParams) {
-                    bottomMargin = navigationBarHeight
+                    bottomMargin = statusBarHeight
                     root.layoutParams = this
                 }
             }
@@ -46,7 +46,7 @@ class BrowserPresenter(
                 floatButton.setOnClickListener { shrinkBrowser() }
                 menuButton.setOnClickListener { browserTabLast()?.let { BrowserPopupMenu(menuButton, it).show() } }
                 blurView.setupWith(binding.webviewContainer)
-                    .setBlurAlgorithm(RenderScriptBlur(root.context)).setBlurAutoUpdate(true).setBlurRadius(20.0f)
+                    .setBlurAlgorithm(RenderScriptBlur2(root.context)).setBlurAutoUpdate(true).setBlurRadius(20.0f)
             }
         }
     }

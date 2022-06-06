@@ -9,6 +9,7 @@ import io.outblock.lilico.databinding.FragmentExploreBinding
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
+import io.outblock.lilico.page.explore.adapter.ExploreDAppAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.BookmarkListDialog
@@ -29,6 +30,7 @@ class ExplorePresenter(
 
     private val recentAdapter by lazy { ExploreRecentAdapter() }
     private val bookmarkAdapter by lazy { ExploreBookmarkAdapter() }
+    private val dappAdapter by lazy { ExploreDAppAdapter() }
 
     private val activity by lazy { fragment.requireActivity() }
 
@@ -52,6 +54,13 @@ class ExplorePresenter(
             )
             adapter = bookmarkAdapter
         }
+
+        with(binding.dappListView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 12.dp2px().toInt(), LinearLayoutManager.VERTICAL))
+            adapter = dappAdapter
+        }
+
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
             bookmarkMoreButton.setOnClickListener { BookmarkListDialog.show(activity.supportFragmentManager) }
@@ -76,6 +85,11 @@ class ExplorePresenter(
         model.bookmarkList?.let {
             bookmarkAdapter.setNewDiffData(it)
             binding.bookmarkWrapper.setVisible(it.isNotEmpty())
+        }
+
+        model.dAppList?.let {
+            dappAdapter.setNewDiffData(it)
+            binding.dappWrapper.setVisible(it.isNotEmpty())
         }
     }
 }
