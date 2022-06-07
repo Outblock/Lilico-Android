@@ -20,5 +20,6 @@
 
         <item name="alertDialogTheme">@style/Theme.AlertDialogTheme</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceOverlay</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 </resources>

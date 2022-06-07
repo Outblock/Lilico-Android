@@ -24,6 +24,17 @@
         <item name="android:windowAnimationStyle">@style/DisableAnimation</item>
     </style>
 
+    <style name="AppBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppBottomSheetStyle</item>
+    </style>
+
+    <style name="AppBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_top_radius_16dp</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:topRightRadius">16dp</item>
+        <item name="android:topLeftRadius">16dp</item>
+    </style>
+
     <style name="DisableAnimation">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>

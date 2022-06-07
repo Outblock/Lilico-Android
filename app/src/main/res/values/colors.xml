@@ -190,4 +190,5 @@
     <color name="quote_down_opacity">#1CF75744</color>
     <color name="quote_down">#F75744</color>
     <color name="blur">#26000000</color>
+    <color name="image_bg">@color/neutrals8</color>
 </resources>

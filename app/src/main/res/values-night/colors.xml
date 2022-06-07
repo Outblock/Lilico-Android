@@ -41,6 +41,7 @@
     <color name="neutrals5">#BFBFBF</color>
     <color name="neutrals6">#B2B2B2</color>
     <color name="neutrals7">#999999</color>
+    <color name="neutrals8">#787878</color>
     <color name="neutrals9">#666666</color>
     <color name="neutrals10">#313131</color>
     <color name="neutrals11">#282828</color>
@@ -81,5 +82,6 @@
     <color name="primary80">#cc242430</color>
     <color name="brightest_text">#000000</color>
     <color name="blur">#26ffffff</color>
+    <color name="image_bg">@color/neutrals10</color>
 </resources>
 
