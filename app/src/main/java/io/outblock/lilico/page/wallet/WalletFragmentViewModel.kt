@@ -71,14 +71,16 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         viewModelIOScope(this) {
             val coinList = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }
 
-            val newCoin = coinList.filter { coin -> dataList.firstOrNull { it.coin.symbol == coin.symbol } == null }
-            if (newCoin.isNotEmpty()) {
-                val isHideBalance = isHideWalletBalance()
-                dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance) })
-                logd(TAG, "loadCoinList newCoin:${newCoin.map { it.symbol }}")
-                logd(TAG, "loadCoinList dataList:${dataList.map { it.coin.symbol }}")
-                dataListLiveData.postValue(dataList)
-                updateWalletHeader(count = coinList.size)
+            val isHideBalance = isHideWalletBalance()
+            uiScope {
+                val newCoin = coinList.filter { coin -> dataList.firstOrNull { it.coin.symbol == coin.symbol } == null }
+                if (newCoin.isNotEmpty()) {
+                    dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance) })
+                    logd(TAG, "loadCoinList newCoin:${newCoin.map { it.symbol }}")
+                    logd(TAG, "loadCoinList dataList:${dataList.map { it.coin.symbol }}")
+                    dataListLiveData.postValue(dataList)
+                    updateWalletHeader(count = coinList.size)
+                }
             }
 
             BalanceManager.refresh()
