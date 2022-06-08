@@ -80,7 +80,7 @@ class WalletCreateCloudPwdPresenter(
 
     private fun onBackupCallback(isSuccess: Boolean) {
         if (isSuccess) {
-            setBackupGoogleDrive()
+            setBackupGoogleDrive(true)
             if (fragment.requireActivity() is BackupGoogleDriveActivity) {
                 fragment.requireActivity().finish()
             } else {

@@ -92,6 +92,11 @@ class BackupSettingActivity : BaseActivity() {
         updateState()
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        uiScope { binding.drivePreference.setChecked(isBackupGoogleDrive()) }
+    }
+
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(driveDeleteReceiver)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(driveRestoreReceiver)
@@ -104,7 +109,7 @@ class BackupSettingActivity : BaseActivity() {
             setBackupGoogleDrive(false)
             ioScope {
                 delay(300)
-                updateState()
+                uiScope { binding.drivePreference.setChecked(false) }
             }
         } else {
             Toast.makeText(this, "Auth error", Toast.LENGTH_SHORT).show()

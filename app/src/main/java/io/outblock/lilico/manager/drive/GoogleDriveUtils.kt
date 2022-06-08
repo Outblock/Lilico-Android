@@ -117,6 +117,12 @@ private fun existingData(driveService: Drive): List<DriveItem> {
 }
 
 private suspend fun addData(data: MutableList<DriveItem>, password: String) {
+    val username = getUsername()
+
+    if (username.isBlank()) {
+        throw RuntimeException("username is empty")
+    }
+
     val exist = data.firstOrNull { it.username == getUsername() }
     if (exist == null) {
         data.add(DriveItem(getUsername(), version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = getMnemonic())))
