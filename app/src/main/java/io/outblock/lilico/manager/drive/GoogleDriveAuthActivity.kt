@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
@@ -79,16 +80,24 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                     setHttpTimeout(credential),
                 ).setApplicationName("Drive API Migration").build()
 
-                ioScope {
-                    when {
-                        isDeleteBackup -> deleteMnemonicFromGoogleDrive(googleDriveService)
-                        isRestore -> restoreMnemonicFromGoogleDrive(googleDriveService)
-                        else -> uploadMnemonicToGoogleDrive(googleDriveService, password)
-                    }
-                    finish()
-                }
+                doAction(googleDriveService)
             } else {
                 logd(TAG, "signIn fail ${task.exception}")
+            }
+        }
+    }
+
+    private fun doAction(googleDriveService: Drive) {
+        ioScope {
+            try {
+                when {
+                    isDeleteBackup -> deleteMnemonicFromGoogleDrive(googleDriveService)
+                    isRestore -> restoreMnemonicFromGoogleDrive(googleDriveService)
+                    else -> uploadMnemonicToGoogleDrive(googleDriveService, password)
+                }
+                finish()
+            } catch (authIOException: UserRecoverableAuthIOException) {
+                startActivityForResult(authIOException.intent, REQUEST_CODE_SIGN_IN)
             }
         }
     }

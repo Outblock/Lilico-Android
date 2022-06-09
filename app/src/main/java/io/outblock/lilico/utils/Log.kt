@@ -1,6 +1,7 @@
 package io.outblock.lilico.utils
 
 import android.util.Log
+import io.outblock.lilico.BuildConfig
 
 fun logv(tag: String?, msg: Any?) {
     log(tag, msg, Log.VERBOSE)
@@ -24,13 +25,13 @@ fun loge(tag: String?, msg: Any?) {
 
 fun loge(msg: Throwable?, printStackTrace: Boolean = true) {
     log("Exception", msg?.message ?: "", Log.ERROR)
-    if (isDev() && printStackTrace) {
+    if (printLog() && printStackTrace) {
         msg?.printStackTrace()
     }
 }
 
 private fun log(tag: String?, msg: Any?, version: Int) {
-    if (!isDev()) {
+    if (!printLog()) {
         return
     }
 
@@ -45,3 +46,5 @@ private fun log(tag: String?, msg: Any?, version: Int) {
         Log.ERROR -> Log.e(tag, msg)
     }
 }
+
+private fun printLog() = isDev() || BuildConfig.DEBUG

@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "556216024625-s419ov5a9otcom1k6d06l1thnklt0ehl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "io.outblock.lilico",
-            "certificate_hash": "f22af108847cb21cf642924a53ed31d302958e12"
-          }
-        },
-        {
           "client_id": "556216024625-605ntfb94brptltv2lmu912vk74p0i1t.apps.googleusercontent.com",
           "client_type": 3
         }
