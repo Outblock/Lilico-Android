@@ -38,6 +38,13 @@ android {
             signingConfig signingConfigs.release
         }
 
+        releaseDebug {
+            minifyEnabled false
+            multiDexEnabled true
+            debuggable true
+            signingConfig signingConfigs.release
+        }
+
         dev {
             minifyEnabled true
             shrinkResources true
