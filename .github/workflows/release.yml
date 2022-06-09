@@ -3,11 +3,11 @@ name: Android CI
 on:
   push:
     tags:
-      - v*
+      - r*
     #branches: [ master ]
   pull_request:
     tags:
-      - v*
+      - r*
     #branches: [ master ]
     
 jobs:
@@ -33,7 +33,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: Build Dev APK
-      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} assembleDev
+      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} assembleRelease
       
     - name: Find mapping.txt
       id: find_mapping
@@ -47,7 +47,7 @@ jobs:
         path: ${{steps.find_mapping.outputs.apk_mapping_path}}
 
     - name: Build bundle
-      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleDev
+      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleRelease
     
     - name: Prepare Release
       id: prepare_release
@@ -137,7 +137,7 @@ jobs:
       uses: r0adkll/upload-google-play@v1.0.15
       with:
         serviceAccountJsonPlainText: ${{ secrets.LILICO_SERVICE_ACCOUNT_JSON }}
-        packageName: io.outblock.lilico.dev
+        packageName: io.outblock.lilico
         releaseFiles: ${{steps.prepare_release.outputs.bundle_path}}
         # alpha, beta, internal, production, internalsharing
         track: internalsharing
