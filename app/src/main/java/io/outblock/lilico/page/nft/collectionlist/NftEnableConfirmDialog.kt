@@ -8,21 +8,22 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.databinding.DialogAddTokenConfirmBinding
+import io.outblock.lilico.databinding.DialogAddCollectionConfirmBinding
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.utils.uiScope
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.coroutines.delay
 
 class NftEnableConfirmDialog : BottomSheetDialogFragment() {
 
     private val collection by lazy { arguments?.getParcelable<NftCollection>(EXTRA_TOKEN)!! }
 
-    private lateinit var binding: DialogAddTokenConfirmBinding
+    private lateinit var binding: DialogAddCollectionConfirmBinding
 
     private lateinit var viewModel: NftCollectionListViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DialogAddTokenConfirmBinding.inflate(inflater)
+        binding = DialogAddCollectionConfirmBinding.inflate(inflater)
         return binding.root
     }
 
@@ -31,8 +32,10 @@ class NftEnableConfirmDialog : BottomSheetDialogFragment() {
 
         binding.closeButton.setOnClickListener { dismiss() }
         with(binding) {
-            tokenNameView.text = collection.name
-            Glide.with(iconView).load(collection.logo).circleCrop().into(iconView)
+            nameView.text = collection.name
+            descView.text = collection.description
+//            platformView.text = collection.marketplace
+            Glide.with(coverView).load(collection.banner).transform(BlurTransformation(2, 5)).into(coverView)
             actionButton.setOnProcessing {
                 uiScope {
                     viewModel.addToken(collection)
