@@ -1,6 +1,7 @@
 package io.outblock.lilico.utils
 
 import android.util.Log
+import io.outblock.lilico.BuildConfig
 
 fun logv(tag: String?, msg: Any?) {
     log(tag, msg, Log.VERBOSE)
@@ -46,6 +47,5 @@ private fun log(tag: String?, msg: Any?, version: Int) {
     }
 }
 
-// TODO
-//private fun printLog() = isDev() || BuildConfig.DEBUG
-private fun printLog() = true
+private fun printLog() = isDev() || BuildConfig.DEBUG
+//private fun printLog() = true

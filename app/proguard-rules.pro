@@ -69,3 +69,8 @@
 -dontwarn com.just.agentweb.**
 
 -keep class io.outblock.lilico.database.WebviewRecord {*;}
+
+# google drive
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
