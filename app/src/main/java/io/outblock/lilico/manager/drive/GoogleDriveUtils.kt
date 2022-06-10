@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.utils.Env
+import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.secret.aesDecrypt
@@ -119,7 +120,7 @@ private fun existingData(driveService: Drive): List<DriveItem> {
 }
 
 private suspend fun addData(data: MutableList<DriveItem>, password: String) {
-    val username = userInfoCache().read()?.username.orEmpty()
+    val username = userInfoCache().read()?.username.orEmpty().ifBlank { getUsername() }
 
     if (username.isBlank()) {
         throw RuntimeException("username is empty")
