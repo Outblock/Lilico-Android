@@ -31,20 +31,6 @@ jobs:
         java-version: '11'  
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
-    - name: Build Dev APK
-      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} assembleRelease
-      
-    - name: Find mapping.txt
-      id: find_mapping
-      run: |
-        PATH=`find . -name 'mapping.txt' | grep app`
-        echo $PATH
-        echo "::set-output name=apk_mapping_path::$PATH"
-    - name: Remove mapping.txt
-      uses: JesseTG/rm@v1.0.2
-      with:
-        path: ${{steps.find_mapping.outputs.apk_mapping_path}}
 
     - name: Build bundle
       run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleRelease
@@ -52,25 +38,19 @@ jobs:
     - name: Prepare Release
       id: prepare_release
       run: |
-        APK_PATH=`find . -name '*.apk' | grep release`
-        echo $APK_PATH
-        echo "::set-output name=apk_path::$APK_PATH"
-        APK_NAME=`basename $APK_PATH`
+        # APK_PATH=`find . -name '*.apk' | grep release`
+        # echo $APK_PATH
+        # echo "::set-output name=apk_path::$APK_PATH"
+        # APK_NAME=`basename $APK_PATH`
         echo "::set-output name=apk_name::$APK_NAME"
         # mapping 只对 bundle 有效
-        MAPPING_PATH=`find . -name 'mapping.txt' | grep app`
-        echo $MAPPING_PATH
-        echo "::set-output name=mapping_path::$MAPPING_PATH"
+        # MAPPING_PATH=`find . -name 'mapping.txt' | grep app`
+        # echo $MAPPING_PATH
+        # echo "::set-output name=mapping_path::$MAPPING_PATH"
         BUNDLE_PATH=`find . -name '*.aab' | grep -v intermediates`
         echo ::set-output name=bundle_path::$BUNDLE_PATH
         BUNDLE_NAME=`basename $BUNDLE_PATH`
         echo ::set-output name=bundle_name::$BUNDLE_NAME
-    #Uploads
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: apk-upload
-        path: ${{steps.prepare_release.outputs.apk_path}}
 
     #Uploads
     - name: Upload Bundle Artifact
@@ -79,13 +59,6 @@ jobs:
       with:
         name: bundle-upload
         path: ${{steps.prepare_release.outputs.bundle_path}}
-
-    #Uploads
-    - name: Upload Bundle Mapping Artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: mapping-upload
-        path: ${{steps.prepare_release.outputs.mapping_path}}
 
     - name: Create GitHub release
       id: create_release
@@ -100,17 +73,6 @@ jobs:
           Release type: ${{ steps.buildnumber.outputs.build_number }}
         prerelease: false
 
-    - name: Upload APK Asset
-      if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.apk_path && steps.prepare_release.outputs.apk_name
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.LILICO_MY_REPO_PAT}}
-      with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{steps.prepare_release.outputs.apk_path}}
-        asset_name: app-release.apk
-        asset_content_type: application/octet-stream
-
     - name: Upload Bundle Asset
       if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.bundle_path && steps.prepare_release.outputs.bundle_name
       uses: actions/upload-release-asset@v1
@@ -120,17 +82,6 @@ jobs:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ${{steps.prepare_release.outputs.bundle_path}}
         asset_name: ${{steps.prepare_release.outputs.bundle_name}}
-        asset_content_type: application/octet-stream
-
-    - name: Upload Bundle Mapping Asset
-      if: steps.create_release.outputs.upload_url && steps.prepare_release.outputs.bundle_path && steps.prepare_release.outputs.bundle_name
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.LILICO_MY_REPO_PAT}}
-      with:
-        upload_url: ${{steps.create_release.outputs.upload_url}}
-        asset_path: ${{steps.prepare_release.outputs.mapping_path}}
-        asset_name: mapping.txt
         asset_content_type: application/octet-stream
         
     - name: Upload to Google Play
