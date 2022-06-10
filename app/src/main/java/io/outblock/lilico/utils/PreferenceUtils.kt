@@ -92,14 +92,14 @@ fun setBackupGoogleDrive(isBackuped: Boolean = true) {
     edit { dataStore.edit { it[KEY_BACKUP_GOOGLE_DRIVE] = isBackuped } }
 }
 
-suspend fun isDeveloperModeEnable(): Boolean = dataStore.data.map { it[KEY_DEVELOPER_MODE_ENABLE] ?: isDev() }.first()
+suspend fun isDeveloperModeEnable(): Boolean = dataStore.data.map { it[KEY_DEVELOPER_MODE_ENABLE] ?: true }.first()
 
 fun setDeveloperModeEnable(isEnable: Boolean) {
     edit { dataStore.edit { it[KEY_DEVELOPER_MODE_ENABLE] = isEnable } }
 }
 
 suspend fun getChainNetworkPreference(): Int =
-    dataStore.data.map { it[KEY_CHAIN_NETWORK] ?: if (isDev()) NETWORK_TESTNET else NETWORK_MAINNET }.first()
+    dataStore.data.map { it[KEY_CHAIN_NETWORK] ?: if (isDev() || true) NETWORK_TESTNET else NETWORK_MAINNET }.first()
 
 fun updateChainNetworkPreference(network: Int, callback: (() -> Unit)? = null) {
     edit {

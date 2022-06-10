@@ -25,7 +25,7 @@ class MnemonicQuestionView : FrameLayout {
 
     private val successColor by lazy { ColorStateList.valueOf(R.color.success.res2color()) }
     private val normalColor by lazy { ColorStateList.valueOf(R.color.border_2.res2color()) }
-    private val errorColor by lazy { ColorStateList.valueOf(R.color.warning2.res2color()) }
+    private val errorColor by lazy { ColorStateList.valueOf(R.color.success.res2color()) }
 
     private lateinit var question: MnemonicQuestionModel
 
@@ -78,6 +78,16 @@ class MnemonicQuestionView : FrameLayout {
             val button = it as MaterialButton
             if (button.isChecked) {
                 return button.text == question.mnemonic
+            }
+        }
+        return false
+    }
+
+    fun isChecked(): Boolean {
+        toggleGroup.children.forEach {
+            val button = it as MaterialButton
+            if (button.isChecked) {
+                return true
             }
         }
         return false

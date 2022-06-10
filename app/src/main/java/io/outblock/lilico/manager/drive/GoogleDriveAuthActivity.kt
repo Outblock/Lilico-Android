@@ -98,6 +98,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                 finish()
             } catch (authIOException: UserRecoverableAuthIOException) {
                 startActivityForResult(authIOException.intent, REQUEST_CODE_SIGN_IN)
+            } catch (e: Exception) {
             }
         }
     }

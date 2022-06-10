@@ -5,6 +5,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.main.HomeTab
@@ -39,6 +40,7 @@ class ProfileFragmentPresenter(
             ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)
         }
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
+        binding.actionGroup.walletButton.setOnClickListener { toast(msgRes = R.string.future_coming_soon) }
         binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
@@ -79,6 +81,7 @@ class ProfileFragmentPresenter(
                     actionGroup.root.setVisible(isSignIn)
                     group1.root.setVisible(isSignIn)
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
+                    group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
                 }
             }
         }

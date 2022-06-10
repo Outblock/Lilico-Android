@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemExploreDappBinding
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.explore.ExploreViewModel
 import io.outblock.lilico.page.explore.model.DAppModel
@@ -30,8 +31,9 @@ class ExploreDAppItemPresenter(
             descView.text = model.description
 
             view.setOnClickListener {
-                viewModel.onDAppClick(model.url)
-                openBrowser(activity!!, model.url)
+                val url = if (isTestnet()) model.testnetUrl else model.url
+                viewModel.onDAppClick(url)
+                openBrowser(activity!!, url)
             }
         }
     }

@@ -19,6 +19,7 @@
             android:id="@+id/currency_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:desc="USD"
             app:icon="@drawable/ic_settings_currency"
             app:title="Currency"/>
@@ -27,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="8dp"
-            android:background="@color/background"/>
+            android:background="@color/background"
+            android:visibility="gone"/>
 
         <io.outblock.lilico.page.profile.widget.ProfilePreference
             android:id="@+id/theme_preference"
@@ -41,12 +43,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="8dp"
-            android:background="@color/background"/>
+            android:background="@color/background"
+            android:visibility="gone"/>
 
         <io.outblock.lilico.page.profile.widget.ProfilePreferenceSwitch
             android:id="@+id/notification_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:icon="@drawable/ic_settings_notification"
             app:title="Notification"/>
     </androidx.appcompat.widget.LinearLayoutCompat>

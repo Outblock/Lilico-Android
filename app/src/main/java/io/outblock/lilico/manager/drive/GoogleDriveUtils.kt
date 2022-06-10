@@ -51,6 +51,7 @@ suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {
     } catch (e: Exception) {
         loge(e)
         sendCallback(false)
+        throw e
     }
 }
 
@@ -65,6 +66,7 @@ fun restoreMnemonicFromGoogleDrive(driveService: Drive) {
     } catch (e: Exception) {
         loge(e)
         sendCallback(false)
+        throw e
     }
 }
 
@@ -89,6 +91,7 @@ fun deleteMnemonicFromGoogleDrive(driveService: Drive) {
     } catch (e: Exception) {
         loge(e)
         sendDeleteCallback(false)
+        throw e
     }
 }
 
@@ -125,7 +128,7 @@ private suspend fun addData(data: MutableList<DriveItem>, password: String) {
 
     val exist = data.firstOrNull { it.username == getUsername() }
     if (exist == null) {
-        data.add(DriveItem(getUsername(), version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = getMnemonic())))
+        data.add(0, DriveItem(getUsername(), version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = getMnemonic())))
     } else {
         exist.version = BuildConfig.VERSION_NAME
         exist.data = aesEncrypt(password, message = getMnemonic())

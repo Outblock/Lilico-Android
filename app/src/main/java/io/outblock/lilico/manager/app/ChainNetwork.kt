@@ -2,7 +2,7 @@ package io.outblock.lilico.manager.app
 
 import io.outblock.lilico.utils.*
 
-private var network = if (isDev()) NETWORK_TESTNET else NETWORK_MAINNET
+private var network = if (isDev()) NETWORK_TESTNET else NETWORK_TESTNET
 private var isDeveloperMode = false
 
 fun refreshChainNetwork(callback: (() -> Unit)? = null) {

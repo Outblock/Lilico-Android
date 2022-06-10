@@ -32,11 +32,4 @@
             android:id="@+id/search_box"/>
     </FrameLayout>
 
-    <View
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/red_1"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

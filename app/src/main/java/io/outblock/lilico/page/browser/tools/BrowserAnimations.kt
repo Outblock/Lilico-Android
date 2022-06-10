@@ -29,10 +29,6 @@ fun expandWebView(webviewContainer: ViewGroup) {
 }
 
 fun startSearchBoxAnimation(binding: LayoutBrowserInputBinding, fromPosition: Point) {
-    with(binding.test.layoutParams as ViewGroup.MarginLayoutParams) {
-        topMargin = fromPosition.y
-        binding.test.layoutParams = this
-    }
     ValueAnimator.ofFloat(0.0f, 1.0f).apply {
         duration = 500
         interpolator = FastOutSlowInInterpolator()

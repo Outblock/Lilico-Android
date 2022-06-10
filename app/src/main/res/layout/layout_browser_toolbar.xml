@@ -26,6 +26,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/black_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <io.outblock.lilico.page.browser.widgets.BrowserProgressView
                 android:id="@+id/progress_bar"
                 android:layout_width="0dp"
