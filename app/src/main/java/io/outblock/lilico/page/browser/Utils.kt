@@ -129,6 +129,13 @@ fun expandBrowser() {
 }
 
 fun String.toFavIcon(size: Int = 256): String {
-    val url = URL(this)
-    return "https://double-indigo-crab.b-cdn.net/${url.host}/$size"
+    if (this.isBlank()) {
+        return this
+    }
+    return try {
+        val url = URL(this)
+        "https://double-indigo-crab.b-cdn.net/${url.host}/$size"
+    } catch (e: Exception) {
+        this
+    }
 }
