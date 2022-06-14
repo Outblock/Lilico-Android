@@ -4,10 +4,9 @@ import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.outblock.lilico.R
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.utils.*
-import io.outblock.lilico.widgets.webview.TYPE_VIEW_READY
-import io.outblock.lilico.widgets.webview.TYPE_VIEW_RESPONSE
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
@@ -20,6 +19,8 @@ class FclMessageHandler(
 ) {
 
     private val activity by lazy { findActivity(webView) as FragmentActivity }
+
+    private val walletAddress by lazy { walletCache().read()?.primaryWalletAddress() }
 
     private var serviceType = ""
     private var message = ""
@@ -42,6 +43,11 @@ class FclMessageHandler(
                     return@ioScope
                 }
 
+                if (walletAddress.isNullOrBlank()) {
+                    toast(msgRes = R.string.not_logged_in_toast)
+                    return@ioScope
+                }
+
                 when (json["type"] as String) {
                     TYPE_VIEW_RESPONSE -> dispatchViewReadyResponse(data)
                 }
@@ -52,33 +58,30 @@ class FclMessageHandler(
     private fun dispatchViewReadyResponse(data: String) {
         safeRun {
             val fcl = Gson().fromJson(data, FclResponse::class.java) ?: return@safeRun
-            if (serviceType != fcl.serviceType()) {
-                return@safeRun
-            }
-            when (fcl.service.type) {
-                "authn" -> connect(Gson().fromJson(data, FclAuthnResponse::class.java))
-                "authz" -> cadence(Gson().fromJson(data, FclAuthzResponse::class.java))
-            }
-        }
-    }
-
-    private fun cadence(fcl: FclAuthzResponse) {
-        uiScope {
-            serviceType = ""
-            val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
-            if (approve) {
-                webView.postAuthzViewReadyResponse(fcl)
+            uiScope {
+                if (serviceType != fcl.serviceType()) {
+                    return@uiScope
+                }
+                serviceType = ""
+                when (fcl.service.type) {
+                    "authn" -> connect(Gson().fromJson(data, FclAuthnResponse::class.java))
+                    "authz" -> cadence(Gson().fromJson(data, FclAuthzResponse::class.java))
+                }
             }
         }
     }
 
-    private fun connect(fcl: FclAuthnResponse) {
-        uiScope {
-            serviceType = ""
-            val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
-            if (approve) {
-                walletCache().read()?.primaryWalletAddress()?.let { webView.postAuthnViewReadyResponse(it) }
-            }
+    private suspend fun cadence(fcl: FclAuthzResponse) {
+        val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
+        if (approve) {
+            webView.postAuthzViewReadyResponse(fcl)
+        }
+    }
+
+    private suspend fun connect(fcl: FclAuthnResponse) {
+        val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
+        if (approve) {
+            walletAddress?.let { webView.postAuthnViewReadyResponse(it) }
         }
     }
 

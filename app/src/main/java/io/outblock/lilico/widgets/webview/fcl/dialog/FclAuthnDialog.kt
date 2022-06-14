@@ -1,5 +1,6 @@
 package io.outblock.lilico.widgets.webview.fcl.dialog
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,14 +40,18 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
             nameView.text = title
             urlView.text = url?.urlHost()
             cancelButton.setOnClickListener {
-                dismiss()
                 result?.resume(false)
+                dismiss()
             }
             approveButton.setOnClickListener {
-                dismiss()
                 result?.resume(true)
+                dismiss()
             }
         }
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        result?.resume(false)
     }
 
     suspend fun show(

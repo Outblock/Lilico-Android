@@ -47,6 +47,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         viewModelIOScope(this) {
             if (address.isNullOrEmpty()) {
                 logw(TAG, "address not found")
+                emptyLiveData.postValue(true)
                 return@viewModelIOScope
             }
             isCollectionExpanded = isNftCollectionExpanded()
