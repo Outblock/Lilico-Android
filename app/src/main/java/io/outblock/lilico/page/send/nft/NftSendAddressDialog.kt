@@ -56,6 +56,11 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
         binding.scanButton.setOnClickListener { barcodeLauncher.launch() }
     }
 
+    override fun onDestroy() {
+        viewModel.onAddressSelectedLiveData.postValue(null)
+        super.onDestroy()
+    }
+
     private fun onAddressSelected(contact: AddressBookContact?) {
         contact ?: return
         ioScope {

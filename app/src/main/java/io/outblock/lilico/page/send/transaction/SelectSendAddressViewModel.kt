@@ -17,7 +17,7 @@ class SelectSendAddressViewModel : ViewModel() {
     val addressListLiveData = MutableLiveData<List<Any>>()
     val accountListLiveData = MutableLiveData<List<Any>>()
 
-    val onAddressSelectedLiveData = MutableLiveData<AddressBookContact>()
+    val onAddressSelectedLiveData = MutableLiveData<AddressBookContact?>()
 
     fun load(type: Int) {
         when (type) {

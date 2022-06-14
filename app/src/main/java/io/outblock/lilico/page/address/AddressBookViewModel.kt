@@ -15,10 +15,7 @@ import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
-import io.outblock.lilico.utils.loge
-import io.outblock.lilico.utils.safeRun
-import io.outblock.lilico.utils.toast
-import io.outblock.lilico.utils.viewModelIOScope
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.wallet.toAddress
 
 class AddressBookViewModel : ViewModel() {
@@ -189,6 +186,7 @@ class AddressBookViewModel : ViewModel() {
         try {
             val service = retrofit().create(ApiService::class.java)
             val resp = service.searchUser(keyword)
+            logd("searchUsers", "resp:$resp")
             resp.data.users?.let { users ->
                 if (users.isEmpty()) return@let
                 data.add(AddressBookCharModel(text = "Lilico user"))

@@ -80,7 +80,7 @@ fun NftCollection.formatCadence(script: String): String {
         .replace("<CollectionPublic>", path.publicCollectionName)
         .replace("<CollectionPublicPath>", path.publicPath)
         .replace("<Token>", contractName)
-        .replace("<TokenAddress>", address())
+        .replace("<TokenAddress>", address(forceMainnet = false))
         .replace("<TokenCollectionStoragePath>", path.storagePath)
         .replace("<TokenCollectionPublic>", path.publicCollectionName)
         .replace("<TokenCollectionPublicPath>", path.publicPath)

@@ -14,5 +14,6 @@ data class SearchUserResponse(
 )
 
 data class SearchUsers(
+    @SerializedName("users")
     val users: List<UserInfoData>? = null,
 )

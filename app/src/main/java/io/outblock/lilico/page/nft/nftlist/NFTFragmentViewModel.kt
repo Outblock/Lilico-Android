@@ -9,6 +9,7 @@ import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
+import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
@@ -117,12 +118,14 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     private suspend fun loadListData() {
-        loadSelectionCards()
-        loadListDataFromCache()
-        loadListDataFromServer()
+        var nftList = loadListDataFromCache()
+        loadSelectionCards(nftList)
+        nftList = loadListDataFromServer()
+        // remove selection if not contain in nft list
+        loadSelectionCards(nftList)
     }
 
-    private suspend fun loadListDataFromServer() {
+    private suspend fun loadListDataFromServer(): NFTListData? {
         val data = mutableListOf<Any>()
         val resp = requestNftListFromServer(address!!)
 
@@ -137,13 +140,16 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         emptyLiveData.postValue(data.isEmpty())
 
         listDataLiveData.postValue(data)
+        return resp
     }
 
-    private fun loadListDataFromCache() {
+    private fun loadListDataFromCache(): NFTListData? {
         val data = mutableListOf<Any>()
-        cacheNftList.read()?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
+        val nftListData = cacheNftList.read()
+        nftListData?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
 
         listDataLiveData.postValue(data)
+        return nftListData
     }
 
     private fun MutableList<Any>.addCollections(collections: List<CollectionItemModel>) {
@@ -187,13 +193,15 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0xccea80173b51e028
         //0x4ab2b65a8b2be2aa
         if (BuildConfig.DEBUG || true) {
-            return "0x050aa60ac445a061"
+            return "0x53f389d96fb4ce5e"
         }
         return cacheWallet.read()?.primaryWalletAddress()
     }
 
-    private fun loadSelectionCards() {
+    private fun loadSelectionCards(nftList: NFTListData? = null) {
+        val nfts = (nftList?.nfts ?: cacheNftList.read()?.nfts) ?: return
         val data = cacheSelections.read() ?: NftSelections(mutableListOf())
+        data.data = data.data.filter { selection -> nfts.firstOrNull { nft -> selection.uniqueId() == nft.uniqueId() } != null }.toMutableList()
         topSelectionLiveData.postValue(data)
     }
 
