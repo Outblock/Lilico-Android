@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Scope
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.google.api.client.http.HttpRequestInitializer
@@ -33,9 +32,9 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         setContentView(View(this))
         UltimateBarX.with(this).color(Color.TRANSPARENT).fitWindow(false).light(false).applyStatusBar()
 
-        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val signInOptions = GoogleSignInOptions.Builder()
             .requestEmail()
-            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+//            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
             .build()
         val client = GoogleSignIn.getClient(this, signInOptions)
 
@@ -48,6 +47,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         logd(TAG, "onActivityResult")
         if (resultCode != RESULT_OK) {
+            finish()
             return
         }
 
@@ -71,7 +71,7 @@ class GoogleDriveAuthActivity : AppCompatActivity() {
                 logd(TAG, "Signed in as " + acctount.email)
                 // Use the authenticated account to sign in to the Drive service.
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
-                    this, Collections.singleton(DriveScopes.DRIVE_FILE)
+                    this, Collections.singleton(DriveScopes.DRIVE_APPDATA)
                 )
                 credential.selectedAccount = acctount.account
                 val googleDriveService: Drive = Drive.Builder(

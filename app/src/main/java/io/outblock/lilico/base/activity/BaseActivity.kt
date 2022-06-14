@@ -3,6 +3,7 @@ package io.outblock.lilico.base.activity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.firebase.firebaseInformationCheck
 import java.lang.ref.WeakReference
 
@@ -13,7 +14,9 @@ open class BaseActivity : AppCompatActivity() {
         currentActivity = WeakReference(this)
         super.onCreate(savedInstanceState)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        if (!BuildConfig.DEBUG) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        }
     }
 
     override fun onResume() {
