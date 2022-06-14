@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="@dimen/wallet_create_button_margin"
-        android:text="@string/backup_manually"
+        android:text="@string/restore_with_recovery_phrase"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

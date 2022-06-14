@@ -230,4 +230,5 @@
     <string name="dapps">dApps</string>
     <string name="process_of_enabling_coin">Process of Enabling Coin</string>
     <string name="mnemonic_check_fail">Wrong selection</string>
+    <string name="restore_with_recovery_phrase">Restore with Recovery Phrase</string>
 </resources>

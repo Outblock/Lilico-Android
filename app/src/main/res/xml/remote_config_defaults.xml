@@ -13,15 +13,7 @@
     <entry>
         <key>dapp</key>
         <value>
-            [{"name":"Flowns","url":"https://flowns.org","testnet_url":"https://testnet.flowns.org","description":"Flow-based Domain Name Service
-            where every domain is an
-            NFT","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/flowns/logo.png","category":"Domain"},{"name":"Find","url":"https://find.xyz/","testnet_url":"https://test.find.xyz/","description":"A
-            place to find people and things on the Flow
-            Blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/find/logo.png","category":"Domain"},{"name":"FLOAT","url":"https://www.ecdao.org/","testnet_url":"https://testnet.floats.city/","description":"A
-            Flow-enabled proof of attendance platform built by Emerald
-            DAO","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/float/logo.png","category":"Domain"},{"name":"Increment","url":"https://swap.increment.fi/swap","testnet_url":"https://demo.increment.fi/swap","description":"Decentralized
-            money market and one-stop DeFi suites to boost yield &amp; liquidity opportunities on the Flow
-            blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/increment/logo.jpeg","category":"Domain"}]
+            [{"name":"Flowns","url":"https://flowns.org","testnet_url":"https://testnet.flowns.org","description":"Flow-based Domain Name Service where every domain is an NFT","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/flowns/logo.png","category":"Domain"},{"name":"Find","url":"https://find.xyz/","testnet_url":"https://test.find.xyz/","description":"A place to find people and things on the Flow Blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/find/logo.png","category":"Domain"},{"name":"FLOAT","url":"https://www.ecdao.org/","testnet_url":"https://testnet.floats.city/","description":"A Flow-enabled proof of attendance platform built by Emerald DAO","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/float/logo.png","category":"Domain"},{"name":"Increment","url":"https://swap.increment.fi/swap","testnet_url":"https://demo.increment.fi/swap","description":"Decentralized money market and one-stop DeFi suites to boost yield &amp; liquidity opportunities on the Flow blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/increment/logo.jpeg","category":"Domain"}]
         </value>
     </entry>
 </defaultsMap>
