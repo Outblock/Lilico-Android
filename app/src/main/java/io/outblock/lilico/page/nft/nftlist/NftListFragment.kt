@@ -20,10 +20,10 @@ import io.outblock.lilico.page.nft.nftlist.model.*
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTabsPresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTitlePresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.SelectionItemPresenter
+import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -50,6 +50,7 @@ internal class NftListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         setupScrollView()
+        setupRefreshLayout()
         binding.root.setBackgroundResource(R.color.background)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             listDataLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
@@ -67,8 +68,17 @@ internal class NftListFragment : Fragment() {
         }
     }
 
+    private fun setupRefreshLayout() {
+        with(binding.refreshView) {
+//            isEnabled = false
+            setOnRefreshListener { viewModel.refresh() }
+            setColorSchemeColors(R.color.colorSecondary.res2color())
+        }
+    }
+
     private fun updateListData(data: List<Any>) {
         adapter.setNewDiffData(data)
+        binding.refreshView.isRefreshing = false
         with(binding.recyclerView) {
             if (viewModel.isCollectionExpanded()) {
                 setBackgroundResource(R.drawable.bg_top_radius_16dp)
@@ -81,9 +91,14 @@ internal class NftListFragment : Fragment() {
     }
 
     private fun setupScrollView() {
+        var preOffset = 0
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             binding.backgroundWrapper.translationY = verticalOffset.toFloat()
             viewModel.onListScrollChange(-verticalOffset)
+            if (preOffset != verticalOffset) {
+                binding.refreshView.isEnabled = verticalOffset >= 0
+            }
+            preOffset = verticalOffset
         })
         with(binding.scrollView) {
             setPadding(paddingLeft, R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight, paddingRight, paddingBottom)

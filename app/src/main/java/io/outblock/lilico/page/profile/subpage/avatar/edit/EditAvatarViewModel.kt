@@ -73,7 +73,7 @@ class EditAvatarViewModel : ViewModel() {
         //0x2b06c41f44a05656
         //0xccea80173b51e028
         if (BuildConfig.DEBUG) {
-            return "0x2b06c41f44a05656"
+            return "0xccea80173b51e028"
         }
         return walletCache().read()?.primaryWallet()?.blockchain?.firstOrNull()?.address
     }

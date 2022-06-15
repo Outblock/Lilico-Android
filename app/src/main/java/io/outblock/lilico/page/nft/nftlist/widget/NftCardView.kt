@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.children
@@ -29,6 +30,10 @@ class NftCardView : MaterialCardView {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.item_nft_selections, this)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return false
     }
 
     fun bindData(nft: Nft) {

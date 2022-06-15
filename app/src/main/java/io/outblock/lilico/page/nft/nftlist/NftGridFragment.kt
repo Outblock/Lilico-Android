@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentNftGridBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
+import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
@@ -29,9 +30,13 @@ internal class NftGridFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        setupRefreshLayout()
         binding.root.setBackgroundResource(R.color.background)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
+            gridDataLiveData.observe(viewLifecycleOwner) {
+                adapter.setNewDiffData(it)
+                binding.refreshView.isRefreshing = false
+            }
             loadGrid()
         }
     }
@@ -48,6 +53,13 @@ internal class NftGridFragment : Fragment() {
                     end = dividerSize
                 )
             )
+        }
+    }
+
+    private fun setupRefreshLayout() {
+        with(binding.refreshView) {
+            setOnRefreshListener { viewModel.refresh() }
+            setColorSchemeColors(R.color.colorSecondary.res2color())
         }
     }
 

@@ -3,8 +3,10 @@ package io.outblock.lilico.widgets
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.children
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.outblock.lilico.utils.logd
 import kotlin.math.pow
 
@@ -23,6 +25,7 @@ class CardSwipeView : MotionLayout {
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         requestDisallowInterceptTouchEvent(true)
+        findSwipeRefreshLayout(this)?.isEnabled = ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_CANCEL
         if (ev.action == MotionEvent.ACTION_DOWN) {
             downX = ev.x
             downY = ev.y
@@ -41,6 +44,13 @@ class CardSwipeView : MotionLayout {
 
     override fun setOnClickListener(l: OnClickListener?) {
         this.onClickListener = l
+    }
+
+    private fun findSwipeRefreshLayout(view: View): SwipeRefreshLayout? {
+        if (view.parent == null) return null
+        if (view.parent is SwipeRefreshLayout) return (view.parent as SwipeRefreshLayout)
+
+        return findSwipeRefreshLayout(view.parent as View)
     }
 
     fun refresh() {

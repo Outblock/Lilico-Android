@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:fillViewport="true">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:background="@color/background"
+        android:paddingTop="80dp"
         tools:ignore="UselessParent">
 
         <io.outblock.lilico.widgets.NestedRecyclerView
@@ -26,5 +27,5 @@
             android:paddingBottom="100dp"
             app:layout_constraintTop_toTopOf="parent"/>
     </FrameLayout>
-</FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
