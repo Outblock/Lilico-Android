@@ -64,10 +64,6 @@ class SelectionItemPresenter(
                 }
             }
         }
-
-        with(binding.placeholder) {
-            layoutParams.height = R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight
-        }
     }
 
     override fun bind(model: NftSelections) {

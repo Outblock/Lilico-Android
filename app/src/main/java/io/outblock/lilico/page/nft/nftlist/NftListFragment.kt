@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.appbar.AppBarLayout
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.NftSelections
@@ -23,6 +23,7 @@ import io.outblock.lilico.page.nft.nftlist.presenter.SelectionItemPresenter
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -71,7 +72,7 @@ internal class NftListFragment : Fragment() {
         with(binding.recyclerView) {
             if (viewModel.isCollectionExpanded()) {
                 setBackgroundResource(R.drawable.bg_top_radius_16dp)
-                setPadding(paddingLeft, io.outblock.lilico.R.dimen.nft_list_divider_size.res2pix(), paddingRight, paddingBottom)
+                setPadding(paddingLeft, R.dimen.nft_list_divider_size.res2pix(), paddingRight, paddingBottom)
             } else {
                 setBackgroundResource(R.color.transparent)
                 setPadding(paddingLeft, 0, paddingRight, paddingBottom)
@@ -80,11 +81,13 @@ internal class NftListFragment : Fragment() {
     }
 
     private fun setupScrollView() {
-        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-            viewModel.onListScrollChange(scrollY)
+        binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.backgroundWrapper.translationY = verticalOffset.toFloat()
+            viewModel.onListScrollChange(-verticalOffset)
         })
-        binding.root.setStickyView(R.id.collection_tabs)
-        binding.root.setOffsetY(R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight)
+        with(binding.scrollView) {
+            setPadding(paddingLeft, R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight, paddingRight, paddingBottom)
+        }
     }
 
     private fun setupRecyclerView() {

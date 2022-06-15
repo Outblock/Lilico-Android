@@ -193,7 +193,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0xccea80173b51e028
         //0x4ab2b65a8b2be2aa
         if (BuildConfig.DEBUG || true) {
-            return "0x53f389d96fb4ce5e"
+            return "0xccea80173b51e028"
         }
         return cacheWallet.read()?.primaryWalletAddress()
     }

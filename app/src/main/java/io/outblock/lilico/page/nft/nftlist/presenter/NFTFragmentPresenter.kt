@@ -33,6 +33,7 @@ class NFTFragmentPresenter(
             addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
 
             with(refreshLayout) {
+                isEnabled = false
                 setOnRefreshListener { viewModel.refresh() }
                 setColorSchemeColors(R.color.colorSecondary.res2color())
             }

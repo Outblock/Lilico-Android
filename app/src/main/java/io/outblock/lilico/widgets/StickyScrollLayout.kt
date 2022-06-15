@@ -8,10 +8,11 @@ import android.widget.FrameLayout
 import androidx.annotation.IdRes
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
+import com.donkingliang.consecutivescroller.ConsecutiveScrollerLayout
 
 class StickyScrollLayout : FrameLayout {
 
-    private val scrollView by lazy { getChildAt(0) as NestedScrollView }
+    private val scrollView by lazy { getChildAt(0) as ConsecutiveScrollerLayout }
 
     private lateinit var stickyView: View
     private lateinit var stickyParent: ViewGroup
@@ -27,9 +28,9 @@ class StickyScrollLayout : FrameLayout {
 
     init {
         post {
-            assert(children.firstOrNull { it is NestedScrollView } != null)
-            scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ -> onScrollChange(scrollY) }
-            addView(stickyHolder)
+//            assert(children.firstOrNull { it is ConsecutiveScrollerLayout } != null)
+//            scrollView.onVerticalScrollChangeListener  = ConsecutiveScrollerLayout.OnScrollChangeListener { _, scrollY, _, _ -> onScrollChange(scrollY) }
+//            addView(stickyHolder)
         }
     }
 

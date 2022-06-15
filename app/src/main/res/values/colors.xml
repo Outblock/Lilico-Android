@@ -181,6 +181,7 @@
     <color name="primary30">#4fffffff</color>
     <color name="primary48">#76ffffff</color>
     <color name="primary80">#ccffffff</color>
+    <color name="background90">#E6FAFAFA</color>
     <color name="profile_accent">#7678ED</color>
     <color name="bg_icon">#F4F4F7</color>
     <color name="nav_icon">#787878</color>
