@@ -24,6 +24,7 @@ import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation

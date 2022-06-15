@@ -20,23 +20,28 @@ object NftCollectionConfig {
     private val config = mutableListOf<NftCollection>()
 
     fun sync() {
-        ioScope {
-            var text = Firebase.remoteConfig.getString(KEY)
-            if (text.isBlank()) {
-                text = readTextFromAssets("config/collections.json") ?: return@ioScope
-            }
-            logd("NftCollectionConfig", text.take(300))
-            config.clear()
-            safeRun { config.addAll(Gson().fromJson(text, object : TypeToken<List<NftCollection>>() {}.type)) }
-            NftCollectionStateManager.fetchState()
-        }
+        ioScope { reloadConfig() }
     }
 
     fun get(address: String): NftCollection? {
+        if (config.isEmpty()) {
+            reloadConfig()
+        }
         return config.firstOrNull { it.address() == address }
     }
 
     fun list() = config.toList()
+
+    private fun reloadConfig() {
+        var text = Firebase.remoteConfig.getString(KEY)
+        if (text.isBlank()) {
+            text = readTextFromAssets("config/collections.json") ?: return
+        }
+        logd("NftCollectionConfig", text.take(300))
+        config.clear()
+        safeRun { config.addAll(Gson().fromJson(text, object : TypeToken<List<NftCollection>>() {}.type)) }
+        NftCollectionStateManager.fetchState()
+    }
 }
 
 @Parcelize

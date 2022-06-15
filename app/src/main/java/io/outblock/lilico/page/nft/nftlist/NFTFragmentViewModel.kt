@@ -147,7 +147,6 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         val data = mutableListOf<Any>()
         val nftListData = cacheNftList.read()
         nftListData?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
-
         listDataLiveData.postValue(data)
         return nftListData
     }
