@@ -99,7 +99,7 @@ fun setDeveloperModeEnable(isEnable: Boolean) {
 }
 
 suspend fun getChainNetworkPreference(): Int =
-    dataStore.data.map { it[KEY_CHAIN_NETWORK] ?: if (isDev() || true) NETWORK_TESTNET else NETWORK_MAINNET }.first()
+    dataStore.data.map { it[KEY_CHAIN_NETWORK] ?: if (isDev() || isTesting()) NETWORK_TESTNET else NETWORK_MAINNET }.first()
 
 fun updateChainNetworkPreference(network: Int, callback: (() -> Unit)? = null) {
     edit {

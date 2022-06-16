@@ -30,13 +30,12 @@ class HeaderInterceptor : Interceptor {
         val request = chain.request().newBuilder()
             .addHeader("Authorization", "Bearer $jwt")
             .addHeader("User-Agent", userAgent)
-            .addHeader("Network", chain.getNetWork())
+            .addHeader("Network", getNetWork())
             .build()
         return chain.proceed(request)
     }
 
-    private fun Interceptor.Chain.getNetWork(): String {
-        val isNftRequest = this.request().url.toUrl().toString().contains("/nft/")
-        return if (isTestnet() && !isNftRequest) "testnet" else "mainnet"
+    private fun getNetWork(): String {
+        return if (isTestnet()) "testnet" else "mainnet"
     }
 }

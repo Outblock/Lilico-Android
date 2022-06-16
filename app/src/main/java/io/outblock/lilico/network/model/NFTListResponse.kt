@@ -44,9 +44,25 @@ data class Nft(
     val metadata: NFTMetadata,
     @SerializedName("title")
     val title: String?,
+    @SerializedName("postMedia")
+    val postMedia: PostMedia,
 ) : Parcelable {
     fun uniqueId() = "${contract.address}-${id.tokenId}"
 }
+
+@Parcelize
+data class PostMedia(
+    @SerializedName("description")
+    val description: String? = null,
+    @SerializedName("title")
+    val title: String? = null,
+    @SerializedName("video")
+    val video: String? = null,
+    @SerializedName("image")
+    val image: String? = null,
+    @SerializedName("music")
+    val music: String? = null,
+) : Parcelable
 
 @Parcelize
 data class NFTContract(

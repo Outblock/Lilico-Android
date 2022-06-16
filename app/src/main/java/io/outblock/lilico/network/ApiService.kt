@@ -23,17 +23,17 @@ interface ApiService {
     @GET("/v1/user/search")
     suspend fun searchUser(@Query("keyword") keyword: String): SearchUserResponse
 
-    @POST("/v1/login")
+    @POST("/v2/login")
     suspend fun login(@Body params: Map<String, String>): LoginResponse
 
     @GET("/v1/account/info")
     suspend fun getAddressInfo(@Query("address") address: String): AddressInfoResponse
 
-    @GET("/v1/nft/list")
+    @GET("/v2/nft/list")
     suspend fun nftList(
         @Query("address") address: String,
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 100,
+        @Query("limit") limit: Int = 25,
     ): NFTListResponse
 
     @GET("/v1/nft/meta")

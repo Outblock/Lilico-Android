@@ -11,7 +11,7 @@ import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
-import io.outblock.lilico.utils.toCoverUrl
+import io.outblock.lilico.utils.loge
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -45,32 +45,23 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 }
 
 fun Nft.cover(): String? {
-    var url = media?.firstOrNull { it.mimeType == "image" }?.uri?.toCoverUrl()
-    if (url.isNullOrEmpty()) {
-        url = metadata.metadata.firstOrNull { it.name == "image" }?.value
-    }
-    return url ?: video()
+    return postMedia.image ?: postMedia.video
 }
 
 fun Nft.name(): String? {
-    if (!title.isNullOrBlank()) {
-        return title
+    if (!postMedia.title.isNullOrBlank()) {
+        return postMedia.title
     }
     val config = NftCollectionConfig.get(contract.address) ?: return null
     return "${config.name} #${id.tokenId}"
 }
 
 fun Nft.desc(): String? {
-    return description ?: metadata.metadata.firstOrNull { it.name == "description" }?.value
+    return postMedia.description ?: metadata.metadata.firstOrNull { it.name == "description" }?.value
 }
 
 fun Nft.video(): String? {
-    val media = media?.firstOrNull { it.mimeType.startsWith("video/") }?.uri?.trim()?.removePrefix("ipfs://")
-    if (media.isNullOrBlank()) {
-        val arLink = metadata.metadata.firstOrNull { it.name == "arLink" }?.value ?: return null
-        return "https://arweave.net/${arLink}"
-    }
-    return media
+    return postMedia.video
 }
 
 fun Nft.isSameNft(other: Nft): Boolean {
@@ -102,24 +93,28 @@ fun MutableList<Nft>.removeEmpty(): MutableList<Nft> {
 }
 
 suspend fun requestNftListFromServer(address: String): NFTListData? {
-    val limit = 30
+    val limit = 25
     val service = retrofit().create(ApiService::class.java)
     val resp = service.nftList(address, 0, limit)
     val list = mutableListOf<Nft>()
 
-    val count = resp.data?.nftCount ?: 0
-    list.addAll(resp.data?.nfts.orEmpty())
+    val data = resp.data ?: return null
+    val count = data.nftCount
+    list.addAll(data.nfts)
 
     if (count > limit) {
-        var index = resp.data?.nfts?.size ?: 0
-        while (index <= count) {
-            val r = service.nftList(address, index, index + limit)
-            list.addAll(r.data?.nfts.orEmpty())
-            index += limit
+        var index = data.nfts.size
+        val exception = runCatching {
+            while (index <= count) {
+                val r = service.nftList(address, index, index + limit)
+                list.addAll(r.data?.nfts.orEmpty())
+                index += limit
+            }
         }
+        loge(exception.exceptionOrNull())
     }
 
-    return resp.data?.apply {
+    return data.apply {
         nfts = list
     }
 }

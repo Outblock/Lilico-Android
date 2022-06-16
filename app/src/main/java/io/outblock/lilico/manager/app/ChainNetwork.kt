@@ -17,5 +17,5 @@ fun refreshChainNetwork(callback: (() -> Unit)? = null) {
 
 fun chainNetwork() = network
 
-fun isMainnet() = network == NETWORK_MAINNET || !isDeveloperMode
-fun isTestnet() = network == NETWORK_TESTNET && isDeveloperMode
+fun isMainnet() = network == NETWORK_MAINNET
+fun isTestnet() = network == NETWORK_TESTNET

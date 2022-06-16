@@ -51,7 +51,7 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
             runBlocking {
                 val catching = runCatching {
                     val service = retrofit().create(ApiService::class.java)
-                    val resp = service.login(mapOf("public_key" to wallet.getPublicKey(), "signature" to wallet.sign(uid!!)))
+                    val resp = service.login(mapOf("public_key" to wallet.getPublicKey(), "signature" to wallet.sign(getFirebaseJwt())))
                     if (resp.data?.customToken.isNullOrBlank()) {
                         if (resp.status == 404) {
                             callback.invoke(false, ERROR_ACCOUNT_NOT_FOUND)
