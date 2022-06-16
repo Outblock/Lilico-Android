@@ -33,7 +33,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build bundle
-      run: ./gradlew -PvCode=${{github.run_number+50}} -PvName=${GITHUB_REF##*/} build bundleRelease
+      run: ./gradlew -PvCode=${{github.run_number}} -PvName=${GITHUB_REF##*/} build bundleRelease
     
     - name: Prepare Release
       id: prepare_release
