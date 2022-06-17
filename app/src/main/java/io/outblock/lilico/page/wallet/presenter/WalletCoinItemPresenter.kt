@@ -25,7 +25,7 @@ class WalletCoinItemPresenter(
                 coinBalance.text = "**** ${model.coin.symbol.uppercase()}"
                 coinBalancePrice.text = "****"
             } else {
-                coinBalance.text = "${model.balance} ${model.coin.symbol.uppercase()}"
+                coinBalance.text = "${model.balance.formatPrice()} ${model.coin.symbol.uppercase()}"
                 coinBalancePrice.text = "$${(model.balance * model.coinRate).formatPrice()}"
             }
             coinPrice.text = "$" + model.coinRate.formatPrice()

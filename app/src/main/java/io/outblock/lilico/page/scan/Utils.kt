@@ -8,7 +8,13 @@ import io.outblock.lilico.page.browser.openBrowser
 
 fun dispatchScanResult(context: Context, text: String) {
     val text = text.trim()
-    if (URLUtil.isValidUrl(text)) {
-        openBrowser(context as Activity, text)
+    if (URLUtil.isValidUrl(text.httpPrefix())) {
+        openBrowser(context as Activity, text.httpPrefix())
     }
+}
+
+private fun String.httpPrefix(): String {
+    if (startsWith("http")) return this
+
+    return "https://$this"
 }

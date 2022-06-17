@@ -2,7 +2,6 @@ package io.outblock.lilico.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.outblock.lilico.BuildConfig
 import kotlinx.coroutines.*
 
 fun ioScope(unit: suspend () -> Unit) = CoroutineScope(Dispatchers.IO).launch { execute(unit) }
@@ -21,13 +20,9 @@ fun cpuScope(unit: suspend () -> Unit) = CoroutineScope(Dispatchers.Default).lau
 fun viewModelIOScope(viewModel: ViewModel, unit: suspend () -> Unit) = viewModel.viewModelScope.launch(Dispatchers.IO) { execute(unit) }
 
 private suspend fun execute(unit: suspend () -> Unit) {
-    if (BuildConfig.DEBUG) {
-        try {
-            unit.invoke()
-        } catch (e: Exception) {
-            loge(e)
-        }
-    } else {
+    try {
         unit.invoke()
+    } catch (e: Exception) {
+        loge(e)
     }
 }
