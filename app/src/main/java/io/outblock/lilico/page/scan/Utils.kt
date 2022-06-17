@@ -6,8 +6,12 @@ import android.webkit.URLUtil
 import io.outblock.lilico.page.browser.openBrowser
 
 
-fun dispatchScanResult(context: Context, text: String) {
-    val text = text.trim()
+fun dispatchScanResult(context: Context, str: String) {
+    val text = str.trim()
+    if (text.isBlank()) {
+        return
+    }
+
     if (URLUtil.isValidUrl(text.httpPrefix())) {
         openBrowser(context as Activity, text.httpPrefix())
     }
