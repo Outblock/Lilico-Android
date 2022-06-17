@@ -165,7 +165,7 @@ private fun toFlowTransaction(
 
         addPayloadSignatures {
             signature(
-                payerAccount.address,
+                proposalAccount.address,
                 0,
                 signer = Crypto.getSigner(
                     privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
