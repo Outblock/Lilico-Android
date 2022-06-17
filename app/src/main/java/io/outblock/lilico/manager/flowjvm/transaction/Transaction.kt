@@ -80,10 +80,8 @@ private suspend fun sendTransactionFreeGas(
                 ),
             ),
             message = Signable.Message(
-                Crypto.getSigner(
-                    privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-                    hashAlgo = HashAlgorithm.SHA2_256
-                ).signAsTransaction(tx.canonicalAuthorizationEnvelope).bytesToHex()
+                (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalAuthorizationEnvelope).bytesToHex()
+//                (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalTransaction).bytesToHex()
             ),
         )
     )

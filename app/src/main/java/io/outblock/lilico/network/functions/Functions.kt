@@ -28,24 +28,25 @@ private suspend fun <T> execute(functionName: String, data: Any? = null) = suspe
     val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
     logd(TAG, "execute $functionName > body:$body")
 
-    functions.getHttpsCallable(functionName).call(body).continueWith { task ->
-        if (!task.isSuccessful) {
-            loge(task.exception)
-            continuation.resume(null)
-            return@continueWith
-        }
-
-        try {
-            val result = task.result?.data?.toString()
-            val obj = Gson().fromJson<T>(result, object : TypeToken<T>() {}.type)
-            continuation.resume(obj)
-        } catch (e: Exception) {
-            if (e is FirebaseFunctionsException) {
-                logw(TAG, "code:${e.code}, details:${e.details}")
+    functions.getHttpsCallable(functionName)
+        .call(body).continueWith { task ->
+            if (!task.isSuccessful) {
+                loge(task.exception)
+                continuation.resume(null)
+                return@continueWith
             }
-            loge(e)
 
-            continuation.resume(null)
+            try {
+                val result = task.result?.data?.toString()
+                val obj = Gson().fromJson<T>(result, object : TypeToken<T>() {}.type)
+                continuation.resume(obj)
+            } catch (e: Exception) {
+                if (e is FirebaseFunctionsException) {
+                    logw(TAG, "code:${e.code}, details:${e.details}")
+                }
+                loge(e)
+
+                continuation.resume(null)
+            }
         }
-    }
 }

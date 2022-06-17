@@ -35,8 +35,22 @@ private fun log(tag: String?, msg: Any?, version: Int) {
     }
 
     val tag = "[${tag ?: ""}]"
-    val msg = msg?.toString() ?: return
+    val text = msg?.toString() ?: return
+    val maxLength = 3500
+    if (text.length > maxLength) {
+        val chunkCount: Int = text.length / maxLength // integer division
+        for (i in 0..chunkCount) {
+            val max = maxLength * (i + 1)
+            if (max >= text.length) {
+                print(tag, text.substring(maxLength * i), version)
+            } else {
+                print(tag, text.substring(maxLength * i, max), version)
+            }
+        }
+    } else print(tag, text, version)
+}
 
+private fun print(tag: String, msg: String, version: Int) {
     when (version) {
         Log.VERBOSE -> Log.v(tag, msg)
         Log.DEBUG -> Log.d(tag, msg)
