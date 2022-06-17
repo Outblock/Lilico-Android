@@ -3,7 +3,10 @@ package io.outblock.lilico.manager.flowjvm
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.FlowAddress
+import com.nftco.flow.sdk.FlowArgumentsBuilder
 import com.nftco.flow.sdk.FlowScriptResponse
+import com.nftco.flow.sdk.cadence.Field
+import com.nftco.flow.sdk.cadence.JsonCadenceBuilder
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
@@ -84,4 +87,26 @@ fun NftCollection.formatCadence(script: String): String {
         .replace("<TokenCollectionStoragePath>", path.storagePath)
         .replace("<TokenCollectionPublic>", path.publicCollectionName)
         .replace("<TokenCollectionPublicPath>", path.publicPath)
+}
+
+class CadenceArgumentsBuilder {
+    private var _values: MutableList<Field<*>> = mutableListOf()
+
+    fun arg(arg: Field<*>) = _values.add(arg)
+
+    fun arg(arg: JsonCadenceBuilder.() -> Field<*>) = arg(arg(JsonCadenceBuilder()))
+
+    fun build(): MutableList<Field<*>> = _values
+
+    fun toFlowArguments(): FlowArgumentsBuilder.() -> Unit {
+        return {
+            _values.forEach { arg(it) }
+        }
+    }
+}
+
+fun (CadenceArgumentsBuilder.() -> Unit).builder(): CadenceArgumentsBuilder {
+    val argsBuilder = CadenceArgumentsBuilder()
+    this(argsBuilder)
+    return argsBuilder
 }

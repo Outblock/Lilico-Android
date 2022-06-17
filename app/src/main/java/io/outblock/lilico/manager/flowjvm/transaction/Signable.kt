@@ -42,7 +42,7 @@ data class Signable(
             @SerializedName("keyId")
             val keyId: Int,
             @SerializedName("sig")
-            val sig: String?,
+            val sig: String? = null,
         )
 
         data class ProposalKey(

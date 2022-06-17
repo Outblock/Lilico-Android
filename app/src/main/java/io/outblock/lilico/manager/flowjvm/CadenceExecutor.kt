@@ -1,11 +1,15 @@
 package io.outblock.lilico.manager.flowjvm
 
-import com.nftco.flow.sdk.*
+import com.nftco.flow.sdk.Flow
+import com.nftco.flow.sdk.FlowScriptResponse
+import com.nftco.flow.sdk.ScriptBuilder
 import com.nftco.flow.sdk.cadence.marshall
+import com.nftco.flow.sdk.simpleFlowScript
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.manager.config.NftCollection
+import io.outblock.lilico.manager.flowjvm.transaction.sendFlowTransaction
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
@@ -224,11 +228,11 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
     }
 }
 
-private suspend fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() -> Unit): String? {
+private suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     return this.transaction(walletAddress, arguments)
 }
 
-private suspend fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuilder.() -> Unit): String? {
+private suspend fun String.transaction(fromAddress: String, arguments: CadenceArgumentsBuilder.() -> Unit): String? {
     return sendFlowTransaction(this, fromAddress, arguments)
 }
