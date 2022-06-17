@@ -5,6 +5,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import io.outblock.lilico.R
 import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.config.GasConfig
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.utils.logd
 
@@ -31,4 +32,5 @@ fun firebaseConfigFetch() {
 private fun onConfigLoadFinish() {
     FlowCoinListManager.reload()
     NftCollectionConfig.sync()
+    GasConfig.sync()
 }

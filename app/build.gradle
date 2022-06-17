@@ -153,6 +153,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-functions-ktx'
     /** firebase **/
 
     implementation "dev.chrisbanes:insetter-ktx:0.3.1"
