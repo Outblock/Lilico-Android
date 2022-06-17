@@ -13,10 +13,10 @@ fun Long.formatBalance(): Float {
     return balance.setScale(3, BigDecimal.ROUND_HALF_DOWN).toFloat()
 }
 
-fun Float.formatPrice(digits: Int = 3): String {
-    return format(digits)
+fun Float.formatPrice(digits: Int = 3, roundingMode: RoundingMode = RoundingMode.DOWN): String {
+    return format(digits, roundingMode)
 }
 
-fun Float.format(digits: Int = 3): String {
-    return DecimalFormat("0.${"#".repeat(digits)}").apply { roundingMode = RoundingMode.DOWN }.format(this)
+fun Float.format(digits: Int = 3, roundingMode: RoundingMode): String {
+    return DecimalFormat("0.${"#".repeat(digits)}").apply { setRoundingMode(roundingMode) }.format(this)
 }
