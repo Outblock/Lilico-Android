@@ -41,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 app:elevation="0dp"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+                >
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -87,7 +87,7 @@
                                 layout="@layout/item_nft_list_collection_title"/>
                         </FrameLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/collection_tabs_wrapper"
@@ -97,6 +97,7 @@
                     android:paddingVertical="12dp"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/collection_title_wrapper"
+                    app:layout_scrollFlags="scroll|snap"
                     tools:visibility="visible">
 
                     <androidx.recyclerview.widget.RecyclerView

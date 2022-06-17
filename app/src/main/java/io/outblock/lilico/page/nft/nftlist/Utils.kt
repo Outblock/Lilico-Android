@@ -100,10 +100,10 @@ suspend fun requestNftListFromServer(address: String): NFTListData? {
 
     val data = resp.data ?: return null
     val count = data.nftCount
-    list.addAll(data.nfts)
+    list.addAll(data.nfts.orEmpty())
 
     if (count > limit) {
-        var index = data.nfts.size
+        var index = data.nfts?.size ?: 0
         val exception = runCatching {
             while (index <= count) {
                 val r = service.nftList(address, index, index + limit)
