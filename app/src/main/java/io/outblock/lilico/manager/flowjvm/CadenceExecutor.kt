@@ -120,14 +120,14 @@ fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
     return result?.parseFloat()
 }
 
-fun cadenceEnableToken(coin: FlowCoin): String? {
+suspend fun cadenceEnableToken(coin: FlowCoin): String? {
     logd(TAG, "cadenceEnableToken()")
     val transactionId = coin.formatCadence(CADENCE_ADD_TOKEN).transactionByMainWallet {}
     logd(TAG, "cadenceEnableToken() transactionId:$transactionId")
     return transactionId
 }
 
-fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float): String? {
+suspend fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float): String? {
     logd(TAG, "cadenceTransferToken()")
     val transactionId = CADENCE_TRANSFER_TOKEN.transaction(fromAddress) {
         arg { ufix64(amount) }
@@ -147,7 +147,7 @@ fun cadenceNftCheckEnabled(nft: NftCollection): Boolean? {
     return result?.parseBool()
 }
 
-fun cadenceNftEnabled(nft: NftCollection): String? {
+suspend fun cadenceNftEnabled(nft: NftCollection): String? {
     logd(TAG, "cadenceNftEnabled() nft:${nft.name}")
     val transactionId = nft.formatCadence(CADENCE_NFT_ENABLE).transactionByMainWallet {}
     logd(TAG, "cadenceEnableToken() transactionId:$transactionId")
@@ -201,7 +201,7 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
     return result?.parseBoolList()
 }
 
-fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
+suspend fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
     logd(TAG, "cadenceTransferNft()")
     val transactionId = nft.formatCadence(CADENCE_NFT_TRANSFER).transactionByMainWallet {
         arg { address(toAddress.toAddress()) }
@@ -224,11 +224,11 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
     }
 }
 
-private fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() -> Unit): String? {
+private suspend fun String.transactionByMainWallet(arguments: FlowArgumentsBuilder.() -> Unit): String? {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     return this.transaction(walletAddress, arguments)
 }
 
-private fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuilder.() -> Unit): String? {
+private suspend fun String.transaction(fromAddress: String, arguments: FlowArgumentsBuilder.() -> Unit): String? {
     return sendFlowTransaction(this, fromAddress, arguments)
 }

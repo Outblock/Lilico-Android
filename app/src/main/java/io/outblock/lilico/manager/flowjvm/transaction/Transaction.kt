@@ -3,6 +3,10 @@ package io.outblock.lilico.manager.flowjvm
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
+import io.outblock.lilico.manager.flowjvm.transaction.Signable
+import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
+import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
@@ -14,7 +18,7 @@ import java.security.Security
 
 private const val TAG = "FlowTransaction"
 
-fun sendFlowTransaction(
+suspend fun sendFlowTransaction(
     script: String,
     fromAddress: String,
     arguments: FlowArgumentsBuilder.() -> Unit,
@@ -32,12 +36,20 @@ fun sendFlowTransaction(
     }
 }
 
-private fun sendTransactionFreeGas(
+private suspend fun sendTransactionFreeGas(
     script: String,
     fromAddress: String,
-    arguments: FlowArgumentsBuilder.() -> Unit,
+    argumentsBuilder: FlowArgumentsBuilder.() -> Unit,
 ): String {
-    val latestBlockId = FlowApi.get().getLatestBlockHeader().id
+    val args = argumentsBuilder()
+    val response = executeFunction<SignPayerResponse>(
+        FUNCTION_SIGN_AS_PAYER, data = Signable(
+            transaction = Signable.Transaction(
+                arguments = args().build()
+            ),
+            message = Signable.Message(),
+        )
+    )
 }
 
 private fun sendTransactionNormal(
