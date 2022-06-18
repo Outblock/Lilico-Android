@@ -42,10 +42,12 @@ private suspend fun sendTransactionFreeGas(
     script: String,
     fromAddress: String,
     args: CadenceArgumentsBuilder.() -> Unit,
-): String {
+): String? {
     val payerAddress = GasConfig.payer().address
-    val proposalAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
-    val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payerAddress.toAddress()))!!
+
+    val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress())) ?: return null
+
+    val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payerAddress.toAddress())) ?: return null
 
     val tx = toFlowTransaction(script, fromAddress, args)
     val response = executeFunction<SignPayerResponse>(
@@ -57,15 +59,15 @@ private suspend fun sendTransactionFreeGas(
                 arguments = args.builder().build().map { Signable.Transaction.Argument(it.type, it.value.toString()) },
                 proposalKey = Signable.Transaction.ProposalKey(
                     address = fromAddress,
-                    keyId = proposalAccount.keys.first().id,
-                    sequenceNum = proposalAccount.keys.first().sequenceNumber,
+                    keyId = account.keys.first().id,
+                    sequenceNum = account.keys.first().sequenceNumber,
                 ),
                 payer = GasConfig.payer().address,
                 authorizers = listOf(fromAddress),
                 payloadSigs = listOf(
                     Signable.Transaction.Sig(
                         address = fromAddress,
-                        keyId = proposalAccount.keys.first().id,
+                        keyId = account.keys.first().id,
                         sig = Crypto.getSigner(
                             privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
                             hashAlgo = HashAlgorithm.SHA2_256
@@ -81,7 +83,6 @@ private suspend fun sendTransactionFreeGas(
             ),
             message = Signable.Message(
                 (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalAuthorizationEnvelope).bytesToHex()
-//                (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalTransaction).bytesToHex()
             ),
         )
     )
@@ -141,7 +142,7 @@ private fun toFlowTransaction(
 ): FlowTransaction {
     val payer = GasConfig.payer().address
 
-    val proposalAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
+    val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
     val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payer.toAddress()))!!
 
     return flowTransaction {
@@ -153,9 +154,9 @@ private fun toFlowTransaction(
         gasLimit = 9999
 
         proposalKey {
-            address = proposalAccount.address
-            keyIndex = proposalAccount.keys[0].id
-            sequenceNumber = proposalAccount.keys[0].sequenceNumber.toLong()
+            address = account.address
+            keyIndex = account.keys[0].id
+            sequenceNumber = account.keys[0].sequenceNumber.toLong()
         }
 
         authorizers(mutableListOf(FlowAddress(fromAddress.toAddress())))
@@ -163,7 +164,7 @@ private fun toFlowTransaction(
 
         addPayloadSignatures {
             signature(
-                proposalAccount.address,
+                account.address,
                 0,
                 signer = Crypto.getSigner(
                     privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
