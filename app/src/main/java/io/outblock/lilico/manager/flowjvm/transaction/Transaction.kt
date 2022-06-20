@@ -23,20 +23,56 @@ import java.security.Security
 private const val TAG = "FlowTransaction"
 
 suspend fun sendFlowTransaction(
-    script: String,
+    candece: String,
     fromAddress: String,
     arguments: CadenceArgumentsBuilder.() -> Unit,
 ): String? {
-    logv(TAG, "transaction script:$script")
+    logv(TAG, "transaction cadence:$candece")
     updateSecurityProvider()
 
     return try {
         if (GasConfig.isFreeGas()) {
-            sendTransactionFreeGas(script, fromAddress, arguments)
-        } else sendTransactionNormal(script, fromAddress, arguments)
+            sendTransactionFreeGas(candece, fromAddress, arguments)
+        } else sendTransactionNormal(candece, fromAddress, arguments)
     } catch (e: Exception) {
         loge(e)
         null
+    }
+}
+
+private fun buildTransaction(
+    cadence: String,
+    walletAddress: String,
+    payer: String,
+    args: CadenceArgumentsBuilder.() -> Unit,
+): FlowTransaction? {
+
+    val walletAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress.toAddress())) ?: return null
+
+    return flowTransaction {
+        script { cadence.replaceFlowAddress() }
+
+        arguments { args.builder().toFlowArguments() }
+
+        referenceBlockId = FlowApi.get().getLatestBlockHeader().id
+        gasLimit = 100
+
+        proposalKey {
+            address = walletAccount.address
+            keyIndex = walletAccount.keys[0].id
+            sequenceNumber = walletAccount.keys[0].sequenceNumber.toLong()
+        }
+
+        authorizers(mutableListOf(FlowAddress(walletAddress.toAddress())))
+
+        payerAddress = FlowAddress(payer.toAddress())
+
+        payloadSignature(
+            FlowAddress(walletAddress), 0, signer = Crypto.getSigner(
+                privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
+                hashAlgo = HashAlgorithm.SHA2_256
+            )
+        )
     }
 }
 
@@ -61,19 +97,19 @@ private fun buildSignable(
     script: String,
     fromAddress: String,
     args: CadenceArgumentsBuilder.() -> Unit,
-): Signable? {
+): PayerSignable? {
     val payerAddress = GasConfig.payer().address
 
     val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress())) ?: return null
     val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payerAddress.toAddress())) ?: return null
 
-    val signable = Signable(
-        transaction = Signable.Transaction(
+    val signable = PayerSignable(
+        transaction = PayerSignable.Transaction(
             cadence = script.replaceFlowAddress(),
             refBlock = FlowApi.get().getLatestBlockHeader().id.base16Value,
             computeLimit = 9999,
-            arguments = args.builder().build().map { Signable.Transaction.Argument(it.type, it.value.toString()) },
-            proposalKey = Signable.Transaction.ProposalKey(
+            arguments = args.builder().build().map { PayerSignable.Transaction.Argument(it.type, it.value.toString()) },
+            proposalKey = PayerSignable.Transaction.ProposalKey(
                 address = fromAddress,
                 keyId = account.keys.first().id,
                 sequenceNum = account.keys.first().sequenceNumber,
@@ -81,7 +117,7 @@ private fun buildSignable(
             payer = GasConfig.payer().address,
             authorizers = listOf(fromAddress),
             envelopeSigs = listOf(
-                Signable.Transaction.Sig(
+                PayerSignable.Transaction.Sig(
                     address = GasConfig.payer().address,
                     keyId = payerAccount.keys.first().id,
                 )
@@ -92,21 +128,21 @@ private fun buildSignable(
     val tx = signable.toFlowTransaction(payerAccount)
 
     signable.transaction.payloadSigs = listOf(
-        Signable.Transaction.Sig(
+        PayerSignable.Transaction.Sig(
             address = fromAddress,
             keyId = account.keys.first().id,
             sig = tx.payloadSignatures.first().signature.base16Value,
         )
     )
 
-    signable.message = Signable.Message(
+    signable.message = PayerSignable.Message(
         (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalAuthorizationEnvelope).bytesToHex()
     )
 
     return signable
 }
 
-private fun Signable.toFlowTransaction(
+private fun PayerSignable.toFlowTransaction(
     payer: FlowAccount,
 ): FlowTransaction {
 

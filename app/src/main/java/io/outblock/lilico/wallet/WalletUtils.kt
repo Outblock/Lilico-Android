@@ -54,9 +54,6 @@ fun createWalletFromServer() {
     }
 }
 
-fun String.toAddress(): String {
-    if (this.startsWith("0x")) {
-        return this
-    }
-    return "0x$this"
-}
+fun String.toAddress(): String = "0x" + removeAddressPrefix()
+
+fun String.removeAddressPrefix(): String = this.removePrefix("0x").removePrefix("Fx")
