@@ -36,8 +36,8 @@ fun hdWallet(): HDWallet {
     return HDWallet(getMnemonic(), "")
 }
 
-fun HDWallet.sign(text: String, isNeedDomainTag: Boolean = true): String {
-    return signData(normalize("FLOW-V0.0-user") + text.encodeToByteArray())
+fun HDWallet.sign(text: String, domainTag: ByteArray = normalize("FLOW-V0.0-user")): String {
+    return signData(domainTag + text.encodeToByteArray())
 }
 
 fun HDWallet.signData(data: ByteArray): String {

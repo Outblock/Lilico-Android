@@ -49,7 +49,7 @@ private suspend fun sendTransactionFreeGas(
 
     val response = executeFunction<SignPayerResponse>(FUNCTION_SIGN_AS_PAYER, data = signable)
 
-    logd("xxx", "response:$response")
+    logd(TAG, "response:$response")
 
     return ""
 }
@@ -86,16 +86,17 @@ private fun buildSignable(
         ),
     )
 
-    val tx = signable.toFlowTransaction(payerAccount)
+    val signer = Crypto.getSigner(
+        privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
+        hashAlgo = HashAlgorithm.SHA2_256
+    )
+    val tx = signable.toFlowTransaction(payerAccount, signer)
 
     signable.transaction.payloadSigs = listOf(
         Signable.Transaction.Sig(
             address = fromAddress,
             keyId = account.keys.first().id,
-            sig = Crypto.getSigner(
-                privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-                hashAlgo = HashAlgorithm.SHA2_256
-            ).signAsTransaction(tx.canonicalPayload).bytesToHex(),
+            sig = signer.signAsTransaction(tx.canonicalPayload).bytesToHex(),
         )
     )
 
@@ -104,6 +105,37 @@ private fun buildSignable(
     )
 
     return signable
+}
+
+private fun Signable.toFlowTransaction(
+    payer: FlowAccount,
+    signer: Signer,
+): FlowTransaction {
+
+    return flowTransaction {
+        script { transaction.cadence }
+
+        arguments = transaction.arguments.map {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("type", it.type)
+            jsonObject.addProperty("value", it.value)
+            jsonObject.toString().toByteArray()
+        }.map { FlowArgument(it) }.toMutableList()
+
+        referenceBlockId = FlowId(transaction.refBlock)
+        gasLimit = 9999
+
+        proposalKey {
+            address = FlowAddress(transaction.proposalKey.address)
+            keyIndex = transaction.proposalKey.keyId
+            sequenceNumber = transaction.proposalKey.sequenceNum
+        }
+
+        authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address)))
+        payerAddress = payer.address
+
+        payloadSignature(FlowAddress(transaction.proposalKey.address), 0, signer = signer)
+    }
 }
 
 private fun sendTransactionNormal(
@@ -147,45 +179,6 @@ private fun sendTransactionNormal(
     val txID = FlowApi.get().sendTransaction(tx)
     logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
     return txID.bytes.bytesToHex()
-}
-
-private fun Signable.toFlowTransaction(
-    payer: FlowAccount,
-): FlowTransaction {
-
-    return flowTransaction {
-        script { transaction.cadence }
-
-        arguments = transaction.arguments.map {
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("type", it.type)
-            jsonObject.addProperty("value", it.value)
-            jsonObject.toString().toByteArray()
-        }.map { FlowArgument(it) }.toMutableList()
-
-        referenceBlockId = FlowId(transaction.refBlock)
-        gasLimit = 9999
-
-        proposalKey {
-            address = FlowAddress(transaction.proposalKey.address)
-            keyIndex = transaction.proposalKey.keyId
-            sequenceNumber = transaction.proposalKey.sequenceNum
-        }
-
-        authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address)))
-        payerAddress = payer.address
-
-        addPayloadSignatures {
-            signature(
-                FlowAddress(transaction.proposalKey.address),
-                0,
-                signer = Crypto.getSigner(
-                    privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-                    hashAlgo = HashAlgorithm.SHA2_256
-                )
-            )
-        }
-    }
 }
 
 /**
