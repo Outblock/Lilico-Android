@@ -23,7 +23,8 @@ private const val TAG = "FirebaseFunctions"
 
 const val FUNCTION_SIGN_AS_PAYER = "signAsPayer"
 
-private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.net/" else "https://us-central1-lilico-334404.cloudfunctions.net/"
+private val HOST =
+    if (isDev()) "https://3ce6-2001-8003-3608-1101-8007-d82f-d449-b266.ngrok.io/lilico-dev/us-central1/" else "https://us-central1-lilico-334404.cloudfunctions.net/"
 
 
 /**

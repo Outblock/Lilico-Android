@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Signable(
     @SerializedName("message")
-    val message: Message,
+    var message: Message? = null,
     @SerializedName("transaction")
     val transaction: Transaction
 ) {
@@ -23,7 +23,7 @@ data class Signable(
         @SerializedName("payer")
         val payer: String,
         @SerializedName("payloadSigs")
-        val payloadSigs: List<Sig>,
+        var payloadSigs: List<Sig>? = null,
         @SerializedName("proposalKey")
         val proposalKey: ProposalKey,
         @SerializedName("refBlock")
