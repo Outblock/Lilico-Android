@@ -1,5 +1,6 @@
 package io.outblock.lilico.manager.flowjvm.transaction
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
@@ -47,9 +48,11 @@ private suspend fun sendTransactionFreeGas(
 
     val signable = buildSignable(script, fromAddress, args) ?: return null
 
-    val response = executeFunction<SignPayerResponse>(FUNCTION_SIGN_AS_PAYER, data = signable)
+    val str = executeFunction(FUNCTION_SIGN_AS_PAYER, data = signable)
 
-    logd(TAG, "response:$response")
+    val sign = Gson().fromJson(str, SignPayerResponse::class.java).envelopeSigs
+
+    logd(TAG, "response:$str")
 
     return ""
 }
@@ -86,17 +89,13 @@ private fun buildSignable(
         ),
     )
 
-    val signer = Crypto.getSigner(
-        privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-        hashAlgo = HashAlgorithm.SHA2_256
-    )
-    val tx = signable.toFlowTransaction(payerAccount, signer)
+    val tx = signable.toFlowTransaction(payerAccount)
 
     signable.transaction.payloadSigs = listOf(
         Signable.Transaction.Sig(
             address = fromAddress,
             keyId = account.keys.first().id,
-            sig = signer.signAsTransaction(tx.canonicalPayload).bytesToHex(),
+            sig = tx.payloadSignatures.first().signature.base16Value,
         )
     )
 
@@ -109,7 +108,6 @@ private fun buildSignable(
 
 private fun Signable.toFlowTransaction(
     payer: FlowAccount,
-    signer: Signer,
 ): FlowTransaction {
 
     return flowTransaction {
@@ -134,7 +132,12 @@ private fun Signable.toFlowTransaction(
         authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address)))
         payerAddress = payer.address
 
-        payloadSignature(FlowAddress(transaction.proposalKey.address), 0, signer = signer)
+        payloadSignature(
+            FlowAddress(transaction.proposalKey.address), 0, signer = Crypto.getSigner(
+                privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
+                hashAlgo = HashAlgorithm.SHA2_256
+            )
+        )
     }
 }
 

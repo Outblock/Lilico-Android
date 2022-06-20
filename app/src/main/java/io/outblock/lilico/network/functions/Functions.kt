@@ -3,19 +3,16 @@ package io.outblock.lilico.network.functions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.manager.app.isTestnet
-import io.outblock.lilico.utils.isDev
-import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.loge
-import io.outblock.lilico.utils.logw
-import kotlinx.coroutines.runBlocking
+import io.outblock.lilico.network.interceptor.HeaderInterceptor
+import io.outblock.lilico.utils.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -30,35 +27,42 @@ private val HOST =
 /**
  * execute firebase function
  */
-suspend fun <T> executeFunction(functionName: String, data: Any? = null): T? {
+suspend fun executeFunction(functionName: String, data: Any? = null): String? {
     return executeHttp(functionName, data)
 }
 
 private val functions by lazy { Firebase.functions }
 
-private suspend fun <T> executeHttp(functionName: String, data: Any? = null) = suspendCancellableCoroutine<T?> { continuation ->
-    val client = OkHttpClient()
-    val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
-    logd(TAG, "$functionName http body:$body")
+private suspend fun executeHttp(functionName: String, data: Any? = null) = suspendCancellableCoroutine<String?> { continuation ->
+    val client = OkHttpClient.Builder().apply {
 
-    val jwt = runBlocking { getFirebaseJwt() }
+        callTimeout(10, TimeUnit.SECONDS)
+        connectTimeout(10, TimeUnit.SECONDS)
+        readTimeout(10, TimeUnit.SECONDS)
+        writeTimeout(10, TimeUnit.SECONDS)
+
+        addInterceptor(HeaderInterceptor())
+
+        if (isTesting()) {
+            addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+        }
+    }.build()
+    val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
 
     val request = Request.Builder().url("$HOST$functionName")
         .post(body.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType()))
-        .addHeader("authorization", "Bearer $jwt")
-        .addHeader("Network", getNetWork())
         .build()
     val response = client.newCall(request).execute()
 
-    if (response.isSuccessful) {
+    if (!response.isSuccessful) {
         logw(TAG, response.toString())
         continuation.resume(null)
         return@suspendCancellableCoroutine
     }
-    continuation.resume(parseResponse(response.body?.string()))
+    continuation.resume(response.body?.string())
 }
 
-private suspend fun <T> execute(functionName: String, data: Any? = null) = suspendCoroutine<T?> { continuation ->
+private suspend fun execute(functionName: String, data: Any? = null) = suspendCoroutine<String?> { continuation ->
     val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
     logd(TAG, "execute $functionName > body:$body")
 
@@ -70,18 +74,8 @@ private suspend fun <T> execute(functionName: String, data: Any? = null) = suspe
                 return@continueWith
             }
 
-            continuation.resume(parseResponse(task.result?.data?.toString()))
+            continuation.resume(task.result?.data?.toString())
         }
-}
-
-private fun <T> parseResponse(data: String?): T? {
-    return try {
-        logd(TAG, "response:$data")
-        return Gson().fromJson<T>(data, object : TypeToken<T>() {}.type)
-    } catch (e: Exception) {
-        loge(e)
-        null
-    }
 }
 
 private fun getNetWork(): String {
