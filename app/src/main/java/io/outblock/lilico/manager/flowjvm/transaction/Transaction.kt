@@ -27,10 +27,10 @@ suspend fun sendTransaction(
 
     val voucher = prepare(TransactionBuilder().apply { builder(this) })
 
-    val tx = voucher.toFlowTransaction()
+    var tx = voucher.toFlowTransaction()
 
     if (tx.envelopeSignatures.isEmpty() && GasConfig.isFreeGas()) {
-        tx.addFreeGasEnvelope()
+        tx = tx.addFreeGasEnvelope()
     }
 
     val txID = FlowApi.get().sendTransaction(tx)
