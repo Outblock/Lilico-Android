@@ -31,13 +31,14 @@
 
     <TextView
         android:id="@+id/title_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/inter_medium"
         android:textColor="@color/text"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/subtitle_view"
+        app:layout_constraintEnd_toStartOf="@id/right_content_wrapper"
         app:layout_constraintStart_toEndOf="@id/beginning_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -46,53 +47,66 @@
 
     <TextView
         android:id="@+id/subtitle_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
         android:fontFamily="@font/inter"
         android:textColor="@color/note"
         android:textSize="12sp"
+        android:paddingEnd="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/right_content_wrapper"
         app:layout_constraintStart_toEndOf="@id/beginning_container"
+        app:layout_constraintStart_toStartOf="@id/title_view"
         app:layout_constraintTop_toBottomOf="@id/title_view"
         app:layout_goneMarginStart="0dp"
-        tools:text="Backup"/>
+        tools:text="app:layout_constraintStart_toStartOflayout_constraintStart_toStartOf"
+        tools:visibility="visible"/>
 
-    <FrameLayout
-        android:id="@+id/extend_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/right_content_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="#999"
-        tools:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/desc_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/inter_medium"
-        android:textColor="@color/note"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginStart="0dp"
-        tools:text="Maunally"/>
+        <FrameLayout
+            android:id="@+id/extend_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#999"
+            tools:visibility="visible"/>
 
-    <ImageView
-        android:id="@+id/arrow_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_right"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"/>
+        <TextView
+            android:id="@+id/desc_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/note"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="0dp"
+            tools:text="Maunally"/>
+
+        <ImageView
+            android:id="@+id/arrow_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

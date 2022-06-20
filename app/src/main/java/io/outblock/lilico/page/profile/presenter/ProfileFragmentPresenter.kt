@@ -44,6 +44,7 @@ class ProfileFragmentPresenter(
         binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
+        binding.group1.freeGasPreference.setOnCheckedChangeListener { uiScope { setFreeGasPreferenceEnable(it) } }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
         updatePreferenceState()
@@ -82,6 +83,7 @@ class ProfileFragmentPresenter(
                     group1.root.setVisible(isSignIn)
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
+                    group1.freeGasPreference.setChecked(isFreeGasPreferenceEnable())
                 }
             }
         }

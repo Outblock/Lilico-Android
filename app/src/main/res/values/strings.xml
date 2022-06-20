@@ -232,4 +232,6 @@
     <string name="mnemonic_check_fail">Wrong selection</string>
     <string name="restore_with_recovery_phrase">Restore with Recovery Phrase</string>
     <string name="not_logged_in_toast">You are not logged in to the wallet</string>
+    <string name="free_gas_fee">Free gas fee</string>
+    <string name="free_gas_fee_desc">Allow lilico to pay the gas fee for all my transactions.</string>
 </resources>

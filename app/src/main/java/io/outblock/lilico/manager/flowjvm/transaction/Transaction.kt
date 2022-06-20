@@ -5,9 +5,8 @@ import com.google.gson.JsonObject
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.manager.config.GasConfig
-import io.outblock.lilico.manager.flowjvm.CadenceArgumentsBuilder
+import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.FlowApi
-import io.outblock.lilico.manager.flowjvm.builder
 import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeFunction
@@ -22,20 +21,33 @@ private const val TAG = "FlowTransaction"
 
 suspend fun sendTransaction(
     builder: TransactionBuilder.() -> Unit,
-): String? {
+): String {
     updateSecurityProvider()
 
     val voucher = prepare(TransactionBuilder().apply { builder(this) })
 
     var tx = voucher.toFlowTransaction()
 
-    if (tx.envelopeSignatures.isEmpty() && GasConfig.isFreeGas()) {
+    if (tx.envelopeSignatures.isEmpty() && isGasFree()) {
         tx = tx.addFreeGasEnvelope()
+    } else if (tx.envelopeSignatures.isEmpty()) {
+        tx = tx.addLocalSignatures()
     }
 
     val txID = FlowApi.get().sendTransaction(tx)
     logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
     return txID.bytes.bytesToHex()
+}
+
+private fun FlowTransaction.addLocalSignatures(): FlowTransaction {
+    return copy(payloadSignatures = emptyList()).addEnvelopeSignature(
+        payerAddress,
+        keyIndex = 0,
+        Crypto.getSigner(
+            privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
+            hashAlgo = HashAlgorithm.SHA2_256
+        )
+    )
 }
 
 private suspend fun FlowTransaction.addFreeGasEnvelope(): FlowTransaction {
@@ -51,14 +63,14 @@ private suspend fun FlowTransaction.addFreeGasEnvelope(): FlowTransaction {
     )
 }
 
-private fun prepare(builder: TransactionBuilder): Voucher {
+private suspend fun prepare(builder: TransactionBuilder): Voucher {
     val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(builder.walletAddress?.toAddress().orEmpty()))
         ?: throw RuntimeException("get wallet account error")
     return Voucher(
         arguments = builder.arguments.map { AsArgument(it.type, it.value?.toString().orEmpty()) },
         cadence = builder.script?.replaceFlowAddress(),
         computeLimit = builder.limit ?: 9999,
-        payer = builder.payer ?: (if (GasConfig.isFreeGas()) GasConfig.payer().address else builder.walletAddress),
+        payer = builder.payer ?: (if (isGasFree()) GasConfig.payer().address else builder.walletAddress),
         proposalKey = ProposalKey(
             address = account.address.base16Value,
             keyId = account.keys.first().id,
@@ -170,49 +182,6 @@ private fun Voucher.toFlowTransaction(): FlowTransaction {
     }
 
     return tx
-}
-
-private fun sendTransactionNormal(
-    script: String,
-    fromAddress: String,
-    args: CadenceArgumentsBuilder.() -> Unit,
-): String {
-    val latestBlockId = FlowApi.get().getLatestBlockHeader().id
-
-    val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress()))!!
-
-    val tx = flowTransaction {
-        script { script.replaceFlowAddress() }
-
-        arguments { args.builder().toFlowArguments() }
-
-        referenceBlockId = latestBlockId
-        gasLimit = 100
-
-        proposalKey {
-            address = payerAccount.address
-            keyIndex = payerAccount.keys[0].id
-            sequenceNumber = payerAccount.keys[0].sequenceNumber.toLong()
-        }
-
-        authorizers(mutableListOf(FlowAddress(fromAddress.toAddress())))
-        payerAddress = payerAccount.address
-
-        signatures {
-            signature {
-                address = payerAccount.address
-                keyIndex = 0
-                signer = Crypto.getSigner(
-                    privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-                    hashAlgo = HashAlgorithm.SHA2_256
-                )
-            }
-        }
-    }
-
-    val txID = FlowApi.get().sendTransaction(tx)
-    logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
-    return txID.bytes.bytesToHex()
 }
 
 /**

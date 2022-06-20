@@ -6,7 +6,10 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isFreeGasPreferenceEnable
 import io.outblock.lilico.utils.safeRun
+
+suspend fun isGasFree() = GasConfig.isFreeGas() && isFreeGasPreferenceEnable()
 
 object GasConfig {
 

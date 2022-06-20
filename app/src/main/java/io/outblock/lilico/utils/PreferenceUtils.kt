@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import io.outblock.lilico.manager.config.GasConfig
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.utils.extensions.toSafeInt
@@ -34,6 +35,7 @@ private val KEY_THEME_MODE = intPreferencesKey("KEY_THEME_MODE")
 private val KEY_QUOTE_MARKET = stringPreferencesKey("KEY_QUOTE_MARKET")
 private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BALANCE")
 private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
+private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -141,6 +143,12 @@ suspend fun isBookmarkPrepopulateFilled(): Boolean = dataStore.data.map { it[KEY
 
 suspend fun setBookmarkPrepopulateFilled(isFilled: Boolean) {
     dataStore.edit { it[KEY_BOOKMARK_PREPOPULATE_FILLED] = isFilled }
+}
+
+suspend fun isFreeGasPreferenceEnable(): Boolean = dataStore.data.map { it[KEY_FREE_GAS_ENABLE] ?: GasConfig.isFreeGas() }.first()
+
+suspend fun setFreeGasPreferenceEnable(isEnable: Boolean) {
+    dataStore.edit { it[KEY_FREE_GAS_ENABLE] = isEnable }
 }
 
 private fun edit(unit: suspend () -> Unit) {

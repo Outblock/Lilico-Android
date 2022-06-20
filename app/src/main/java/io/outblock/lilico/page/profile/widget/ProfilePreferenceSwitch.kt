@@ -23,8 +23,11 @@ class ProfilePreferenceSwitch : ProfilePreference {
         setOnClickListener { toggleSwitch() }
     }
 
-    fun setChecked(isChecked: Boolean) {
-        uiScope { switchView.isChecked = isChecked }
+    fun setChecked(isChecked: Boolean, withAnimation: Boolean = false) {
+        uiScope {
+            switchView.isChecked = isChecked
+            if (!withAnimation) switchView.jumpDrawablesToCurrentState()
+        }
     }
 
     fun isChecked() = switchView.isChecked
