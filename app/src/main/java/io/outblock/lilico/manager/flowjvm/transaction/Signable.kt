@@ -227,9 +227,9 @@ data class Voucher(
     @SerializedName("payer")
     val payer: String?,
     @SerializedName("payloadSigs")
-    val payloadSigs: List<Singature>?,
+    var payloadSigs: List<Singature>? = null,
     @SerializedName("envelopeSigs")
-    val envelopeSigs: List<Singature>?,
+    val envelopeSigs: List<Singature>? = null,
     @SerializedName("proposalKey")
     val proposalKey: ProposalKey,
     @SerializedName("refBlock")
@@ -242,7 +242,7 @@ data class Singature(
     @SerializedName("keyId")
     val keyId: Int?,
     @SerializedName("sig")
-    val sig: String?,
+    val sig: String? = null,
 )
 
 data class ProposalKey(

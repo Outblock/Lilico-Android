@@ -1,21 +1,46 @@
 package io.outblock.lilico.manager.flowjvm.transaction
 
-import com.nftco.flow.sdk.FlowArgumentsBuilder
 import com.nftco.flow.sdk.cadence.Field
 import com.nftco.flow.sdk.cadence.JsonCadenceBuilder
 
-class FlowTransactionBuilder {
-    private var _values: MutableList<Field<*>> = mutableListOf()
+class TransactionBuilder {
 
-    fun arg(arg: Field<*>) = _values.add(arg)
+    internal var script: String? = null
 
-    fun arg(arg: JsonCadenceBuilder.() -> Field<*>) = arg(arg(JsonCadenceBuilder()))
+    internal var walletAddress: String? = null
 
-    fun build(): MutableList<Field<*>> = _values
+    internal var payer: String? = null
 
-    fun toFlowArguments(): FlowArgumentsBuilder.() -> Unit {
-        return {
-            _values.forEach { arg(it) }
-        }
+    internal var arguments: MutableList<Field<*>> = mutableListOf()
+
+    internal var limit: Int? = 9999
+
+    fun script(script: String) {
+        this.script = script
+    }
+
+    fun arguments(arguments: MutableList<Field<*>>) {
+        this.arguments = arguments
+    }
+
+    fun arguments(arguments: JsonCadenceBuilder.() -> Iterable<Field<*>>) {
+        val builder = JsonCadenceBuilder()
+        this.arguments = arguments(builder).toMutableList()
+    }
+
+    fun arg(argument: Field<*>) = arguments.add(argument)
+
+    fun arg(argument: JsonCadenceBuilder.() -> Field<*>) = arg(argument(JsonCadenceBuilder()))
+
+    fun gaslimit(limit: Int) {
+        this.limit = limit
+    }
+
+    fun walletAddress(address: String) {
+        this.walletAddress = address
+    }
+
+    fun payer(payerAddress: String) {
+        this.payer = payerAddress
     }
 }

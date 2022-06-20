@@ -103,32 +103,30 @@ private fun buildSignable(
     val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress())) ?: return null
     val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payerAddress.toAddress())) ?: return null
 
-    val signable = PayerSignable(
-        transaction = PayerSignable.Transaction(
-            cadence = script.replaceFlowAddress(),
-            refBlock = FlowApi.get().getLatestBlockHeader().id.base16Value,
-            computeLimit = 9999,
-            arguments = args.builder().build().map { PayerSignable.Transaction.Argument(it.type, it.value.toString()) },
-            proposalKey = PayerSignable.Transaction.ProposalKey(
-                address = fromAddress,
-                keyId = account.keys.first().id,
-                sequenceNum = account.keys.first().sequenceNumber,
-            ),
-            payer = GasConfig.payer().address,
-            authorizers = listOf(fromAddress),
-            envelopeSigs = listOf(
-                PayerSignable.Transaction.Sig(
-                    address = GasConfig.payer().address,
-                    keyId = payerAccount.keys.first().id,
-                )
-            ),
+    val voucher = Voucher(
+        cadence = script.replaceFlowAddress(),
+        refBlock = FlowApi.get().getLatestBlockHeader().id.base16Value,
+        computeLimit = 9999,
+        arguments = args.builder().build().map { AsArgument(it.type, it.value.toString()) },
+        proposalKey = ProposalKey(
+            address = fromAddress,
+            keyId = account.keys.first().id,
+            sequenceNum = account.keys.first().sequenceNumber,
+        ),
+        payer = GasConfig.payer().address,
+        authorizers = listOf(fromAddress),
+        envelopeSigs = listOf(
+            Singature(
+                address = GasConfig.payer().address,
+                keyId = payerAccount.keys.first().id,
+            )
         ),
     )
 
     val tx = signable.toFlowTransaction(payerAccount)
 
     signable.transaction.payloadSigs = listOf(
-        PayerSignable.Transaction.Sig(
+        Singature(
             address = fromAddress,
             keyId = account.keys.first().id,
             sig = tx.payloadSignatures.first().signature.base16Value,
@@ -142,34 +140,35 @@ private fun buildSignable(
     return signable
 }
 
-private fun PayerSignable.toFlowTransaction(
+private fun Voucher.toFlowTransaction(
     payer: FlowAccount,
 ): FlowTransaction {
-
+    val transaction = this
     return flowTransaction {
-        script { transaction.cadence }
+        script { transaction.cadence.orEmpty() }
 
-        arguments = transaction.arguments.map {
+        arguments = transaction.arguments.orEmpty().map {
             val jsonObject = JsonObject()
             jsonObject.addProperty("type", it.type)
             jsonObject.addProperty("value", it.value)
             jsonObject.toString().toByteArray()
         }.map { FlowArgument(it) }.toMutableList()
 
-        referenceBlockId = FlowId(transaction.refBlock)
-        gasLimit = 9999
+        referenceBlockId = FlowId(transaction.refBlock.orEmpty())
+
+        gasLimit = computeLimit ?: 9999
 
         proposalKey {
-            address = FlowAddress(transaction.proposalKey.address)
-            keyIndex = transaction.proposalKey.keyId
-            sequenceNumber = transaction.proposalKey.sequenceNum
+            address = FlowAddress(transaction.proposalKey.address.orEmpty())
+            keyIndex = transaction.proposalKey.keyId ?: 0
+            sequenceNumber = transaction.proposalKey.sequenceNum ?: 0
         }
 
-        authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address)))
+        authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address.orEmpty())))
         payerAddress = payer.address
 
         payloadSignature(
-            FlowAddress(transaction.proposalKey.address), 0, signer = Crypto.getSigner(
+            FlowAddress(transaction.proposalKey.address.orEmpty()), 0, signer = Crypto.getSigner(
                 privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
                 hashAlgo = HashAlgorithm.SHA2_256
             )
