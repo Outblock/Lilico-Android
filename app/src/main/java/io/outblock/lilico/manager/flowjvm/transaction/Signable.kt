@@ -219,7 +219,7 @@ data class Voucher(
     @SerializedName("arguments")
     val arguments: List<AsArgument>?,
     @SerializedName("authorizers")
-    val authorizers: List<String>?,
+    val authorizers: List<String>? = null,
     @SerializedName("cadence")
     val cadence: String?,
     @SerializedName("computeLimit")
@@ -233,7 +233,7 @@ data class Voucher(
     @SerializedName("proposalKey")
     val proposalKey: ProposalKey,
     @SerializedName("refBlock")
-    val refBlock: String?,
+    val refBlock: String? = null,
 )
 
 data class Singature(

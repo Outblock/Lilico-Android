@@ -1,7 +1,6 @@
 package io.outblock.lilico.manager.flowjvm.transaction.resolve
 
 import com.nftco.flow.sdk.FlowAddress
-import io.outblock.fcl.resolve.Resolver
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.transaction.Interaction
 

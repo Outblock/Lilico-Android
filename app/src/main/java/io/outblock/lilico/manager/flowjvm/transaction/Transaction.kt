@@ -12,8 +12,6 @@ import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.loge
-import io.outblock.lilico.utils.logv
 import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.wallet.toAddress
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -22,129 +20,95 @@ import java.security.Security
 
 private const val TAG = "FlowTransaction"
 
-suspend fun sendFlowTransaction(
-    candece: String,
-    fromAddress: String,
-    arguments: CadenceArgumentsBuilder.() -> Unit,
+suspend fun sendTransaction(
+    builder: TransactionBuilder.() -> Unit,
 ): String? {
-    logv(TAG, "transaction cadence:$candece")
     updateSecurityProvider()
 
-    return try {
-        if (GasConfig.isFreeGas()) {
-            sendTransactionFreeGas(candece, fromAddress, arguments)
-        } else sendTransactionNormal(candece, fromAddress, arguments)
-    } catch (e: Exception) {
-        loge(e)
-        null
+    val voucher = prepare(TransactionBuilder().apply { builder(this) })
+
+    val tx = voucher.toFlowTransaction()
+
+    if (tx.envelopeSignatures.isEmpty() && GasConfig.isFreeGas()) {
+        tx.addFreeGasEnvelope()
     }
+
+    val txID = FlowApi.get().sendTransaction(tx)
+    logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
+    return txID.bytes.bytesToHex()
 }
 
-private fun buildTransaction(
-    cadence: String,
-    walletAddress: String,
-    payer: String,
-    args: CadenceArgumentsBuilder.() -> Unit,
-): FlowTransaction? {
+private suspend fun FlowTransaction.addFreeGasEnvelope(): FlowTransaction {
+    val response = executeFunction(FUNCTION_SIGN_AS_PAYER, buildPayerSignable())
+    logd(TAG, "response:$response")
 
-    val walletAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress.toAddress())) ?: return null
+    val sign = Gson().fromJson(response, SignPayerResponse::class.java).envelopeSigs
 
-    return flowTransaction {
-        script { cadence.replaceFlowAddress() }
-
-        arguments { args.builder().toFlowArguments() }
-
-        referenceBlockId = FlowApi.get().getLatestBlockHeader().id
-        gasLimit = 100
-
-        proposalKey {
-            address = walletAccount.address
-            keyIndex = walletAccount.keys[0].id
-            sequenceNumber = walletAccount.keys[0].sequenceNumber.toLong()
-        }
-
-        authorizers(mutableListOf(FlowAddress(walletAddress.toAddress())))
-
-        payerAddress = FlowAddress(payer.toAddress())
-
-        payloadSignature(
-            FlowAddress(walletAddress), 0, signer = Crypto.getSigner(
-                privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-                hashAlgo = HashAlgorithm.SHA2_256
-            )
-        )
-    }
+    return addEnvelopeSignature(
+        FlowAddress(sign.address),
+        keyIndex = sign.keyId,
+        signature = FlowSignature(sign.sig)
+    )
 }
 
-private suspend fun sendTransactionFreeGas(
-    script: String,
-    fromAddress: String,
-    args: CadenceArgumentsBuilder.() -> Unit,
-): String? {
-
-    val signable = buildSignable(script, fromAddress, args) ?: return null
-
-    val str = executeFunction(FUNCTION_SIGN_AS_PAYER, data = signable)
-
-    val sign = Gson().fromJson(str, SignPayerResponse::class.java).envelopeSigs
-
-    logd(TAG, "response:$str")
-
-    return ""
-}
-
-private fun buildSignable(
-    script: String,
-    fromAddress: String,
-    args: CadenceArgumentsBuilder.() -> Unit,
-): PayerSignable? {
-    val payerAddress = GasConfig.payer().address
-
-    val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(fromAddress.toAddress())) ?: return null
-    val payerAccount = FlowApi.get().getAccountAtLatestBlock(FlowAddress(payerAddress.toAddress())) ?: return null
-
-    val voucher = Voucher(
-        cadence = script.replaceFlowAddress(),
-        refBlock = FlowApi.get().getLatestBlockHeader().id.base16Value,
-        computeLimit = 9999,
-        arguments = args.builder().build().map { AsArgument(it.type, it.value.toString()) },
+private fun prepare(builder: TransactionBuilder): Voucher {
+    val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(builder.walletAddress?.toAddress().orEmpty()))
+        ?: throw RuntimeException("get wallet account error")
+    return Voucher(
+        arguments = builder.arguments.map { AsArgument(it.type, it.value?.toString().orEmpty()) },
+        cadence = builder.script?.replaceFlowAddress(),
+        computeLimit = builder.limit ?: 9999,
+        payer = builder.payer ?: (if (GasConfig.isFreeGas()) GasConfig.payer().address else builder.walletAddress),
         proposalKey = ProposalKey(
-            address = fromAddress,
+            address = account.address.base16Value,
             keyId = account.keys.first().id,
             sequenceNum = account.keys.first().sequenceNumber,
         ),
-        payer = GasConfig.payer().address,
-        authorizers = listOf(fromAddress),
+        refBlock = FlowApi.get().getLatestBlockHeader().id.base16Value,
+    )
+}
+
+private fun FlowTransaction.buildPayerSignable(
+): PayerSignable? {
+    val payerAccount = FlowApi.get().getAccountAtLatestBlock(payerAddress) ?: return null
+    val voucher = Voucher(
+        cadence = script.stringValue,
+        refBlock = referenceBlockId.base16Value,
+        computeLimit = gasLimit.toInt(),
+        arguments = arguments.map { it.jsonCadence }.map { AsArgument(it.type, it.value.toString()) },
+        proposalKey = ProposalKey(
+            address = proposalKey.address.base16Value.toAddress(),
+            keyId = proposalKey.keyIndex,
+            sequenceNum = proposalKey.sequenceNumber.toInt(),
+        ),
+        payer = payerAddress.base16Value.toAddress(),
+        authorizers = authorizers.map { it.base16Value.toAddress() },
+        payloadSigs = payloadSignatures.map {
+            Singature(
+                address = it.address.base16Value.toAddress(),
+                keyId = it.keyIndex,
+                sig = it.signature.base16Value,
+            )
+        },
         envelopeSigs = listOf(
             Singature(
-                address = GasConfig.payer().address,
+                address = GasConfig.payer().address.toAddress(),
                 keyId = payerAccount.keys.first().id,
             )
         ),
     )
 
-    val tx = signable.toFlowTransaction(payerAccount)
-
-    signable.transaction.payloadSigs = listOf(
-        Singature(
-            address = fromAddress,
-            keyId = account.keys.first().id,
-            sig = tx.payloadSignatures.first().signature.base16Value,
+    return PayerSignable(
+        transaction = voucher,
+        message = PayerSignable.Message(
+            (DomainTag.TRANSACTION_DOMAIN_TAG + canonicalAuthorizationEnvelope).bytesToHex()
         )
     )
-
-    signable.message = PayerSignable.Message(
-        (DomainTag.TRANSACTION_DOMAIN_TAG + tx.canonicalAuthorizationEnvelope).bytesToHex()
-    )
-
-    return signable
 }
 
-private fun Voucher.toFlowTransaction(
-    payer: FlowAccount,
-): FlowTransaction {
+private fun Voucher.toFlowTransaction(): FlowTransaction {
     val transaction = this
-    return flowTransaction {
+    var tx = flowTransaction {
         script { transaction.cadence.orEmpty() }
 
         arguments = transaction.arguments.orEmpty().map {
@@ -165,15 +129,47 @@ private fun Voucher.toFlowTransaction(
         }
 
         authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address.orEmpty())))
-        payerAddress = payer.address
 
-        payloadSignature(
-            FlowAddress(transaction.proposalKey.address.orEmpty()), 0, signer = Crypto.getSigner(
+        payerAddress = FlowAddress(transaction.payer.orEmpty())
+
+
+        addPayloadSignatures {
+            payloadSigs?.forEach { sig ->
+                if (!sig.sig.isNullOrBlank()) {
+                    signature(
+                        FlowAddress(sig.address),
+                        sig.keyId ?: 0,
+                        FlowSignature(sig.sig.orEmpty())
+                    )
+                }
+            }
+        }
+
+        addEnvelopeSignatures {
+            envelopeSigs?.forEach { sig ->
+                if (!sig.sig.isNullOrBlank()) {
+                    signature(
+                        FlowAddress(sig.address),
+                        sig.keyId ?: 0,
+                        FlowSignature(sig.sig.orEmpty())
+                    )
+                }
+            }
+        }
+    }
+
+    if (tx.payloadSignatures.isEmpty()) {
+        tx = tx.addPayloadSignature(
+            FlowAddress(proposalKey.address.orEmpty()),
+            keyIndex = proposalKey.keyId ?: 0,
+            Crypto.getSigner(
                 privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
                 hashAlgo = HashAlgorithm.SHA2_256
-            )
+            ),
         )
     }
+
+    return tx
 }
 
 private fun sendTransactionNormal(

@@ -52,7 +52,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
 
     fun send() {
         viewModelIOScope(this) {
-            val tid = cadenceTransferToken(transaction.fromAddress.toAddress(), transaction.target.address.orEmpty().toAddress(), transaction.amount)
+            val tid = cadenceTransferToken(transaction.target.address.orEmpty().toAddress(), transaction.amount)
             resultLiveData.postValue(tid != null)
             if (tid.isNullOrBlank()) {
                 return@viewModelIOScope

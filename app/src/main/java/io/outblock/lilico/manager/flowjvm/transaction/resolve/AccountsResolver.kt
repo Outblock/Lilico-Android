@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.flowjvm.transaction.resolve
 
-import io.outblock.fcl.resolve.Resolver
 import io.outblock.lilico.manager.flowjvm.transaction.Interaction
 import io.outblock.lilico.manager.flowjvm.transaction.Roles
 import io.outblock.lilico.manager.flowjvm.transaction.SignableUser

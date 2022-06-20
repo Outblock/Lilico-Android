@@ -9,7 +9,7 @@ import io.outblock.lilico.manager.flowjvm.transaction.resolve.CadenceResolver
 import io.outblock.lilico.manager.flowjvm.transaction.resolve.RefBlockResolver
 import io.outblock.lilico.manager.flowjvm.transaction.resolve.SequenceNumberResolver
 
-suspend fun sendTransaction(builder: ScriptBuilder.() -> Unit): String {
+suspend fun sendTransactionA(builder: ScriptBuilder.() -> Unit): String {
     val ix = prepare(ScriptBuilder().apply { builder(this) })
     listOf(
         CadenceResolver(),

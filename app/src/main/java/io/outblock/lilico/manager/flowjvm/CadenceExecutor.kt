@@ -9,7 +9,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.manager.config.NftCollection
-import io.outblock.lilico.manager.flowjvm.transaction.sendFlowTransaction
+import io.outblock.lilico.manager.flowjvm.transaction.sendTransaction
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
@@ -131,9 +131,9 @@ suspend fun cadenceEnableToken(coin: FlowCoin): String? {
     return transactionId
 }
 
-suspend fun cadenceTransferToken(fromAddress: String, toAddress: String, amount: Float): String? {
+suspend fun cadenceTransferToken(toAddress: String, amount: Float): String? {
     logd(TAG, "cadenceTransferToken()")
-    val transactionId = CADENCE_TRANSFER_TOKEN.transaction(fromAddress) {
+    val transactionId = CADENCE_TRANSFER_TOKEN.transactionByMainWallet {
         arg { ufix64(amount) }
         arg { address(toAddress.toAddress()) }
     }
@@ -230,9 +230,10 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
 
 private suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
-    return this.transaction(walletAddress, arguments)
-}
-
-private suspend fun String.transaction(fromAddress: String, arguments: CadenceArgumentsBuilder.() -> Unit): String? {
-    return sendFlowTransaction(this, fromAddress, arguments)
+    val args = CadenceArgumentsBuilder().apply { arguments(this) }
+    return sendTransaction {
+        args.build().forEach { arg(it) }
+        walletAddress(walletAddress)
+        script(this@transactionByMainWallet)
+    }
 }

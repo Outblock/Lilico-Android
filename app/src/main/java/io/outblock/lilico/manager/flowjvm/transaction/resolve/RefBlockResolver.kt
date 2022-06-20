@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.flowjvm.transaction.resolve
 
-import io.outblock.fcl.resolve.Resolver
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.transaction.Interaction
 
