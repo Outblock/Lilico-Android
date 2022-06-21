@@ -25,11 +25,6 @@
             android:background="@drawable/bg_nft_selection_card_gradient"/>
     </FrameLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
@@ -126,6 +121,5 @@
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:layout_constraintTop_toBottomOf="@id/collection_tabs_wrapper"/>
         </io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
 

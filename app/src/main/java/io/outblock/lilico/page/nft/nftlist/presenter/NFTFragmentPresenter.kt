@@ -31,6 +31,12 @@ class NFTFragmentPresenter(
             with(toolbar) { post { setPadding(paddingLeft, paddingTop + statusBarHeight, paddingRight, paddingBottom) } }
             viewPager.adapter = NftListPageAdapter(fragment)
             addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
+
+            with(refreshLayout) {
+                isEnabled = false
+                setOnRefreshListener { viewModel.refresh() }
+                setColorSchemeColors(R.color.colorSecondary.res2color())
+            }
         }
 
         setupTabs()
@@ -42,6 +48,7 @@ class NFTFragmentPresenter(
             updateToolbarBackground()
         }
         model.onListScrollChange?.let { updateToolbarBackground(it) }
+        model.listPageData?.let { binding.refreshLayout.isRefreshing = false }
     }
 
     private fun setupTabs() {
@@ -50,6 +57,9 @@ class NFTFragmentPresenter(
             setOnTabSelectListener(object : OnTabSelectListener {
                 override fun onTabSelect(position: Int) {
                     viewModel.updateLayoutMode(position != 0)
+
+                    if (position != 0) binding.refreshLayout.isEnabled = true
+
                     updateToolbarBackground()
                     binding.viewPager.setCurrentItem(position, false)
                 }

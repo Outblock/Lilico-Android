@@ -1,7 +1,9 @@
 package io.outblock.lilico.page.nft.nftlist
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.recyclerview.widget.DiffUtil
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.ApiService
@@ -120,3 +122,10 @@ suspend fun requestNftListFromServer(address: String): NFTListData? {
 }
 
 fun Nft.websiteUrl(walletAddress: String) = "https://lilico.app/nft/$walletAddress/${contract.address}/${contract.name}?tokenId=${id.tokenId}"
+
+fun findSwipeRefreshLayout(view: View): SwipeRefreshLayout? {
+    if (view.parent == null) return null
+    if (view.parent is SwipeRefreshLayout) return (view.parent as SwipeRefreshLayout)
+
+    return findSwipeRefreshLayout(view.parent as View)
+}
