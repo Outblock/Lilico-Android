@@ -107,3 +107,9 @@ val JS_LISTEN_FLOW_TRANSACTION_MESSAGE = """
       window.android.message(JSON.stringify({type: 'FLOW::TX', ...event.detail}))
     })
 """.trimIndent()
+
+val JS_LISTEN_FLOW_WALLET_TRANSACTION = """
+    window.addEventListener('FLOW::TX', function (event) {
+        walletController.listenTransaction(msg.txId, false);
+    })
+""".trimIndent()

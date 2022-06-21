@@ -16,6 +16,7 @@ class WebViewClient : Client() {
         view.executeJs(JS_FCL_EXTENSIONS)
         view.executeJs(JS_LISTEN_WINDOW_FCL_MESSAGE)
         view.executeJs(JS_LISTEN_FLOW_TRANSACTION_MESSAGE)
+        view.executeJs(JS_LISTEN_FLOW_WALLET_TRANSACTION)
         super.onPageFinished(view, url)
     }
 }

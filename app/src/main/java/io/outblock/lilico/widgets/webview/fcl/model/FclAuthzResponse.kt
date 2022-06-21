@@ -63,7 +63,7 @@ data class FclAuthzResponse(
             @SerializedName("params")
             val params: Params,
             @SerializedName("payer")
-            val payer: String,
+            val payer: Any,
             @SerializedName("proposer")
             val proposer: String,
             @SerializedName("reason")
