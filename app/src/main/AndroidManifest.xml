@@ -151,15 +151,20 @@
 
         <activity
             android:name=".page.scan.ScanBarcodeActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".page.profile.subpage.about.AboutActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
         <activity android:name=".page.demo.DemoActivity"/>
+
+        <activity
+            android:name=".page.browser.subpage.filepicker.FilePickerActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

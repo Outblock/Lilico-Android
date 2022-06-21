@@ -39,7 +39,7 @@ object FloatWindow {
 
     internal fun onPageChange(activity: Activity) {
         configs.forEach { (tag, config) ->
-            if (isShowing(tag)) {
+            if (isShowing(tag) && !config.ignorePage.contains(activity::class)) {
                 dismiss(tag)
                 show(config, activity)
             }

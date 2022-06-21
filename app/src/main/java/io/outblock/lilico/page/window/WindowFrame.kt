@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.outblock.lilico.R
+import io.outblock.lilico.manager.drive.GoogleDriveAuthActivity
 import io.outblock.lilico.page.browser.releaseBrowser
+import io.outblock.lilico.page.browser.subpage.filepicker.FilePickerActivity
 import io.outblock.lilico.page.window.bubble.attachBubble
 import io.outblock.lilico.page.window.bubble.releaseBubble
 import io.outblock.lilico.utils.ScreenUtils
@@ -42,6 +44,7 @@ class WindowFrame {
                         widthMatchParent = true,
                         heightMatchParent = true,
                         isFullScreen = true,
+                        ignorePage = listOf(FilePickerActivity::class, GoogleDriveAuthActivity::class)
                     )
                 )
                 show(activity)

@@ -1,7 +1,9 @@
 package io.outblock.lilico.widgets.floatwindow
 
+import android.app.Activity
 import android.view.Gravity
 import android.view.View
+import kotlin.reflect.KClass
 
 data class FloatWindowConfig(
     var gravity: Int = Gravity.START or Gravity.TOP,
@@ -19,4 +21,5 @@ data class FloatWindowConfig(
     var tag: String = "",
     var disableAnimation: Boolean = false,
     var isFullScreen: Boolean = false,
+    var ignorePage: List<KClass<out Activity>> = emptyList()
 )

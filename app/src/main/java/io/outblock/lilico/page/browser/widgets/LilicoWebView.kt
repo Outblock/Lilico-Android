@@ -2,9 +2,13 @@ package io.outblock.lilico.page.browser.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import io.outblock.lilico.BuildConfig
+import io.outblock.lilico.page.browser.subpage.filepicker.showWebviewFilePicker
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.*
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -36,7 +40,7 @@ class LilicoWebView : WebView {
         this.callback = callback
     }
 
-    private inner class WebChromeClient : com.just.agentweb.WebChromeClient() {
+    private inner class WebChromeClient : android.webkit.WebChromeClient() {
         override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             if (view.progress == newProgress) {
@@ -48,9 +52,18 @@ class LilicoWebView : WebView {
             super.onReceivedTitle(view, title)
             callback?.onTitleChange(title.orEmpty())
         }
+
+        override fun onShowFileChooser(
+            webView: WebView?,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: FileChooserParams?
+        ): Boolean {
+            uiScope { showWebviewFilePicker(context, filePathCallback, fileChooserParams) }
+            return true
+        }
     }
 
-    private inner class WebViewClient : com.just.agentweb.WebViewClient() {
+    private inner class WebViewClient : android.webkit.WebViewClient() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             view.executeJs(JS_FCL_EXTENSIONS)
