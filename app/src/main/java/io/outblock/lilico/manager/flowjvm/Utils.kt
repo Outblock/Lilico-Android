@@ -2,6 +2,7 @@ package io.outblock.lilico.manager.flowjvm
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.nftco.flow.sdk.FlowAccount
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.FlowArgumentsBuilder
 import com.nftco.flow.sdk.FlowScriptResponse
@@ -109,4 +110,12 @@ fun (CadenceArgumentsBuilder.() -> Unit).builder(): CadenceArgumentsBuilder {
     val argsBuilder = CadenceArgumentsBuilder()
     this(argsBuilder)
     return argsBuilder
+}
+
+fun FlowAddress.lastBlockAccount(): FlowAccount? {
+    return FlowApi.get().getAccountAtLatestBlock(this)
+}
+
+fun FlowAddress.lastBlockAccountKeyId(): Int {
+    return lastBlockAccount()?.keys?.firstOrNull()?.id ?: 0
 }

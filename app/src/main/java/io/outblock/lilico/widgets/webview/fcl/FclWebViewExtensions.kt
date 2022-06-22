@@ -24,11 +24,15 @@ fun WebView?.postMessage(message: String) {
 
 fun WebView?.postAuthnViewReadyResponse(address: String) {
     uiScope {
-        postMessage(FCL_AUTHN_RESPONSE.replace(ADDRESS_REPLACEMENT, address))
+        postMessage(
+            FCL_AUTHN_RESPONSE
+                .replace(ADDRESS_REPLACEMENT, address)
+                .replace(PRE_AUTHZ_REPLACEMENT, generateAuthnPreAuthz())
+        )
     }
 }
 
-fun WebView?.postAuthzViewReadyResponse(fcl: FclAuthzResponse) {
+fun WebView?.postAuthzPayloadSignResponse(fcl: FclAuthzResponse) {
     ioScope {
         val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
         val signature = hdWallet().signData(fcl.body.message.hexToBytes())

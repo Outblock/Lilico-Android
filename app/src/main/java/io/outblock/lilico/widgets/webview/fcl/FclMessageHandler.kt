@@ -13,83 +13,94 @@ import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclService
+import java.lang.reflect.Type
+
+private val TAG = FclMessageHandler::class.java.simpleName
 
 class FclMessageHandler(
     private val webView: WebView,
 ) {
+    private fun activity() = findActivity(webView) as FragmentActivity
 
-    private val activity by lazy { findActivity(webView) as FragmentActivity }
+    private fun wallet() = walletCache().read()?.primaryWalletAddress()
 
-    private val walletAddress by lazy { walletCache().read()?.primaryWalletAddress() }
+    private var message: String = ""
 
-    private var serviceType = ""
-    private var message = ""
+    private var service: String = ""
 
-    fun onHandleMessage(data: String) {
-        ioScope {
-            if (data.isBlank() || message == data) {
-                return@ioScope
-            }
-            logd(TAG, "message:$data")
-            message = data
+    fun onHandleMessage(message: String) {
+        ioScope { dispatch(message) }
+    }
 
-            runCatching {
-                val json = Gson().fromJson<Map<String, Any>>(data, object : TypeToken<Map<String, Any>>() {}.type) ?: return@ioScope
+    private suspend fun dispatch(message: String) {
+        if (message.isBlank() || message == this.message) {
+            return
+        }
 
-                if (json.isService()) {
-                    webView.postMessage("{type: '$TYPE_VIEW_READY'}")
-                    val service = Gson().fromJson(data, FclService::class.java)
-                    serviceType = service.service.type
-                    return@ioScope
-                }
+        if (wallet().isNullOrBlank()) {
+            toast(msgRes = R.string.not_logged_in_toast)
+            return
+        }
 
-                if (walletAddress.isNullOrBlank()) {
-                    toast(msgRes = R.string.not_logged_in_toast)
-                    return@ioScope
-                }
+        this.message = message
+        logd(TAG, message)
 
-                when (json["type"] as String) {
-                    TYPE_VIEW_RESPONSE -> dispatchViewReadyResponse(data)
-                }
-            }
+        val basicJson = message.fromJson<Map<String, Any>>(object : TypeToken<Map<String, Any>>() {}.type) ?: return
+
+        if (basicJson.isService()) {
+            webView.postMessage("{type: '$TYPE_VIEW_READY'}")
+            message.fromJson(FclService::class.java)?.let { service = it.service.type }
+        } else if (basicJson["type"] as? String == TYPE_VIEW_RESPONSE) {
+            dispatchViewReadyResponse(message)
         }
     }
 
-    private fun dispatchViewReadyResponse(data: String) {
-        safeRun {
-            val fcl = Gson().fromJson(data, FclResponse::class.java) ?: return@safeRun
-            uiScope {
-                if (serviceType != fcl.serviceType()) {
-                    return@uiScope
-                }
-                serviceType = ""
-                when (fcl.service.type) {
-                    "authn" -> connect(Gson().fromJson(data, FclAuthnResponse::class.java))
-                    "authz" -> cadence(Gson().fromJson(data, FclAuthzResponse::class.java))
-                }
-            }
+    private suspend fun dispatchViewReadyResponse(message: String) {
+        val service = this.service
+        val fcl = message.fromJson(FclResponse::class.java) ?: return
+        if (service != fcl.serviceType()) {
+            return
+        }
+
+        when (fcl.service.type) {
+            "authn" -> connect(message.fromJson(FclAuthnResponse::class.java)!!)
+            "authz" -> cadence(message.fromJson(FclAuthzResponse::class.java)!!)
         }
     }
 
     private suspend fun cadence(fcl: FclAuthzResponse) {
-        val approve = FclAuthzDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
+        val approve = FclAuthzDialog().show(activity().supportFragmentManager, fcl, webView.url, webView.title)
         if (approve) {
-            webView.postAuthzViewReadyResponse(fcl)
+            webView.postAuthzPayloadSignResponse(fcl)
         }
     }
 
     private suspend fun connect(fcl: FclAuthnResponse) {
-        val approve = FclAuthnDialog().show(activity.supportFragmentManager, fcl, webView.url, webView.title)
+        val approve = FclAuthnDialog().show(activity().supportFragmentManager, fcl, webView.url, webView.title)
         if (approve) {
-            walletAddress?.let { webView.postAuthnViewReadyResponse(it) }
+            wallet()?.let { webView.postAuthnViewReadyResponse(it) }
         }
     }
+}
 
-    private fun Map<String, Any>.isService(): Boolean {
-        return (this["service"] as? Map<*, *>)?.get("f_type") == "Service"
+private fun Map<String, Any>.isService(): Boolean {
+    return (this["service"] as? Map<*, *>)?.get("f_type") == "Service"
+}
+
+private fun <T> String.fromJson(clz: Class<T>): T? {
+    return try {
+        Gson().fromJson(this, clz)
+    } catch (e: Exception) {
+        loge(e)
+        null
     }
+}
 
-    companion object {
-        private val TAG = FclMessageHandler::class.java.simpleName
+private fun <T> String.fromJson(typeOfT: Type): T? {
+    return try {
+        Gson().fromJson<T>(this, typeOfT)
+    } catch (e: Exception) {
+        loge(e)
+        null
     }
 }

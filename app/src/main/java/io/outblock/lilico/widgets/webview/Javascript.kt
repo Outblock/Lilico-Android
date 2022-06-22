@@ -1,5 +1,12 @@
 package io.outblock.lilico.widgets.webview
 
+import com.nftco.flow.sdk.FlowAddress
+import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.isGasFree
+import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
+import io.outblock.lilico.wallet.toAddress
+
+const val PRE_AUTHZ_REPLACEMENT = "#pre-authz"
 const val ADDRESS_REPLACEMENT = "#address"
 const val SIGNATURE_REPLACEMENT = "#signature"
 
@@ -52,6 +59,7 @@ val FCL_AUTHN_RESPONSE = """
               "name": "Lilico Wallet"
             }
           },
+          $PRE_AUTHZ_REPLACEMENT,
           {
             "f_type": "Service",
             "f_vsn": "1.0.0",
@@ -119,3 +127,22 @@ val JS_QUERY_WINDOW_COLOR = """
     rgb2Hex = s => s.match(/[0-9]+/g).reduce((a, b) => a+(b|256).toString(16).slice(1), '#');
     window.android.windowColor(rgb2Hex(color));
 """.trimIndent()
+
+suspend fun generateAuthnPreAuthz(): String {
+    return if (isGasFree()) {
+        """
+            {
+                "f_type": "Service",
+                "f_vsn": "1.0.0",
+                "type": "pre-authz",
+                "uid": "lilico#pre-authz",
+                "endpoint": "android://pre-authz.lilico.app",
+                "method": "EXT/RPC",
+                "data": {
+                    "address": ${GasConfig.payer().address.toAddress()},
+                    "keyId": ${FlowAddress(GasConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
+                }
+            },
+        """.trimIndent()
+    } else ""
+}
