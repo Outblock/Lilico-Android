@@ -113,3 +113,9 @@ val JS_LISTEN_FLOW_WALLET_TRANSACTION = """
         walletController.listenTransaction(msg.txId, false);
     })
 """.trimIndent()
+
+val JS_QUERY_WINDOW_COLOR = """
+    var color = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
+    rgb2Hex = s => s.match(/[0-9]+/g).reduce((a, b) => a+(b|256).toString(16).slice(1), '#');
+    window.android.windowColor(rgb2Hex(color));
+""".trimIndent()

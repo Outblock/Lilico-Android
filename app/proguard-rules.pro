@@ -77,3 +77,5 @@
 
 # BouncyCastleProvider
 -keep class org.bouncycastle.** {*;}
+
+-keep class io.outblock.lilico.widgets.webview.JsInterface.** {*;}

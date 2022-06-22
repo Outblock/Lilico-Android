@@ -6,8 +6,10 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.webkit.ValueCallback
 import android.webkit.WebView
+import androidx.annotation.ColorInt
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.page.browser.subpage.filepicker.showWebviewFilePicker
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.*
 
@@ -40,11 +42,20 @@ class LilicoWebView : WebView {
         this.callback = callback
     }
 
+    fun onWindowColorChange(@ColorInt color: Int) {
+        callback?.onWindowColorChange(color)
+    }
+
     private inner class WebChromeClient : android.webkit.WebChromeClient() {
         override fun onProgressChanged(view: WebView, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             if (view.progress == newProgress) {
                 callback?.onProgressChange(view.progress / 100f)
+            }
+
+            if (newProgress == 100) {
+                logd(TAG, "load finish")
+                view.executeJs(JS_QUERY_WINDOW_COLOR)
             }
         }
 
@@ -89,4 +100,5 @@ interface WebviewCallback {
     fun onProgressChange(progress: Float)
     fun onTitleChange(title: String)
     fun onPageUrlChange(url: String, isReload: Boolean)
+    fun onWindowColorChange(@ColorInt color: Int)
 }

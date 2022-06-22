@@ -87,6 +87,10 @@ class BrowserPresenter(
         binding.toolbar.root.translationY = 0f
     }
 
+    override fun onWindowColorChange(color: Int) {
+
+    }
+
     private fun removeTab(tab: BrowserTab) {
         popBrowserTab(tab.id)
         showBrowserLastTab()
