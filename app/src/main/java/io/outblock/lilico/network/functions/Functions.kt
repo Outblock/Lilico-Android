@@ -27,6 +27,7 @@ private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.n
  * execute firebase function
  */
 suspend fun executeFunction(functionName: String, data: Any? = null): String? {
+    logd(TAG, "executeFunction:$functionName")
     return executeHttp(functionName, data)
 }
 

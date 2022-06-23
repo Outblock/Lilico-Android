@@ -6,13 +6,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
+import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
+import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
+import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
-import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
-import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
-import io.outblock.lilico.widgets.webview.fcl.model.FclResponse
-import io.outblock.lilico.widgets.webview.fcl.model.FclService
+import io.outblock.lilico.widgets.webview.fcl.model.*
 import java.lang.reflect.Type
 
 private val TAG = FclMessageHandler::class.java.simpleName
@@ -27,6 +28,10 @@ class FclMessageHandler(
     private var message: String = ""
 
     private var service: String = ""
+
+    private var fclResponse: FclResponse? = null
+
+    private var readyToSignEnvelope = false
 
     fun onHandleMessage(message: String) {
         ioScope { dispatch(message) }
@@ -43,43 +48,122 @@ class FclMessageHandler(
         }
 
         this.message = message
-        logd(TAG, message)
+        logd(TAG, "message:$message")
 
         val basicJson = message.fromJson<Map<String, Any>>(object : TypeToken<Map<String, Any>>() {}.type) ?: return
 
         if (basicJson.isService()) {
-            webView.postMessage("{type: '$TYPE_VIEW_READY'}")
-            message.fromJson(FclService::class.java)?.let { service = it.service.type }
+            dispatchServiceResponse(message)
         } else if (basicJson["type"] as? String == TYPE_VIEW_RESPONSE) {
-            dispatchViewReadyResponse(message)
+            uiScope { dispatchViewReadyResponse(message) }
         }
     }
 
     private suspend fun dispatchViewReadyResponse(message: String) {
         val service = this.service
-        val fcl = message.fromJson(FclResponse::class.java) ?: return
+        val fcl = message.fromJson(FclSimpleResponse::class.java) ?: return
         if (service != fcl.serviceType()) {
+            logd(TAG, "service not same (old:$service, new:${fcl.service})")
             return
         }
 
         when (fcl.service.type) {
-            "authn" -> connect(message.fromJson(FclAuthnResponse::class.java)!!)
-            "authz" -> cadence(message.fromJson(FclAuthzResponse::class.java)!!)
+            "authn" -> dispatchAuthn(message.fromJson(FclAuthnResponse::class.java)!!)
+            "authz" -> dispatchAuthz(message.fromJson(FclAuthzResponse::class.java)!!)
         }
     }
 
-    private suspend fun cadence(fcl: FclAuthzResponse) {
-        val approve = FclAuthzDialog().show(activity().supportFragmentManager, fcl, webView.url, webView.title)
-        if (approve) {
-            webView.postAuthzPayloadSignResponse(fcl)
+    private fun dispatchServiceResponse(message: String) {
+        message.fromJson(FclService::class.java)?.let {
+            service = it.service.type
+            fclResponse = null
+            if (service == "pre-authz") {
+                webView.postPreAuthzResponse()
+            } else webView.postMessage("{type: '$TYPE_VIEW_READY'}")
         }
     }
 
-    private suspend fun connect(fcl: FclAuthnResponse) {
+    private suspend fun dispatchAuthn(fcl: FclAuthnResponse) {
+        if (fcl.isDispatching()) {
+            return
+        }
+        fclResponse = fcl
         val approve = FclAuthnDialog().show(activity().supportFragmentManager, fcl, webView.url, webView.title)
         if (approve) {
             wallet()?.let { webView.postAuthnViewReadyResponse(it) }
         }
+        finishService()
+    }
+
+    private suspend fun dispatchAuthz(fcl: FclAuthzResponse) {
+        if (fcl.isDispatching()) {
+            logd(TAG, "fcl isDispatching:${fcl.uniqueId()}")
+            return
+        }
+        fclResponse = fcl
+
+        if (fcl.body.fType == "Signable") {
+            logd(TAG, "roles:${fcl.body.roles}")
+        }
+
+        if (fcl.isSignAuthz()) {
+            logd(TAG, "signAuthz")
+            signAuthz(fcl)
+        } else if (fcl.isSignPayload() && !FclAuthzDialog.isShowing()) {
+            logd(TAG, "signPayload")
+            signPayload(fcl)
+        } else if ((readyToSignEnvelope && FclAuthzDialog.isShowing() && fcl.isSignEnvelope())) {
+            logd(TAG, "fclSignEnvelope")
+            ioScope { signEnvelope(fcl, webView) { FclAuthzDialog.dismiss() } }
+        }
+    }
+
+    private fun signAuthz(fcl: FclAuthzResponse) {
+        FclAuthzDialog.show(activity().supportFragmentManager, fcl.body.cadence, webView.url, webView.title)
+        FclAuthzDialog.observe { approve ->
+            if (approve) {
+                FclAuthzDialog.dismiss()
+                webView.postAuthzPayloadSignResponse(fcl)
+            }
+            finishService()
+        }
+    }
+
+    private fun signPayload(fcl: FclAuthzResponse) {
+        FclAuthzDialog.show(activity().supportFragmentManager, fcl.body.cadence, webView.url, webView.title)
+        FclAuthzDialog.observe { approve ->
+            readyToSignEnvelope = approve
+            if (approve) {
+                webView.postAuthzPayloadSignResponse(fcl)
+            } else {
+                finishService()
+            }
+        }
+    }
+
+    private suspend fun signEnvelope(fcl: FclAuthzResponse, webView: WebView, callback: () -> Unit) {
+        val response = executeFunction(
+            FUNCTION_SIGN_AS_PAYER, PayerSignable(
+                transaction = fcl.body.voucher,
+                message = PayerSignable.Message(fcl.body.message)
+            )
+        )
+
+        safeRun {
+            val sign = Gson().fromJson(response, SignPayerResponse::class.java).envelopeSigs
+
+            webView.postAuthzEnvelopeSignResponse(sign)
+            callback.invoke()
+        }
+        readyToSignEnvelope = false
+        finishService()
+    }
+
+    private fun FclResponse.isDispatching(): Boolean = this.uniqueId() == fclResponse?.uniqueId()
+
+    private fun finishService() {
+        service = ""
+        fclResponse = null
     }
 }
 
@@ -103,4 +187,28 @@ private fun <T> String.fromJson(typeOfT: Type): T? {
         loge(e)
         null
     }
+}
+
+private fun FclAuthzResponse.isSignEnvelope(): Boolean {
+    return service.type == "authz" && body.fType == "Signable" && body.roles.isSignEnvelope()
+}
+
+private fun FclAuthzResponse.isSignAuthz(): Boolean {
+    return service.type == "authz" && body.fType == "Signable" && body.roles.isSignAuthz()
+}
+
+private fun FclAuthzResponse.isSignPayload(): Boolean {
+    return service.type == "authz" && body.fType == "Signable" && body.roles.isSignPayload()
+}
+
+private fun FclAuthzResponse.Body.Roles.isSignEnvelope(): Boolean {
+    return payer && !authorizer && !proposer
+}
+
+private fun FclAuthzResponse.Body.Roles.isSignAuthz(): Boolean {
+    return payer && authorizer && proposer
+}
+
+private fun FclAuthzResponse.Body.Roles.isSignPayload(): Boolean {
+    return !payer && authorizer && proposer
 }

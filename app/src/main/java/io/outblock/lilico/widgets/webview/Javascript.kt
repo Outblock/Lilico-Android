@@ -8,6 +8,7 @@ import io.outblock.lilico.wallet.toAddress
 
 const val PRE_AUTHZ_REPLACEMENT = "#pre-authz"
 const val ADDRESS_REPLACEMENT = "#address"
+const val PAYER_ADDRESS_REPLACEMENT = "#payer-address"
 const val SIGNATURE_REPLACEMENT = "#signature"
 
 private const val SERVICE = """
@@ -59,7 +60,7 @@ val FCL_AUTHN_RESPONSE = """
               "name": "Lilico Wallet"
             }
           },
-          $PRE_AUTHZ_REPLACEMENT,
+          $PRE_AUTHZ_REPLACEMENT
           {
             "f_type": "Service",
             "f_vsn": "1.0.0",
@@ -93,6 +94,57 @@ val FCL_AUTHZ_RESPONSE = """
         "signature": "$SIGNATURE_REPLACEMENT"
       },
       "type": "FCL:VIEW:RESPONSE"
+    }
+""".trimIndent()
+
+val FCL_PRE_AUTHZ_RESPONSE = """
+    {
+        "status": "APPROVED",
+        "data": {
+            "f_type": "PreAuthzResponse",
+            "f_vsn": "1.0.0",
+            "proposer": {
+                "f_type": "Service",
+                "f_vsn": "1.0.0",
+                "type": "authz",
+                "uid": "lilico#authz",
+                "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
+                "method": "EXT/RPC",
+                "identity": {
+                    "address": "$ADDRESS_REPLACEMENT",
+                    "keyId": 0
+                }
+            },
+            "payer": [
+                {
+                    "f_type": "Service",
+                    "f_vsn": "1.0.0",
+                    "type": "authz",
+                    "uid": "lilico#authz",
+                    "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
+                    "method": "EXT/RPC",
+                    "identity": {
+                        "address": "$PAYER_ADDRESS_REPLACEMENT",
+                        "keyId": 0
+                    }
+                }
+            ],
+            "authorization": [
+                {
+                    "f_type": "Service",
+                    "f_vsn": "1.0.0",
+                    "type": "authz",
+                    "uid": "lilico#authz",
+                    "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
+                    "method": "EXT/RPC",
+                    "identity": {
+                        "address": "$ADDRESS_REPLACEMENT",
+                        "keyId": 0
+                    }
+                }
+            ]
+        },
+        "type": "FCL:VIEW:RESPONSE"
     }
 """.trimIndent()
 
@@ -139,7 +191,7 @@ suspend fun generateAuthnPreAuthz(): String {
                 "endpoint": "android://pre-authz.lilico.app",
                 "method": "EXT/RPC",
                 "data": {
-                    "address": ${GasConfig.payer().address.toAddress()},
+                    "address": "${GasConfig.payer().address.toAddress()}",
                     "keyId": ${FlowAddress(GasConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
                 }
             },

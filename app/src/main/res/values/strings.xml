@@ -235,4 +235,6 @@
     <string name="free_gas_fee">Free gas fee</string>
     <string name="free_gas_fee_desc">Allow lilico to pay the gas fee for all my transactions.</string>
     <string name="file_picker_title">Select File</string>
+    <string name="transaction_fee">Transaction fee</string>
+    <string name="hold_to_confirm">Hold to Confirm</string>
 </resources>

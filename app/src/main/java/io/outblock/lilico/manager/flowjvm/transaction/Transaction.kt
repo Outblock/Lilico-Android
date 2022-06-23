@@ -80,8 +80,7 @@ private suspend fun prepare(builder: TransactionBuilder): Voucher {
     )
 }
 
-private fun FlowTransaction.buildPayerSignable(
-): PayerSignable? {
+fun FlowTransaction.buildPayerSignable(): PayerSignable? {
     val payerAccount = FlowApi.get().getAccountAtLatestBlock(payerAddress) ?: return null
     val voucher = Voucher(
         cadence = script.stringValue,
@@ -118,7 +117,7 @@ private fun FlowTransaction.buildPayerSignable(
     )
 }
 
-private fun Voucher.toFlowTransaction(): FlowTransaction {
+fun Voucher.toFlowTransaction(): FlowTransaction {
     val transaction = this
     var tx = flowTransaction {
         script { transaction.cadence.orEmpty() }
@@ -126,7 +125,7 @@ private fun Voucher.toFlowTransaction(): FlowTransaction {
         arguments = transaction.arguments.orEmpty().map {
             val jsonObject = JsonObject()
             jsonObject.addProperty("type", it.type)
-            jsonObject.addProperty("value", it.value)
+            jsonObject.addProperty("value", it.value.toString())
             jsonObject.toString().toByteArray()
         }.map { FlowArgument(it) }.toMutableList()
 
@@ -143,7 +142,6 @@ private fun Voucher.toFlowTransaction(): FlowTransaction {
         authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address.orEmpty())))
 
         payerAddress = FlowAddress(transaction.payer.orEmpty())
-
 
         addPayloadSignatures {
             payloadSigs?.forEach { sig ->

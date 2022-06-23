@@ -9,15 +9,11 @@ import kotlinx.parcelize.Parcelize
 data class FclAuthnResponse(
     @SerializedName("body")
     val body: Body,
-    @SerializedName("config")
-    val config: Config,
-    @SerializedName("fclVersion")
-    val fclVersion: String,
     @SerializedName("service")
     val service: Service,
     @SerializedName("type")
     val type: String
-) : Parcelable {
+) : FclResponse, Parcelable {
     @Parcelize
     data class Body(
         @SerializedName("extensions")
@@ -88,4 +84,6 @@ data class FclAuthnResponse(
         @SerializedName("type")
         val type: String
     ) : Parcelable
+
+    override fun uniqueId(): String = "${service.type}-$type"
 }

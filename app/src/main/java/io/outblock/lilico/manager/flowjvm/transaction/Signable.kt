@@ -1,12 +1,14 @@
 package io.outblock.lilico.manager.flowjvm.transaction
 
 
+import android.os.Parcelable
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.cadence.Field
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.wallet.removeAddressPrefix
+import kotlinx.parcelize.Parcelize
 
 data class Signable(
     @SerializedName("addr")
@@ -166,12 +168,11 @@ data class Argument(
     )
 }
 
-
 data class AsArgument(
     @SerializedName("type")
     val type: String,
     @SerializedName("value")
-    val value: String
+    val value: Any
 )
 
 data class Events(
@@ -236,6 +237,7 @@ data class Voucher(
     val refBlock: String? = null,
 )
 
+@Parcelize
 data class Singature(
     @SerializedName("address")
     val address: String,
@@ -243,8 +245,9 @@ data class Singature(
     val keyId: Int?,
     @SerializedName("sig")
     val sig: String? = null,
-)
+) : Parcelable
 
+@Parcelize
 data class ProposalKey(
     @SerializedName("address")
     val address: String? = null,
@@ -252,7 +255,7 @@ data class ProposalKey(
     val keyId: Int? = null,
     @SerializedName("sequenceNum")
     val sequenceNum: Int? = null,
-)
+) : Parcelable
 
 fun <T> Field<T>.toFclArgument(): Argument {
     return Argument(
@@ -279,7 +282,7 @@ fun Interaction.toFlowTransaction(): FlowTransaction {
         arguments = ix.message.arguments.mapNotNull { ix.arguments[it]?.asArgument }.map {
             val jsonObject = JsonObject()
             jsonObject.addProperty("type", it.type)
-            jsonObject.addProperty("value", it.value)
+            jsonObject.addProperty("value", it.value.toString())
             jsonObject.toString().toByteArray()
         }.map { FlowArgument(it) }.toMutableList()
 
