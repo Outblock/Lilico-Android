@@ -1,9 +1,7 @@
 package io.outblock.lilico.page.browser.presenter
 
 import android.animation.ObjectAnimator
-import android.view.ViewGroup
-import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
+import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
@@ -16,7 +14,6 @@ import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.page.window.bubble.tools.inBubbleStack
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.widgets.RenderScriptBlur2
 import kotlin.math.abs
 
 class BrowserPresenter(
@@ -32,11 +29,9 @@ class BrowserPresenter(
     init {
         with(binding) {
             contentWrapper.post {
-                contentWrapper.addStatusBarTopPadding()
-                root.addNavigationBarBottomPadding()
-                with(root.layoutParams as ViewGroup.MarginLayoutParams) {
-                    bottomMargin = statusBarHeight
-                    root.layoutParams = this
+                statusBarHolder.layoutParams.height = statusBarHeight
+                with(root) {
+                    setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom + navigationBarHeight)
                 }
             }
             with(binding.toolbar) {
@@ -45,8 +40,6 @@ class BrowserPresenter(
                 homeButton.setOnClickListener { popBrowserLastTab() }
                 floatButton.setOnClickListener { shrinkBrowser() }
                 menuButton.setOnClickListener { browserTabLast()?.let { BrowserPopupMenu(menuButton, it).show() } }
-                blurView.setupWith(binding.webviewContainer)
-                    .setBlurAlgorithm(RenderScriptBlur2(root.context)).setBlurAutoUpdate(true).setBlurRadius(20.0f)
             }
         }
     }
@@ -88,7 +81,7 @@ class BrowserPresenter(
     }
 
     override fun onWindowColorChange(color: Int) {
-
+        binding.statusBarHolder.setBackgroundColor(color)
     }
 
     private fun removeTab(tab: BrowserTab) {

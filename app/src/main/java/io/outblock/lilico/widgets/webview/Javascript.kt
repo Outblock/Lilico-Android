@@ -175,9 +175,31 @@ val JS_LISTEN_FLOW_WALLET_TRANSACTION = """
 """.trimIndent()
 
 val JS_QUERY_WINDOW_COLOR = """
-    var color = window.getComputedStyle( document.body ,null).getPropertyValue('background-color');
-    rgb2Hex = s => s.match(/[0-9]+/g).reduce((a, b) => a+(b|256).toString(16).slice(1), '#');
-    window.android.windowColor(rgb2Hex(color));
+    function getBodyColor() {
+      const getCbgcolor = (elem) => {
+        if (!getCbgcolor.top)
+          getCbgcolor.top = (() => {
+            try {
+              return window.top.document.documentElement;
+            } catch (e) {
+              return null; /* CORS */
+            }
+          })();
+    
+        while (true) {
+          let cbg = window.getComputedStyle(elem).getPropertyValue("background-color");
+          if (cbg && cbg != "rgba(0, 0, 0, 0)" && cbg != "transparent") return cbg;
+          if (elem === getCbgcolor.top) return cbg;
+          elem = elem.parentElement;
+          if (!elem) return "";
+        }
+      };
+    
+      const rgb2Hex = (s) => s.match(/[0-9]+/g).reduce((a, b) => a + (b | 256).toString(16).slice(1), "#");
+      return rgb2Hex(getCbgcolor(document.body)).substring(0, 7);
+    }
+    
+    window.android.windowColor(getBodyColor());
 """.trimIndent()
 
 suspend fun generateAuthnPreAuthz(): String {

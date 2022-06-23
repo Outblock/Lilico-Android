@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/deep_bg">
 
+        <View
+            android:id="@+id/status_bar_holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/red_1"
+            android:background="@color/deep_bg"
+            tools:layout_height="30dp"/>
+
         <FrameLayout
             android:id="@+id/webview_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/status_bar_holder"/>
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_browser_toolbar"/>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/input_layout"

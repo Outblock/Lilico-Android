@@ -188,8 +188,6 @@ dependencies {
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
     implementation 'joda-time:joda-time:2.10.3'
     implementation 'commons-validator:commons-validator:1.7'
-    implementation 'com.github.Dimezis:BlurView:version-2.0.0'
-    implementation 'com.github.donkingliang:ConsecutiveScroller:4.6.1'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.6.0"
