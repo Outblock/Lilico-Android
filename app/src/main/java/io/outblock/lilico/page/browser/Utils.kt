@@ -114,10 +114,12 @@ fun isBrowserCollapsed() = isBrowserActive() && !isBrowserWebViewVisible()
 //}
 
 fun shrinkBrowser() {
-    browserTabLast()?.let { pushBubbleStack(it) }
-    val binding = browserViewBinding() ?: return
-    with(binding) {
-        shrinkWebView(root)
+    val lastTab = browserTabLast() ?: return
+    pushBubbleStack(lastTab) {
+        val binding = browserViewBinding() ?: return@pushBubbleStack
+        with(binding) {
+            shrinkWebView(root)
+        }
     }
 }
 

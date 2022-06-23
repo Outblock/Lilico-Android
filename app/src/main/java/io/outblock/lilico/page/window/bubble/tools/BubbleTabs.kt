@@ -10,12 +10,13 @@ import io.outblock.lilico.utils.uiScope
 
 private val tabs = mutableListOf<BubbleItem>()
 
-fun pushBubbleStack(data: Any) {
+fun pushBubbleStack(data: Any, onPushed: (() -> Unit)? = null) {
     uiScope {
         tabs.removeAll { it.data == data }
         tabs.add(BubbleItem(data))
         attachBubble()
         bubbleViewModel()?.onTabChange()
+        onPushed?.invoke()
     }
 }
 
