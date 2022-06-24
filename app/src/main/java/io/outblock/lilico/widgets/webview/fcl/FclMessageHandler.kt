@@ -18,6 +18,10 @@ import java.lang.reflect.Type
 
 private val TAG = FclMessageHandler::class.java.simpleName
 
+private var authzTransaction: AuthzTransaction? = null
+
+fun authzTransaction() = authzTransaction
+
 class FclMessageHandler(
     private val webView: WebView,
 ) {
@@ -122,6 +126,7 @@ class FclMessageHandler(
         FclAuthzDialog.show(activity().supportFragmentManager, fcl.body.cadence, webView.url, webView.title)
         FclAuthzDialog.observe { approve ->
             if (approve) {
+                uiScope { authzTransaction = fcl.toAuthzTransaction(webView) }
                 FclAuthzDialog.dismiss()
                 webView.postAuthzPayloadSignResponse(fcl)
             }
@@ -153,6 +158,8 @@ class FclMessageHandler(
             val sign = Gson().fromJson(response, SignPayerResponse::class.java).envelopeSigs
 
             webView.postAuthzEnvelopeSignResponse(sign)
+            uiScope { authzTransaction = fcl.toAuthzTransaction(webView) }
+
             callback.invoke()
         }
         readyToSignEnvelope = false

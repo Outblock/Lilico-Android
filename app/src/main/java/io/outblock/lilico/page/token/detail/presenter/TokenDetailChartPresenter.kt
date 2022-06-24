@@ -13,7 +13,7 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutTokenDetailChartBinding
-import io.outblock.lilico.network.model.CryptowatchSummaryResponse
+import io.outblock.lilico.network.model.CryptowatchSummaryData
 import io.outblock.lilico.page.token.detail.Period
 import io.outblock.lilico.page.token.detail.Quote
 import io.outblock.lilico.page.token.detail.QuoteMarket
@@ -73,7 +73,7 @@ class TokenDetailChartPresenter(
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateSummary(summary: CryptowatchSummaryResponse.Result) {
+    private fun updateSummary(summary: CryptowatchSummaryData.Result) {
         with(binding) {
             priceView.text = "$${summary.price.last.formatPrice()}"
 

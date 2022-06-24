@@ -5,6 +5,7 @@ import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_ADD_TOKEN
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_ENABLE_NFT
+import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_FCL_TRANSACTION
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_NFT
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_COIN
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_NFT
@@ -40,6 +41,7 @@ private fun TransactionState.icon(): Any {
         TYPE_ADD_TOKEN -> tokenData()?.icon.orEmpty()
         TYPE_ENABLE_NFT -> nftCollectionData()?.logo.orEmpty()
         TYPE_TRANSFER_NFT -> nftSendData().nft.cover().orEmpty()
+        TYPE_FCL_TRANSACTION -> fclTransactionData().url?.toFavIcon().orEmpty()
         else -> ""
     }
 }

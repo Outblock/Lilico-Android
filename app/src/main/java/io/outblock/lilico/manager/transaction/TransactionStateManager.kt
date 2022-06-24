@@ -23,6 +23,7 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.webview.fcl.model.AuthzTransaction
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 import java.lang.ref.WeakReference
@@ -52,6 +53,9 @@ object TransactionStateManager {
 
     @MainThread
     fun newTransaction(transactionState: TransactionState) {
+        if (stateData.data.toList().firstOrNull { it.transactionId == transactionState.transactionId } != null) {
+            return
+        }
         stateData.data.add(transactionState)
         updateState(transactionState)
         loopState()
@@ -102,7 +106,7 @@ object TransactionStateManager {
         logd(TAG, "updateState:$state")
         dispatchCallback()
         updateBubbleStack(state)
-        if (state.isUnknown() || state.isSealed()) {
+        if (!state.isProcessing()) {
             uiScope {
                 delay(3000)
                 popBubbleStack(state)
@@ -124,7 +128,7 @@ object TransactionStateManager {
         return data.toList().filter { it.state.isProcessing() }
     }
 
-    private fun Int.isProcessing() = this < FlowTransactionStatus.SEALED.num && this > FlowTransactionStatus.UNKNOWN.num
+    private fun Int.isProcessing() = this < FlowTransactionStatus.SEALED.num && this >= FlowTransactionStatus.UNKNOWN.num
 
     private fun Int.isUnknown() = this == FlowTransactionStatus.UNKNOWN.num || this == FlowTransactionStatus.EXPIRED.num
 }
@@ -165,8 +169,13 @@ data class TransactionState(
         const val TYPE_NFT = 1
         const val TYPE_TRANSFER_COIN = 2
         const val TYPE_ADD_TOKEN = 3
+
+        // enable nft collection
         const val TYPE_ENABLE_NFT = 4
         const val TYPE_TRANSFER_NFT = 5
+
+        // transaction from browser
+        const val TYPE_FCL_TRANSACTION = 6
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)
@@ -179,13 +188,15 @@ data class TransactionState(
 
     fun nftSendData() = Gson().fromJson(data, NftSendModel::class.java)
 
+    fun fclTransactionData() = Gson().fromJson(data, AuthzTransaction::class.java)
+
     fun contact() = if (type == TYPE_TRANSFER_COIN) coinData().target else nftData().target
 
     fun isSuccess() = state == FlowTransactionStatus.SEALED.num
 
-    fun isFailed() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
+    fun isFailed() = state == FlowTransactionStatus.EXPIRED.num
 
-    fun isProcessing() = state > FlowTransactionStatus.UNKNOWN.num && state < FlowTransactionStatus.SEALED.num
+    fun isProcessing() = state >= FlowTransactionStatus.UNKNOWN.num && state < FlowTransactionStatus.SEALED.num
 
     fun isUnknown() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
 

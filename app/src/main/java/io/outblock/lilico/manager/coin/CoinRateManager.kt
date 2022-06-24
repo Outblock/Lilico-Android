@@ -4,7 +4,7 @@ import android.text.format.DateUtils
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.cryptoWatchRetrofit
+import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.page.token.detail.getPricePair
 import io.outblock.lilico.utils.getQuoteMarket
@@ -55,9 +55,9 @@ object CoinRateManager {
                         return@ioScope
                     }
 
-                    val service = cryptoWatchRetrofit().create(ApiService::class.java)
-                    val response = service.price(market.value, coin.getPricePair(market))
-                    val price = response.result.price
+                    val service = retrofit().create(ApiService::class.java)
+                    val response = service.summary(market.value, coin.getPricePair(market))
+                    val price = response.data.result.price.last
                     updateCache(coin, price)
                     dispatchListeners(coin, price)
                 }

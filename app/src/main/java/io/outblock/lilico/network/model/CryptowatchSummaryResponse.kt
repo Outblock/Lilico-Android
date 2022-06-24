@@ -4,6 +4,11 @@ package io.outblock.lilico.network.model
 import com.google.gson.annotations.SerializedName
 
 data class CryptowatchSummaryResponse(
+    @SerializedName("data")
+    val data: CryptowatchSummaryData,
+)
+
+data class CryptowatchSummaryData(
     @SerializedName("allowance")
     val allowance: Allowance,
     @SerializedName("result")

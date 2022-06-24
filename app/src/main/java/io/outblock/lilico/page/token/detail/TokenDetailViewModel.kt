@@ -9,8 +9,8 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.cryptoWatchRetrofit
-import io.outblock.lilico.network.model.CryptowatchSummaryResponse
+import io.outblock.lilico.network.model.CryptowatchSummaryData
+import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.updateQuoteMarket
@@ -26,7 +26,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     val chartDataLiveData = MutableLiveData<List<Quote>>()
     val chartLoadingLiveData = MutableLiveData<Boolean>()
-    val summaryLiveData = MutableLiveData<CryptowatchSummaryResponse.Result>()
+    val summaryLiveData = MutableLiveData<CryptowatchSummaryData.Result>()
 
     private var coinRate = 0.0f
 
@@ -85,13 +85,12 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
             chartLoadingLiveData.postValue(true)
             runCatching {
-                val service = cryptoWatchRetrofit().create(ApiService::class.java)
+                val service = retrofit().create(ApiService::class.java)
                 val result = service.ohlc(
                     market = market,
                     coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
-                    before = if (period == Period.ALL) System.currentTimeMillis() / 1000 else null,
                     after = if (period == Period.ALL) null else period.getChartPeriodTs(),
-                    periods = intArrayOf(period.getChartPeriodFrequency()),
+                    periods = "${period.getChartPeriodFrequency()}",
                 )
                 val data = result.parseMarketQuoteData(period)
                 chartCache[period.value + market] = data
@@ -106,13 +105,13 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     private fun refreshSummary(period: Period) {
         viewModelIOScope(this) {
             val market = getQuoteMarket()
-            val service = cryptoWatchRetrofit().create(ApiService::class.java)
+            val service = retrofit().create(ApiService::class.java)
             val result = service.summary(
                 market = market,
                 coinPair = coin.getPricePair(QuoteMarket.fromMarketName(market)),
             )
             if (this.period == period && this.market == market) {
-                summaryLiveData.postValue(result.result)
+                summaryLiveData.postValue(result.data.result)
             }
         }
     }
