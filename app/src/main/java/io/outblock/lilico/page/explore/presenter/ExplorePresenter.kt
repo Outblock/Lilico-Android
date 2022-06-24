@@ -28,7 +28,7 @@ class ExplorePresenter(
     private val binding: FragmentExploreBinding,
 ) : BasePresenter<ExploreModel> {
 
-    private val recentAdapter by lazy { ExploreRecentAdapter() }
+    private val recentAdapter by lazy { ExploreRecentAdapter(true) }
     private val bookmarkAdapter by lazy { ExploreBookmarkAdapter() }
     private val dappAdapter by lazy { ExploreDAppAdapter() }
 

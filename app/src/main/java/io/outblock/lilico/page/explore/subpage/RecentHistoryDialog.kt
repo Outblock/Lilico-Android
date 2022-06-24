@@ -28,9 +28,9 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: RecentHistoryViewModel
 
-    private val adapter by lazy { ExploreRecentAdapter() }
+    private val adapter by lazy { ExploreRecentAdapter(false) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogRecentHistoryBinding.inflate(inflater)
         return binding.root
     }
@@ -40,8 +40,8 @@ class RecentHistoryDialog : BottomSheetDialogFragment() {
         with(binding.recyclerView) {
             adapter = this@RecentHistoryDialog.adapter
             layoutManager = GridLayoutManager(context, 2)
-            addItemDecoration(GridSpaceItemDecoration(vertical = 9.0, horizontal = 9.0))
-            setPadding(22.dp2px().toInt(), paddingTop, 22.dp2px().toInt(), paddingBottom)
+            addItemDecoration(GridSpaceItemDecoration(vertical = 13.0, horizontal = 13.0))
+            setPadding(18.dp2px().toInt(), paddingTop, 18.dp2px().toInt(), paddingBottom)
         }
 
         viewModel = ViewModelProvider(this)[RecentHistoryViewModel::class.java].apply {
