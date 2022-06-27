@@ -29,7 +29,7 @@ object BlockBiometricManager {
         return authenticateCode == BiometricManager.BIOMETRIC_SUCCESS
     }
 
-    fun showBiometricPrompt(activity: FragmentActivity,callback:(isSuccess:Boolean)->Unit) {
+    fun showBiometricPrompt(activity: FragmentActivity, callback: (isSuccess: Boolean) -> Unit): BiometricPrompt {
         val promptInfo: BiometricPrompt.PromptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric login for my app")
             .setSubtitle("Log in using your biometric credential")
@@ -46,10 +46,6 @@ object BlockBiometricManager {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 logd(TAG, "onAuthenticationSucceeded:${result.cryptoObject}")
                 callback(true)
-//                val encrypt = encrypt(result.cryptoObject?.cipher, "hello 世界")
-//                val decrypt = decrypt(result.cryptoObject?.cipher, encrypt)
-//                logd(TAG, "encrypt:$encrypt")
-//                logd(TAG, "decrypt:$decrypt")
             }
 
             override fun onAuthenticationFailed() {
@@ -58,14 +54,7 @@ object BlockBiometricManager {
             }
         })
 
-//        Encrypt or decrypt pass this parameter
-//        val secretKeyName = R.string.secret_key_name.res2String()
-//        val cryptographyManager = CryptographyManager()
-//        val cipher = cryptographyManager.getInitializedCipherForEncryption(secretKeyName)
-//        val cipher = cryptographyManager.getInitializedCipherForDecryption(secretKeyName)
-//        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
-
-        biometricPrompt.authenticate(promptInfo)
+        return biometricPrompt.apply { authenticate(promptInfo) }
     }
 
     private fun encrypt(cipher: Cipher?, text: String): String = cipher?.let {

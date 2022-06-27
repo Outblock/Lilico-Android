@@ -166,6 +166,11 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Transparent.FullScreen"/>
 
+        <activity
+            android:name=".page.security.biometric.BiometricActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"

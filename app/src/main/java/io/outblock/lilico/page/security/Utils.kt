@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.outblock.lilico.manager.biometric.BlockBiometricManager
+import io.outblock.lilico.page.security.biometric.BiometricActivity
 import io.outblock.lilico.page.security.pin.SecurityPinActivity
 import io.outblock.lilico.utils.getPinCode
 import io.outblock.lilico.utils.ioScope
@@ -43,12 +44,22 @@ fun FragmentActivity.securityOpen(action: Intent) {
 suspend fun securityVerification(activity: FragmentActivity) = suspendCoroutine<Boolean> { cont ->
     uiScope {
         if (isBiometricEnable()) {
-            BlockBiometricManager.showBiometricPrompt(activity) { isSuccess ->
-                cont.resume(isSuccess)
-            }
+            cont.resume(securityBiometricVerification(activity))
         } else {
             cont.resume(securityPinCodeVerification(activity))
         }
+    }
+}
+
+private suspend fun securityBiometricVerification(activity: FragmentActivity) = suspendCoroutine<Boolean> { cont ->
+    uiScope {
+        LocalBroadcastManager.getInstance(activity).registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                intent?.getBooleanExtra(BiometricActivity.EXTRA_RESULT, false)?.let { cont.resume(it) }
+                LocalBroadcastManager.getInstance(activity).unregisterReceiver(this)
+            }
+        }, IntentFilter(BiometricActivity.ACTION))
+        BiometricActivity.launch(activity)
     }
 }
 

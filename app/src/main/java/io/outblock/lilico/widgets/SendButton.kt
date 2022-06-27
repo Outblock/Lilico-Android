@@ -7,9 +7,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.WidgetSendButtonBinding
 import io.outblock.lilico.page.security.securityVerification
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
@@ -84,17 +86,15 @@ class SendButton : TouchScaleCardView {
             when (state) {
                 ButtonState.DEFAULT -> {
                     setScaleEnable(true)
-                    progressBar.isIndeterminate = false
-                    progressBar.setProgress(0, true)
+                    progressBar.changeIndeterminate(false)
+                    removeCallbacks(progressTask)
                     indicatorProgress = 0f
+                    progressBar.setProgress(0, true)
                 }
-                ButtonState.VERIFICATION -> {
-                    progressBar.setProgress(100, true)
-                    verification()
-                }
+                ButtonState.VERIFICATION -> verification()
                 ButtonState.LOADING -> {
                     setScaleEnable(false)
-                    progressBar.isIndeterminate = true
+                    progressBar.changeIndeterminate(true)
                 }
             }
         }
@@ -110,8 +110,10 @@ class SendButton : TouchScaleCardView {
 
         binding.progressBar.progress = progress
 
-        if (progress == 100) {
+        if (progress >= 100) {
+            logd(TAG, "updateProgress() 100")
             changeState(ButtonState.VERIFICATION)
+            return
         }
 
         if (progress < 100) {
@@ -140,4 +142,10 @@ private enum class ButtonState {
     DEFAULT,
     VERIFICATION,
     LOADING,
+}
+
+private fun CircularProgressIndicator.changeIndeterminate(isIndeterminate: Boolean) {
+    setVisible(false)
+    this.isIndeterminate = isIndeterminate
+    setVisible(true)
 }
