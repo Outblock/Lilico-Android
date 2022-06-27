@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.AttributeSet
+import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebView
 import androidx.annotation.ColorInt
@@ -29,6 +30,7 @@ class LilicoWebView : WebView {
             webViewClient = WebViewClient()
             webChromeClient = WebChromeClient()
             domStorageEnabled = true
+            userAgentString = USER_AGENT
         }
         setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
 
@@ -36,6 +38,8 @@ class LilicoWebView : WebView {
         setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
             callback?.onScrollChange(scrollX, scrollY - oldScrollY)
         }
+
+        CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
     }
 
     fun setWebViewCallback(callback: WebviewCallback?) {
@@ -91,6 +95,8 @@ class LilicoWebView : WebView {
 
     companion object {
         private val TAG = LilicoWebView::class.java.simpleName
+        const val USER_AGENT =
+            "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
     }
 }
 
