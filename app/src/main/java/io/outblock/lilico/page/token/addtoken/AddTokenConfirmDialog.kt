@@ -33,8 +33,9 @@ class AddTokenConfirmDialog : BottomSheetDialogFragment() {
         with(binding) {
             tokenNameView.text = coin.name
             Glide.with(iconView).load(coin.icon).into(iconView)
-            actionButton.setOnProcessing {
+            actionButton.setOnClickListener {
                 uiScope {
+                    actionButton.setProgressVisible(true)
                     viewModel.addToken(coin)
                     delay(1000)
                     dismiss()

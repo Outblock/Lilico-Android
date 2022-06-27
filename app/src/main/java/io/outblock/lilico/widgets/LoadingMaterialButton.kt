@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.MotionEvent
 import androidx.core.graphics.withTranslation
 import androidx.core.view.ViewCompat
 import com.google.android.material.button.MaterialButton
@@ -45,6 +46,13 @@ class LoadingMaterialButton : MaterialButton {
               - ViewCompat.getPaddingStart(this)
               - ViewCompat.getPaddingEnd(this)) / 2f
         } else 0f
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        if (isProgressVisible()) {
+            return false
+        }
+        return super.dispatchTouchEvent(event)
     }
 
     override fun onDraw(canvas: Canvas) {

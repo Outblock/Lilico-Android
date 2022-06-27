@@ -34,10 +34,10 @@ class NftEnableConfirmDialog : BottomSheetDialogFragment() {
         with(binding) {
             nameView.text = collection.name
             descView.text = collection.description
-//            platformView.text = collection.marketplace
             Glide.with(coverView).load(collection.banner).transform(BlurTransformation(2, 5)).into(coverView)
-            actionButton.setOnProcessing {
+            actionButton.setOnClickListener {
                 uiScope {
+                    actionButton.setProgressVisible(true)
                     viewModel.addToken(collection)
                     delay(1000)
                     dismiss()
