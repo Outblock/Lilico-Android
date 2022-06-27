@@ -33,23 +33,22 @@
             app:round="50dp"
             tools:background="#999"/>
 
-        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_bar"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:visibility="gone"
-            app:cpb_background_progressbar_color="@color/bg_icon"
-            app:cpb_background_progressbar_width="4dp"
-            app:cpb_progress_direction="to_right"
-            app:cpb_progress_max="1"
-            app:cpb_progressbar_color="@color/colorSecondary"
-            app:cpb_progressbar_width="2dp"
-            app:cpb_round_border="true"
+            app:indicatorColor="@color/colorSecondary"
+            app:indicatorInset="4dp"
+            app:indicatorSize="50dp"
             app:layout_constraintBottom_toBottomOf="@id/icon_view"
             app:layout_constraintEnd_toEndOf="@id/icon_view"
             app:layout_constraintStart_toStartOf="@id/icon_view"
             app:layout_constraintTop_toTopOf="@id/icon_view"
-            tools:cpb_progress="0.7"
+            app:trackColor="@color/bg_icon"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="4dp"
+            tools:progress="80"
             tools:visibility="visible"/>
 
         <TextView

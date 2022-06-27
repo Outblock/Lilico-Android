@@ -37,24 +37,30 @@
             android:id="@+id/icon_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_margin="8dp"
             app:round="60dp"
             tools:src="@color/salmon_primary"/>
 
-        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_bar"
             android:layout_width="51dp"
             android:layout_height="51dp"
-            android:visibility="gone"
-            app:cpb_background_progressbar_color="@color/bg_icon"
-            app:cpb_background_progressbar_width="4dp"
-            app:cpb_progress_direction="to_right"
-            app:cpb_progress_max="1"
-            app:cpb_progressbar_color="@color/colorSecondary"
-            app:cpb_progressbar_width="4dp"
-            app:cpb_round_border="true"
             android:layout_gravity="center"
-            tools:cpb_progress="0.7"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorSecondary"
+            app:indicatorInset="4dp"
+            app:indicatorSize="51dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hold_to_send"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/bg_icon"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="4dp"
+            tools:progress="80"
             tools:visibility="visible"/>
+
     </io.outblock.lilico.widgets.DraggableLayout>
 </FrameLayout>

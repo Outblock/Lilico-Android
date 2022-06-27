@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.security.pin
 
 import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.ActivitySecurityPinBinding
 import io.outblock.lilico.page.security.pin.SecurityPinActivity.Companion.TYPE_CHECK
@@ -17,6 +18,7 @@ class SecurityPinPresenter(
     private val binding: ActivitySecurityPinBinding,
     private val type: Int,
     private val action: Intent?,
+    private val broadcastAction: String? = null,
 ) {
 
     private var verifyPassed = false
@@ -101,6 +103,7 @@ class SecurityPinPresenter(
 
     private fun checkFinish() {
         action?.let { activity.startActivity(it) }
+        LocalBroadcastManager.getInstance(activity).sendBroadcast(Intent(broadcastAction).apply { putExtra("verify", true) })
         activity.finish()
     }
 }

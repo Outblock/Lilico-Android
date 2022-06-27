@@ -36,7 +36,7 @@ class FloatTabsItemPresenter(
             BaseActivity.getCurrentActivity()?.let { Glide.with(it).load(model.icon()).into(iconView) }
             titleView.text = model.title()
             progressBar.setVisible(model.data is TransactionState)
-            (model.data as? TransactionState)?.let { progressBar.setProgressWithAnimation(it.progress(), duration = 200) }
+            (model.data as? TransactionState)?.let { progressBar.setProgress((it.progress() * 100).toInt(), true) }
             closeButton.setOnClickListener { popBubbleStack(model.data) }
             contentView.setOnClickListener {
                 bubbleViewModel()?.onHideFloatTabs()

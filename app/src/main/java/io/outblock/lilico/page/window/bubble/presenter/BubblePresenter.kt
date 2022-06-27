@@ -49,7 +49,7 @@ class BubblePresenter(
             Glide.with(Env.getApp()).load(tab.icon()).into(iconView)
 
             progressBar.setVisible(tab.data is TransactionState)
-            (tab.data as? TransactionState)?.let { progressBar.setProgressWithAnimation(it.progress(), duration = 200) }
+            (tab.data as? TransactionState)?.let { progressBar.setProgress((it.progress() * 100).toInt(), true) }
         }
     }
 
