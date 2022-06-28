@@ -32,5 +32,9 @@ fun String.openInSystemBrowser(context: Context) {
 }
 
 fun String.urlHost(): String {
-    return URL(this).host
+    return try {
+        URL(this).host
+    } catch (e: Exception) {
+        return this
+    }
 }
