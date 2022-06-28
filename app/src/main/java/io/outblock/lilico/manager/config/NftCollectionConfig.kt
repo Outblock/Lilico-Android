@@ -30,7 +30,7 @@ object NftCollectionConfig {
         return config.firstOrNull { it.address() == address }
     }
 
-    fun list() = config.toList()
+    fun list() = config.filter { if (isTestnet()) it.secureCadenceCompatible.testnet else it.secureCadenceCompatible.mainnet }.toList()
 
     private fun reloadConfig() {
         var text = Firebase.remoteConfig.getString(KEY)
@@ -56,6 +56,8 @@ data class NftCollection(
     val description: String,
     @SerializedName("logo")
     val logo: String,
+    @SerializedName("secure_cadence_compatible")
+    val secureCadenceCompatible: CadenceCompatible,
     @SerializedName("marketplace")
     val marketplace: String,
     @SerializedName("name")
@@ -85,5 +87,13 @@ data class NftCollection(
         val publicPath: String,
         @SerializedName("storage_path")
         val storagePath: String
+    ) : Parcelable
+
+    @Parcelize
+    data class CadenceCompatible(
+        @SerializedName("mainnet")
+        val mainnet: Boolean,
+        @SerializedName("testnet")
+        val testnet: Boolean,
     ) : Parcelable
 }
