@@ -27,6 +27,8 @@ fun firebaseCustomLogin(token: String, onComplete: FirebaseAuthCallback) {
     }
 }
 
+fun firebaseUid() = Firebase.auth.currentUser?.uid
+
 suspend fun getFirebaseJwt(forceRefresh: Boolean = false) = suspendCoroutine<String> { continuation ->
     ioScope {
         val auth = Firebase.auth

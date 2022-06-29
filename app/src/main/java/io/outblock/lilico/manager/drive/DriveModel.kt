@@ -9,6 +9,8 @@ import kotlinx.parcelize.Parcelize
 class DriveItem(
     @SerializedName("username")
     var username: String,
+    @SerializedName("uid")
+    var uid: String? = null,
     @SerializedName("version")
     var version: String,
     @SerializedName("data")
