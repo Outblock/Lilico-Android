@@ -8,6 +8,7 @@ import io.outblock.lilico.wallet.toAddress
 
 const val PRE_AUTHZ_REPLACEMENT = "#pre-authz"
 const val ADDRESS_REPLACEMENT = "#address"
+const val KEY_ID_REPLACEMENT = "#key-id"
 const val PAYER_ADDRESS_REPLACEMENT = "#payer-address"
 const val SIGNATURE_REPLACEMENT = "#signature"
 
@@ -90,7 +91,7 @@ val FCL_AUTHZ_RESPONSE = """
         "f_type": "CompositeSignature",
         "f_vsn": "1.0.0",
         "addr": "$ADDRESS_REPLACEMENT",
-        "keyId": 0,
+        "keyId": $KEY_ID_REPLACEMENT,
         "signature": "$SIGNATURE_REPLACEMENT"
       },
       "type": "FCL:VIEW:RESPONSE"
