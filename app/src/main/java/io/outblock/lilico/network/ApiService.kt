@@ -29,7 +29,7 @@ interface ApiService {
     @GET("/v1/account/info")
     suspend fun getAddressInfo(@Query("address") address: String): AddressInfoResponse
 
-    @GET("/v2/nft/ids")
+    @GET("/v2/nft/detail/list")
     suspend fun nftList(
         @Query("address") address: String,
         @Query("offset") offset: Int = 0,
