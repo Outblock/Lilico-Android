@@ -2,7 +2,6 @@ package io.outblock.lilico.page.nft.nftlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
@@ -191,9 +190,9 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         //0x2b06c41f44a05656
         //0xccea80173b51e028
         //0x4ab2b65a8b2be2aa
-        if (BuildConfig.DEBUG) {
-            return "0xccea80173b51e028"
-        }
+//        if (BuildConfig.DEBUG) {
+//            return "0xccea80173b51e028"
+//        }
         return cacheWallet.read()?.primaryWalletAddress()
     }
 

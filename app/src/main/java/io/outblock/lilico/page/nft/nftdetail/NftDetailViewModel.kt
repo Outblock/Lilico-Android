@@ -24,6 +24,6 @@ class NftDetailViewModel : ViewModel() {
 
     private suspend fun requestMeta(walletAddress: String, nft: Nft) {
         val service = retrofit().create(ApiService::class.java)
-        val resp = service.nftMeta(walletAddress, nft.contract.name.orEmpty(), nft.contract.address, nft.id.tokenId)
+        val resp = service.nftMeta(walletAddress, nft.contract.name.orEmpty(), nft.id.tokenId)
     }
 }
