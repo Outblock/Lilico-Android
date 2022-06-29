@@ -13,9 +13,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/wallet_header"
-                layout="@layout/layout_wallet_header"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/wallet_header"
+                    layout="@layout/layout_wallet_header"/>
+
+                <include
+                    android:id="@+id/shimmer_place_holder"
+                    layout="@layout/layout_wallet_header_placeholder"/>
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

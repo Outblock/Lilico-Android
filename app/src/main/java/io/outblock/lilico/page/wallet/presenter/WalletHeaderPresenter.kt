@@ -18,18 +18,22 @@ import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.wallet.toAddress
 
 class WalletHeaderPresenter(
     private val view: View,
-) : BaseViewHolder(view), BasePresenter<WalletHeaderModel> {
+) : BaseViewHolder(view), BasePresenter<WalletHeaderModel?> {
 
     private val binding by lazy { LayoutWalletHeaderBinding.bind(view) }
 
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[WalletFragmentViewModel::class.java] }
 
     @SuppressLint("SetTextI18n")
-    override fun bind(model: WalletHeaderModel) {
+    override fun bind(model: WalletHeaderModel?) {
+        binding.root.setVisible(model != null)
+        model ?: return
+
         with(binding) {
             walletName.text = "Wallet"
             uiScope {

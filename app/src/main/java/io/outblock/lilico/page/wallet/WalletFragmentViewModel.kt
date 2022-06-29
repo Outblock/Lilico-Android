@@ -2,6 +2,7 @@ package io.outblock.lilico.page.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
 import io.outblock.lilico.network.model.WalletListData
@@ -17,7 +18,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
     val dataListLiveData = MutableLiveData<List<WalletCoinItemModel>>()
 
-    val headerLiveData = MutableLiveData<WalletHeaderModel>()
+    val headerLiveData = MutableLiveData<WalletHeaderModel?>()
 
     private val dataList = CopyOnWriteArrayList<WalletCoinItemModel>()
 
@@ -31,7 +32,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     fun load() {
         viewModelIOScope(this) {
             logd(TAG, "view model load")
-            WalletManager.fetch()
+            loadWallet()
             loadCoinList()
         }
     }
@@ -65,6 +66,13 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
             dataListLiveData.postValue(data)
         }
+    }
+
+    private suspend fun loadWallet() {
+        if (!walletCache().isCacheExist()) {
+            headerLiveData.postValue(null)
+        }
+        WalletManager.fetch()
     }
 
     private fun loadCoinList() {
