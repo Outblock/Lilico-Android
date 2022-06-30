@@ -9,6 +9,8 @@ data class FclAuthzResponse(
     val body: Body,
     @SerializedName("service")
     val service: Service,
+    @SerializedName("config")
+    val config: FclResponseConfig?,
     @SerializedName("type")
     val type: String
 ) : FclResponse {

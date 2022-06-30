@@ -9,25 +9,23 @@ import androidx.fragment.app.FragmentManager
 import androidx.transition.*
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.R
-import io.outblock.lilico.databinding.DialogFclAuthzBinding
-import io.outblock.lilico.manager.config.isGasFree
+import io.outblock.lilico.databinding.DialogFclSignMessageBinding
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
-import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 
 
-class FclAuthzDialog : BottomSheetDialogFragment() {
+class FclSignMessageDialog : BottomSheetDialogFragment() {
 
     private val data by lazy { arguments?.getParcelable<FclDialogModel>(EXTRA_DATA) }
 
-    private lateinit var binding: DialogFclAuthzBinding
+    private lateinit var binding: DialogFclSignMessageBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        instance = this
-        binding = DialogFclAuthzBinding.inflate(inflater)
+        binding = DialogFclSignMessageBinding.inflate(inflater)
         return binding.root
     }
 
@@ -40,9 +38,11 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
         with(binding) {
             Glide.with(iconView).load(data.logo ?: data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
             nameView.text = data.title
-            uiScope { feeNumber.text = if (isGasFree()) "0" else "0.001" }
-            scriptTextView.text = data.cadence?.trimIndent()
-            actionButton.setOnProcessing { approveCallback?.invoke(true) }
+            data.signMessage?.hexToBytes()?.let { scriptTextView.text = it.toString(Charsets.UTF_8) }
+            actionButton.setOnProcessing {
+                approveCallback?.invoke(true)
+                dismiss()
+            }
             scriptHeaderWrapper.setOnClickListener { toggleScriptVisible() }
         }
     }
@@ -52,7 +52,6 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
     }
 
     override fun onDestroy() {
-        instance = null
         approveCallback = null
         super.onDestroy()
     }
@@ -74,30 +73,19 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
 
         private var approveCallback: ((isApprove: Boolean) -> Unit)? = null
 
-        private var instance: FclAuthzDialog? = null
-
         fun observe(callback: (isApprove: Boolean) -> Unit) {
             this.approveCallback = callback
         }
-
-        fun isShowing() = (instance?.dialog?.isShowing ?: false) && !(instance?.isRemoving ?: true)
 
         fun show(
             fragmentManager: FragmentManager,
             data: FclDialogModel,
         ) {
-            if (instance != null) {
-                return
-            }
-            FclAuthzDialog().apply {
+            FclSignMessageDialog().apply {
                 arguments = Bundle().apply {
                     putParcelable(EXTRA_DATA, data)
                 }
             }.show(fragmentManager, "")
-        }
-
-        fun dismiss() {
-            instance?.dismiss()
         }
     }
 }

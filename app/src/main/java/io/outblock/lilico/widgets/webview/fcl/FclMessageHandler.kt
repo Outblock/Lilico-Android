@@ -13,6 +13,7 @@ import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
+import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
 import io.outblock.lilico.widgets.webview.fcl.model.*
 import java.lang.reflect.Type
 
@@ -74,6 +75,7 @@ class FclMessageHandler(
         when (fcl.service.type) {
             "authn" -> dispatchAuthn(message.fromJson(FclAuthnResponse::class.java)!!)
             "authz" -> dispatchAuthz(message.fromJson(FclAuthzResponse::class.java)!!)
+            "user-signature" -> dispatchSignMessage(message.fromJson(FclSignMessageResponse::class.java)!!)
         }
     }
 
@@ -92,9 +94,12 @@ class FclMessageHandler(
             return
         }
         fclResponse = fcl
-        val approve = FclAuthnDialog().show(activity().supportFragmentManager, fcl, webView.url, webView.title)
+        val approve = FclAuthnDialog().show(
+            activity().supportFragmentManager,
+            FclDialogModel(title = webView.title, url = webView.url, logo = fcl.config?.app?.icon)
+        )
         if (approve) {
-            wallet()?.let { webView.postAuthnViewReadyResponse(it) }
+            wallet()?.let { webView.postAuthnViewReadyResponse(fcl, it) }
         }
         finishService()
     }
@@ -122,8 +127,32 @@ class FclMessageHandler(
         }
     }
 
+    private fun dispatchSignMessage(fcl: FclSignMessageResponse) {
+        if (fcl.isDispatching()) {
+            logd(TAG, "fcl isDispatching:${fcl.uniqueId()}")
+            return
+        }
+        fclResponse = fcl
+
+        logd(TAG, "dispatchSignMessage:${fcl.uniqueId()}")
+
+        FclSignMessageDialog.show(
+            activity().supportFragmentManager,
+            FclDialogModel(signMessage = fcl.body?.message, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+        )
+        FclSignMessageDialog.observe { approve ->
+            if (approve) {
+                webView.postSignMessageResponse(fcl)
+            }
+            finishService()
+        }
+    }
+
     private fun signAuthz(fcl: FclAuthzResponse) {
-        FclAuthzDialog.show(activity().supportFragmentManager, fcl.body.cadence, webView.url, webView.title)
+        FclAuthzDialog.show(
+            activity().supportFragmentManager,
+            FclDialogModel(cadence = fcl.body.cadence, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+        )
         FclAuthzDialog.observe { approve ->
             if (approve) {
                 uiScope { authzTransaction = fcl.toAuthzTransaction(webView) }
@@ -135,7 +164,10 @@ class FclMessageHandler(
     }
 
     private fun signPayload(fcl: FclAuthzResponse) {
-        FclAuthzDialog.show(activity().supportFragmentManager, fcl.body.cadence, webView.url, webView.title)
+        FclAuthzDialog.show(
+            activity().supportFragmentManager,
+            FclDialogModel(cadence = fcl.body.cadence, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+        )
         FclAuthzDialog.observe { approve ->
             readyToSignEnvelope = approve
             if (approve) {

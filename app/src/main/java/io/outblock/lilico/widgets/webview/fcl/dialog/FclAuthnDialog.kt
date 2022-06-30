@@ -12,17 +12,15 @@ import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthnBinding
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.urlHost
-import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FclAuthnDialog : BottomSheetDialogFragment() {
 
-    private var data: FclAuthnResponse? = null
+    private var data: FclDialogModel? = null
     private var result: Continuation<Boolean>? = null
-    private var url: String? = null
-    private var title: String? = null
 
     private lateinit var binding: DialogFclAuthnBinding
 
@@ -32,13 +30,12 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (data == null || result == null) {
-            return
-        }
+        result ?: return
+        val data = data ?: return
         with(binding) {
-            Glide.with(iconView).load(url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
-            nameView.text = title
-            urlView.text = url?.urlHost()
+            Glide.with(iconView).load(data.logo ?: data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            nameView.text = data.title
+            urlView.text = data.url?.urlHost()
             cancelButton.setOnClickListener {
                 result?.resume(false)
                 dismiss()
@@ -56,19 +53,15 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
 
     suspend fun show(
         fragmentManager: FragmentManager,
-        data: FclAuthnResponse,
-        url: String?,
-        title: String?,
+        data: FclDialogModel,
     ) = suspendCoroutine<Boolean> { result ->
-        this.data = data
         this.result = result
-        this.url = url
-        this.title = title
+        this.data = data
         show(fragmentManager, "")
     }
 
     override fun onResume() {
-        if (data == null || result == null) {
+        if (result == null) {
             dismiss()
         }
         super.onResume()

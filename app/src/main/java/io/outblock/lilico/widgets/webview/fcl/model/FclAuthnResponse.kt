@@ -5,50 +5,53 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class FclAuthnResponse(
     @SerializedName("body")
     val body: Body,
     @SerializedName("service")
     val service: Service,
+    @SerializedName("config")
+    val config: FclResponseConfig?,
     @SerializedName("type")
-    val type: String
-) : FclResponse, Parcelable {
-    @Parcelize
+    val type: String,
+) : FclResponse {
+
     data class Body(
         @SerializedName("extensions")
-        val extensions: List<Extension>,
+        val extensions: List<Extension>? = null,
         @SerializedName("timestamp")
-        val timestamp: Long
-    ) : Parcelable {
-        @Parcelize
+        val timestamp: Long? = 0,
+        @SerializedName("appIdentifier")
+        val appIdentifier: String? = null,
+        @SerializedName("nonce")
+        val nonce: String? = null,
+    ) {
+
         data class Extension(
             @SerializedName("endpoint")
-            val endpoint: String,
+            val endpoint: String?,
             @SerializedName("f_type")
-            val fType: String,
+            val fType: String?,
             @SerializedName("f_vsn")
-            val fVsn: String,
+            val fVsn: String?,
             @SerializedName("id")
-            val id: String,
+            val id: String?,
             @SerializedName("identity")
-            val identity: Identity,
+            val identity: Identity?,
             @SerializedName("method")
-            val method: String,
+            val method: String?,
             @SerializedName("provider")
-            val provider: Provider,
+            val provider: Provider?,
             @SerializedName("type")
-            val type: String,
+            val type: String?,
             @SerializedName("uid")
-            val uid: String
-        ) : Parcelable {
-            @Parcelize
+            val uid: String?,
+        ) {
             data class Identity(
                 @SerializedName("address")
                 val address: String
-            ) : Parcelable
+            )
 
-            @Parcelize
             data class Provider(
                 @SerializedName("address")
                 val address: String,
@@ -58,25 +61,8 @@ data class FclAuthnResponse(
                 val icon: String,
                 @SerializedName("name")
                 val name: String
-            ) : Parcelable
+            )
         }
-    }
-
-    @Parcelize
-    data class Config(
-        @SerializedName("client")
-        val client: Client,
-    ) : Parcelable {
-
-        @Parcelize
-        data class Client(
-            @SerializedName("fclLibrary")
-            val fclLibrary: String,
-            @SerializedName("fclVersion")
-            val fclVersion: String,
-            @SerializedName("hostname")
-            val hostname: String
-        ) : Parcelable
     }
 
     @Parcelize
