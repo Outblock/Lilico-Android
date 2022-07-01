@@ -97,7 +97,7 @@ data class NFTId(
 @Parcelize
 data class NFTMetadata(
     @SerializedName("metadata")
-    val metadata: List<NFTMetadataX>
+    val metadata: List<NFTMetadataX>? = null,
 ) : Parcelable
 
 @Parcelize

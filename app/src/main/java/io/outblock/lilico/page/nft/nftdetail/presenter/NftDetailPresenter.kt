@@ -208,8 +208,9 @@ class NftDetailPresenter(
     }
 
     private fun bindTags(nft: Nft) {
+        val tags = nft.metadata.metadata ?: return
         with(binding.tags) {
-            nft.metadata.metadata.filter { !filterMetadata.contains(it.name.lowercase()) && it.value.isNotBlank() && !it.value.startsWith("https://") }
+            tags.filter { !filterMetadata.contains(it.name.lowercase()) && it.value.isNotBlank() && !it.value.startsWith("https://") }
                 .forEach { metadata ->
                     val tagView = (LayoutInflater.from(activity).inflate(R.layout.item_nft_tag, this, false) as ViewGroup)
                     tagView.background.setTint(pageColor)
