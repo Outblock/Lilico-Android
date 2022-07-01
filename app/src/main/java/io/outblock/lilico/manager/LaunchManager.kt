@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatDelegate
 import io.outblock.lilico.firebase.config.initFirebaseConfig
+import io.outblock.lilico.firebase.firebaseInitialize
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.app.refreshChainNetwork
@@ -25,6 +26,7 @@ object LaunchManager {
         PageLifecycleObserver.init(application)
         asyncInit()
         readPreference()
+        firebaseInitialize(application)
         initFirebaseConfig()
         setNightMode()
         runWorker(application)

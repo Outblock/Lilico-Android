@@ -154,6 +154,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-functions-ktx'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck-debug:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
     /** firebase **/
 
     implementation "dev.chrisbanes:insetter-ktx:0.3.1"

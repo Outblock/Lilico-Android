@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.transition.*
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthzBinding
 import io.outblock.lilico.manager.config.isGasFree
+import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
@@ -38,7 +37,7 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
         }
         val data = data ?: return
         with(binding) {
-            Glide.with(iconView).load(data.logo ?: data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            iconView.loadFavicon(data.logo ?: data.url?.toFavIcon())
             nameView.text = data.title
             uiScope { feeNumber.text = if (isGasFree()) "0" else "0.001" }
             scriptTextView.text = data.cadence?.trimIndent()

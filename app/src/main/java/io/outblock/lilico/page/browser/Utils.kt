@@ -5,6 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Point
 import android.webkit.WebView
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.page.browser.tools.browserTabLast
@@ -130,6 +135,16 @@ fun expandBrowser() {
     }
 }
 
+fun ImageView.loadFavicon(url: String?) {
+    val glideUrl = GlideUrl(url, LazyHeaders.Builder().apply {
+        addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36")
+    }.build())
+    Glide.with(this).load(glideUrl).placeholder(R.drawable.placeholder_logo).into(this)
+}
+
+// https://www.google.com/s2/favicons?domain=${domain}&sz=${size}
+// https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://test.find.xyz&size=256
+// https://double-indigo-crab.b-cdn.net/${url.host}/$size
 fun String.toFavIcon(size: Int = 256): String {
     if (this.isBlank()) {
         return this
@@ -137,6 +152,7 @@ fun String.toFavIcon(size: Int = 256): String {
     return try {
         val url = URL(this)
         "https://double-indigo-crab.b-cdn.net/${url.host}/$size"
+        // "https://www.google.com/s2/favicons?domain=${url.host}&sz=${size}"
     } catch (e: Exception) {
         this
     }

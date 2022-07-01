@@ -8,10 +8,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.database.WebviewRecord
 import io.outblock.lilico.databinding.ItemExploreRecentBinding
-import io.outblock.lilico.page.browser.openBrowser
-import io.outblock.lilico.page.browser.screenshotFile
-import io.outblock.lilico.page.browser.screenshotFileName
-import io.outblock.lilico.page.browser.toFavIcon
+import io.outblock.lilico.page.browser.*
 import io.outblock.lilico.page.explore.ExploreViewModel
 import io.outblock.lilico.utils.findActivity
 
@@ -27,7 +24,7 @@ class ExploreRecentItemPresenter(
     override fun bind(model: WebviewRecord) {
         with(binding) {
             Glide.with(coverView).load(screenshotFile(screenshotFileName(model.url))).into(coverView)
-            Glide.with(iconView).load(model.url.toFavIcon()).into(iconView)
+            iconView.loadFavicon(model.url.toFavIcon())
             titleView.text = model.title
 
             view.setOnClickListener {

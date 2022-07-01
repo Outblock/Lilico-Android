@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.transition.*
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.R
@@ -16,6 +15,7 @@ import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.res2color
@@ -55,7 +55,7 @@ class FclTransactionProcessingDialog : BottomSheetDialogFragment(), OnTransactio
         }
         val data = state.fclTransactionData()
         with(binding) {
-            Glide.with(iconView).load(data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            iconView.loadFavicon(data.url?.toFavIcon())
             nameView.text = data.title
             scriptTextView.text = data.voucher.cadence?.trimIndent()
             updateProcessing(state)

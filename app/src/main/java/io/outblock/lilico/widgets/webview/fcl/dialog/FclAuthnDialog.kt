@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthnBinding
+import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.urlHost
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
@@ -33,7 +32,7 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
         result ?: return
         val data = data ?: return
         with(binding) {
-            Glide.with(iconView).load(data.logo ?: data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            iconView.loadFavicon(data.logo ?: data.url?.toFavIcon())
             nameView.text = data.title
             urlView.text = data.url?.urlHost()
             cancelButton.setOnClickListener {

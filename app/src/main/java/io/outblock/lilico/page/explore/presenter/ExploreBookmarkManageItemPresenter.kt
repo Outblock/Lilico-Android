@@ -3,12 +3,11 @@ package io.outblock.lilico.page.explore.presenter
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.databinding.ItemExploreBookmarkManageBinding
+import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.page.explore.ExploreViewModel
@@ -27,7 +26,7 @@ class ExploreBookmarkManageItemPresenter(
 
     override fun bind(model: Bookmark) {
         with(binding) {
-            Glide.with(iconView).load(model.url.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            iconView.loadFavicon(model.url.toFavIcon())
             titleView.text = model.title
             domainView.text = model.url.urlHost()
         }

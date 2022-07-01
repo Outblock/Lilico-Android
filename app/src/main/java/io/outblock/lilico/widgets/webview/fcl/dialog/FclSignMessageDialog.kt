@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.transition.*
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nftco.flow.sdk.hexToBytes
-import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclSignMessageBinding
+import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
@@ -36,7 +35,7 @@ class FclSignMessageDialog : BottomSheetDialogFragment() {
         }
         val data = data ?: return
         with(binding) {
-            Glide.with(iconView).load(data.logo ?: data.url?.toFavIcon()).placeholder(R.drawable.placeholder).into(iconView)
+            iconView.loadFavicon(data.logo ?: data.url?.toFavIcon())
             nameView.text = data.title
             data.signMessage?.hexToBytes()?.let { scriptTextView.text = it.toString(Charsets.UTF_8) }
             actionButton.setOnProcessing {
