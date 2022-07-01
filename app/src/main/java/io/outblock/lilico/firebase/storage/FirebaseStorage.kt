@@ -18,7 +18,7 @@ suspend fun uploadAvatarToFirebase(image: Bitmap, callback: (url: String?) -> Un
     val uploadTask = ref.putBytes(data)
     uploadTask.continueWithTask { task -> ref.downloadUrl }
         .addOnCompleteListener { task ->
-            callback.invoke(task.result.toString().removeUrlParams())
+            callback.invoke(task.result.toString().removeUrlParams().firebaseImage())
         }.addOnFailureListener {
             loge(it)
             callback.invoke(null)

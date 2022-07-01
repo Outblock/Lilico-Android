@@ -8,7 +8,10 @@ import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import io.outblock.lilico.firebase.messaging.uploadPushToken
+import io.outblock.lilico.utils.logd
 
+
+private const val TAG = "Firebase"
 
 fun firebaseInformationCheck() {
     uploadPushToken()
@@ -22,11 +25,13 @@ fun firebaseInitialize(application: Application) {
 private fun setupAppCheck() {
     FirebaseAppCheck.getInstance().apply {
         installAppCheckProviderFactory(SafetyNetAppCheckProviderFactory.getInstance())
+        installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
         if (BuildConfig.DEBUG) {
             installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
-            installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
-        } else {
-            installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
+        }
+        setTokenAutoRefreshEnabled(true)
+        addAppCheckListener { token ->
+            logd(TAG, "AppCheck token: $token")
         }
     }
 }
