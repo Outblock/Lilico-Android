@@ -179,7 +179,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         } else {
             cacheNftList.cache(resp)
         }
-        emptyLiveData.postValue(resp?.nfts?.isNullOrEmpty() ?: true)
+        emptyLiveData.postValue(resp?.nfts.isNullOrEmpty())
         gridDataLiveData.postValue(
             resp?.nfts?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.orEmpty()
         )
