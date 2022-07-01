@@ -21,10 +21,12 @@ fun firebaseInitialize(application: Application) {
 
 private fun setupAppCheck() {
     FirebaseAppCheck.getInstance().apply {
-        installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
         installAppCheckProviderFactory(SafetyNetAppCheckProviderFactory.getInstance())
         if (BuildConfig.DEBUG) {
             installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
+            installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
+        } else {
+            installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance())
         }
     }
 }

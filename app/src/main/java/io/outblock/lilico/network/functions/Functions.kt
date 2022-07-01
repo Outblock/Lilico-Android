@@ -19,6 +19,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "FirebaseFunctions"
 
 const val FUNCTION_SIGN_AS_PAYER = "signAsPayer"
+const val FUNCTION_REGISTER = "register"
 
 private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.net/" else "https://us-central1-lilico-334404.cloudfunctions.net/"
 
@@ -28,7 +29,7 @@ private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.n
  */
 suspend fun executeFunction(functionName: String, data: Any? = null): String? {
     logd(TAG, "executeFunction:$functionName")
-    return executeHttp(functionName, data)
+    return execute(functionName, data)
 }
 
 private val functions by lazy { Firebase.functions }
