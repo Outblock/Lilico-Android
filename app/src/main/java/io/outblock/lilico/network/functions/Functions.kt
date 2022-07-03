@@ -3,6 +3,7 @@ package io.outblock.lilico.network.functions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.interceptor.HeaderInterceptor
 import io.outblock.lilico.utils.*
@@ -73,21 +74,33 @@ private suspend fun executeHttp(functionName: String, data: Any? = null) = suspe
 }
 
 private suspend fun execute(functionName: String, data: Any? = null) = suspendCoroutine<String?> { continuation ->
-    val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
-    logd(TAG, "execute $functionName > body:$body")
+    ioScope {
+        val body = (if (data == null) data else (if (data is String) data else Gson().toJson(data))).wrapFunctionBody()
+        logd(TAG, "execute $functionName > body:$body")
 
-    functions.getHttpsCallable(functionName)
-        .call(body).continueWith { task ->
-            if (!task.isSuccessful) {
-                loge(task.exception)
-                continuation.resume(null)
-                return@continueWith
+        functions.getHttpsCallable(functionName)
+            .call(body).continueWith { task ->
+                if (!task.isSuccessful) {
+                    loge(task.exception)
+                    continuation.resume(null)
+                    return@continueWith
+                }
+
+                continuation.resume(task.result?.data?.toString())
             }
-
-            continuation.resume(task.result?.data?.toString())
-        }
+    }
 }
 
-private fun getNetWork(): String {
+private suspend fun String?.wrapFunctionBody(): String {
+    return """
+        {
+        "idToken":"${getFirebaseJwt()}",
+        "network":"${getNetwork()}",
+        "data": $this
+        }
+    """.trimIndent()
+}
+
+private fun getNetwork(): String {
     return if (isTestnet()) "testnet" else "mainnet"
 }
