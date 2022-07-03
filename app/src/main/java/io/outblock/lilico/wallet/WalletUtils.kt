@@ -2,8 +2,8 @@ package io.outblock.lilico.wallet
 
 import com.nftco.flow.sdk.DomainTag.normalize
 import com.nftco.flow.sdk.bytesToHex
-import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.network.functions.FUNCTION_CREATE_WALLET
+import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.ioScope
 import wallet.core.jni.Curve
 import wallet.core.jni.HDWallet
@@ -48,10 +48,7 @@ fun HDWallet.signData(data: ByteArray): String {
 }
 
 fun createWalletFromServer() {
-    ioScope {
-        val service = retrofit().create(ApiService::class.java)
-        val resp = service.createWallet()
-    }
+    ioScope { executeFunction(FUNCTION_CREATE_WALLET) }
 }
 
 fun String.toAddress(): String = "0x" + removeAddressPrefix()

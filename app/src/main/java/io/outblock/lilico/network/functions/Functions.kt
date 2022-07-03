@@ -20,6 +20,7 @@ private const val TAG = "FirebaseFunctions"
 
 const val FUNCTION_SIGN_AS_PAYER = "signAsPayer"
 const val FUNCTION_REGISTER = "register"
+const val FUNCTION_CREATE_WALLET = "createWallet"
 
 private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.net/" else "https://us-central1-lilico-334404.cloudfunctions.net/"
 
@@ -30,6 +31,14 @@ private val HOST = if (isDev()) "https://us-central1-lilico-dev.cloudfunctions.n
 suspend fun executeFunction(functionName: String, data: Any? = null): String? {
     logd(TAG, "executeFunction:$functionName")
     return execute(functionName, data)
+}
+
+/**
+ * execute firebase function
+ */
+suspend fun executeHttpFunction(functionName: String, data: Any? = null): String? {
+    logd(TAG, "executeFunction:$functionName")
+    return executeHttp(functionName, data)
 }
 
 private val functions by lazy { Firebase.functions }

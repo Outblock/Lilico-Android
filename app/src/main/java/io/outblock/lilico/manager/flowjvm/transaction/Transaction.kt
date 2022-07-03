@@ -9,7 +9,7 @@ import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
-import io.outblock.lilico.network.functions.executeFunction
+import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.wallet.toAddress
@@ -51,7 +51,7 @@ private fun FlowTransaction.addLocalSignatures(): FlowTransaction {
 }
 
 private suspend fun FlowTransaction.addFreeGasEnvelope(): FlowTransaction {
-    val response = executeFunction(FUNCTION_SIGN_AS_PAYER, buildPayerSignable())
+    val response = executeHttpFunction(FUNCTION_SIGN_AS_PAYER, buildPayerSignable())
     logd(TAG, "response:$response")
 
     val sign = Gson().fromJson(response, SignPayerResponse::class.java).envelopeSigs

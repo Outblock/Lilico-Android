@@ -9,7 +9,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
 import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
-import io.outblock.lilico.network.functions.executeFunction
+import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
@@ -179,7 +179,7 @@ class FclMessageHandler(
     }
 
     private suspend fun signEnvelope(fcl: FclAuthzResponse, webView: WebView, callback: () -> Unit) {
-        val response = executeFunction(
+        val response = executeHttpFunction(
             FUNCTION_SIGN_AS_PAYER, PayerSignable(
                 transaction = fcl.body.voucher,
                 message = PayerSignable.Message(fcl.body.message)
