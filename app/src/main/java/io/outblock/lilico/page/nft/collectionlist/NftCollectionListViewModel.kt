@@ -15,6 +15,7 @@ import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.nft.collectionlist.model.NftCollectionItem
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -63,7 +64,7 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
     }
 
     fun addToken(collection: NftCollection) {
-        viewModelIOScope(this) {
+        ioScope {
             val transactionId = cadenceNftEnabled(collection)
             if (transactionId.isNullOrBlank()) {
                 toast(msgRes = R.string.add_token_failed)
