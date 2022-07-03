@@ -207,7 +207,7 @@ class FclMessageHandler(
 }
 
 private fun Map<String, Any>.isService(): Boolean {
-    return (this["service"] as? Map<*, *>)?.get("f_type") == "Service"
+    return this["type"] == null && ((this["service"] as? Map<*, *>)?.get("type") != null || (this["service"] as? Map<*, *>)?.get("f_type") == "Service")
 }
 
 private fun <T> String.fromJson(clz: Class<T>): T? {
