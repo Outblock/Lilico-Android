@@ -86,7 +86,12 @@ private suspend fun execute(functionName: String, data: Any? = null) = suspendCo
                     return@continueWith
                 }
 
-                continuation.resume(task.result?.data?.toString())
+                val result = task.result?.data
+                if (result == null) {
+                    continuation.resume(null)
+                } else {
+                    continuation.resume(Gson().toJson(result))
+                }
             }
     }
 }

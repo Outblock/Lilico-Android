@@ -5,6 +5,7 @@ import com.nftco.flow.sdk.bytesToHex
 import io.outblock.lilico.network.functions.FUNCTION_CREATE_WALLET
 import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import wallet.core.jni.Curve
 import wallet.core.jni.HDWallet
 import wallet.core.jni.Hash
@@ -48,7 +49,10 @@ fun HDWallet.signData(data: ByteArray): String {
 }
 
 fun createWalletFromServer() {
-    ioScope { executeFunction(FUNCTION_CREATE_WALLET) }
+    ioScope {
+        val resp = executeFunction(FUNCTION_CREATE_WALLET)
+        logd("createWalletFromServer", "$resp")
+    }
 }
 
 fun String.toAddress(): String = "0x" + removeAddressPrefix()

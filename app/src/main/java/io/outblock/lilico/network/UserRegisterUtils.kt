@@ -35,6 +35,11 @@ private suspend fun registerOutblockUserInternal(
     val user = Gson().fromJson(json, RegisterResponse::class.java)
     logd(TAG, user.toString())
 
+    if (user.status > 400) {
+        callback(false)
+        return
+    }
+
     logd(TAG, "start delete user")
     FirebaseMessaging.getInstance().deleteToken()
     Firebase.auth.currentUser?.delete()?.addOnCompleteListener {

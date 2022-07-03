@@ -16,6 +16,10 @@ fun getMnemonic(): String {
     return str
 }
 
+fun resetMnemonic() {
+    saveMnemonic(aesEncrypt(mnemonicAesKey(), message = ""))
+}
+
 fun updatePinCode(pinCode: String) {
     ioScope {
         val mnemonic = getMnemonic()

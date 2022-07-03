@@ -17,6 +17,6 @@ data class RegisterResponseData(
     @SerializedName("custom_token")
     val customToken: String,
 
-    @SerializedName("user_id")
+    @SerializedName("id")
     val uid: String,
 )
