@@ -15,6 +15,7 @@ import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.token.addtoken.model.TokenItem
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -63,7 +64,7 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChang
     }
 
     fun addToken(coin: FlowCoin) {
-        viewModelIOScope(this) {
+        ioScope {
             val transactionId = cadenceEnableToken(coin)
             if (transactionId.isNullOrBlank()) {
                 toast(msgRes = R.string.add_token_failed)
