@@ -12,6 +12,7 @@ import com.bumptech.glide.load.model.LazyHeaders
 import io.outblock.lilico.R
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.WebviewRecord
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.page.browser.tools.browserTabLast
 import io.outblock.lilico.page.browser.tools.expandWebView
 import io.outblock.lilico.page.browser.tools.shrinkWebView
@@ -157,3 +158,8 @@ fun String.toFavIcon(size: Int = 256): String {
         this
     }
 }
+
+fun openInFlowScan(activity: Activity, transactionId: String) {
+    openBrowser(activity, "https://${if (isTestnet()) "testnet." else ""}flowscan.org/transaction/$transactionId")
+}
+

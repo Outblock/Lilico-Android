@@ -230,10 +230,16 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
 
 private suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
+    logd(TAG, "transactionByMainWallet() walletAddress:$walletAddress")
     val args = CadenceArgumentsBuilder().apply { arguments(this) }
-    return sendTransaction {
-        args.build().forEach { arg(it) }
-        walletAddress(walletAddress)
-        script(this@transactionByMainWallet)
+    return try {
+        sendTransaction {
+            args.build().forEach { arg(it) }
+            walletAddress(walletAddress)
+            script(this@transactionByMainWallet)
+        }
+    } catch (e: Exception) {
+        loge(e)
+        null
     }
 }

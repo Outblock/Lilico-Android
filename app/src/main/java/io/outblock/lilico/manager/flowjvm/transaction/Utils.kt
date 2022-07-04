@@ -43,4 +43,8 @@ class TransactionBuilder {
     fun payer(payerAddress: String) {
         this.payer = payerAddress
     }
+
+    override fun toString(): String {
+        return "TransactionBuilder(script=$script, walletAddress=$walletAddress, payer=$payer, arguments=$arguments, limit=$limit)"
+    }
 }

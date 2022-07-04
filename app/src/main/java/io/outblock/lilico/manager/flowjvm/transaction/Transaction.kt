@@ -24,16 +24,21 @@ suspend fun sendTransaction(
 ): String {
     updateSecurityProvider()
 
+    logd(TAG, "sendTransaction prepare")
     val voucher = prepare(TransactionBuilder().apply { builder(this) })
 
+    logd(TAG, "sendTransaction build flow transaction")
     var tx = voucher.toFlowTransaction()
 
     if (tx.envelopeSignatures.isEmpty() && isGasFree()) {
+        logd(TAG, "sendTransaction request free gas envelope")
         tx = tx.addFreeGasEnvelope()
     } else if (tx.envelopeSignatures.isEmpty()) {
+        logd(TAG, "sendTransaction sign envelope")
         tx = tx.addLocalSignatures()
     }
 
+    logd(TAG, "sendTransaction to flow chain")
     val txID = FlowApi.get().sendTransaction(tx)
     logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
     return txID.bytes.bytesToHex()
@@ -64,6 +69,7 @@ private suspend fun FlowTransaction.addFreeGasEnvelope(): FlowTransaction {
 }
 
 private suspend fun prepare(builder: TransactionBuilder): Voucher {
+    logd(TAG, "prepare builder:$builder")
     val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(builder.walletAddress?.toAddress().orEmpty()))
         ?: throw RuntimeException("get wallet account error")
     return Voucher(

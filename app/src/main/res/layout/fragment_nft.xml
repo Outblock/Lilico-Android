@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingEnd="18dp"
+                android:paddingEnd="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -83,8 +83,8 @@
                     android:id="@+id/search_button"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginEnd="18dp"
                     android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="18dp"
                     android:background="?attr/actionBarItemBackground"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_search_round"
@@ -92,16 +92,6 @@
                     tools:ignore="ContentDescription"
                     tools:visibility="visible"/>
 
-                <androidx.constraintlayout.utils.widget.ImageFilterButton
-                    android:id="@+id/add_button"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:scaleType="centerInside"
-                    android:layout_marginVertical="10dp"
-                    android:src="@drawable/ic_add_circle_white"
-                    app:round="32dp"
-                    android:background="@color/neutrals3_25"
-                    tools:ignore="ContentDescription"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -110,6 +100,26 @@
             android:id="@+id/empty_container"
             layout="@layout/layout_nft_empty"
             tools:visibility="gone"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="18dp"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/add_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginVertical="10dp"
+                android:background="@color/neutrals3_25"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_add_circle_white"
+                app:round="32dp"
+                tools:ignore="ContentDescription"/>
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

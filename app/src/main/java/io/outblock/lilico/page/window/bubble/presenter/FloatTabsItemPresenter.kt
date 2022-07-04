@@ -13,6 +13,7 @@ import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TR
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_NFT
 import io.outblock.lilico.page.browser.browserViewModel
 import io.outblock.lilico.page.browser.expandBrowser
+import io.outblock.lilico.page.browser.openInFlowScan
 import io.outblock.lilico.page.browser.tools.BrowserTab
 import io.outblock.lilico.page.browser.tools.changeBrowserTab
 import io.outblock.lilico.page.dialog.processing.coinenable.CoinEnableProcessingDialog
@@ -24,6 +25,7 @@ import io.outblock.lilico.page.window.bubble.model.icon
 import io.outblock.lilico.page.window.bubble.model.title
 import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.findActivity
 
 class FloatTabsItemPresenter(
     private val view: View,
@@ -57,6 +59,7 @@ class FloatTabsItemPresenter(
             TYPE_TRANSFER_COIN, TYPE_TRANSFER_NFT -> SendProcessingDialog.show(data)
             TYPE_ADD_TOKEN -> CoinEnableProcessingDialog.show(data)
             TYPE_FCL_TRANSACTION -> FclTransactionProcessingDialog.show(data.transactionId)
+            else -> openInFlowScan(findActivity(view)!!, data.transactionId)
         }
     }
 
