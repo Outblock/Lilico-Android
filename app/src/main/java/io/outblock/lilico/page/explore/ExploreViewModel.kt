@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.database.AppDataBase
 import io.outblock.lilico.database.Bookmark
 import io.outblock.lilico.database.WebviewRecord
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.page.explore.model.DAppModel
 import io.outblock.lilico.utils.cpuScope
 import io.outblock.lilico.utils.viewModelIOScope
@@ -56,7 +57,9 @@ class ExploreViewModel : ViewModel() {
 
     private fun refreshDApps() {
         val json = Firebase.remoteConfig.getString("dapp")
-        val dApps = Gson().fromJson<List<DAppModel>>(json, object : TypeToken<List<DAppModel>>() {}.type)
+        val dApps = Gson().fromJson<List<DAppModel>>(json, object : TypeToken<List<DAppModel>>() {}.type).filter {
+            if (isTestnet()) !it.testnetUrl.isNullOrBlank() else !it.url.isNullOrBlank()
+        }
         dAppsLiveData.postValue(dApps)
     }
 }

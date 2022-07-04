@@ -27,12 +27,12 @@ class ExploreDAppItemPresenter(
         with(binding) {
             Glide.with(iconView).load(model.logo).into(iconView)
             titleView.text = model.name
-            domainView.text = model.url.urlHost()
+            domainView.text = model.url?.urlHost()
             descView.text = model.description
 
             view.setOnClickListener {
                 val url = if (isTestnet()) model.testnetUrl else model.url
-                viewModel.onDAppClick(url)
+                viewModel.onDAppClick(url!!)
                 openBrowser(activity!!, url)
             }
         }

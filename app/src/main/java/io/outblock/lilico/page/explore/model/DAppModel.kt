@@ -13,7 +13,7 @@ data class DAppModel(
     @SerializedName("name")
     val name: String,
     @SerializedName("testnet_url")
-    val testnetUrl: String,
+    val testnetUrl: String?,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
 )
