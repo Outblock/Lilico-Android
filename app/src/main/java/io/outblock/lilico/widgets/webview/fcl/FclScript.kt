@@ -223,7 +223,7 @@ suspend fun fclAuthnResponse(fcl: FclAuthnResponse, address: String): String {
     return FCL_AUTHN_RESPONSE
         .replace(ADDRESS_REPLACEMENT, address)
         .replace(PRE_AUTHZ_REPLACEMENT, generateAuthnPreAuthz())
-        .replace(USER_SIGNATURE_REPLACEMENT, if (accountProofSign.isEmpty()) "" else FCL_AUTHN_RESPONSE_USER_SIGNATURE)
+        .replace(USER_SIGNATURE_REPLACEMENT, FCL_AUTHN_RESPONSE_USER_SIGNATURE)
         .replace(
             ACCOUNT_PROOF_REPLACEMENT,
             if (accountProofSign.isEmpty()) "" else FCL_AUTHN_RESPONSE_ACCOUNT_PROOF.replace(ADDRESS_REPLACEMENT, address)
