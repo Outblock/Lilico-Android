@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
+import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
@@ -34,6 +35,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             logd(TAG, "view model load")
             loadWallet()
             loadCoinList()
+            loadTransactionCount()
         }
     }
 
@@ -96,6 +98,11 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
             uiScope { coinList.toList().firstOrNull { it.symbol == "fusd" }?.let { updateCoinRate(it, forceRate = 1.0f) } }
         }
+    }
+
+    private suspend fun loadTransactionCount() {
+        val count = flowScanAccountTransferCountQuery()
+        uiScope { headerLiveData.value = headerLiveData.value?.copy(transactionCount = count) }
     }
 
     private fun updateCoinBalance(balance: Balance) {

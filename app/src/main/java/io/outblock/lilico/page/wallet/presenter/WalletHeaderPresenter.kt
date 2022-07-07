@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.wallet.presenter
 
 import android.annotation.SuppressLint
+import android.transition.TransitionManager
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
@@ -14,6 +15,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
+import io.outblock.lilico.page.transaction.record.TransactionRecordActivity
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
@@ -59,7 +61,17 @@ class WalletHeaderPresenter(
                     viewModel.onBalanceHideStateUpdate()
                 }
             }
+
+            bindTransactionCount(model.transactionCount)
         }
+    }
+
+    private fun bindTransactionCount(transactionCount: Int?) {
+        val count = transactionCount ?: 0
+        TransitionManager.beginDelayedTransition(binding.root)
+        binding.transactionCountWrapper.setVisible(count > 0)
+        binding.transactionCountView.text = "$transactionCount"
+        binding.transactionCountWrapper.setOnClickListener { TransactionRecordActivity.launch(view.context) }
     }
 
     private fun copyAddress(text: String) {

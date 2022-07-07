@@ -3,7 +3,7 @@ package io.outblock.lilico.network.flowscan.model
 
 import com.google.gson.annotations.SerializedName
 
-data class FlowScanAccountTransferModel(
+data class FlowScanAccountTransferCountModel(
     @SerializedName("data")
     val data: Data?,
     @SerializedName("message")
@@ -21,20 +21,8 @@ data class FlowScanAccountTransferModel(
         ) {
             data class Account(
                 @SerializedName("transactionCount")
-                val transactionCount: Int?,
-                @SerializedName("transactions")
-                val transactions: Transactions?
-            ) {
-                data class Transactions(
-                    @SerializedName("edges")
-                    val edges: List<Edge?>?
-                ) {
-                    data class Edge(
-                        @SerializedName("node")
-                        val transaction: FlowScanTransaction?
-                    )
-                }
-            }
+                val transactionCount: Int?
+            )
         }
     }
 }

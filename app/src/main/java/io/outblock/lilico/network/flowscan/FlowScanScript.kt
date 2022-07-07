@@ -90,9 +90,21 @@ private val TOKEN_TRANSFERS = """
     }
 """.trimIndent()
 
+private val ACCOUNT_TRANSFER_COUNT = """
+    query TransfersNumber {
+        account(id: "$ADDRESS") {
+            transactionCount
+        }
+    }
+""".trimIndent()
+
 
 fun flowScanAccountTransferScript(address: String): String {
     return ACCOUNT_TRANSFERS.replace(ADDRESS, address)
+}
+
+fun flowScanAccountTransferCountScript(address: String): String {
+    return ACCOUNT_TRANSFER_COUNT.replace(ADDRESS, address)
 }
 
 fun flowScanTokenTransferScript(address: String, contractId: String): String {
