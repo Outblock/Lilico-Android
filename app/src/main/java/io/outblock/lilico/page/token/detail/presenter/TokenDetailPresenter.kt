@@ -3,6 +3,7 @@ package io.outblock.lilico.page.token.detail.presenter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -30,6 +31,7 @@ class TokenDetailPresenter(
         setupToolbar()
         with(binding) {
             root.addStatusBarTopPadding()
+            root.addNavigationBarBottomPadding()
             nameView.text = coin.name
             coinTypeView.text = coin.symbol.uppercase()
             Glide.with(iconView).load(coin.icon).into(iconView)

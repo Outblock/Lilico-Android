@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -17,14 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="18dp"
-            android:layout_marginTop="60dp">
+            android:layout_marginTop="60dp"
+            android:paddingBottom="50dp">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_round_16dp"
-                android:backgroundTint="@color/background"
+                android:backgroundTint="@color/deep_bg"
                 app:layout_constraintBottom_toBottomOf="@id/button_wrapper"
                 app:layout_constraintTop_toTopOf="@id/icon_view"/>
 
@@ -154,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_round_16dp"
-                android:backgroundTint="@color/background"
+                android:backgroundTint="@color/deep_bg"
                 android:paddingVertical="12dp"
                 android:paddingStart="18dp"
                 android:paddingEnd="20dp"
@@ -192,6 +195,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
+                android:id="@+id/activities_wrapper"
+                layout="@layout/layout_token_detail_activities"/>
+
+            <include
                 android:id="@+id/chart_wrapper"
                 layout="@layout/layout_token_detail_chart"/>
 
@@ -199,12 +206,12 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.appbar.MaterialToolbar
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/ToolbarTextAppearance"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/transparent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

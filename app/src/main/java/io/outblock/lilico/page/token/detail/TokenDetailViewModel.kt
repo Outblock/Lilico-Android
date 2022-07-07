@@ -9,8 +9,10 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.flowscan.flowScanTokenTransferQuery
 import io.outblock.lilico.network.model.CryptowatchSummaryData
 import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.page.transaction.record.model.TransactionRecord
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.updateQuoteMarket
@@ -27,6 +29,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     val chartDataLiveData = MutableLiveData<List<Quote>>()
     val chartLoadingLiveData = MutableLiveData<Boolean>()
     val summaryLiveData = MutableLiveData<CryptowatchSummaryData.Result>()
+    val transactionListLiveData = MutableLiveData<List<TransactionRecord>>()
 
     private var coinRate = 0.0f
 
@@ -57,6 +60,9 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     fun load() {
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
+        viewModelIOScope(this) {
+            flowScanTokenTransferQuery(coin)?.take(3)?.let { transactionListLiveData.postValue(it) }
+        }
     }
 
     fun changePeriod(period: Period) {

@@ -239,4 +239,7 @@
     <string name="hold_to_confirm">Hold to Confirm</string>
     <string name="enable">Enable</string>
     <string name="sign_message">Sign Message</string>
+    <string name="activities">Activities</string>
+    <string name="transaction_common_title">Exec Transaction</string>
+    <string name="transactions">Transactions</string>
 </resources>

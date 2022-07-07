@@ -93,4 +93,8 @@ interface ApiService {
     // @example https://api.cryptowat.ch/markets/binance/flowusdt/summary
     @GET("/v1/crypto/summary")
     suspend fun summary(@Query("provider") market: String, @Query("pair") coinPair: String): CryptowatchSummaryResponse
+
+    @POST("/v1/account/query")
+    @JvmSuppressWildcards
+    suspend fun flowScanQuery(@Body params: String): String
 }
