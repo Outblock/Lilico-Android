@@ -11,6 +11,7 @@ import io.outblock.lilico.manager.drive.GoogleDriveAuthActivity
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.subpage.filepicker.FilePickerActivity
 import io.outblock.lilico.page.security.biometric.BiometricActivity
+import io.outblock.lilico.page.security.pin.SecurityPinActivity
 import io.outblock.lilico.page.window.bubble.attachBubble
 import io.outblock.lilico.page.window.bubble.releaseBubble
 import io.outblock.lilico.utils.ScreenUtils
@@ -45,7 +46,12 @@ class WindowFrame {
                         widthMatchParent = true,
                         heightMatchParent = true,
                         isFullScreen = true,
-                        ignorePage = listOf(FilePickerActivity::class, GoogleDriveAuthActivity::class, BiometricActivity::class)
+                        ignorePage = listOf(
+                            FilePickerActivity::class,
+                            GoogleDriveAuthActivity::class,
+                            BiometricActivity::class,
+                            SecurityPinActivity::class,
+                        )
                     )
                 )
                 show(activity)
