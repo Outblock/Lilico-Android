@@ -131,13 +131,14 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     private fun updateWalletHeader(count: Int? = null) {
-        val header = headerLiveData.value ?: return
-        headerLiveData.postValue(header.copy().apply {
-            balance = dataList.toList().map { it.balance * it.coinRate }.sum()
-            if (count != null) {
-                coinCount = count
-            }
-        })
+        uiScope {
+            val header = headerLiveData.value ?: return@uiScope
+            headerLiveData.postValue(header.copy().apply {
+                balance = dataList.toList().map { it.balance * it.coinRate }.sum()
+                count?.let { coinCount = it }
+                transactionCount = getAccountTransactionCountLocal()
+            })
+        }
     }
 
     companion object {
