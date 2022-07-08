@@ -5,14 +5,12 @@ import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
+import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
-import io.outblock.lilico.utils.isHideWalletBalance
-import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.utils.viewModelIOScope
+import io.outblock.lilico.utils.*
 import java.util.concurrent.CopyOnWriteArrayList
 
 class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener {
@@ -55,6 +53,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
     override fun onTokenStateChange(coin: FlowCoin, isEnable: Boolean) {
         loadCoinList()
+        viewModelIOScope(this) { loadTransactionCount() }
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
@@ -101,7 +100,13 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     private suspend fun loadTransactionCount() {
-        val count = flowScanAccountTransferCountQuery()
+        val count = flowScanAccountTransferCountQuery() + TransactionStateManager.getProcessingTransaction().size
+        val localCount = getAccountTransactionCountLocal()
+        if (count < localCount) {
+            logd(TAG, "loadTransactionCount remote count < local count:$count < $localCount")
+            return
+        }
+        updateAccountTransactionCountLocal(count)
         uiScope { headerLiveData.value = headerLiveData.value?.copy(transactionCount = count) }
     }
 

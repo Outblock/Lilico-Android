@@ -4,21 +4,21 @@ import com.google.gson.annotations.SerializedName
 
 data class FlowScanTransaction(
     @SerializedName("authorizers")
-    val authorizers: List<FlowScanAccount>?,
+    val authorizers: List<FlowScanAccount>? = null,
     @SerializedName("contractInteractions")
-    val contractInteractions: List<ContractInteraction?>?,
+    val contractInteractions: List<ContractInteraction?>? = null,
     @SerializedName("error")
     val error: String?,
     @SerializedName("eventCount")
-    val eventCount: Int?,
+    val eventCount: Int? = 0,
     @SerializedName("hash")
     val hash: String?,
     @SerializedName("index")
-    val index: Int?,
+    val index: Int? = 0,
     @SerializedName("payer")
-    val payer: FlowScanAccount?,
+    val payer: FlowScanAccount? = null,
     @SerializedName("proposer")
-    val proposer: FlowScanAccount?,
+    val proposer: FlowScanAccount? = null,
     @SerializedName("status")
     val status: String?,
     @SerializedName("time")

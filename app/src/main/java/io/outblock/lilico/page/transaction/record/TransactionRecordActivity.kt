@@ -33,6 +33,8 @@ class TransactionRecordActivity : BaseActivity() {
             load()
         }
 
+        binding.refreshLayout.setOnRefreshListener { viewModel.load() }
+
         setupToolbar()
     }
 

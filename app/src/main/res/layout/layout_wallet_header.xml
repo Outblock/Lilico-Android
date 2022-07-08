@@ -148,7 +148,7 @@
             android:backgroundTint="@color/outline"
             android:fontFamily="@font/inter_semi_bold"
             android:paddingHorizontal="5dp"
-            android:paddingVertical="3dp"
+            android:paddingVertical="1dp"
             android:textColor="@color/text"
             android:textSize="14sp"
             tools:text="123"/>

@@ -8,18 +8,22 @@ import io.outblock.lilico.manager.account.OnBalanceUpdate
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
+import io.outblock.lilico.manager.transaction.OnTransactionStateChange
+import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.flowscan.flowScanTokenTransferQuery
 import io.outblock.lilico.network.model.CryptowatchSummaryData
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.transaction.record.model.TransactionRecord
+import io.outblock.lilico.page.transaction.toTransactionRecord
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.updateQuoteMarket
 import io.outblock.lilico.utils.viewModelIOScope
+import kotlinx.coroutines.delay
 import java.util.concurrent.ConcurrentHashMap
 
-class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
+class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnTransactionStateChange {
 
     private lateinit var coin: FlowCoin
 
@@ -41,6 +45,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     init {
         BalanceManager.addListener(this)
         CoinRateManager.addListener(this)
+        TransactionStateManager.addOnTransactionStateChange(this)
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
@@ -53,6 +58,13 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         balancePriceLiveData.value = coinRate * (balanceAmountLiveData.value ?: 0f)
     }
 
+    override fun onTransactionStateChange() {
+        ioScope {
+            delay(1000 * 5)
+            transactionQuery()
+        }
+    }
+
     fun setCoin(coin: FlowCoin) {
         this.coin = coin
     }
@@ -60,9 +72,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     fun load() {
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
-        viewModelIOScope(this) {
-            flowScanTokenTransferQuery(coin)?.take(3)?.let { transactionListLiveData.postValue(it) }
-        }
+        transactionQuery()
     }
 
     fun changePeriod(period: Period) {
@@ -119,6 +129,14 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             if (this.period == period && this.market == market) {
                 summaryLiveData.postValue(result.data.result)
             }
+        }
+    }
+
+    private fun transactionQuery() {
+        viewModelIOScope(this) {
+            val query = flowScanTokenTransferQuery(coin).orEmpty()
+            val processing = TransactionStateManager.getProcessingTransaction().map { it.toTransactionRecord() }
+            transactionListLiveData.postValue((processing + query).take(3))
         }
     }
 }

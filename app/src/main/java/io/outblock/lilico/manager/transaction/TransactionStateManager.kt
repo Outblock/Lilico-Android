@@ -72,6 +72,10 @@ object TransactionStateManager {
         return stateData.data.toList().firstOrNull { it.transactionId == transactionId }
     }
 
+    fun getProcessingTransaction(): List<TransactionState> {
+        return stateData.data.toList().filter { it.isProcessing() }
+    }
+
     private fun loopState() {
         ioScope {
             var ret: FlowTransactionResult
@@ -89,6 +93,7 @@ object TransactionStateManager {
                         ) { "Transaction with that id not found" }
                         if (ret.status.num != state.state) {
                             state.state = ret.status.num
+                            state.errorMsg = ret.errorMessage
                             logd(TAG, "update state:${ret.status}")
                             updateState(state)
                         }
@@ -164,6 +169,9 @@ data class TransactionState(
      */
     @SerializedName("data")
     val data: String,
+
+    @SerializedName("errorMsg")
+    var errorMsg: String? = null,
 ) : Parcelable {
     companion object {
         const val TYPE_NFT = 1
@@ -192,11 +200,11 @@ data class TransactionState(
 
     fun contact() = if (type == TYPE_TRANSFER_COIN) coinData().target else nftData().target
 
-    fun isSuccess() = state == FlowTransactionStatus.SEALED.num
+    fun isSuccess() = state == FlowTransactionStatus.SEALED.num && errorMsg == null
 
-    fun isFailed() = state == FlowTransactionStatus.EXPIRED.num
+    fun isFailed() = state >= FlowTransactionStatus.SEALED.num && errorMsg != null
 
-    fun isProcessing() = state >= FlowTransactionStatus.UNKNOWN.num && state < FlowTransactionStatus.SEALED.num
+    fun isProcessing() = state < FlowTransactionStatus.SEALED.num
 
     fun isUnknown() = state == FlowTransactionStatus.UNKNOWN.num || state == FlowTransactionStatus.EXPIRED.num
 

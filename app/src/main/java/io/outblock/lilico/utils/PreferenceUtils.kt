@@ -36,6 +36,7 @@ private val KEY_QUOTE_MARKET = stringPreferencesKey("KEY_QUOTE_MARKET")
 private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BALANCE")
 private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
 private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
+private val KEY_ACCOUNT_TRANSACTION_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSACTION_COUNT")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -149,6 +150,12 @@ suspend fun isFreeGasPreferenceEnable(): Boolean = dataStore.data.map { it[KEY_F
 
 suspend fun setFreeGasPreferenceEnable(isEnable: Boolean) {
     dataStore.edit { it[KEY_FREE_GAS_ENABLE] = isEnable }
+}
+
+suspend fun getAccountTransactionCountLocal(): Int = dataStore.data.map { it[KEY_ACCOUNT_TRANSACTION_COUNT] ?: 0 }.first()
+
+fun updateAccountTransactionCountLocal(count: Int) {
+    edit { dataStore.edit { it[KEY_ACCOUNT_TRANSACTION_COUNT] = count } }
 }
 
 private fun edit(unit: suspend () -> Unit) {
