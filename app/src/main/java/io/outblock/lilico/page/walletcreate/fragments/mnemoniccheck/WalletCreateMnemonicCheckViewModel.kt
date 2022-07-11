@@ -3,7 +3,7 @@ package io.outblock.lilico.page.walletcreate.fragments.mnemoniccheck
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.utils.viewModelIOScope
-import io.outblock.lilico.wallet.getMnemonic
+import io.outblock.lilico.wallet.Wallet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import wallet.core.jni.Mnemonic
@@ -15,7 +15,7 @@ class WalletCreateMnemonicCheckViewModel : ViewModel() {
     fun generateMnemonicQuestion() {
         viewModelIOScope(this) {
             val questionList = mutableListOf<MnemonicQuestionModel>()
-            val mnemonics = getMnemonic().split(" ").toMutableList()
+            val mnemonics = Wallet.store().mnemonic().split(" ").toMutableList()
 
             questionList.add(generateMnemonicItem(mnemonics, listOf(0, 1, 2)))
             questionList.add(generateMnemonicItem(mnemonics, listOf(3, 4, 5)))

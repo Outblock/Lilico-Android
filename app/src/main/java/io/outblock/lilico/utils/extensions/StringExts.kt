@@ -38,3 +38,12 @@ fun String.urlHost(): String {
         return this
     }
 }
+
+// convert string to md5 string
+fun String.md5(): String {
+    val md = java.security.MessageDigest.getInstance("MD5")
+    val digested = md.digest(toByteArray())
+    return digested.joinToString("") {
+        String.format("%02x", it)
+    }
+}

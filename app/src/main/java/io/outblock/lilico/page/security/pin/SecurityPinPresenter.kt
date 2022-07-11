@@ -11,7 +11,7 @@ import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.KeyboardItem
 import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.KeyboardType
 import io.outblock.lilico.page.walletcreate.fragments.pincode.pin.widgets.keyboardT9Normal
 import io.outblock.lilico.utils.getPinCode
-import io.outblock.lilico.wallet.updatePinCode
+import io.outblock.lilico.utils.savePinCode
 
 class SecurityPinPresenter(
     private val activity: SecurityPinActivity,
@@ -27,7 +27,7 @@ class SecurityPinPresenter(
         with(binding) {
             pinInput.setCheckCallback { passed ->
                 if (passed && (type == TYPE_RESET || type == TYPE_CREATE)) {
-                    updatePinCode(pinInput.keys().joinToString("") { "${it.number}" })
+                    savePinCode(pinInput.keys().joinToString("") { "${it.number}" })
                     checkFinish()
                 }
             }

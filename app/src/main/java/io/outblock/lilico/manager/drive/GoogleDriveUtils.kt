@@ -15,7 +15,7 @@ import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.secret.aesDecrypt
 import io.outblock.lilico.utils.secret.aesEncrypt
-import io.outblock.lilico.wallet.getMnemonic
+import io.outblock.lilico.wallet.Wallet
 
 
 private const val TAG = "GoogleDriveUtils"
@@ -130,10 +130,13 @@ private suspend fun addData(data: MutableList<DriveItem>, password: String) {
     val exist = data.firstOrNull { it.username == username }
     if (exist == null) {
         val uid = firebaseUid() ?: throw RuntimeException("uid is empty")
-        data.add(0, DriveItem(username, uid = uid, version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = getMnemonic())))
+        data.add(
+            0,
+            DriveItem(username, uid = uid, version = BuildConfig.VERSION_NAME, data = aesEncrypt(password, message = Wallet.store().mnemonic()))
+        )
     } else {
         exist.version = BuildConfig.VERSION_NAME
-        exist.data = aesEncrypt(password, message = getMnemonic())
+        exist.data = aesEncrypt(password, message = Wallet.store().mnemonic())
     }
 }
 

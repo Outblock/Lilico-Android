@@ -11,12 +11,10 @@ import androidx.security.crypto.MasterKey
 
 // mnemonic
 private const val KEY_MNEMONIC = "key_mnemonic"
-private const val KEY_MNEMONIC_BIOMETRIC = "key_mnemonic_biometric"
 
-private const val KEY_JWT_TOKEN = "jwt_token"
 private const val KEY_PUSH_TOKEN = "push_token"
 
-private const val KEY_AES_LOCAL_CODE = "key_aes_local_code"
+private const val KEY_WALLET_PASSWORD = "key_wallet_password"
 
 private const val KEY_PIN_CODE = "key_pin_code"
 
@@ -36,29 +34,19 @@ fun saveMnemonic(mnemonic: String) {
 
 fun getMnemonicFromPreference(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
 
-fun updateAesLocalCode(key: String) {
-    preference.edit().putString(KEY_AES_LOCAL_CODE, key).apply()
+fun storeWalletPassword(key: String) {
+    preference.edit().putString(KEY_WALLET_PASSWORD, key).apply()
 }
 
-fun getAesLocalCode(): String = preference.getString(KEY_AES_LOCAL_CODE, "").orEmpty()
+fun readWalletPassword(): String = preference.getString(KEY_WALLET_PASSWORD, "").orEmpty()
 
 @SuppressLint("ApplySharedPref")
 @WorkerThread
 fun savePinCode(key: String) {
-    preference.edit().putString(KEY_PIN_CODE, key).commit()
+    preference.edit().putString(KEY_PIN_CODE, key).apply()
 }
 
 fun getPinCode(): String = preference.getString(KEY_PIN_CODE, "").orEmpty()
-
-fun saveJwtToken(jwt: String) {
-    preference.edit().putString(KEY_JWT_TOKEN, jwt).apply()
-}
-
-fun clearJwtToken() {
-    saveJwtToken("")
-}
-
-fun getJwtToken(): String = preference.getString(KEY_JWT_TOKEN, "").orEmpty()
 
 fun getPushToken(): String = preference.getString(KEY_PUSH_TOKEN, "").orEmpty()
 

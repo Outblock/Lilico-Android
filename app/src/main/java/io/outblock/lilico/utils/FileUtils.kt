@@ -15,7 +15,7 @@ import java.nio.file.Files
 
 val CACHE_PATH: File = Env.getApp().cacheDir.apply { if (!exists()) mkdirs() }
 
-val DATA_PATH: File = Env.getApp().dataDir.apply { if (!exists()) mkdirs() }
+val DATA_PATH: File = File(Env.getApp().dataDir, "data").apply { if (!exists()) mkdirs() }
 
 val CACHE_VIDEO_PATH: File = File(CACHE_PATH, "video").apply { if (!exists()) mkdirs() }
 

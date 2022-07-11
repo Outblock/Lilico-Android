@@ -9,10 +9,12 @@ import io.outblock.lilico.firebase.auth.firebaseCustomLogin
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.secret.aesEncrypt
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.setRegistered
+import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.wallet.getPublicKey
-import io.outblock.lilico.wallet.mnemonicAesKey
 import io.outblock.lilico.wallet.sign
 import kotlinx.coroutines.runBlocking
 import wallet.core.jni.HDWallet
@@ -61,8 +63,8 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
                     } else {
                         firebaseLogin(resp.data?.customToken!!) { isSuccess ->
                             if (isSuccess) {
-                                saveMnemonic(aesEncrypt(mnemonicAesKey(), message = mnemonic))
                                 setRegistered()
+                                Wallet.store().updateMnemonic(mnemonic).store()
                                 callback.invoke(true, null)
                             } else {
                                 callback.invoke(false, ERROR_FIREBASE_SIGN_IN)
@@ -82,8 +84,6 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
 
 @WorkerThread
 private fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) -> Unit) {
-    clearJwtToken()
-
     logd(TAG, "start delete user")
     FirebaseMessaging.getInstance().deleteToken()
     Firebase.auth.currentUser?.delete()?.addOnCompleteListener {

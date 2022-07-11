@@ -13,7 +13,7 @@ import io.outblock.lilico.page.walletcreate.fragments.mnemonic.MnemonicModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.wallet.getMnemonic
+import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +68,7 @@ class SecurityRecoveryActivity : BaseActivity() {
 
     private fun loadMnemonic() {
         ioScope {
-            val str = getMnemonic()
+            val str = Wallet.store().mnemonic()
             withContext(Dispatchers.Main) {
                 val list = str.split(" ").mapIndexed { index, s -> MnemonicModel(index + 1, s) }
                 val result = mutableListOf<MnemonicModel>()

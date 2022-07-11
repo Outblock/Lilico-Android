@@ -34,7 +34,7 @@ fun HDWallet.getPublicKey(removePrefix: Boolean = true): String {
 }
 
 fun hdWallet(): HDWallet {
-    return HDWallet(getMnemonic(), "")
+    return Wallet.store().wallet()
 }
 
 fun HDWallet.sign(text: String, domainTag: ByteArray = normalize("FLOW-V0.0-user")): String {

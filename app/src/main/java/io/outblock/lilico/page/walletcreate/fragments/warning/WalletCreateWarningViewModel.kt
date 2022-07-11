@@ -7,8 +7,8 @@ import io.outblock.lilico.network.registerOutblockUser
 import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.viewModelIOScope
+import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.wallet.createWalletFromServer
-import io.outblock.lilico.wallet.resetMnemonic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -24,8 +24,7 @@ class WalletCreateWarningViewModel : ViewModel() {
                 if (isSuccess) {
                     uploadPushToken()
                     createWalletFromServer()
-                } else {
-                    resetMnemonic()
+                    Wallet.store().store()
                 }
             }
         }
