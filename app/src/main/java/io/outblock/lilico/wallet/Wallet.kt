@@ -8,8 +8,8 @@ import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.md5
 import wallet.core.jni.CoinType
+import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
 import java.io.File
 import java.util.*
@@ -55,9 +55,9 @@ class WalletStore internal constructor() {
         keyStore.store(storePath())
     }
 
-    fun mnemonic() = keyStore.decryptMnemonic(password)
+    fun mnemonic(): String = keyStore.decryptMnemonic(password)
 
-    fun wallet() = keyStore.wallet(password)
+    fun wallet(): HDWallet = keyStore.wallet(password)
 
     private fun generateKeyStore(): StoredKey {
         val uid = uid()
@@ -70,7 +70,7 @@ class WalletStore internal constructor() {
 
     private fun password() = readCurrentUserPassword()?.hexToBytes() ?: randomString().toByteArray()
 
-    private fun storePath() = File(DATA_PATH, uid()!!.md5()).absolutePath
+    private fun storePath() = File(DATA_PATH, storeName()).absolutePath
 
     private fun storeName() = uid()!!.toByteArray().bytesToHex()
 }
