@@ -16,7 +16,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.page.walletcreate.WalletCreateActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.saveMnemonic
+import io.outblock.lilico.wallet.Wallet
 
 class AccountNotFoundDialog(
     private val context: Context,
@@ -55,7 +55,7 @@ private class AccountNotFoundDialogView(
         }
 
         createButton.setOnClickListener {
-            saveMnemonic(mnemonic)
+            Wallet.store().updateMnemonic(mnemonic)
             onCancel()
             (context as? Activity)?.finish()
             WalletCreateActivity.launch(context)

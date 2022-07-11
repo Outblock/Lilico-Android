@@ -11,12 +11,10 @@ import androidx.security.crypto.MasterKey
 
 // mnemonic
 private const val KEY_MNEMONIC = "key_mnemonic"
-
 private const val KEY_PUSH_TOKEN = "push_token"
-
 private const val KEY_WALLET_PASSWORD = "key_wallet_password"
-
 private const val KEY_PIN_CODE = "key_pin_code"
+private const val KEY_WALLET_STORE_NAME_AES_KEY = "key_wallet_store_name_aes_key"
 
 private val preference by lazy {
     EncryptedSharedPreferences.create(
@@ -31,8 +29,6 @@ private val preference by lazy {
 fun saveMnemonic(mnemonic: String) {
     preference.edit().putString(KEY_MNEMONIC, mnemonic).apply()
 }
-
-fun getMnemonicFromPreference(): String = preference.getString(KEY_MNEMONIC, "").orEmpty()
 
 fun storeWalletPassword(key: String) {
     preference.edit().putString(KEY_WALLET_PASSWORD, key).apply()
@@ -53,3 +49,9 @@ fun getPushToken(): String = preference.getString(KEY_PUSH_TOKEN, "").orEmpty()
 fun updatePushToken(token: String) {
     preference.edit().putString(KEY_PUSH_TOKEN, token).apply()
 }
+
+fun saveWalletStoreNameAesKey(key: String) {
+    preference.edit().putString(KEY_WALLET_STORE_NAME_AES_KEY, key).apply()
+}
+
+fun getWalletStoreNameAesKey(): String = preference.getString(KEY_WALLET_STORE_NAME_AES_KEY, "").orEmpty()

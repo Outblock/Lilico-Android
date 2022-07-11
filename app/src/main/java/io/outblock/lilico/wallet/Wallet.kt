@@ -8,6 +8,8 @@ import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.secret.aesDecrypt
+import io.outblock.lilico.utils.secret.aesEncrypt
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
@@ -64,6 +66,8 @@ class WalletStore internal constructor() {
         return if (uid.isNullOrBlank() || !File(storePath()).exists()) {
             StoredKey(TEMP_STORE, password)
         } else {
+            logd(TAG, "origin uid: ${uid()}")
+            logd(TAG, "getUidFromStoreName: ${getUidFromStoreName()}")
             StoredKey.load(storePath())
         }
     }
@@ -72,7 +76,9 @@ class WalletStore internal constructor() {
 
     private fun storePath() = File(DATA_PATH, storeName()).absolutePath
 
-    private fun storeName() = uid()!!.toByteArray().bytesToHex()
+    private fun storeName() = aesEncrypt(key = storeNameAesKey(), message = uid()!!)
+
+    private fun getUidFromStoreName() = aesDecrypt(key = storeNameAesKey(), message = storeName())
 }
 
 private fun StoredKey.changeName(name: String, password: ByteArray): StoredKey {
@@ -102,6 +108,15 @@ private fun passwordMap(): HashMap<String, String> {
     } else {
         Gson().fromJson(pref, object : TypeToken<HashMap<String, String>>() {}.type)
     }
+}
+
+private fun storeNameAesKey(): String {
+    var local = getWalletStoreNameAesKey()
+    if (local.isBlank()) {
+        local = randomString()
+        saveWalletStoreNameAesKey(local)
+    }
+    return local
 }
 
 private fun randomString(length: Int = 16): String = UUID.randomUUID().toString().take(length)
