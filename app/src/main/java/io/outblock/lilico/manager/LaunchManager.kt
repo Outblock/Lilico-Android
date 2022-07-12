@@ -18,6 +18,7 @@ import io.outblock.lilico.utils.getThemeMode
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.startServiceSafe
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.wallet.restoreMnemonicV0
 
 object LaunchManager {
 
@@ -31,6 +32,7 @@ object LaunchManager {
         setNightMode()
         runWorker(application)
         readCache()
+        runCompatibleScript()
     }
 
     private fun asyncInit() {
@@ -57,5 +59,13 @@ object LaunchManager {
     }
 
     private fun runWorker(application: Application) {
+    }
+
+    /**
+     * Run compatible script if necessary
+     * Sometimes the version upgrade and modification configuration have to be compatible with the old version
+     */
+    private fun runCompatibleScript() {
+        restoreMnemonicV0()
     }
 }
