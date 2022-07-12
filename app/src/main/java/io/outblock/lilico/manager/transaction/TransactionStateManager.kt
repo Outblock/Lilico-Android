@@ -38,7 +38,7 @@ object TransactionStateManager {
 
     private val onStateChangeCallbacks = mutableListOf<WeakReference<OnTransactionStateChange>>()
 
-    fun init() {
+    fun reload() {
         ioScope {
             stateData = cache.read() ?: TransactionStateData(mutableListOf())
             loopState()

@@ -242,4 +242,8 @@
     <string name="activities">Activities</string>
     <string name="transaction_common_title">Exec Transaction</string>
     <string name="transactions">Transactions</string>
+    <string name="reset_wallet">Reset Wallet</string>
+    <string name="reset_wallet_confirm_title">Are you sure you want to reset your wallet?</string>
+    <string name="reset_wallet_tips">Removing the wallet from Lilico does not remove the wallet from Flow blockchain. You can import your wallet again using your Recovery Phrase or Google Drive Backup.</string>
+    <string name="reset">Reset</string>
 </resources>

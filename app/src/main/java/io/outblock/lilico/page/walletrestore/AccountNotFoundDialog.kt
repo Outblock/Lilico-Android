@@ -55,9 +55,9 @@ private class AccountNotFoundDialogView(
         }
 
         createButton.setOnClickListener {
-            Wallet.store().updateMnemonic(mnemonic)
             onCancel()
             (context as? Activity)?.finish()
+            Wallet.store().updateMnemonic(mnemonic).store()
             WalletCreateActivity.launch(context)
         }
         cancelButton.setOnClickListener { onCancel() }

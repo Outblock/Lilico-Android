@@ -37,6 +37,11 @@ fun Uri?.toFile(path: String): File? {
 
 }
 
+// delete all file in cache folder
+fun clearCacheDir() {
+    CACHE_PATH.listFiles()?.forEach { it.delete() }
+}
+
 fun InputStream.toFile(file: File) {
     this.use {
         file.outputStream().use { outputStream ->

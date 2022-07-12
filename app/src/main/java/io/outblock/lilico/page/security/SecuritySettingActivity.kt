@@ -12,9 +12,6 @@ import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySecuritySettingBinding
 import io.outblock.lilico.manager.biometric.BlockBiometricManager
 import io.outblock.lilico.page.security.pin.SecurityPinActivity
-import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
-import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PHRASES
-import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PRIVATE_KEY
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 
@@ -40,22 +37,6 @@ class SecuritySettingActivity : BaseActivity() {
                 )
             }
             biometricsPreference.setOnClickListener { toggleBiometricsChecked() }
-            privatePreference.setOnClickListener {
-                securityOpen(
-                    SecurityRecoveryActivity.launchIntent(
-                        this@SecuritySettingActivity,
-                        TYPE_PRIVATE_KEY
-                    )
-                )
-            }
-            recoveryPreference.setOnClickListener {
-                securityOpen(
-                    SecurityRecoveryActivity.launchIntent(
-                        this@SecuritySettingActivity,
-                        TYPE_PHRASES
-                    )
-                )
-            }
 
             uiScope { biometricsPreference.setChecked(isBiometricEnable()) }
         }

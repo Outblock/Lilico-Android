@@ -78,7 +78,7 @@ class WalletRestoreMnemonicPresenter(
                 uiScope {
                     if (isSuccess) {
                         delay(200)
-                        MainActivity.launch(context)
+                        MainActivity.relaunch(context, clearTop = true)
                     } else {
                         binding.nextButton.setProgressVisible(false)
                         if (reason == ERROR_ACCOUNT_NOT_FOUND) {

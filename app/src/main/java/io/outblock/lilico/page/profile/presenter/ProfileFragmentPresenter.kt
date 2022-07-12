@@ -18,6 +18,7 @@ import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
 import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
+import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
@@ -40,11 +41,10 @@ class ProfileFragmentPresenter(
             ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)
         }
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
-        binding.actionGroup.walletButton.setOnClickListener { toast(msgRes = R.string.future_coming_soon) }
+        binding.actionGroup.walletButton.setOnClickListener { WalletSettingActivity.launch(context) }
         binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
-        binding.group1.freeGasPreference.setOnCheckedChangeListener { uiScope { setFreeGasPreferenceEnable(it) } }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
         updatePreferenceState()
@@ -83,7 +83,6 @@ class ProfileFragmentPresenter(
                     group1.root.setVisible(isSignIn)
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
-                    group1.freeGasPreference.setChecked(isFreeGasPreferenceEnable())
                 }
             }
         }

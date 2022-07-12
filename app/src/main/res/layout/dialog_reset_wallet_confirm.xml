@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_top_radius_16dp"
+    android:backgroundTint="@color/background"
+    android:paddingBottom="@dimen/wallet_create_button_margin">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:paddingVertical="18dp"
+        android:paddingStart="26dp"
+        android:paddingEnd="0dp"
+        android:textColor="@color/text"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:id="@+id/close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="22dp"
+        android:background="?attr/actionBarItemBackground"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintBottom_toBottomOf="@id/title_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_view"
+        app:tint="@color/neutrals8"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/content_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/title_view">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_warning"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="@string/reset_wallet_confirm_title"
+            android:textColor="@color/text"
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/deep_bg"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet"
+                android:textColor="@color/salmon_primary"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/address_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/neutrals5"
+                android:textSize="14sp"
+                tools:text="(0xoashkaiwodg)"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_border_round_16dp"
+            android:backgroundTint="@color/neutrals6"
+            android:padding="10dp"
+            android:text="@string/reset_wallet_tips"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <io.outblock.lilico.widgets.LoadingMaterialButton
+        android:id="@+id/action_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/warning2"
+        android:text="@string/reset"
+        android:textColor="@color/brightest_text"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintTop_toBottomOf="@id/content_wrapper"
+        app:rippleColor="@color/primary10"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

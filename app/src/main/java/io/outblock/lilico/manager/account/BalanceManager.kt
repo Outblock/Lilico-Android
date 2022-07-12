@@ -21,7 +21,7 @@ object BalanceManager {
 
     private val cache by lazy { CacheManager("BALANCE_CACHE_v1.0", BalanceCache::class.java) }
 
-    fun init() {
+    fun reload() {
         ioScope {
             balanceList.addAll(cache.read()?.data ?: emptyList())
             refresh()

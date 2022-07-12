@@ -161,6 +161,10 @@
             android:name=".page.transaction.record.TransactionRecordActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.wallet.WalletSettingActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"

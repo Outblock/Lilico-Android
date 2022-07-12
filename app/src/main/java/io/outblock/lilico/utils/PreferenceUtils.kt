@@ -44,12 +44,6 @@ private val scope = CoroutineScope(Dispatchers.IO)
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "main_preference")
 private val dataStore = Env.getApp().dataStore
 
-suspend fun getJwtRefreshTime(): Long = dataStore.data.map { it[KEY_JWT_REFRESH_TIME] ?: 0 }.first()
-
-fun updateJwtRefreshTime() {
-    edit { dataStore.edit { it[KEY_JWT_REFRESH_TIME] = System.currentTimeMillis() } }
-}
-
 suspend fun getUsername(): String = dataStore.data.map { it[KEY_USERNAME].orEmpty() }.first()
 
 fun updateUsername(username: String) {
@@ -154,8 +148,8 @@ suspend fun setFreeGasPreferenceEnable(isEnable: Boolean) {
 
 suspend fun getAccountTransactionCountLocal(): Int = dataStore.data.map { it[KEY_ACCOUNT_TRANSACTION_COUNT] ?: 0 }.first()
 
-fun updateAccountTransactionCountLocal(count: Int) {
-    edit { dataStore.edit { it[KEY_ACCOUNT_TRANSACTION_COUNT] = count } }
+suspend fun updateAccountTransactionCountLocal(count: Int) {
+    dataStore.edit { it[KEY_ACCOUNT_TRANSACTION_COUNT] = count }
 }
 
 private fun edit(unit: suspend () -> Unit) {

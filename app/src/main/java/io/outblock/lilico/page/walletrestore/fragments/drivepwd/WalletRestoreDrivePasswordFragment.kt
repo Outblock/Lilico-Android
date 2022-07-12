@@ -68,7 +68,7 @@ class WalletRestoreDrivePasswordFragment : Fragment() {
                         } else {
                             delay(200)
                             setBackupGoogleDrive(true)
-                            MainActivity.launch(requireContext())
+                            MainActivity.relaunch(requireContext(), clearTop = true)
                         }
                     }
                 }

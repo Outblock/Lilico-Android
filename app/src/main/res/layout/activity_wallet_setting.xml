@@ -6,13 +6,13 @@
     android:background="@color/background">
 
     <com.google.android.material.appbar.MaterialToolbar
-        app:titleCentered="true"
-        app:titleTextAppearance="@style/ToolbarTextAppearance"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/text"/>
 
     <com.google.android.material.card.MaterialCardView
@@ -32,12 +32,12 @@
             android:orientation="vertical">
 
             <io.outblock.lilico.page.profile.widget.ProfilePreference
-                android:id="@+id/pin_preference"
+                android:id="@+id/private_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:iconEnable="false"
                 app:isArrowVisible="true"
-                app:title="@string/reset_pin_code"/>
+                app:title="@string/private_key"/>
 
             <View
                 android:layout_width="match_parent"
@@ -45,14 +45,46 @@
                 android:layout_marginHorizontal="8dp"
                 android:background="@color/background"/>
 
-            <io.outblock.lilico.page.profile.widget.ProfilePreferenceSwitch
-                android:id="@+id/biometrics_preference"
+            <io.outblock.lilico.page.profile.widget.ProfilePreference
+                android:id="@+id/recovery_preference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:iconEnable="false"
-                app:title="@string/biometrics"/>
+                app:isArrowVisible="true"
+                app:title="Recovery Phrases"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/group2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/deep_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/group1">
+
+        <io.outblock.lilico.page.profile.widget.ProfilePreferenceSwitch
+            android:id="@+id/free_gas_preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_settings_security"
+            app:subtitle="@string/free_gas_fee_desc"
+            app:title="@string/free_gas_fee"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reset_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginBottom="50dp"
+        android:backgroundTint="@color/warning2"
+        android:text="@string/reset_wallet"
+        app:backgroundTint="@color/warning2"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

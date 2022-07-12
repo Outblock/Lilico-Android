@@ -45,10 +45,10 @@ object LaunchManager {
     }
 
     private fun readCache() {
-        BalanceManager.init()
-        TransactionStateManager.init()
-        TokenStateManager.init()
-        NftCollectionStateManager.init()
+        BalanceManager.reload()
+        TransactionStateManager.reload()
+        TokenStateManager.reload()
+        NftCollectionStateManager.reload()
         CoinRateManager.init()
     }
 

@@ -19,7 +19,7 @@ object NftCollectionStateManager {
     private val tokenStateList = CopyOnWriteArrayList<NftCollectionState>()
     private val listeners = CopyOnWriteArrayList<WeakReference<NftCollectionStateChangeListener>>()
 
-    fun init() {
+    fun reload() {
         ioScope {
             tokenStateList.clear()
             tokenStateList.addAll(nftCollectionStateCache().read()?.stateList ?: emptyList())

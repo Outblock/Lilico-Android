@@ -17,7 +17,7 @@ object TokenStateManager {
     private val tokenStateList = CopyOnWriteArrayList<TokenState>()
     private val listeners = CopyOnWriteArrayList<WeakReference<TokenStateChangeListener>>()
 
-    fun init() {
+    fun reload() {
         ioScope {
             tokenStateList.clear()
             tokenStateList.addAll(tokenStateCache().read()?.stateList ?: emptyList())

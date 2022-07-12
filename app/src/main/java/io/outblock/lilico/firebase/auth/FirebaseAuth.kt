@@ -2,8 +2,11 @@ package io.outblock.lilico.firebase.auth
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.uiScope
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -23,7 +26,10 @@ fun firebaseCustomLogin(token: String, onComplete: FirebaseAuthCallback) {
         return
     }
     auth.signInWithCustomToken(token).addOnCompleteListener { task ->
-        onComplete.invoke(task.isSuccessful, task.exception)
+        ioScope {
+            clearUserCache()
+            uiScope { onComplete.invoke(task.isSuccessful, task.exception) }
+        }
     }
 }
 
@@ -49,6 +55,14 @@ suspend fun getFirebaseJwt(forceRefresh: Boolean = false) = suspendCoroutine<Str
                 continuation.resume("")
             }
         }
+    }
+}
+
+suspend fun deleteAnonymousUser() = suspendCoroutine<Boolean> { continuation ->
+    FirebaseMessaging.getInstance().deleteToken()
+    Firebase.auth.currentUser?.delete()?.addOnCompleteListener { task ->
+        logd(TAG, "delete anonymous user finish , exception:${task.exception}")
+        continuation.resume(task.isSuccessful)
     }
 }
 

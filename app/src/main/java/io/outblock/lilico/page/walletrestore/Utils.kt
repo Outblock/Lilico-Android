@@ -3,10 +3,11 @@ package io.outblock.lilico.page.walletrestore
 import androidx.annotation.WorkerThread
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import io.outblock.lilico.R
+import io.outblock.lilico.firebase.auth.deleteAnonymousUser
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
+import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
@@ -83,19 +84,22 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
 }
 
 @WorkerThread
-private fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) -> Unit) {
+private suspend fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) -> Unit) {
     logd(TAG, "start delete user")
-    FirebaseMessaging.getInstance().deleteToken()
-    Firebase.auth.currentUser?.delete()?.addOnCompleteListener {
-        logd(TAG, "delete user finish exception:${it.exception}")
-        if (it.isSuccessful) {
-            firebaseCustomLogin(customToken) { isSuccessful, _ ->
-                if (isSuccessful) {
-                    callback(true)
-                } else callback(false)
-            }
-        } else callback(false)
+    val isSuccess = if (isAnonymousSignIn()) {
+        deleteAnonymousUser()
+    } else {
+        // wallet reset
+        Firebase.auth.signOut()
+        true
     }
+    if (isSuccess) {
+        firebaseCustomLogin(customToken) { isSuccessful, _ ->
+            if (isSuccessful) {
+                callback(true)
+            } else callback(false)
+        }
+    } else callback(false)
 }
 
 private suspend fun getFirebaseUid(callback: (uid: String?) -> Unit) {

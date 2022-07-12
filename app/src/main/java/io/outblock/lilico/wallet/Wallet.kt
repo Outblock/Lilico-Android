@@ -30,7 +30,7 @@ object Wallet {
 class WalletStore internal constructor() {
 
     private var keyStore: StoredKey
-    private val password: ByteArray
+    private var password: ByteArray
 
     init {
         password = password()
@@ -39,6 +39,7 @@ class WalletStore internal constructor() {
 
     fun updateMnemonic(mnemonic: String) = apply {
         logd(TAG, "updateMnemonic")
+        password = password()
         keyStore = keyStore.changeMnemonic(mnemonic, password)
     }
 
@@ -49,7 +50,7 @@ class WalletStore internal constructor() {
         }
         logd(TAG, "store")
 
-        if (keyStore.name() == storeName()) {
+        if (keyStore.name() != storeName()) {
             keyStore = keyStore.changeName(storeName(), password)
         }
 
