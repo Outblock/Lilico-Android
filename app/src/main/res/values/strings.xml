@@ -246,4 +246,14 @@
     <string name="reset_wallet_confirm_title">Are you sure you want to reset your wallet?</string>
     <string name="reset_wallet_tips">Removing the wallet from Lilico does not remove the wallet from Flow blockchain. You can import your wallet again using your Recovery Phrase or Google Drive Backup.</string>
     <string name="reset">Reset</string>
+    <string name="skip">Skip</string>
+    <string name="start">Start</string>
+    <string name="guide_title_1">Playground\nfor your NFTs</string>
+    <string name="guide_desc_1">Share excellent NFT collections with friends</string>
+    <string name="guide_title_2">Gather\nall your tokens</string>
+    <string name="guide_desc_2">Share excellent NFT collections with friends</string>
+    <string name="guide_title_3">Claim\nfree Lilico domain</string>
+    <string name="guide_desc_3">Share excellent NFT collections with friends</string>
+    <string name="guide_title_4">Explore\nyour favourite site</string>
+    <string name="guide_desc_4">Share excellent NFT collections with friends</string>
 </resources>

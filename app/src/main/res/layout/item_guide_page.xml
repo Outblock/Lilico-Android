@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#E77789">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/cover_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="23dp"
+        android:elevation="12dp"
+        app:layout_constraintDimensionRatio="328:372"
+        app:layout_constraintTop_toTopOf="parent"
+        app:round="24dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/img_guide_1"
+        tools:background="#aaa"/>
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="23dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montsettat"
+        android:textColor="@color/text"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/cover_view"
+        tools:text="Playground for your NFTs"/>
+
+    <TextView
+        android:id="@+id/desc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="23dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textColor="@color/text"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/title_view"
+        tools:text="Share excilent NFT collections with friends"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

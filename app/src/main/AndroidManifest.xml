@@ -19,8 +19,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,LockedOrientationActivity">
         <activity
-            android:exported="true"
             android:name=".page.main.MainActivity"
+            android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppSplash">
@@ -163,6 +163,11 @@
 
         <activity
             android:name=".page.profile.subpage.wallet.WalletSettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.guide.GuideActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <provider

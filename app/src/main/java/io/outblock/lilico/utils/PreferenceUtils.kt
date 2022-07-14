@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+private const val PREFERENCE_TRADITIONAL = "PREFERENCE_TRADITIONAL"
+
 private const val KEY_LAUNCH_TIMES = "KEY_LAUNCH_TIMES"
 
 private val KEY_JWT_REFRESH_TIME = longPreferencesKey("KEY_JWT_REFRESH_TIME")
@@ -37,10 +39,12 @@ private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BAL
 private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
 private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
 private val KEY_ACCOUNT_TRANSACTION_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSACTION_COUNT")
+private val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
-// At the top level of your kotlin file:
+private val sharedPreferencesTraditional by lazy { Env.getApp().getSharedPreferences(PREFERENCE_TRADITIONAL, Context.MODE_PRIVATE) }
+
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "main_preference")
 private val dataStore = Env.getApp().dataStore
 
@@ -150,6 +154,14 @@ suspend fun getAccountTransactionCountLocal(): Int = dataStore.data.map { it[KEY
 
 suspend fun updateAccountTransactionCountLocal(count: Int) {
     dataStore.edit { it[KEY_ACCOUNT_TRANSACTION_COUNT] = count }
+}
+
+fun isGuidePageShown(): Boolean {
+    return sharedPreferencesTraditional.getBoolean(KEY_IS_GUIDE_PAGE_SHOWN, false)
+}
+
+fun setGuidePageShown() {
+    sharedPreferencesTraditional.edit().putBoolean(KEY_IS_GUIDE_PAGE_SHOWN, true).apply()
 }
 
 private fun edit(unit: suspend () -> Unit) {
