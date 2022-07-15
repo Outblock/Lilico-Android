@@ -256,4 +256,7 @@
     <string name="guide_desc_3">Share excellent NFT collections with friends</string>
     <string name="guide_title_4">Explore\nyour favourite site</string>
     <string name="guide_desc_4">Share excellent NFT collections with friends</string>
+    <string name="import_wallet">Import Wallet</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcom_desc">PROVIDE MORE ABOUT THE SECURITY</string>
 </resources>

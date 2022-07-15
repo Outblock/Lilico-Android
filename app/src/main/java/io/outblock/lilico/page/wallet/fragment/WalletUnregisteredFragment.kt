@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.wallet.fragment
 
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,15 @@ class WalletUnregisteredFragment : Fragment() {
         with(binding) {
             createButton.setOnClickListener { WalletCreateActivity.launch(requireContext()) }
             importButton.setOnClickListener { WalletRestoreActivity.launch(requireContext()) }
+        }
+        setupBackground()
+    }
+
+    private fun setupBackground() {
+        with(binding.root.background as AnimationDrawable) {
+            setEnterFadeDuration(1250)
+            setExitFadeDuration(2500)
+            start()
         }
     }
 }
