@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
@@ -34,6 +35,7 @@ class GuideActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(false).light(false).applyStatusBar()
         UltimateBarX.with(this).fitWindow(false).light(false).applyNavigationBar()
         binding.contentWrapper.addStatusBarTopPadding()
+        binding.contentWrapper.addNavigationBarBottomPadding()
         setupBackground()
         setupViewPager()
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()

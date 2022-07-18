@@ -3,6 +3,7 @@ package io.outblock.lilico.page.wallet.presenter
 import android.annotation.SuppressLint
 import android.transition.TransitionManager
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -40,8 +41,8 @@ class WalletHeaderPresenter(
             walletName.text = "Wallet"
             uiScope {
                 val isHideBalance = isHideWalletBalance()
-                address.text = if (isHideBalance) "******************" else model.walletList.primaryWalletAddress()?.toAddress()
-                balanceNum.text = if (isHideBalance) "****" else "$${model.balance.formatPrice()}"
+                address.diffSetText(if (isHideBalance) "******************" else model.walletList.primaryWalletAddress()?.toAddress())
+                balanceNum.diffSetText(if (isHideBalance) "****" else "$${model.balance.formatPrice()}")
                 hideButton.setImageResource(if (isHideBalance) R.drawable.ic_eye_off else R.drawable.ic_eye_on)
             }
 
@@ -79,4 +80,9 @@ class WalletHeaderPresenter(
         Toast.makeText(view.context, R.string.copy_address_toast.res2String(), Toast.LENGTH_SHORT).show()
     }
 
+    private fun TextView.diffSetText(text: String?) {
+        if (text != this.text.toString()) {
+            this.text = text
+        }
+    }
 }

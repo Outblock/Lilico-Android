@@ -47,10 +47,21 @@
             android:fadingEdge="none"
             android:fadingEdgeLength="0dp"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guide_item"
             app:layout_constraintTop_toBottomOf="@id/skip_button"
+            tools:background="#50000000"
             tools:itemCount="1"
             tools:listitem="@layout/item_guide_page"/>
+
+        <FrameLayout
+            android:id="@+id/guide_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/view_pager">
+
+            <include layout="@layout/item_guide_page"/>
+        </FrameLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -63,21 +74,21 @@
             app:layout_constraintTop_toTopOf="@id/next_button"
             app:tabBackground="@drawable/bg_dot_tab"
             app:tabGravity="center"
-            app:tabRippleColor="@color/transparent"
-            app:tabIndicatorHeight="0dp"/>
+            app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@color/transparent"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="120dp"
             android:backgroundTint="@color/button"
             app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="1000dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_item"
             app:rippleColor="@color/black_10"
             app:strokeColor="@color/button_color"
             app:strokeWidth="1dp">

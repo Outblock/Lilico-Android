@@ -147,7 +147,7 @@ dependencies {
     /** Kotlin 相关 **/
 
     /** firebase **/
-    implementation platform('com.google.firebase:firebase-bom:29.0.1')
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -155,10 +155,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-functions-ktx'
-    implementation 'com.google.firebase:firebase-appcheck-playintegrity:16.0.0'
-    implementation 'com.google.firebase:firebase-appcheck:16.0.0'
-    implementation 'com.google.firebase:firebase-appcheck-debug:16.0.0'
-    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+    implementation 'com.google.firebase:firebase-appcheck'
+    implementation 'com.google.firebase:firebase-appcheck-debug'
     /** firebase **/
 
     implementation "dev.chrisbanes:insetter-ktx:0.3.1"

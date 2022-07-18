@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentWalletHomeBinding
 import io.outblock.lilico.page.main.MainActivityViewModel
@@ -27,17 +26,16 @@ class WalletHomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.root.post { binding.root.addStatusBarTopPadding() }
         bindFragment()
         pageViewModel.walletRegisterSuccessLiveData.observe(viewLifecycleOwner) { bindFragment() }
     }
 
     private fun bindFragment() {
         uiScope {
-            runCatching {
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment()).commit()
-            }
+            childFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment())
+                .commit()
         }
     }
 

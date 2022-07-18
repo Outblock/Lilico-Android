@@ -38,8 +38,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     override fun onWalletDataUpdate(wallet: WalletListData) {
-        headerLiveData.postValue(WalletHeaderModel(wallet, 0f))
-        updateWalletHeader()
+        updateWalletHeader(wallet = wallet)
         if (dataList.isEmpty()) {
             loadCoinList()
         }
@@ -107,7 +106,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             return
         }
         updateAccountTransactionCountLocal(count)
-        uiScope { headerLiveData.value = headerLiveData.value?.copy(transactionCount = count) }
+        updateWalletHeader()
     }
 
     private fun updateCoinBalance(balance: Balance) {
@@ -130,9 +129,9 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         updateWalletHeader()
     }
 
-    private fun updateWalletHeader(count: Int? = null) {
+    private fun updateWalletHeader(wallet: WalletListData? = null, count: Int? = null) {
         uiScope {
-            val header = headerLiveData.value ?: return@uiScope
+            val header = headerLiveData.value ?: (if (wallet == null) return@uiScope else WalletHeaderModel(wallet, 0f))
             headerLiveData.postValue(header.copy().apply {
                 balance = dataList.toList().map { it.balance * it.coinRate }.sum()
                 count?.let { coinCount = it }
