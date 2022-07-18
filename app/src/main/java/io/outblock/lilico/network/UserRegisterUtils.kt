@@ -52,6 +52,11 @@ private suspend fun registerOutblockUserInternal(
         Gson().toJson(RegisterRequest(username = username, accountKey = AccountKey(publicKey = getPublicKey(removePrefix = true))))
     )
     logd(TAG, json)
+    if (json.isNullOrBlank()) {
+        callback(false)
+        return
+    }
+
     val user = Gson().fromJson(json, RegisterResponse::class.java)
     logd(TAG, user.toString())
 

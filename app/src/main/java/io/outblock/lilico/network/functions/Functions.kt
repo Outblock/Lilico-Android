@@ -3,6 +3,7 @@ package io.outblock.lilico.network.functions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import io.outblock.lilico.firebase.analytics.reportException
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.interceptor.HeaderInterceptor
@@ -82,6 +83,7 @@ private suspend fun execute(functionName: String, data: Any? = null) = suspendCo
             .call(body).continueWith { task ->
                 if (!task.isSuccessful) {
                     loge(task.exception)
+                    reportException("firebase_function_exception", task.exception)
                     continuation.resume(null)
                     return@continueWith
                 }
