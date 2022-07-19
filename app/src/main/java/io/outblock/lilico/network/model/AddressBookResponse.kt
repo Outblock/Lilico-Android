@@ -2,6 +2,7 @@ package io.outblock.lilico.network.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.page.address.FlowDomainServer
 import kotlinx.parcelize.Parcelize
 
 data class AddressBookResponse(
@@ -66,7 +67,7 @@ data class AddressBookDomain(
     val value: String? = null,
 ) : Parcelable {
     companion object {
-        const val DOMAIN_FIND_XYZ = 1
-        const val DOMAIN_FLOWNS = 2
+        val DOMAIN_FIND_XYZ = FlowDomainServer.FIND.type
+        val DOMAIN_FLOWNS = FlowDomainServer.FLOWNS.type
     }
 }

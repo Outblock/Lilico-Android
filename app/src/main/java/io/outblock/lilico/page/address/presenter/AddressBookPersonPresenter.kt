@@ -14,9 +14,9 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemAddressBookPersonBinding
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.address.AddressBookViewModel
+import io.outblock.lilico.page.address.FlowDomainServer
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.addressadd.AddressAddActivity
 import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
@@ -55,10 +55,7 @@ class AddressBookPersonPresenter(
                 avatarView.setVisible(!data.avatar.isNullOrEmpty(), invisible = true)
                 avatarView.loadAvatar(data.avatar.orEmpty())
             } else {
-                val avatar =
-                    if (data.domain?.domainType == AddressBookDomain.DOMAIN_FIND_XYZ) R.drawable.ic_domain_logo_findxyz else R.drawable.ic_domain_logo_flowns
-                avatarView.setVisible(true)
-                Glide.with(avatarView).load(avatar).into(avatarView)
+                bindDomainAvatar(data.domain?.domainType ?: 0)
             }
 
             addressView.text = data.address?.toAddress().orEmpty()
@@ -76,6 +73,18 @@ class AddressBookPersonPresenter(
                 isSendNftPage -> {}
                 viewModel.isAddressBookContains(model) -> AddressActionDialog(findActivity(view) as FragmentActivity, data).show()
             }
+        }
+    }
+
+    private fun bindDomainAvatar(domainType: Int) {
+        val avatar = when (domainType) {
+            FlowDomainServer.FLOWNS.type -> R.drawable.ic_domain_logo_flowns
+            FlowDomainServer.FIND.type -> R.drawable.ic_domain_logo_findxyz
+            else -> R.mipmap.ic_launcher_round
+        }
+        with(binding.avatarView) {
+            setVisible(true)
+            Glide.with(this).load(avatar).into(this)
         }
     }
 }

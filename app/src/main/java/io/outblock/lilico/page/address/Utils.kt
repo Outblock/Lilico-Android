@@ -2,9 +2,22 @@ package io.outblock.lilico.page.address
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
+import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFind
+import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFlowns
 import io.outblock.lilico.network.model.AddressBookContact
+import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
+
+enum class FlowDomainServer(
+    val server: String,
+    val domain: String,
+    val type: Int,
+) {
+    FIND("find", "find", 1),
+    FLOWNS("flowns", "fn", 2),
+    MEOW("meow", "meow", 3),
+}
 
 val addressBookDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -42,4 +55,23 @@ fun isAddressBookAutoSearch(text: CharSequence?): Boolean {
 
 fun List<AddressBookContact>.removeRepeated(): List<AddressBookContact> {
     return distinctBy { it.uniqueId() }
+}
+
+fun queryAddressBookFromBlockchain(keyword: String, server: FlowDomainServer): AddressBookContact? {
+    val name = keyword.lowercase().removeSuffix(server.domain)
+    val address = when (server) {
+        FlowDomainServer.FIND -> cadenceQueryAddressByDomainFind(name)
+        FlowDomainServer.FLOWNS, FlowDomainServer.MEOW -> cadenceQueryAddressByDomainFlowns(name, root = server.domain)
+    }
+
+    if (address.isNullOrBlank()) {
+        return null
+    }
+
+    return AddressBookContact(
+        address = address,
+        contactName = name,
+        domain = AddressBookDomain(domainType = server.type, value = name),
+        contactType = AddressBookContact.CONTACT_TYPE_DOMAIN,
+    )
 }

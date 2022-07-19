@@ -6,11 +6,8 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.addressBookCache
 import io.outblock.lilico.cache.recentTransactionCache
-import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFind
-import io.outblock.lilico.manager.flowjvm.cadenceQueryAddressByDomainFlowns
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.network.model.AddressBookDomain
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.address.model.AddressBookCharModel
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
@@ -93,9 +90,9 @@ class AddressBookViewModel : ViewModel() {
             if (!isAutoSearch) {
                 searchUsers(keyword, data)
             }
-
-            searchFindXyz(keyword, data)
-            searchFlowns(keyword, data)
+            queryOnBlockChain(keyword, data, FlowDomainServer.FLOWNS)
+            queryOnBlockChain(keyword, data, FlowDomainServer.FIND)
+            queryOnBlockChain(keyword, data, FlowDomainServer.MEOW)
 
             if (data.isEmpty()) {
                 remoteEmptyLiveData.postValue(true)
@@ -200,50 +197,16 @@ class AddressBookViewModel : ViewModel() {
         }
     }
 
-    private fun searchFlowns(keyword: String, data: MutableList<Any>) {
+    private fun queryOnBlockChain(keyword: String, data: MutableList<Any>, server: FlowDomainServer) {
         safeRun {
-            val address = cadenceQueryAddressByDomainFlowns(keyword) ?: return@safeRun
-            if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
-                    ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FLOWNS } != null
-            ) {
-                return@safeRun
-            }
-            data.add(AddressBookCharModel(text = ".flowns"))
-            data.add(
-                AddressBookPersonModel(
-                    data = AddressBookContact(
-                        address = address,
-                        contactName = keyword,
-                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FLOWNS, value = keyword.removeSuffix(".find")),
-                        contactType = AddressBookContact.CONTACT_TYPE_DOMAIN,
-                    )
-                )
-            )
-            if (keyword == searchKeyword) {
-                addressBookLiveData.postValue(data)
-            }
-        }
-    }
+            val contact = queryAddressBookFromBlockchain(keyword, server) ?: return@safeRun
 
-    private fun searchFindXyz(keyword: String, data: MutableList<Any>) {
-        safeRun {
-            val address = cadenceQueryAddressByDomainFind(keyword.lowercase().removeSuffix(".find")) ?: return@safeRun
-            if (addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
-                    ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == AddressBookDomain.DOMAIN_FIND_XYZ } != null
-            ) {
+            if (contact.isContactInBookList()) {
                 return@safeRun
             }
-            data.add(AddressBookCharModel(text = ".find"))
-            data.add(
-                AddressBookPersonModel(
-                    data = AddressBookContact(
-                        address = address,
-                        contactName = keyword,
-                        domain = AddressBookDomain(domainType = AddressBookDomain.DOMAIN_FIND_XYZ, value = keyword),
-                        contactType = AddressBookContact.CONTACT_TYPE_DOMAIN,
-                    )
-                )
-            )
+
+            data.add(AddressBookCharModel(text = ".${server.server}"))
+            data.add(AddressBookPersonModel(data = contact))
             if (keyword == searchKeyword) {
                 addressBookLiveData.postValue(data)
             }
@@ -271,5 +234,10 @@ class AddressBookViewModel : ViewModel() {
                 }
             }
         }.flatten()
+    }
+
+    private fun AddressBookContact.isContactInBookList(): Boolean {
+        return addressBookLiveData.value?.filterIsInstance<AddressBookPersonModel>()
+            ?.firstOrNull { it.data.address == address && it.data.domain?.domainType == domain?.domainType } != null
     }
 }
