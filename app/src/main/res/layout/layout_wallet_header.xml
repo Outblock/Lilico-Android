@@ -17,7 +17,7 @@
         app:cardBackgroundColor="#2f2f2f"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintDimensionRatio="351:200"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,13 +49,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/address"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="$123093"/>
 
             <TextView
