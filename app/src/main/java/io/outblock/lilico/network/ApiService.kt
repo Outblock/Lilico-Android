@@ -33,7 +33,6 @@ interface ApiService {
     suspend fun nftList(
         @Query("address") address: String,
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 25,
     ): NFTListResponse
 
     @GET("/v2/nft/detail")

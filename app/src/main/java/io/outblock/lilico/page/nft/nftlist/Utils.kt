@@ -13,7 +13,6 @@ import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
-import io.outblock.lilico.utils.loge
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -95,30 +94,14 @@ fun MutableList<Nft>.removeEmpty(): MutableList<Nft> {
 }
 
 suspend fun requestNftListFromServer(address: String): NFTListData? {
-    val limit = 25
     val service = retrofit().create(ApiService::class.java)
-    val resp = service.nftList(address, 0, limit)
+    val resp = service.nftList(address, 0)
     val list = mutableListOf<Nft>()
 
     val data = resp.data ?: return null
-    val count = data.nftCount
     list.addAll(data.nfts.orEmpty())
 
-    if (count > limit) {
-        var index = data.nfts?.size ?: 0
-        val exception = runCatching {
-            while (index <= count) {
-                val r = service.nftList(address, index, index + limit)
-                list.addAll(r.data?.nfts.orEmpty())
-                index += limit
-            }
-        }
-        loge(exception.exceptionOrNull())
-    }
-
-    return data.apply {
-        nfts = list
-    }
+    return data.apply { nfts = list }
 }
 
 fun Nft.websiteUrl(walletAddress: String) = "https://lilico.app/nft/$walletAddress/${contract.address}/${contract.name}?tokenId=${id.tokenId}"
