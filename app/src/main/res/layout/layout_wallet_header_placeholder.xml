@@ -43,7 +43,6 @@
                 android:textColor="@color/note"
                 android:visibility="invisible"
                 app:cornerRadius="16dp"
-                app:icon="@drawable/ic_send"
                 app:iconGravity="textTop"
                 app:iconPadding="10dp"
                 app:iconSize="18dp"

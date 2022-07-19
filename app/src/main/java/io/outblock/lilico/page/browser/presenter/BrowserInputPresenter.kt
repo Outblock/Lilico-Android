@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
@@ -13,7 +12,6 @@ import androidx.transition.Fade
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
 import com.zackratos.ultimatebarx.ultimatebarx.navigationBarHeight
-import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutBrowserBinding
 import io.outblock.lilico.page.browser.BrowserViewModel
@@ -61,9 +59,6 @@ class BrowserInputPresenter(
         with(inputBinding) {
             searchBox.clearButton.setOnClickListener { searchBox.inputView.setText("") }
             searchBox.cancelButton.setOnClickListener { clearPage(isCancel = true) }
-            with(root.layoutParams as ViewGroup.MarginLayoutParams) {
-                bottomMargin = navigationBarHeight - statusBarHeight
-            }
         }
     }
 
