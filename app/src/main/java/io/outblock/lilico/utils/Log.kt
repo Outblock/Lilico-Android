@@ -1,6 +1,7 @@
 package io.outblock.lilico.utils
 
 import android.util.Log
+import io.outblock.lilico.firebase.analytics.reportException
 
 fun logv(tag: String?, msg: Any?) {
     log(tag, msg, Log.VERBOSE)
@@ -27,6 +28,7 @@ fun loge(msg: Throwable?, printStackTrace: Boolean = true) {
     if (printLog() && printStackTrace) {
         msg?.printStackTrace()
     }
+    ioScope { msg?.let { reportException("exception_report", it) } }
 }
 
 private fun log(tag: String?, msg: Any?, version: Int) {
