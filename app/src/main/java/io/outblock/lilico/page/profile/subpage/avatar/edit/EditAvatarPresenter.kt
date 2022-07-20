@@ -47,7 +47,7 @@ class EditAvatarPresenter(
         with(binding.imageView) {
             isDrawingCacheEnabled = true
             buildDrawingCache()
-            val bitmap = (drawable as BitmapDrawable).bitmap
+            val bitmap = (drawable as? BitmapDrawable)?.bitmap ?: return@with
             progressDialog.show()
             viewModel.uploadAvatar(bitmap)
         }

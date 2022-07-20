@@ -24,10 +24,11 @@ object NftCollectionConfig {
     }
 
     fun get(address: String): NftCollection? {
-        if (config.isEmpty()) {
+        val list = config.toList()
+        if (list.isEmpty()) {
             reloadConfig()
         }
-        return config.firstOrNull { it.address() == address }
+        return list.firstOrNull { it.address() == address }
     }
 
     fun list() = config.filter { if (isTestnet()) it.secureCadenceCompatible.testnet else it.secureCadenceCompatible.mainnet }.toList()
@@ -69,12 +70,12 @@ data class NftCollection(
 ) : Parcelable {
 
     fun address(forceMainnet: Boolean = false) =
-        if (forceMainnet) address.mainnet else (if (isTestnet()) address.testnet.orEmpty() else address.mainnet)
+        if (forceMainnet) address.mainnet else (if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty())
 
     @Parcelize
     data class Address(
         @SerializedName("mainnet")
-        val mainnet: String,
+        val mainnet: String? = null,
         @SerializedName("testnet")
         val testnet: String? = null,
     ) : Parcelable
