@@ -50,7 +50,7 @@ fun isAddressBookAutoSearch(text: CharSequence?): Boolean {
     if (text.isNullOrBlank()) {
         return false
     }
-    return !text.trim().contains(" ") && (text.endsWith(".find") || text.endsWith(".fn"))
+    return !text.trim().contains(" ") && (text.endsWith(".find") || text.endsWith(".fn") || text.endsWith(".meow"))
 }
 
 fun List<AddressBookContact>.removeRepeated(): List<AddressBookContact> {

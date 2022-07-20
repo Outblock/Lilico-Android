@@ -20,6 +20,7 @@ import io.outblock.lilico.page.browser.browserViewModel
 import io.outblock.lilico.page.browser.model.BrowserInputModel
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.toSearchUrl
+import io.outblock.lilico.page.browser.tools.browserTabLast
 import io.outblock.lilico.page.browser.tools.browserTabsCount
 import io.outblock.lilico.page.browser.tools.startSearchBoxAnimation
 import io.outblock.lilico.utils.extensions.*
@@ -147,10 +148,18 @@ class BrowserInputPresenter(
     private fun openFromWebViewTitle() {
         binding.inputLayout.root.setVisible()
         with(inputBinding.searchBox) {
-            inputView.requestFocus()
-            inputView.showKeyboard()
+            with(inputView) {
+                requestFocus()
+                showKeyboard()
+                setText(webview()?.url)
+                setSelection(text.length)
+                selectAll()
+            }
             exploreSearchBox.root.setVisible(false)
             cancelWrapper.setVisible(true)
         }
     }
+
+    private fun webview() = browserTabLast()?.webView
+
 }

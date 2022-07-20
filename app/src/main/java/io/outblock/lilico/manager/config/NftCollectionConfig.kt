@@ -69,8 +69,8 @@ data class NftCollection(
     val path: Path
 ) : Parcelable {
 
-    fun address(forceMainnet: Boolean = false) =
-        if (forceMainnet) address.mainnet else (if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty())
+    fun address(forceMainnet: Boolean = false): String =
+        if (forceMainnet) address.mainnet.orEmpty() else (if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty())
 
     @Parcelize
     data class Address(
