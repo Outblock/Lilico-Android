@@ -24,7 +24,7 @@ fun reportEvent(event: String, params: Map<String, String>) {
     }
 }
 
-fun reportException(event: String, ex: Exception?) {
+fun reportException(event: String, ex: Throwable?) {
     reportEvent(
         event, mapOf(
             "exception" to ex?.javaClass?.simpleName.orEmpty(),

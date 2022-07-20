@@ -51,7 +51,7 @@ fun openBrowser(
 fun WebView.saveRecentRecord() {
     logd("webview", "saveRecentRecord start")
     val url = this.url.orEmpty().trim()
-    val screenshot = screenshot()
+    val screenshot = screenshot() ?: return
     val title = this.title ?: return
     val icon = favicon
     logd("webview", "saveRecentRecord screenshot end")
@@ -80,7 +80,10 @@ fun screenshotFileName(url: String) = "${"webview_$url".hashCode()}"
 
 fun screenshotFile(fileName: String) = File(CACHE_PATH, fileName)
 
-fun WebView.screenshot(): Bitmap {
+fun WebView.screenshot(): Bitmap? {
+    if (width == 0 || height == 0) {
+        return null
+    }
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
     draw(canvas)

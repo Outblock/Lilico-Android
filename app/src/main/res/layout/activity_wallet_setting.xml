@@ -71,7 +71,7 @@
             android:id="@+id/free_gas_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_settings_security"
+            app:iconEnable="false"
             app:subtitle="@string/free_gas_fee_desc"
             app:title="@string/free_gas_fee"/>
     </com.google.android.material.card.MaterialCardView>

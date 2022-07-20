@@ -3,7 +3,6 @@ package io.outblock.lilico.page.profile.subpage.avatar.edit
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.cache.walletCache
@@ -29,6 +28,7 @@ class EditAvatarViewModel : ViewModel() {
         this.userInfo = userInfoData
         viewModelIOScope(this) {
             val nftList = nftListCache(getNftAddress()).read()?.nfts.orEmpty().filter { !it.cover().isNullOrEmpty() }
+            logd("xxx", "nftList: $nftList")
             avatarListLiveData.postValue(mutableListOf<Any>().apply {
                 add(userInfoData.avatar)
                 addAll(nftList)
@@ -48,33 +48,31 @@ class EditAvatarViewModel : ViewModel() {
                 uploadResultLiveData.postValue(true)
                 return@viewModelIOScope
             }
-            uploadAvatarToFirebase(bitmap) { avatarUrl ->
-                logd("upload avatar url", avatarUrl)
-                viewModelIOScope(this) {
-                    if (avatarUrl.isNullOrEmpty()) {
-                        uploadResultLiveData.postValue(false)
+            try {
+                uploadAvatarToFirebase(bitmap) { avatarUrl ->
+                    logd("upload avatar url", avatarUrl)
+                    viewModelIOScope(this) {
+                        if (avatarUrl.isNullOrEmpty()) {
+                            uploadResultLiveData.postValue(false)
+                        }
+                        val userInfo = userInfoCache().read()!!
+                        val service = retrofit().create(ApiService::class.java)
+                        val resp = service.updateProfile(mapOf("nickname" to userInfo.nickname, "avatar" to avatarUrl!!))
+                        if (resp.status == 200) {
+                            userInfo.avatar = avatarUrl
+                            userInfoCache().cache(userInfo)
+                            delay(200)
+                        }
+                        uploadResultLiveData.postValue(resp.status == 200)
                     }
-                    val userInfo = userInfoCache().read()!!
-                    val service = retrofit().create(ApiService::class.java)
-                    val resp = service.updateProfile(mapOf("nickname" to userInfo.nickname, "avatar" to avatarUrl!!))
-                    if (resp.status == 200) {
-                        userInfo.avatar = avatarUrl
-                        userInfoCache().cache(userInfo)
-                        delay(200)
-                    }
-                    uploadResultLiveData.postValue(resp.status == 200)
                 }
+            } catch (e: Exception) {
+                uploadResultLiveData.postValue(false)
             }
         }
     }
 
     private fun getNftAddress(): String? {
-        //0x53f389d96fb4ce5e
-        //0x2b06c41f44a05656
-        //0xccea80173b51e028
-        if (BuildConfig.DEBUG) {
-            return "0xccea80173b51e028"
-        }
-        return walletCache().read()?.primaryWallet()?.blockchain?.firstOrNull()?.address
+        return walletCache().read()?.primaryWalletAddress()
     }
 }
