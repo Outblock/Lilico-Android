@@ -11,6 +11,7 @@ import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.vibrateTransaction
 import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.wallet.toAddress
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -41,6 +42,7 @@ suspend fun sendTransaction(
     logd(TAG, "sendTransaction to flow chain")
     val txID = FlowApi.get().sendTransaction(tx)
     logd(TAG, "transaction id:$${txID.bytes.bytesToHex()}")
+    vibrateTransaction()
     return txID.bytes.bytesToHex()
 }
 

@@ -4,8 +4,6 @@
     package="io.outblock.lilico">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <!-- Permissions required by GoogleAuthUtil -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
