@@ -82,7 +82,7 @@
         android:paddingHorizontal="43dp"
         android:paddingVertical="10dp"
         android:stateListAnimator="@null"
-        android:text="@string/get_new_nfts"
+        android:text="@string/explore_new_nfts"
         android:textAllCaps="false"
         android:textColor="@color/salmon_primary"
         android:textSize="14sp"
@@ -92,6 +92,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/desc"
-        app:rippleColor="@color/black_10"/>
+        app:rippleColor="@color/black_20"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
