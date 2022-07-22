@@ -174,9 +174,9 @@
             android:layout_height="24dp"
             android:layout_marginStart="18dp"
             android:layout_marginTop="12dp"
-            android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:src="@mipmap/ic_launcher"
             app:round="4dp"/>
 
         <TextView

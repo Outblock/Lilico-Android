@@ -23,6 +23,7 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.toQRBitmap
 import io.outblock.lilico.utils.uiScope
 import jp.wasabeef.glide.transformations.BlurTransformation
 
@@ -56,6 +57,8 @@ class NftShareView(
             Glide.with(backgroundImage).load(nft.cover())
                 .transform(BlurTransformation(15, 30))
                 .into(backgroundImage)
+
+            qrcodeView.setImageBitmap("https://lilico.app/".toQRBitmap(300, 300))
 
             loadNftCover()
         }

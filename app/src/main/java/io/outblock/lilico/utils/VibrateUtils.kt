@@ -7,7 +7,7 @@ import android.os.Vibrator
 import android.os.VibratorManager
 
 fun vibrateTransaction() {
-    vibrate().vibrate(VibrationEffect.createOneShot(50, 50))
+    vibrate().vibrate(VibrationEffect.createOneShot(50, 150))
 }
 
 private fun vibrate() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

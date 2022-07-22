@@ -7,6 +7,7 @@ import io.outblock.lilico.databinding.ActivityMainBinding
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.main.adapter.MainPageAdapter
 import io.outblock.lilico.page.main.model.MainContentModel
+import io.outblock.lilico.utils.extensions.colorStateList
 
 class MainContentPresenter(
     private val activity: MainActivity,
@@ -40,12 +41,19 @@ class MainContentPresenter(
         })
         binding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.bottom_navigation_home -> binding.viewPager.setCurrentItem(0, false)
-                R.id.bottom_navigation_nft -> binding.viewPager.setCurrentItem(1, false)
-                R.id.bottom_navigation_explore -> binding.viewPager.setCurrentItem(2, false)
-                R.id.bottom_navigation_profile -> binding.viewPager.setCurrentItem(3, false)
+                R.id.bottom_navigation_home -> onNavigationItemSelected(0, R.color.bottom_navigation_color_wallet)
+                R.id.bottom_navigation_nft -> onNavigationItemSelected(1, R.color.bottom_navigation_color_nft)
+                R.id.bottom_navigation_explore -> onNavigationItemSelected(2, R.color.bottom_navigation_color_explore)
+                R.id.bottom_navigation_profile -> onNavigationItemSelected(3, R.color.bottom_navigation_color_profile)
             }
             true
+        }
+    }
+
+    private fun onNavigationItemSelected(index: Int, color: Int) {
+        binding.viewPager.setCurrentItem(index, false)
+        binding.navigationView.itemIconTintList = color.colorStateList(activity)?.apply {
+            binding.navigationView.updateIndicatorColor(getColorForState(intArrayOf(android.R.attr.state_checked), 0))
         }
     }
 }

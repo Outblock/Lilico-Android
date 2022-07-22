@@ -3,18 +3,14 @@ package io.outblock.lilico.network
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
-import io.outblock.lilico.network.functions.FUNCTION_REGISTER
-import io.outblock.lilico.network.functions.executeFunction
 import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
-import io.outblock.lilico.network.model.RegisterResponse
 import io.outblock.lilico.utils.clearCacheDir
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.updateAccountTransactionCountLocal
@@ -47,17 +43,13 @@ private suspend fun registerOutblockUserInternal(
     username: String,
     callback: (isSuccess: Boolean) -> Unit,
 ) {
-    val json = executeFunction(
-        FUNCTION_REGISTER,
-        Gson().toJson(RegisterRequest(username = username, accountKey = AccountKey(publicKey = getPublicKey(removePrefix = true))))
+    val service = retrofit().create(ApiService::class.java)
+    val user = service.register(
+        RegisterRequest(
+            username = username,
+            accountKey = AccountKey(publicKey = getPublicKey(removePrefix = true))
+        )
     )
-    logd(TAG, json)
-    if (json.isNullOrBlank()) {
-        callback(false)
-        return
-    }
-
-    val user = Gson().fromJson(json, RegisterResponse::class.java)
     logd(TAG, user.toString())
 
     if (user.status > 400) {

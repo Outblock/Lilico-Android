@@ -31,7 +31,7 @@
         android:minHeight="?actionBarSize"
         app:elevation="0dp"
         app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@color/bottom_navigation_color"
+        app:itemIconTint="@color/bottom_navigation_color_wallet"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

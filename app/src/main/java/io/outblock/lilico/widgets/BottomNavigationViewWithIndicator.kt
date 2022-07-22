@@ -86,6 +86,11 @@ class BottomNavigationViewWithIndicator : BottomNavigationView,
     override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
     }
 
+    fun updateIndicatorColor(color: Int) {
+        paint.color = color
+        invalidate()
+    }
+
     private fun onItemSelected(itemId: Int, animate: Boolean = true) {
         if (!isLaidOut) return
 

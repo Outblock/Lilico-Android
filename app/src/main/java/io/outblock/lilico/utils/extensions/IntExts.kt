@@ -1,9 +1,11 @@
 package io.outblock.lilico.utils.extensions
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.utils.Env
 
@@ -31,6 +33,11 @@ fun Int.res2String(): String {
 fun Int.res2color(context: Context? = null): Int {
     val ctx = context ?: (BaseActivity.getCurrentActivity() ?: Env.getApp())
     return ctx.getColor(this)
+}
+
+fun Int.colorStateList(context: Context? = null): ColorStateList? {
+    val ctx = context ?: (BaseActivity.getCurrentActivity() ?: Env.getApp())
+    return ContextCompat.getColorStateList(ctx, this)
 }
 
 fun Float.dp2px(): Float {
