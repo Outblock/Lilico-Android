@@ -36,8 +36,8 @@ class WalletCreateLegalFragment : Fragment() {
                 setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 
-            termsButton.setOnClickListener { openWebUrl("https://lilico.app/terms-of-conditions.html") }
-            privacyButton.setOnClickListener { openWebUrl("https://lilico.app/privacy-policy.html") }
+            termsButton.setOnClickListener { openWebUrl("https://lilico.app/about/terms") }
+            privacyButton.setOnClickListener { openWebUrl("https://lilico.app/about/privacy-policy") }
 
             nextButton.setOnClickListener { pageViewModel.nextStep() }
         }
