@@ -27,25 +27,27 @@ object NftCollectionStateManager {
     }
 
     fun fetchState(onFinish: (() -> Unit)? = null) {
-        ioScope {
-            val collectionList = NftCollectionConfig.list()
-            val isEnableList = cadenceNftListCheckEnabled(collectionList)
-            if (collectionList.size != isEnableList?.size) {
-                logw(TAG, "fetch error")
-                return@ioScope
-            }
-            collectionList.forEachIndexed { index, collection ->
-                val isEnable = isEnableList[index]
-                val oldState = tokenStateList.firstOrNull { it.address == collection.address(forceMainnet = false) }
-                tokenStateList.remove(oldState)
-                tokenStateList.add(NftCollectionState(collection.name, collection.address(), isEnable))
-                if (oldState?.isAdded != isEnable) {
-                    dispatchListeners(collection, isEnable)
-                }
-            }
-            nftCollectionStateCache().cache(NftCollectionStateCache(tokenStateList.toList()))
-            onFinish?.invoke()
+        ioScope { fetchStateSync(onFinish) }
+    }
+
+    private fun fetchStateSync(onFinish: (() -> Unit)? = null) {
+        val collectionList = NftCollectionConfig.list()
+        val isEnableList = cadenceNftListCheckEnabled(collectionList)
+        if (collectionList.size != isEnableList?.size) {
+            logw(TAG, "fetch error")
+            return
         }
+        collectionList.forEachIndexed { index, collection ->
+            val isEnable = isEnableList[index]
+            val oldState = tokenStateList.firstOrNull { it.address == collection.address(forceMainnet = false) }
+            tokenStateList.remove(oldState)
+            tokenStateList.add(NftCollectionState(collection.name, collection.address(), isEnable))
+            if (oldState?.isAdded != isEnable) {
+                dispatchListeners(collection, isEnable)
+            }
+        }
+        nftCollectionStateCache().cache(NftCollectionStateCache(tokenStateList.toList()))
+        onFinish?.invoke()
     }
 
     fun fetchStateSingle(collection: NftCollection, cache: Boolean = false) {

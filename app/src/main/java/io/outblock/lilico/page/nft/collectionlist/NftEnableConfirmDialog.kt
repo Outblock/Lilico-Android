@@ -12,7 +12,6 @@ import io.outblock.lilico.databinding.DialogAddCollectionConfirmBinding
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.utils.uiScope
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.coroutines.delay
 
 class NftEnableConfirmDialog : BottomSheetDialogFragment() {
 
@@ -28,7 +27,14 @@ class NftEnableConfirmDialog : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[NftCollectionListViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[NftCollectionListViewModel::class.java].apply {
+            cadenceExecuteLiveData.observe(this@NftEnableConfirmDialog) {
+                if (it) {
+                    dismiss()
+                    cadenceExecuteLiveData.value = false
+                }
+            }
+        }
 
         binding.closeButton.setOnClickListener { dismiss() }
         with(binding) {
@@ -39,8 +45,6 @@ class NftEnableConfirmDialog : BottomSheetDialogFragment() {
                 uiScope {
                     actionButton.setProgressVisible(true)
                     viewModel.addToken(collection)
-                    delay(1000)
-                    dismiss()
                 }
             }
         }

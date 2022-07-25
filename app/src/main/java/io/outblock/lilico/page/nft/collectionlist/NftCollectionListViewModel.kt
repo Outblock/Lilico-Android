@@ -22,6 +22,7 @@ import io.outblock.lilico.utils.viewModelIOScope
 class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCollectionStateChangeListener {
 
     val collectionListLiveData = MutableLiveData<List<NftCollectionItem>>()
+    var cadenceExecuteLiveData = MutableLiveData<Boolean>()
 
     private val collectionList = mutableListOf<NftCollectionItem>()
 
@@ -81,6 +82,7 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
                 transactionIds.add(transactionId)
                 onTransactionStateChange()
             }
+            cadenceExecuteLiveData.postValue(true)
         }
     }
 
@@ -90,6 +92,10 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
             transactionList.forEach { state ->
                 if (state.type == TransactionState.TYPE_ENABLE_NFT) {
                     val coin = state.nftCollectionData()
+
+                    if (state.isSuccess() && !NftCollectionStateManager.isTokenAdded(coin.address())) {
+                        NftCollectionStateManager.fetchStateSingle(state.nftCollectionData(), cache = true)
+                    }
                     val index = collectionList.indexOfFirst { it.collection.contractName == coin.contractName }
                     val isAdded = NftCollectionStateManager.isTokenAdded(coin.address())
                     collectionList[index] = NftCollectionItem(
@@ -99,7 +105,6 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
                     )
                 }
             }
-            NftCollectionStateManager.fetchState()
             search(keyword)
         }
     }

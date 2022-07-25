@@ -25,24 +25,26 @@ object TokenStateManager {
     }
 
     fun fetchState() {
-        ioScope {
-            val coinList = FlowCoinListManager.coinList()
-            val isEnableList = cadenceCheckTokenListEnabled(FlowCoinListManager.coinList())
-            if (coinList.size != isEnableList?.size) {
-                logw(TAG, "fetch error")
-                return@ioScope
-            }
-            coinList.forEachIndexed { index, coin ->
-                val isEnable = isEnableList[index]
-                val oldState = tokenStateList.firstOrNull { it.symbol == coin.symbol }
-                tokenStateList.remove(oldState)
-                tokenStateList.add(TokenState(coin.symbol, coin.address(), isEnable))
-                if (oldState?.isAdded != isEnable) {
-                    dispatchListeners(coin, isEnable)
-                }
-            }
-            tokenStateCache().cache(TokenStateCache(tokenStateList.toList()))
+        ioScope { fetchStateSync() }
+    }
+
+    fun fetchStateSync() {
+        val coinList = FlowCoinListManager.coinList()
+        val isEnableList = cadenceCheckTokenListEnabled(FlowCoinListManager.coinList())
+        if (coinList.size != isEnableList?.size) {
+            logw(TAG, "fetch error")
+            return
         }
+        coinList.forEachIndexed { index, coin ->
+            val isEnable = isEnableList[index]
+            val oldState = tokenStateList.firstOrNull { it.symbol == coin.symbol }
+            tokenStateList.remove(oldState)
+            tokenStateList.add(TokenState(coin.symbol, coin.address(), isEnable))
+            if (oldState?.isAdded != isEnable) {
+                dispatchListeners(coin, isEnable)
+            }
+        }
+        tokenStateCache().cache(TokenStateCache(tokenStateList.toList()))
     }
 
     fun fetchStateSingle(coin: FlowCoin, cache: Boolean = false) {

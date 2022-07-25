@@ -11,7 +11,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.databinding.DialogAddTokenConfirmBinding
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.utils.uiScope
-import kotlinx.coroutines.delay
 
 class AddTokenConfirmDialog : BottomSheetDialogFragment() {
 
@@ -27,7 +26,14 @@ class AddTokenConfirmDialog : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[AddTokenViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[AddTokenViewModel::class.java].apply {
+            cadenceExecuteLiveData.observe(this@AddTokenConfirmDialog) {
+                if (it) {
+                    dismiss()
+                    cadenceExecuteLiveData.value = false
+                }
+            }
+        }
 
         binding.closeButton.setOnClickListener { dismiss() }
         with(binding) {
@@ -37,8 +43,6 @@ class AddTokenConfirmDialog : BottomSheetDialogFragment() {
                 uiScope {
                     actionButton.setProgressVisible(true)
                     viewModel.addToken(coin)
-                    delay(1000)
-                    dismiss()
                 }
             }
         }

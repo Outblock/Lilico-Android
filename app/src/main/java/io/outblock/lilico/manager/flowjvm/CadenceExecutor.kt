@@ -144,6 +144,7 @@ suspend fun cadenceTransferToken(toAddress: String, amount: Float): String? {
 fun cadenceNftCheckEnabled(nft: NftCollection): Boolean? {
     logd(TAG, "cadenceNftCheckEnabled() nft:${nft.name}")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
+    logd(TAG, "cadenceNftCheckEnabled() walletAddress:${walletAddress}")
     val result = nft.formatCadence(CADENCE_NFT_CHECK_ENABLED).executeScript {
         arg { address(walletAddress) }
     }

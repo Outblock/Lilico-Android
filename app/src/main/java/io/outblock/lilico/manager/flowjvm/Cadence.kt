@@ -142,7 +142,7 @@ const val CADENCE_QUERY_DOMAIN_BY_ADDRESS_FIND = """
 """
 
 const val CADENCE_NFT_CHECK_ENABLED = """
-    import NonFungibleToken from 0xNonFungibleToke
+    import NonFungibleToken from 0xNonFungibleToken
     import <NFT> from <NFTAddress>
     
     // This transaction is for transferring and NFT from
@@ -150,12 +150,14 @@ const val CADENCE_NFT_CHECK_ENABLED = """
     
     pub fun check<Token>Vault(address: Address) : Bool {
         let account = getAccount(address)
-    
         let vaultRef = account
         .getCapability<&{NonFungibleToken.CollectionPublic}>(<TokenCollectionPublicPath>)
         .check()
-    
         return vaultRef
+    }
+    
+    pub fun main(address: Address) : Bool {
+        return check<Token>Vault(address: address)
     }
 """
 

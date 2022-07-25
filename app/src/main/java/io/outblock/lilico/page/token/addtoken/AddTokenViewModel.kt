@@ -22,6 +22,7 @@ import io.outblock.lilico.utils.viewModelIOScope
 class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChangeListener {
 
     val tokenListLiveData = MutableLiveData<List<TokenItem>>()
+    var cadenceExecuteLiveData = MutableLiveData<Boolean>()
 
     private val coinList = mutableListOf<TokenItem>()
 
@@ -80,6 +81,7 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChang
                 pushBubbleStack(transactionState)
                 transactionIds.add(transactionId)
             }
+            cadenceExecuteLiveData.postValue(true)
         }
     }
 
@@ -89,6 +91,10 @@ class AddTokenViewModel : ViewModel(), OnTransactionStateChange, TokenStateChang
             transactionList.forEach { state ->
                 if (state.type == TransactionState.TYPE_ADD_TOKEN) {
                     val coin = state.tokenData()
+
+                    if (state.isSuccess() && !TokenStateManager.isTokenAdded(coin.address())) {
+                        TokenStateManager.fetchStateSingle(state.tokenData(), cache = true)
+                    }
                     val index = coinList.indexOfFirst { it.coin.symbol == coin.symbol }
                     if (index >= 0) {
                         val isAdded = TokenStateManager.isTokenAdded(coin.address())

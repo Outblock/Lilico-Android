@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.FlowApi
+import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
@@ -117,8 +118,14 @@ object TransactionStateManager {
                 popBubbleStack(state)
             }
         }
-        if (state.type == TransactionState.TYPE_ADD_TOKEN && state.isSuccess()) {
-            TokenStateManager.fetchStateSingle(state.tokenData(), cache = true)
+        ioScope {
+            if (state.type == TransactionState.TYPE_ADD_TOKEN && state.isSuccess()) {
+                TokenStateManager.fetchStateSingle(state.tokenData(), cache = true)
+            }
+
+            if (state.type == TransactionState.TYPE_ENABLE_NFT && state.isSuccess()) {
+                NftCollectionStateManager.fetchStateSingle(state.nftCollectionData(), cache = true)
+            }
         }
     }
 
@@ -200,9 +207,9 @@ data class TransactionState(
 
     fun contact() = if (type == TYPE_TRANSFER_COIN) coinData().target else nftData().target
 
-    fun isSuccess() = state == FlowTransactionStatus.SEALED.num && errorMsg == null
+    fun isSuccess() = state == FlowTransactionStatus.SEALED.num && errorMsg.isNullOrBlank()
 
-    fun isFailed() = state >= FlowTransactionStatus.SEALED.num && errorMsg != null
+    fun isFailed() = state >= FlowTransactionStatus.SEALED.num && !errorMsg.isNullOrBlank()
 
     fun isProcessing() = state < FlowTransactionStatus.SEALED.num
 
