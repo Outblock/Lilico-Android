@@ -258,6 +258,7 @@
     <string name="guide_desc_4">Share excellent NFT collections with friends</string>
     <string name="import_wallet">Import Wallet</string>
     <string name="welcome">Welcome</string>
-    <string name="welcom_desc">PROVIDE MORE ABOUT THE SECURITY</string>
+    <string name="welcome_desc">PROVIDE MORE ABOUT THE SECURITY</string>
     <string name="explore_new_nfts">Explore new NFTs</string>
+    <string name="network_error">Network error</string>
 </resources>

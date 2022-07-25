@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montsettat_medium"
         android:gravity="center"
-        android:text="@string/welcom_desc"
+        android:text="@string/welcome_desc"
         android:textColor="@color/front_color"
         android:textSize="13sp"
         android:textStyle="bold"

@@ -28,11 +28,9 @@ class ProfilePreferenceVisible : ProfilePreference {
         setExtendView(extendView)
 
         visibleWrapper.setOnClickListener {
-            updateState(true)
             onStateChangeListener?.invoke(true)
         }
         invisibleWrapper.setOnClickListener {
-            updateState(false)
             onStateChangeListener?.invoke(false)
         }
     }

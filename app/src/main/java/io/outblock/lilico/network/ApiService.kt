@@ -48,6 +48,9 @@ interface ApiService {
     @POST("/v1/profile")
     suspend fun updateProfile(@Body params: Map<String, String>): CommonResponse
 
+    @POST("/v1/profile/preference")
+    suspend fun updateProfilePreference(@Body params: UpdateProfilePreferenceRequest): CommonResponse
+
     @GET("/v1/addressbook/contact")
     suspend fun getAddressBook(): AddressBookResponse
 
