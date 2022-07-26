@@ -2,8 +2,9 @@ package io.outblock.lilico.page.profile.subpage.claimdomain
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.JsonObject
 import com.nftco.flow.sdk.*
-import com.nftco.flow.sdk.cadence.StringField
+import com.nftco.flow.sdk.cadence.TYPE_STRING
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.cache.walletCache
@@ -16,7 +17,6 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.ClaimDomainPrepare
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.viewModelIOScope
 import io.outblock.lilico.wallet.getPrivateKey
@@ -54,10 +54,13 @@ class ClaimDomainViewModel : ViewModel() {
         val walletAddress = walletCache().read()?.primaryWalletAddress().orEmpty().toAddress()
         val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress))
             ?: throw RuntimeException("get wallet account error")
-        var tx = flowTransaction {
+        return flowTransaction {
             script { prepare.cadence!! }
 
-            arguments = mutableListOf(FlowArgument(StringField(usernameLiveData.value!!)))
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("type", TYPE_STRING)
+            jsonObject.addProperty("value", usernameLiveData.value!!)
+            arguments = mutableListOf(FlowArgument(jsonObject.toString().toByteArray()))
 
             referenceBlockId = FlowApi.get().getLatestBlockHeader().id
 
@@ -83,18 +86,7 @@ class ClaimDomainViewModel : ViewModel() {
                     ),
                 )
             }
-        }
-
-//        tx = tx.addPayloadSignature(
-//            FlowAddress(walletAddress),
-//            account.keys.first().id,
-//            Crypto.getSigner(
-//                privateKey = Crypto.decodePrivateKey(getPrivateKey(), SignatureAlgorithm.ECDSA_SECP256k1),
-//                hashAlgo = HashAlgorithm.SHA2_256
-//            ),
-//        )
-
-        return tx.buildPayerSignable()
+        }.buildPayerSignable()
     }
 
     private fun FlowTransaction.buildPayerSignable(): PayerSignable {
@@ -111,7 +103,6 @@ class ClaimDomainViewModel : ViewModel() {
             payer = payerAddress.base16Value.toAddress(),
             authorizers = authorizers.map { it.base16Value.toAddress() },
             payloadSigs = payloadSignatures.map {
-                logd("xxx", "payloadSignatures: ${it.signature.base16Value}")
                 Singature(
                     address = it.address.base16Value.toAddress(),
                     keyId = it.keyIndex,

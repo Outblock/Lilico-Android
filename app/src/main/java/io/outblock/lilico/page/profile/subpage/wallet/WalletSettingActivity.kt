@@ -9,6 +9,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityWalletSettingBinding
+import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.wallet.dialog.WalletResetConfirmDialog
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.securityOpen
@@ -57,6 +58,8 @@ class WalletSettingActivity : BaseActivity() {
             freeGasPreference.setOnCheckedChangeListener { uiScope { setFreeGasPreferenceEnable(it) } }
 
             resetButton.setOnClickListener { WalletResetConfirmDialog.show(supportFragmentManager) }
+
+            claimButton.setOnClickListener { ClaimDomainActivity.launch(this@WalletSettingActivity) }
         }
     }
 
