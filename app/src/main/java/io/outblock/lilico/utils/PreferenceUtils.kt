@@ -39,7 +39,8 @@ private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BAL
 private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
 private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
 private val KEY_ACCOUNT_TRANSACTION_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSACTION_COUNT")
-private val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
+private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
+private val KEY_IS_MEOW_DOMAIN_CLAINED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAINED")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -162,6 +163,12 @@ fun isGuidePageShown(): Boolean {
 
 fun setGuidePageShown() {
     sharedPreferencesTraditional.edit().putBoolean(KEY_IS_GUIDE_PAGE_SHOWN, true).apply()
+}
+
+suspend fun isMeowDomainClaimed(): Boolean = dataStore.data.map { it[KEY_IS_MEOW_DOMAIN_CLAINED] ?: false }.first()
+
+suspend fun setMeowDomainClaimed(isClaimed: Boolean) {
+    dataStore.edit { it[KEY_IS_MEOW_DOMAIN_CLAINED] = isClaimed }
 }
 
 private fun edit(unit: suspend () -> Unit) {

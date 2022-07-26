@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -77,10 +78,13 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/claim_domain_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="18dp"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:cardBackgroundColor="@color/deep_bg"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"

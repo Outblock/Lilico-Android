@@ -10,14 +10,13 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityWalletSettingBinding
 import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
+import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.profile.subpage.wallet.dialog.WalletResetConfirmDialog
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.securityOpen
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.isFreeGasPreferenceEnable
-import io.outblock.lilico.utils.isNightMode
-import io.outblock.lilico.utils.setFreeGasPreferenceEnable
-import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.utils.extensions.setVisible
 
 class WalletSettingActivity : BaseActivity() {
 
@@ -31,10 +30,7 @@ class WalletSettingActivity : BaseActivity() {
         binding.root.addStatusBarTopPadding()
         setupToolbar()
         setup()
-    }
-
-    override fun onResume() {
-        super.onResume()
+        checkMeowDomainClaimed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,6 +56,8 @@ class WalletSettingActivity : BaseActivity() {
             resetButton.setOnClickListener { WalletResetConfirmDialog.show(supportFragmentManager) }
 
             claimButton.setOnClickListener { ClaimDomainActivity.launch(this@WalletSettingActivity) }
+
+            uiScope { claimDomainWrapper.setVisible(!isMeowDomainClaimed()) }
         }
     }
 

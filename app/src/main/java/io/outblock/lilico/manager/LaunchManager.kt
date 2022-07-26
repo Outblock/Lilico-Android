@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.firebase.firebaseInitialize
 import io.outblock.lilico.manager.account.BalanceManager
+import io.outblock.lilico.manager.app.AppLifecycleObserver
 import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.app.refreshChainNetwork
 import io.outblock.lilico.manager.coin.CoinRateManager
@@ -25,6 +26,7 @@ object LaunchManager {
     fun init(application: Application) {
         application.startServiceSafe(Intent(application, MessagingService::class.java))
         PageLifecycleObserver.init(application)
+        AppLifecycleObserver.observe()
         asyncInit()
         readPreference()
         firebaseInitialize(application)
