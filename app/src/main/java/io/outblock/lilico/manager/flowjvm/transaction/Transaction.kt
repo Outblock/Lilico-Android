@@ -125,6 +125,10 @@ fun FlowTransaction.buildPayerSignable(): PayerSignable? {
     )
 }
 
+fun FlowTransaction.encodeTransactionPayload(): String {
+    return (DomainTag.TRANSACTION_DOMAIN_TAG + canonicalPayload).bytesToHex()
+}
+
 fun Voucher.toFlowTransaction(): FlowTransaction {
     val transaction = this
     var tx = flowTransaction {
@@ -147,7 +151,11 @@ fun Voucher.toFlowTransaction(): FlowTransaction {
             sequenceNumber = transaction.proposalKey.sequenceNum ?: 0
         }
 
-        authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address.orEmpty())))
+        if (transaction.authorizers.isNullOrEmpty()) {
+            authorizers(mutableListOf(FlowAddress(transaction.proposalKey.address.orEmpty())))
+        } else {
+            authorizers(transaction.authorizers.map { FlowAddress(it) }.toMutableList())
+        }
 
         payerAddress = FlowAddress(transaction.payer.orEmpty())
 
@@ -193,7 +201,7 @@ fun Voucher.toFlowTransaction(): FlowTransaction {
 /**
  * fix: java.security.NoSuchAlgorithmException: no such algorithm: ECDSA for provider BC
  */
-private fun updateSecurityProvider() {
+fun updateSecurityProvider() {
     // Web3j will set up the provider lazily when it's first used.
     val provider: Provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) ?: return
     if (provider.javaClass == BouncyCastleProvider::class.java) {

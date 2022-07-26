@@ -42,7 +42,7 @@ private fun TransactionState.icon(): Any {
         TYPE_ENABLE_NFT -> nftCollectionData()?.logo.orEmpty()
         TYPE_TRANSFER_NFT -> nftSendData().nft.cover().orEmpty()
         TYPE_FCL_TRANSACTION -> fclTransactionData().url?.toFavIcon().orEmpty()
-        else -> ""
+        else -> R.mipmap.ic_launcher_round
     }
 }
 

@@ -35,7 +35,7 @@ class WalletHomeFragment : Fragment() {
             childFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment())
-                .commit()
+                .commitAllowingStateLoss()
         }
     }
 

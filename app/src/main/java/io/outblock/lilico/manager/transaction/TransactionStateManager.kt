@@ -191,6 +191,8 @@ data class TransactionState(
 
         // transaction from browser
         const val TYPE_FCL_TRANSACTION = 6
+
+        const val TYPE_CLAIM_DOMAIN = 7
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)

@@ -112,7 +112,7 @@
     <string name="logout">Logout</string>
     <string name="edit_avatar">Edit avatar</string>
     <string name="edit">Edit</string>
-    <string name="you_can_be_searched">You can be searched</string>
+    <string name="settings_visible_desc">Other Lilico users cannot search for your username.</string>
     <string name="visible">Visible</string>
     <string name="invisible">Invisible</string>
     <string name="private_str">Private</string>
@@ -261,4 +261,13 @@
     <string name="welcome_desc">PROVIDE MORE ABOUT THE SECURITY</string>
     <string name="explore_new_nfts">Explore new NFTs</string>
     <string name="network_error">Network error</string>
+    <string name="claim">Claim</string>
+    <string name="claim_free_domain">Claim for your <font color='#FC814A'>FREE</font> Lilico domain!</string>
+    <string name="free_domain">Free Domain</string>
+    <string name="lilico">Lilico</string>
+    <string name="things_you_should_know">Things You Should Know</string>
+    <string name="claim_domain_desc_1">Free lilico domain help you find each other easier on chain.</string>
+    <string name="claim_domain_desc_2">An Inbox system will help you send tokens and NFT to your firend without enable vault.</string>
+    <string name="claim_domain_desc_3">Anonymous mode will be affected, others can find your address by your domain.</string>
+    <string name="claim_domain_failed">Claim domain failed</string>
 </resources>

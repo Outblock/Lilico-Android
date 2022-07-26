@@ -15,6 +15,7 @@ import io.outblock.lilico.network.model.UpdateProfilePreferenceRequest
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
+import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.nickname.EditNicknameActivity
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.ProgressDialog
@@ -49,6 +50,8 @@ class AccountSettingActivity : BaseActivity() {
             avatarPreference.setOnClickListener { ViewAvatarActivity.launch(this@AccountSettingActivity, userInfo) }
             nicknamePreference.setOnClickListener { EditNicknameActivity.launch(this@AccountSettingActivity) }
             visiblePreference.setOnStateChangeListener { isVisible -> updateVisible(isVisible) }
+
+            claimButton.setOnClickListener { ClaimDomainActivity.launch(this@AccountSettingActivity) }
         }
     }
 

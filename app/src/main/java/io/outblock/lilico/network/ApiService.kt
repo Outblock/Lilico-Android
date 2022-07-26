@@ -1,5 +1,6 @@
 package io.outblock.lilico.network
 
+import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
 import io.outblock.lilico.network.model.*
 import retrofit2.http.*
 
@@ -99,4 +100,10 @@ interface ApiService {
     @POST("/v1/account/query")
     @JvmSuppressWildcards
     suspend fun flowScanQuery(@Body params: String): String
+
+    @GET("/v1/flowns/prepare")
+    suspend fun claimDomainPrepare(): ClaimDomainPrepareResponse
+
+    @POST("/v1/flowns/signature")
+    suspend fun claimDomainSignature(@Body params: PayerSignable): ClaimDomainSignatureResponse
 }
