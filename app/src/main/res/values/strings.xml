@@ -16,7 +16,7 @@
     <string name="password_check">I understand Lilico can not recover this password.</string>
     <string name="cloud_password_tip">Lilico uses this password to encrypt your backup.</string>
     <string name="password">Password</string>
-    <string name="password_verify_format">Enter 8 characters, with at least 1 number</string>
+    <string name="password_verify_format">Enter at least 8 characters</string>
     <string name="password_verify_no_number">At least 1 character</string>
     <string name="please_create">Create \nPassword</string>
     <string name="backing_up">Backing up</string>
@@ -271,4 +271,5 @@
     <string name="claim_domain_desc_3">Anonymous mode will be affected, others can find your address by your domain.</string>
     <string name="claim_domain_failed">Claim domain failed</string>
     <string name="nft_count">%1$d NFTs</string>
+    <string name="mnemonic_incorrect">Incorrect mnemonic</string>
 </resources>

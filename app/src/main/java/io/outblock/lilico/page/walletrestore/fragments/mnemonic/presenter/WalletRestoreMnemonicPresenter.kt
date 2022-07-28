@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.walletrestore.fragments.mnemonic.presenter
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
@@ -14,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
@@ -32,9 +32,11 @@ import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
+import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import kotlinx.coroutines.delay
+import wallet.core.jni.HDWallet
 
 class WalletRestoreMnemonicPresenter(
     private val fragment: WalletRestoreMnemonicFragment,
@@ -74,6 +76,10 @@ class WalletRestoreMnemonicPresenter(
     private fun login() {
         uiScope {
             val mnemonic = formatMnemonic()
+            if (!isMnemonicVerify(mnemonic)) {
+                toast(msgRes = R.string.mnemonic_incorrect)
+                binding.nextButton.setProgressVisible(false)
+            }
             requestWalletRestoreLogin(mnemonic) { isSuccess, reason ->
                 uiScope {
                     if (isSuccess) {
@@ -84,7 +90,7 @@ class WalletRestoreMnemonicPresenter(
                         if (reason == ERROR_ACCOUNT_NOT_FOUND) {
                             AccountNotFoundDialog(context, mnemonic).show()
                         } else {
-                            Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+                            toast(msgRes = R.string.network_error)
                         }
                     }
                 }
@@ -119,10 +125,11 @@ class WalletRestoreMnemonicPresenter(
 
     private fun formatMnemonic() = binding.editText.text.split(" ").filter { it.isNotBlank() }.joinToString(" ") { it }
 
+    @SuppressLint("SetTextI18n")
     private fun selectSuggest(word: String) {
         with(binding.editText) {
             val text = text.split(" ").dropLast(1).toMutableList().apply { add(word) }
-            setText(text.joinToString(" ") { it })
+            setText(text.joinToString(" ") { it } + " ")
             setSelection(getText().length)
         }
     }
@@ -149,6 +156,15 @@ class WalletRestoreMnemonicPresenter(
             TransitionManager.go(Scene(rootView as ViewGroup), Fade().apply { duration = 150 })
             binding.nextButton.setVisible(!isKeyboardVisible)
             binding.recyclerView.setVisible(isKeyboardVisible)
+        }
+    }
+
+    private fun isMnemonicVerify(mnemonic: String): Boolean {
+        return try {
+            HDWallet(mnemonic, "")
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }
