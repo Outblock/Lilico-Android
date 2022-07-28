@@ -135,7 +135,7 @@
                 android:fontFamily="@font/montsettat"
                 android:maxLines="1"
                 android:text="@string/claim_free_domain"
-                android:textColor="@color/gray_33"
+                android:textColor="@color/neutrals3"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

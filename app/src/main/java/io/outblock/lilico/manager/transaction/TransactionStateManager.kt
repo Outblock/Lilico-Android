@@ -15,6 +15,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
+import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.window.bubble.tools.popBubbleStack
@@ -125,6 +126,10 @@ object TransactionStateManager {
 
             if (state.type == TransactionState.TYPE_ENABLE_NFT && state.isSuccess()) {
                 NftCollectionStateManager.fetchStateSingle(state.nftCollectionData(), cache = true)
+            }
+
+            if (state.type == TransactionState.TYPE_CLAIM_DOMAIN && state.isSuccess()) {
+                checkMeowDomainClaimed()
             }
         }
     }

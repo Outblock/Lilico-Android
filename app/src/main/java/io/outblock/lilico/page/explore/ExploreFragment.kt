@@ -11,6 +11,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.databinding.FragmentExploreBinding
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.presenter.ExplorePresenter
+import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.scan.dispatchScanResult
 import io.outblock.lilico.utils.launch
 import io.outblock.lilico.utils.registerBarcodeLauncher
@@ -31,6 +32,11 @@ class ExploreFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentExploreBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkMeowDomainClaimed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

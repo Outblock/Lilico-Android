@@ -13,6 +13,7 @@ import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
 import io.outblock.lilico.utils.clearCacheDir
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.setMeowDomainClaimed
 import io.outblock.lilico.utils.updateAccountTransactionCountLocal
 import io.outblock.lilico.wallet.getPublicKey
 import kotlinx.coroutines.delay
@@ -29,6 +30,7 @@ suspend fun registerOutblockUser(
 
 suspend fun clearUserCache() {
     clearCacheDir()
+    setMeowDomainClaimed(false)
     TokenStateManager.reload()
     delay(100)
     FlowCoinListManager.reload()

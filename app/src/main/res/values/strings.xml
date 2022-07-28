@@ -263,6 +263,7 @@
     <string name="network_error">Network error</string>
     <string name="claim">Claim</string>
     <string name="claim_free_domain">Claim for your <font color='#FC814A'>FREE</font> Lilico domain!</string>
+    <string name="claim_free_domain_at_lilico">Claim <font color='#FC814A'>Free</font> Domain\nAt Lilico</string>
     <string name="free_domain">Free Domain</string>
     <string name="lilico">Lilico</string>
     <string name="things_you_should_know">Things You Should Know</string>

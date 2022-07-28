@@ -3,6 +3,7 @@ package io.outblock.lilico.page.explore.presenter
 import android.graphics.Color
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentExploreBinding
@@ -14,10 +15,12 @@ import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.BookmarkListDialog
 import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
-import io.outblock.lilico.utils.extensions.dp2px
-import io.outblock.lilico.utils.extensions.location
-import io.outblock.lilico.utils.extensions.scrollToPositionForce
-import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
+import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
+import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClaimedStateChange
+import io.outblock.lilico.utils.extensions.*
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isMeowDomainClaimed
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
@@ -26,7 +29,7 @@ import kotlinx.coroutines.delay
 class ExplorePresenter(
     private val fragment: ExploreFragment,
     private val binding: FragmentExploreBinding,
-) : BasePresenter<ExploreModel> {
+) : BasePresenter<ExploreModel>, MeowDomainClaimedStateChangeListener {
 
     private val recentAdapter by lazy { ExploreRecentAdapter(true) }
     private val bookmarkAdapter by lazy { ExploreBookmarkAdapter() }
@@ -72,7 +75,10 @@ class ExplorePresenter(
                 }
                 openBrowser(activity, searchBoxPosition = searchBox.root.location())
             }
+            claimButton.setOnClickListener { ClaimDomainActivity.launch(activity) }
         }
+        observeMeowDomainClaimedStateChange(this)
+        updateClaimDomainState()
     }
 
     override fun bind(model: ExploreModel) {
@@ -90,6 +96,23 @@ class ExplorePresenter(
         model.dAppList?.let {
             dappAdapter.setNewDiffData(it)
             binding.dappWrapper.setVisible(it.isNotEmpty())
+        }
+    }
+
+    override fun onDomainClaimedStateChange(isClaimed: Boolean) {
+        updateClaimDomainState()
+    }
+
+    private fun updateClaimDomainState() {
+        ioScope {
+            val isClaimedDomain = isMeowDomainClaimed()
+            val isVisibleChange = binding.claimDomainWrapper.isVisible() == isClaimedDomain
+            if (isVisibleChange) {
+                uiScope {
+                    TransitionManager.beginDelayedTransition(binding.contentWrapper)
+                    binding.claimDomainWrapper.setVisible(!isClaimedDomain)
+                }
+            }
         }
     }
 }

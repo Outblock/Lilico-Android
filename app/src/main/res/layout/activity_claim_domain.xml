@@ -60,7 +60,7 @@
                     android:layout_marginStart="3dp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:text="@string/lilico"
-                    android:textColor="@color/gray_33"
+                    android:textColor="@color/neutrals2"
                     android:textSize="16sp"/>
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -83,7 +83,7 @@
                     android:layout_marginStart="3dp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:text="Flowns"
-                    android:textColor="@color/gray_33"
+                    android:textColor="@color/neutrals2"
                     android:textSize="16sp"
                     tools:ignore="HardcodedText"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
