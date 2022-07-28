@@ -10,7 +10,8 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_guide_g_animation"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_guide"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_wrapper"

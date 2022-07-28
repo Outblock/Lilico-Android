@@ -61,6 +61,12 @@ fun setRegistered() {
     edit { dataStore.edit { it[KEY_REGISTERED] = true } }
 }
 
+//fun isRegistered(): Boolean = sharedPreferencesTraditional.getBoolean(KEY_REGISTERED, false)
+//
+//fun setRegistered() {
+//    sharedPreferencesTraditional.edit().putBoolean(KEY_REGISTERED, true).apply()
+//}
+
 suspend fun isNftInSelection(nft: Nft): Boolean {
     val list = dataStore.data.map { it[KEY_NFT_SELECTIONS] }.first().orEmpty().split(",")
     return list.contains(nft.uniqueId())

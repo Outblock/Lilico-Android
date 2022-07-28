@@ -20,23 +20,20 @@ class WalletHomeFragment : Fragment() {
 
     private val pageViewModel by lazy { ViewModelProvider(requireActivity())[MainActivityViewModel::class.java] }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentWalletHomeBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        bindFragment()
-        pageViewModel.walletRegisterSuccessLiveData.observe(viewLifecycleOwner) { bindFragment() }
+        uiScope { bindFragment() }
+        pageViewModel.walletRegisterSuccessLiveData.observe(viewLifecycleOwner) { uiScope { bindFragment() } }
     }
 
-    private fun bindFragment() {
-        uiScope {
-            childFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment())
-                .commitAllowingStateLoss()
-        }
+    private suspend fun bindFragment() {
+        childFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, if (isRegistered()) WalletFragment() else WalletUnregisteredFragment())
+            .commitAllowingStateLoss()
     }
-
 }

@@ -270,4 +270,5 @@
     <string name="claim_domain_desc_2">An Inbox system will help you send tokens and NFT to your firend without enable vault.</string>
     <string name="claim_domain_desc_3">Anonymous mode will be affected, others can find your address by your domain.</string>
     <string name="claim_domain_failed">Claim domain failed</string>
+    <string name="nft_count">%1$d NFTs</string>
 </resources>

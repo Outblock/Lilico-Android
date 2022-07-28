@@ -24,10 +24,11 @@ object NftCollectionConfig {
     }
 
     fun get(address: String): NftCollection? {
-        val list = config.toList()
-        if (list.isEmpty()) {
+        if (config.isEmpty()) {
             reloadConfig()
         }
+        val list = config.toList()
+
         return list.firstOrNull { it.address() == address }
     }
 

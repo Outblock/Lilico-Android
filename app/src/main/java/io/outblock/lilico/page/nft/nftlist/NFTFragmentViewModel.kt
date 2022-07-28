@@ -10,10 +10,7 @@ import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
 import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
-import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
-import io.outblock.lilico.page.nft.nftlist.model.CollectionTitleModel
-import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
+import io.outblock.lilico.page.nft.nftlist.model.*
 import io.outblock.lilico.utils.*
 
 class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
@@ -170,9 +167,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     private suspend fun loadGridData() {
-        cacheNftList.read()?.nfts?.toMutableList()?.let { nftList ->
-            gridDataLiveData.postValue(nftList.removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
-        }
+        cacheNftList.read()?.nfts?.toMutableList()?.let { nftList -> notifyGridList(nftList) }
         val resp = requestNftListFromServer(address!!)
         if (resp == null) {
             cacheNftList.clear()
@@ -180,19 +175,10 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
             cacheNftList.cache(resp)
         }
         emptyLiveData.postValue(resp?.nfts.isNullOrEmpty())
-        gridDataLiveData.postValue(
-            resp?.nfts?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }.orEmpty()
-        )
+        notifyGridList(resp?.nfts)
     }
 
     private fun getNftAddress(): String? {
-        //0x53f389d96fb4ce5e
-        //0x2b06c41f44a05656
-        //0xccea80173b51e028
-        //0x4ab2b65a8b2be2aa
-//        if (BuildConfig.DEBUG) {
-//            return "0xccea80173b51e028"
-//        }
         return cacheWallet.read()?.primaryWalletAddress()
     }
 
@@ -201,6 +187,18 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         val data = cacheSelections.read() ?: NftSelections(mutableListOf())
         data.data = data.data.filter { selection -> nfts.firstOrNull { nft -> selection.uniqueId() == nft.uniqueId() } != null }.toMutableList()
         topSelectionLiveData.postValue(data)
+    }
+
+    private fun notifyGridList(nftList: List<Nft>?) {
+        if (nftList.isNullOrEmpty()) {
+            gridDataLiveData.postValue(emptyList())
+            return
+        }
+        val list = mutableListOf<Any>(
+            NFTCountTitleModel(nftList.size)
+        )
+        list.addAll(nftList.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
+        gridDataLiveData.postValue(list)
     }
 
     companion object {

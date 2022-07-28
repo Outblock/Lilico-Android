@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
@@ -28,7 +27,6 @@ class MainActivity : BaseActivity() {
     private var isRegistered = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         INSTANCE = this
         binding = ActivityMainBinding.inflate(layoutInflater)

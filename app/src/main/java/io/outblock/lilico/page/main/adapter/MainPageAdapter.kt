@@ -21,5 +21,4 @@ class MainPageAdapter(
             else -> WalletHomeFragment()
         }
     }
-
 }

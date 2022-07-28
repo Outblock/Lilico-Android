@@ -3,7 +3,6 @@ package io.outblock.lilico.page.guide
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.View
@@ -36,21 +35,12 @@ class GuideActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(false).light(false).applyNavigationBar()
         binding.contentWrapper.addStatusBarTopPadding()
         binding.contentWrapper.addNavigationBarBottomPadding()
-        setupBackground()
         setupViewPager()
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
         setupData()
         setupButtons()
 
         setGuidePageShown()
-    }
-
-    private fun setupBackground() {
-        with(binding.background.background as AnimationDrawable) {
-            setEnterFadeDuration(1250)
-            setExitFadeDuration(2500)
-            start()
-        }
     }
 
     private fun setupViewPager() {

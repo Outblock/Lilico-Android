@@ -17,9 +17,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,LockedOrientationActivity">
         <activity
-            android:name=".page.main.MainActivity"
+            android:name=".page.splash.SplashActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppSplash">
             <intent-filter>
@@ -27,6 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".page.main.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".manager.drive.GoogleDriveAuthActivity"

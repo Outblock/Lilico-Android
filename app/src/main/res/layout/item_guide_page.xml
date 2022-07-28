@@ -6,27 +6,21 @@
     android:layout_height="match_parent"
     tools:background="#E77789">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cover_wrapper"
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/cover_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="23dp"
         android:layout_marginTop="30dp"
-        app:cardBackgroundColor="@color/salmon_primary"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
+        android:scaleType="centerCrop"
+        app:cardBackgroundColor="@color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:layout_constraintDimensionRatio="328:372"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UnusedAttribute">
-
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/cover_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:background="#aaa"
-            tools:src="@drawable/img_guide_1"/>
-    </com.google.android.material.card.MaterialCardView>
+        tools:background="#aaa"
+        tools:ignore="UnusedAttribute"
+        tools:src="@drawable/img_guide_1"/>
 
     <TextView
         android:id="@+id/space"
@@ -34,7 +28,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/title_view"
         app:layout_constraintHeight_max="50dp"
-        app:layout_constraintTop_toBottomOf="@id/cover_wrapper"/>
+        app:layout_constraintTop_toBottomOf="@id/cover_view"/>
 
     <TextView
         android:id="@+id/title_view"

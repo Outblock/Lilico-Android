@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModelProvider
 import com.journeyapps.barcodescanner.ScanOptions
-import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
+import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.fragment.BaseFragment
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.page.scan.dispatchScanResult
@@ -39,7 +39,7 @@ class WalletFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.root.post { binding.root.addStatusBarTopPadding() }
+        with(binding.root) { setPadding(0, statusBarHeight, 0, 0) }
 
         presenter = WalletFragmentPresenter(this, binding)
         headerPresenter = WalletHeaderPresenter(binding.walletHeader.root)

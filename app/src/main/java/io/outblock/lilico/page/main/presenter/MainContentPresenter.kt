@@ -24,9 +24,9 @@ class MainContentPresenter(
     }
 
     init {
-        binding.viewPager.adapter = MainPageAdapter(activity)
-        binding.viewPager.offscreenPageLimit = 4
         setupListener()
+        binding.viewPager.offscreenPageLimit = 4
+        binding.viewPager.adapter = MainPageAdapter(activity)
     }
 
     override fun bind(model: MainContentModel) {

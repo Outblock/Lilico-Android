@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentNftGridBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
+import io.outblock.lilico.page.nft.nftlist.model.NFTCountTitleModel
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
@@ -39,7 +40,13 @@ internal class NftGridFragment : Fragment() {
     private fun setupRecyclerView() {
         with(binding.recyclerView) {
             adapter = this@NftGridFragment.adapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (isSingleLineItem(position)) spanCount else 1
+                    }
+                }
+            }
             addItemDecoration(
                 GridSpaceItemDecoration(
                     vertical = dividerSize,
@@ -49,6 +56,11 @@ internal class NftGridFragment : Fragment() {
                 )
             )
         }
+    }
+
+    private fun isSingleLineItem(position: Int): Boolean {
+        val item = adapter.getData().getOrNull(position) ?: return false
+        return item is NFTCountTitleModel
     }
 
     companion object {
