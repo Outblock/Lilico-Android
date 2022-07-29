@@ -3,6 +3,7 @@ package io.outblock.lilico.widgets.webview.fcl
 import com.nftco.flow.sdk.DomainTag
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.hexToBytes
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.config.GasConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
@@ -21,27 +22,6 @@ private const val USER_SIGNATURE_REPLACEMENT = "#user-signature"
 private const val ACCOUNT_PROOF_REPLACEMENT = "#account-proof"
 private const val NONCE_REPLACEMENT = "#nonce"
 
-
-const val FCL_AUTHN_SERVICE = """
-    {
-      f_type: 'Service',
-      f_vsn: '1.0.0',
-      type: 'authn',
-      uid: 'Lilico',
-      endpoint: 'ext:0x000',
-      method: 'EXT/RPC',
-      id: '64554be',
-      identity: {
-        address: '0x64554be',
-      },
-      provider: {
-        address: '0x64554be',
-        name: 'Lilico',
-        icon: 'https://raw.githubusercontent.com/Outblock/Lilico-Web/main/asset/logo-dis.png',
-        description: 'Lilico extension wallet',
-      },
-    }
-"""
 
 private val FCL_AUTHN_RESPONSE = """
     {
@@ -214,6 +194,33 @@ private val FCL_SIGN_MESSAGE_RESPONSE = """
       "type": "FCL:VIEW:RESPONSE"
     }
 """.trimIndent()
+
+/**
+ * dApp login button
+ */
+fun generateFclExtensionInject(): String {
+    val address = if (isTestnet()) "0x3d2b4d1b51f3a4cd" else "0x33f75ff0b830dcec"
+    return """
+        {
+          f_type: 'Service',
+          f_vsn: '1.0.0',
+          type: 'authn',
+          uid: 'Lilico',
+          endpoint: 'chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html',
+          method: 'EXT/RPC',
+          id: 'hpclkefagolihohboafpheddmmgdffjm',
+          identity: {
+            address: '$address',
+          },
+          provider: {
+            address: '$address',
+            name: 'Lilico',
+            icon: 'https://raw.githubusercontent.com/Outblock/Lilico-Web/main/asset/logo-dis.png',
+            description: 'Lilico is bringing an out of the world experience to your crypto assets on Flow',
+          }
+        }
+""".trimIndent()
+}
 
 suspend fun fclAuthnResponse(fcl: FclAuthnResponse, address: String): String {
     val accountProofSign = if (!fcl.body.nonce.isNullOrBlank()) {

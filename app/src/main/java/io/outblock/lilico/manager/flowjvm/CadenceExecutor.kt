@@ -19,12 +19,12 @@ import io.outblock.lilico.wallet.toAddress
 private const val TAG = "CadenceExecutor"
 
 fun cadenceQueryAddressByDomainFlowns(domain: String, root: String = "fn"): String? {
-    logd(TAG, "cadenceQueryAddressByDomainFlowns()")
+    logd(TAG, "cadenceQueryAddressByDomainFlowns(): domain=$domain, root=$root")
     val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FLOWNS.executeScript {
         arg { marshall { string(domain) } }
         arg { marshall { string(root) } }
     }
-    logd(TAG, "cadenceQueryAddressByDomainFlowns response:${String(result?.bytes ?: byteArrayOf())}")
+    logd(TAG, "cadenceQueryAddressByDomainFlowns domain=$domain, root=$root response:${String(result?.bytes ?: byteArrayOf())}")
     return result?.parseSearchAddress()
 }
 

@@ -1,13 +1,13 @@
 package io.outblock.lilico.widgets.webview
 
-import io.outblock.lilico.widgets.webview.fcl.FCL_AUTHN_SERVICE
+import io.outblock.lilico.widgets.webview.fcl.generateFclExtensionInject
 
 // inject lilico auth login
 val JS_FCL_EXTENSIONS = """
     if (!Array.isArray(window.fcl_extensions)) {
       window.fcl_extensions = []
     }
-    window.fcl_extensions.push($FCL_AUTHN_SERVICE)
+    window.fcl_extensions.push(${generateFclExtensionInject()})
 """.trimIndent()
 
 val JS_LISTEN_WINDOW_FCL_MESSAGE = """
