@@ -199,7 +199,9 @@ private val FCL_SIGN_MESSAGE_RESPONSE = """
  * dApp login button
  */
 fun generateFclExtensionInject(): String {
-    val address = if (isTestnet()) "0x3d2b4d1b51f3a4cd" else "0x33f75ff0b830dcec"
+    val address = "0x33f75ff0b830dcec"
+    // Keep mainnet address for now
+    // if (isTestnet()) "0x3d2b4d1b51f3a4cd" else "0x33f75ff0b830dcec"
     return """
         {
           f_type: 'Service',
