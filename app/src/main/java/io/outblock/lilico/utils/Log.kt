@@ -1,6 +1,7 @@
 package io.outblock.lilico.utils
 
 import android.util.Log
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.firebase.analytics.reportException
 
 fun logv(tag: String?, msg: Any?) {
@@ -62,5 +63,5 @@ private fun print(tag: String, msg: String, version: Int) {
     }
 }
 
-//private fun printLog() = isDev() || BuildConfig.DEBUG
-private fun printLog() = true
+private fun printLog() = BuildConfig.DEBUG || isDev()
+//private fun printLog() = true
