@@ -121,5 +121,10 @@
                 tools:ignore="ContentDescription"/>
         </FrameLayout>
 
+        <include
+            android:id="@+id/shimmer_layout"
+            layout="@layout/layout_shimmer_nft"
+            tools:visibility="gone"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

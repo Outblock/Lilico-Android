@@ -10,6 +10,7 @@ import io.outblock.lilico.databinding.FragmentNftBinding
 import io.outblock.lilico.page.nft.nftlist.model.NFTFragmentModel
 import io.outblock.lilico.page.nft.nftlist.presenter.NFTFragmentPresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.NftEmptyPresenter
+import io.outblock.lilico.utils.stopShimmer
 
 class NFTFragment : Fragment() {
 
@@ -32,7 +33,15 @@ class NFTFragment : Fragment() {
             listDataLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
             topSelectionLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(topSelection = it)) }
             listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
-            emptyLiveData.observe(viewLifecycleOwner) { isEmpty -> emptyPresenter.setVisible(isEmpty) }
+            emptyLiveData.observe(viewLifecycleOwner) { isEmpty ->
+                emptyPresenter.setVisible(isEmpty)
+                stopShimmer(binding.shimmerLayout.shimmerLayout)
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 }

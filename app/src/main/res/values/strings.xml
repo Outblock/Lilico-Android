@@ -173,7 +173,7 @@
     <string name="address_add_failed">Failed to add to address book</string>
     <string name="qr_code">QR Code</string>
     <string name="qr_code_receive_tip">Shown your QR code to receive transactions.</string>
-    <string name="copy">Copy</string>
+    <string name="copy_str">Copy</string>
     <string name="wallet">Wallet</string>
     <string name="coins_count">%1$d Coins</string>
     <string name="add_token">Add Token</string>
@@ -273,4 +273,5 @@
     <string name="claim_domain_failed">Claim domain failed</string>
     <string name="nft_count">%1$d NFTs</string>
     <string name="mnemonic_incorrect">Incorrect mnemonic</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

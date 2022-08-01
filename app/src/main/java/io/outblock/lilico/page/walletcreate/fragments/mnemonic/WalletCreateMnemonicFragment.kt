@@ -15,10 +15,12 @@ import io.outblock.lilico.databinding.FragmentWalletCreateMnemonicBinding
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_CLOUD_PWD
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_MNEMONIC_CHECK
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
-import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.setRegistered
+import io.outblock.lilico.utils.textToClipboard
+import io.outblock.lilico.utils.toast
+import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
 class WalletCreateMnemonicFragment : Fragment() {
@@ -51,10 +53,14 @@ class WalletCreateMnemonicFragment : Fragment() {
         with(binding) {
             backupCloud.setOnClickListener { pageViewModel.changeStep(WALLET_CREATE_STEP_CLOUD_PWD) }
             backupManually.setOnClickListener { pageViewModel.changeStep(WALLET_CREATE_STEP_MNEMONIC_CHECK) }
+            copyButton.setOnClickListener {
+                textToClipboard(Wallet.store().mnemonic())
+                toast(msgRes = R.string.copied_to_clipboard)
+            }
         }
 
         viewModel = ViewModelProvider(this)[WalletCreateMnemonicViewModel::class.java].apply {
-            mnemonicList.observe(viewLifecycleOwner, { adapter.setNewDiffData(it) })
+            mnemonicList.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
             loadMnemonic()
         }
         setRegistered()

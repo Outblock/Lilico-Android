@@ -119,7 +119,7 @@
         android:fontFamily="@font/inter_semi_bold"
         android:paddingHorizontal="10dp"
         android:paddingVertical="5dp"
-        android:text="@string/copy"
+        android:text="@string/copy_str"
         android:textAllCaps="false"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"

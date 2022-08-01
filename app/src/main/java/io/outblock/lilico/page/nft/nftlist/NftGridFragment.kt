@@ -33,7 +33,6 @@ internal class NftGridFragment : Fragment() {
         binding.root.setBackgroundResource(R.color.background)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
             gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
-            loadGrid()
         }
     }
 

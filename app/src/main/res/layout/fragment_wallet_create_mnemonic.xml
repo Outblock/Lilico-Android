@@ -58,17 +58,44 @@
             tools:listitem="@layout/item_mnemonic"
             tools:spanCount="2"/>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/copy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="13dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mnemonic_container">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_copy_1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/copy_str"
+                android:textColor="@color/salmon_primary"
+                android:textSize="15sp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <LinearLayout
             android:id="@+id/warning_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="18dp"
             android:background="@drawable/bg_round_warning"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/activity_padding"
-            app:layout_constraintTop_toBottomOf="@id/mnemonic_container">
+            app:layout_constraintTop_toBottomOf="@id/copy_button">
 
             <TextView
                 android:layout_width="wrap_content"

@@ -34,6 +34,7 @@ import io.outblock.lilico.page.nft.nftdetail.shareNft
 import io.outblock.lilico.page.nft.nftdetail.widget.NftMorePopupMenu
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.desc
+import io.outblock.lilico.page.nft.nftlist.name
 import io.outblock.lilico.page.nft.nftlist.video
 import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
@@ -101,7 +102,7 @@ class NftDetailPresenter(
             dialog.show()
             shareNft(binding.shareScreenshotWrapper, it) { file ->
                 dialog.dismiss()
-                activity.shareFile(file, title = "Nft share", text = "https://google.com", type = "image/*")
+                activity.shareFile(file, title = "Nft share", text = it.name().orEmpty(), type = "image/*")
             }
         }
     }

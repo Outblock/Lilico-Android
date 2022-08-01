@@ -14,6 +14,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.FragmentNftListBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
 import io.outblock.lilico.page.nft.nftlist.model.*
@@ -63,7 +64,6 @@ internal class NftListFragment : Fragment() {
             collectionTabsLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(it) }
             collectionExpandChangeLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(CollectionTabsModel(isExpand = it)) }
             collectionTitleLiveData.observe(viewLifecycleOwner) { collectionTitlePresenter.bind(it) }
-            loadList()
         }
     }
 
@@ -128,7 +128,7 @@ internal class NftListFragment : Fragment() {
             Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
         }
         ioScope {
-            val data = nftSelectionCache().read()?.data?.reversed() ?: return@ioScope
+            val data = nftSelectionCache(walletCache().read()?.primaryWalletAddress()).read()?.data?.reversed() ?: return@ioScope
             val nft = data.getOrNull(index) ?: return@ioScope
             uiScope {
                 if (viewModel.selectionIndexLiveData.value != index) {

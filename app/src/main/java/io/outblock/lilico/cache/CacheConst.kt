@@ -20,12 +20,12 @@ fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST", NFTListData::class.java)
 }
 
-fun walletCache(): CacheManager<WalletListData> {
-    return CacheManager("$CACHE_WALLET-${isMainnet()}", WalletListData::class.java)
+fun nftSelectionCache(address: String?): CacheManager<NftSelections> {
+    return CacheManager("${address}_CACHE_NFT_SELECTION", NftSelections::class.java)
 }
 
-fun nftSelectionCache(): CacheManager<NftSelections> {
-    return CacheManager(CACHE_NFT_SELECTION, NftSelections::class.java)
+fun walletCache(): CacheManager<WalletListData> {
+    return CacheManager("$CACHE_WALLET-${isMainnet()}", WalletListData::class.java)
 }
 
 fun userInfoCache(): CacheManager<UserInfoData> {

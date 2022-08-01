@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import io.outblock.lilico.R
 import io.outblock.lilico.utils.extensions.setVisible
 
@@ -33,6 +35,11 @@ class ProfilePreferenceVisible : ProfilePreference {
         invisibleWrapper.setOnClickListener {
             onStateChangeListener?.invoke(false)
         }
+    }
+
+    fun icons(@DrawableRes visible: Int, @DrawableRes invisible: Int) {
+        extendView.findViewById<ImageView>(R.id.visible_icon_view).setImageResource(visible)
+        extendView.findViewById<ImageView>(R.id.invisible_icon_view).setImageResource(invisible)
     }
 
     fun updateState(isVisible: Boolean) {

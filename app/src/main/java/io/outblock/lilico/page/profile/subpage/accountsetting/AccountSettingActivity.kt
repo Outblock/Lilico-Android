@@ -45,6 +45,7 @@ class AccountSettingActivity : BaseActivity() {
             avatarPreference.setImageUrl(userInfo.avatar)
             nicknamePreference.setDesc(userInfo.nickname)
             visiblePreference.updateState(userInfo.isPrivate == 2)
+            visiblePreference.icons(R.drawable.ic_user_visible, R.drawable.ic_user_invisible)
 
             avatarPreference.setOnClickListener { ViewAvatarActivity.launch(this@AccountSettingActivity, userInfo) }
             nicknamePreference.setOnClickListener { EditNicknameActivity.launch(this@AccountSettingActivity) }

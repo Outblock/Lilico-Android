@@ -6,14 +6,17 @@ import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.account.OnWalletDataUpdate
+import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.manager.nft.OnNftSelectionChangeListener
 import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.nft.nftlist.model.*
 import io.outblock.lilico.utils.*
 
-class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
+class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener, OnWalletDataUpdate {
 
     val listDataLiveData = MutableLiveData<List<Any>>()
     val topSelectionLiveData = MutableLiveData<NftSelections>()
@@ -31,36 +34,11 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     private var isCollectionExpanded = false
     private var selectedCollection = ""
 
-    private val address by lazy { getNftAddress() }
-    private val cacheNftList by lazy { nftListCache(address) }
-    private val cacheSelections by lazy { nftSelectionCache() }
     private val cacheWallet by lazy { walletCache() }
 
     init {
         NftSelectionManager.addOnNftSelectionChangeListener(this)
-    }
-
-    fun loadList() {
-        viewModelIOScope(this) {
-            if (address.isNullOrEmpty()) {
-                logw(TAG, "address not found")
-                emptyLiveData.postValue(true)
-                return@viewModelIOScope
-            }
-            isCollectionExpanded = isNftCollectionExpanded()
-            collectionExpandChangeLiveData.postValue(isCollectionExpanded)
-            loadListData()
-        }
-    }
-
-    fun loadGrid() {
-        viewModelIOScope(this) {
-            if (address.isNullOrEmpty()) {
-                logw(TAG, "address not found")
-                return@viewModelIOScope
-            }
-            loadGridData()
-        }
+        observeWalletUpdate()
     }
 
     fun refresh() {
@@ -80,7 +58,7 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     fun isGridMode() = isGridMode
 
-    fun getWalletAddress() = address
+    fun getWalletAddress() = address()
 
     fun toggleCollectionExpand() {
         ioScope {
@@ -113,6 +91,33 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
         }
     }
 
+    override fun onWalletDataUpdate(wallet: WalletListData) {
+        refresh()
+    }
+
+    private fun loadList() {
+        viewModelIOScope(this) {
+            if (address().isNullOrEmpty()) {
+                logw(TAG, "address not found")
+                emptyLiveData.postValue(true)
+                return@viewModelIOScope
+            }
+            isCollectionExpanded = isNftCollectionExpanded()
+            collectionExpandChangeLiveData.postValue(isCollectionExpanded)
+            loadListData()
+        }
+    }
+
+    private fun loadGrid() {
+        viewModelIOScope(this) {
+            if (address().isNullOrEmpty()) {
+                logw(TAG, "address not found")
+                return@viewModelIOScope
+            }
+            loadGridData()
+        }
+    }
+
     private suspend fun loadListData() {
         var nftList = loadListDataFromCache()
         loadSelectionCards(nftList)
@@ -123,12 +128,12 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
 
     private suspend fun loadListDataFromServer(): NFTListData? {
         val data = mutableListOf<Any>()
-        val resp = requestNftListFromServer(address!!)
+        val resp = requestNftListFromServer(address()!!)
 
         if (resp == null) {
-            cacheNftList.clear()
+            cacheNftList().clear()
         } else {
-            cacheNftList.cache(resp)
+            cacheNftList().cache(resp)
         }
 
         resp?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
@@ -140,10 +145,17 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     private fun loadListDataFromCache(): NFTListData? {
+        logd(TAG, "loadListDataFromCache start")
         val data = mutableListOf<Any>()
-        val nftListData = cacheNftList.read()
+        val nftListData = cacheNftList().read()
         nftListData?.nfts?.parseToCollectionList()?.let { collections -> data.addCollections(collections) }
+
+        if (data.isNotEmpty()) {
+            emptyLiveData.postValue(false)
+        }
+
         listDataLiveData.postValue(data)
+        logd(TAG, "loadListDataFromCache: size=${data.size}")
         return nftListData
     }
 
@@ -167,39 +179,55 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener {
     }
 
     private suspend fun loadGridData() {
-        cacheNftList.read()?.nfts?.toMutableList()?.let { nftList -> notifyGridList(nftList) }
-        val resp = requestNftListFromServer(address!!)
+        cacheNftList().read()?.nfts?.toMutableList()?.let { nftList -> notifyGridList(nftList) }
+        val resp = requestNftListFromServer(address()!!)
         if (resp == null) {
-            cacheNftList.clear()
+            cacheNftList().clear()
         } else {
-            cacheNftList.cache(resp)
+            cacheNftList().cache(resp)
         }
         emptyLiveData.postValue(resp?.nfts.isNullOrEmpty())
         notifyGridList(resp?.nfts)
     }
 
-    private fun getNftAddress(): String? {
-        return cacheWallet.read()?.primaryWalletAddress()
-    }
-
     private fun loadSelectionCards(nftList: NFTListData? = null) {
-        val nfts = (nftList?.nfts ?: cacheNftList.read()?.nfts) ?: return
-        val data = cacheSelections.read() ?: NftSelections(mutableListOf())
+        val nfts = (nftList?.nfts ?: cacheNftList().read()?.nfts) ?: return
+        val data = cacheSelections().read() ?: NftSelections(mutableListOf())
         data.data = data.data.filter { selection -> nfts.firstOrNull { nft -> selection.uniqueId() == nft.uniqueId() } != null }.toMutableList()
         topSelectionLiveData.postValue(data)
     }
 
     private fun notifyGridList(nftList: List<Nft>?) {
-        if (nftList.isNullOrEmpty()) {
+        val nftItems = nftList?.toMutableList()?.removeEmpty()?.mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) }
+        if (nftItems.isNullOrEmpty()) {
             gridDataLiveData.postValue(emptyList())
             return
         }
         val list = mutableListOf<Any>(
-            NFTCountTitleModel(nftList.size)
+            NFTCountTitleModel(nftItems.size)
         )
-        list.addAll(nftList.toMutableList().removeEmpty().mapIndexed { index, nft -> NFTItemModel(nft = nft, index = index) })
+        list.addAll(nftItems)
+        logd(TAG, "notifyGridList: size=${nftItems.size}")
         gridDataLiveData.postValue(list)
     }
+
+    private fun observeWalletUpdate() {
+        ioScope {
+            // wallet not loaded yet
+            if (address().isNullOrEmpty()) {
+                logd(TAG, "wallet not loaded yet")
+                WalletManager.addListener(this)
+            }
+        }
+    }
+
+    private fun address(): String? {
+        return cacheWallet.read()?.primaryWalletAddress()
+    }
+
+    private fun cacheNftList() = nftListCache(address())
+
+    private fun cacheSelections() = nftSelectionCache(address())
 
     companion object {
         private val TAG = NFTFragmentViewModel::class.java.simpleName

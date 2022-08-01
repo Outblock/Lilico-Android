@@ -15,6 +15,7 @@ import io.outblock.lilico.page.nft.nftlist.model.NFTFragmentModel
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.startShimmer
 import java.lang.Float.min
 
 class NFTFragmentPresenter(
@@ -38,6 +39,8 @@ class NFTFragmentPresenter(
                 setColorSchemeColors(R.color.colorSecondary.res2color())
             }
         }
+
+        startShimmer(binding.shimmerLayout.shimmerLayout)
 
         setupTabs()
     }

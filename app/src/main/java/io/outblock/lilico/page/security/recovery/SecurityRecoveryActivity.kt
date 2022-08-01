@@ -13,6 +13,8 @@ import io.outblock.lilico.page.walletcreate.fragments.mnemonic.MnemonicModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.textToClipboard
+import io.outblock.lilico.utils.toast
 import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
@@ -55,6 +57,7 @@ class SecurityRecoveryActivity : BaseActivity() {
         }
         loadMnemonic()
         binding.stringContainer.setVisible(false)
+        binding.copyButton.setOnClickListener { copyToClipboard(Wallet.store().mnemonic()) }
     }
 
     private fun initPrivateKey() {
@@ -64,6 +67,7 @@ class SecurityRecoveryActivity : BaseActivity() {
         }
 
         binding.mnemonicContainer.setVisible(false)
+        binding.copyButton.setOnClickListener { copyToClipboard(getPrivateKey()) }
     }
 
     private fun loadMnemonic() {
@@ -86,6 +90,11 @@ class SecurityRecoveryActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         title = (if (type == TYPE_PRIVATE_KEY) R.string.private_key else R.string.recovery_phrase).res2String()
+    }
+
+    private fun copyToClipboard(text: String) {
+        textToClipboard(text)
+        toast(msgRes = R.string.copied_to_clipboard)
     }
 
     companion object {
