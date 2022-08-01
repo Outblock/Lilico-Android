@@ -21,4 +21,4 @@ fun String?.parseAvatarUrl(): String {
 
 fun isDev() = BuildConfig.APPLICATION_ID.contains("dev")
 
-fun isTesting() = true || BuildConfig.DEBUG
+fun isTesting() = BuildConfig.DEBUG
