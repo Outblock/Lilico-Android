@@ -1,38 +1,57 @@
 package io.outblock.lilico.manager.flowjvm
 
 const val CADENCE_TRANSFER_TOKEN = """
-    import FungibleToken from 0xFungibleToken
-    import FlowToken from 0xFlowToken
-    
-    transaction(amount: UFix64, to: Address) {
-    
-        // The Vault resource that holds the tokens that are being transferred
-        let sentVault: @FungibleToken.Vault
-    
-        prepare(signer: AuthAccount) {
-    
-            // Get a reference to the signer's stored vault
-            let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
-                ?? panic("Could not borrow reference to the owner's Vault!")
-    
-            // Withdraw tokens from the signer's stored vault
-            self.sentVault <- vaultRef.withdraw(amount: amount)
-        }
-    
-        execute {
-    
-            // Get the recipient's public account object
-            let recipient = getAccount(to)
-    
-            // Get a reference to the recipient's Receiver
-            let receiverRef = recipient.getCapability(/public/flowTokenReceiver)
-                .borrow<&{FungibleToken.Receiver}>()
-                ?? panic("Could not borrow receiver reference to the recipient's Vault")
-    
-            // Deposit the withdrawn tokens in the recipient's receiver
-            receiverRef.deposit(from: <-self.sentVault)
-        }
+  import FungibleToken from 0xFungibleToken
+  import Domains from 0xFlowns
+  import <Token> from <TokenAddress>
+  transaction(amount: UFix64, recipient: Address) {
+    let senderRef: &{FungibleToken.Receiver}
+    // The Vault resource that holds the tokens that are being transfered
+    let sentVault: @FungibleToken.Vault
+    let sender: Address
+    prepare(signer: AuthAccount) {
+      // Get a reference to the signer's stored vault
+      let vaultRef = signer.borrow<&<Token>.Vault>(from: <TokenStoragePath>)
+        ?? panic("Could not borrow reference to the owner's Vault!")
+      self.senderRef = signer.getCapability(<TokenReceiverPath>)
+        .borrow<&{FungibleToken.Receiver}>()!
+      self.sender = vaultRef.owner!.address
+      // Withdraw tokens from the signer's stored vault
+      self.sentVault <- vaultRef.withdraw(amount: amount)
     }
+    execute {
+      // Get the recipient's public account object
+      let recipientAccount = getAccount(recipient)
+      // Get a reference to the recipient's Receiver
+      let receiverRef = recipientAccount.getCapability(<TokenReceiverPath>)
+        .borrow<&{FungibleToken.Receiver}>()
+      
+      if receiverRef == nil {
+          let collectionCap = recipientAccount.getCapability<&{Domains.CollectionPublic}>(Domains.CollectionPublicPath)
+          let collection = collectionCap.borrow()!
+          var defaultDomain: &{Domains.DomainPublic}? = nil
+          let ids = collection.getIDs()
+          if ids.length == 0 {
+              panic("Recipient have no domain ")
+          }
+          
+          defaultDomain = collection.borrowDomain(id: ids[0])!
+              // check defualt domain 
+          for id in ids {
+            let domain = collection.borrowDomain(id: id)!
+            let isDefault = domain.getText(key: "isDefault")
+            if isDefault == "true" {
+              defaultDomain = domain
+            }
+          }
+          // Deposit the withdrawn tokens in the recipient's domain inbox
+          defaultDomain!.depositVault(from: <- self.sentVault, senderRef: self.senderRef)
+      } else {
+          // Deposit the withdrawn tokens in the recipient's receiver
+          receiverRef!.deposit(from: <- self.sentVault)
+      }
+    }
+  }
 """
 
 // check coin token is contains in wallet
@@ -184,34 +203,61 @@ const val CADENCE_NFT_ENABLE = """
 """
 
 const val CADENCE_NFT_TRANSFER = """
-    import NonFungibleToken from 0xNonFungibleToken
-    import <NFT> from <NFTAddress>
-    
-    // This transaction is for transferring and NFT from
-    // one account to another
-    
-    transaction(recipient: Address, withdrawID: UInt64) {
-    
-      prepare(signer: AuthAccount) {
-          // get the recipients public account object
-          let recipient = getAccount(recipient)
-    
-          // borrow a reference to the signer's NFT collection
-          let collectionRef = signer
-              .borrow<&NonFungibleToken.Collection>(from: <CollectionStoragePath>)
-              ?? panic("Could not borrow a reference to the owner's collection")
-    
-          // borrow a public reference to the receivers collection
-          let depositRef = recipient
-              .getCapability(<CollectionPublicPath>)
-              .borrow<&{<CollectionPublic>}>()
-              ?? panic("Could not borrow a reference to the receiver's collection")
-    
-          // withdraw the NFT from the owner's collection
-          let nft <- collectionRef.withdraw(withdrawID: withdrawID)
-    
-          // Deposit the NFT in the recipient's collection
-          depositRef.deposit(token: <-nft)
+  import NonFungibleToken from 0xNonFungibleToken
+  import Domains from 0xDomains
+  import <NFT> from <NFTAddress>
+  // This transaction is for transferring and NFT from
+  // one account to another
+  transaction(recipient: Address, withdrawID: UInt64) {
+    prepare(signer: AuthAccount) {
+      // get the recipients public account object
+      let recipient = getAccount(recipient)
+      // borrow a reference to the signer's NFT collection
+      let collectionRef = signer
+        .borrow<&NonFungibleToken.Collection>(from: <CollectionStoragePath>)
+        ?? panic("Could not borrow a reference to the owner's collection")
+      let senderRef = signer
+        .getCapability(<CollectionPublicPath>)
+        .borrow<&{NonFungibleToken.CollectionPublic}>()
+      // borrow a public reference to the receivers collection
+      let recipientRef = recipient
+        .getCapability(<CollectionPublicPath>)
+        .borrow<&{<CollectionPublic>}>()
+      
+      if recipientRef == nil {
+        let collectionCap = recipient.getCapability<&{Domains.CollectionPublic}>(Domains.CollectionPublicPath)
+        let collection = collectionCap.borrow()!
+        var defaultDomain: &{Domains.DomainPublic}? = nil
+      
+        let ids = collection.getIDs()
+        if ids.length == 0 {
+          panic("Recipient have no domain ")
+        }
+        
+        // check defualt domain 
+        defaultDomain = collection.borrowDomain(id: ids[0])!
+        // check defualt domain 
+        for id in ids {
+          let domain = collection.borrowDomain(id: id)!
+          let isDefault = domain.getText(key: "isDefault")
+          if isDefault == "true" {
+            defaultDomain = domain
+          }
+        }
+        let typeKey = collectionRef.getType().identifier
+        // withdraw the NFT from the owner's collection
+        let nft <- collectionRef.withdraw(withdrawID: withdrawID)
+        if defaultDomain!.checkCollection(key: typeKey) == false {
+          let collection <- <NFT>.createEmptyCollection()
+          defaultDomain!.addCollection(collection: <- collection)
+        }
+        defaultDomain!.depositNFT(key: typeKey, token: <- nft, senderRef: senderRef )
+      } else {
+        // withdraw the NFT from the owner's collection
+        let nft <- collectionRef.withdraw(withdrawID: withdrawID)
+        // Deposit the NFT in the recipient's collection
+        recipientRef!.deposit(token: <-nft)
       }
     }
+  }
 """

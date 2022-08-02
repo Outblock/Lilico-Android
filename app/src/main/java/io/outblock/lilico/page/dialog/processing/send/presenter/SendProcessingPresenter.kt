@@ -2,10 +2,12 @@ package io.outblock.lilico.page.dialog.processing.send.presenter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import com.bumptech.glide.Glide
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
+import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_NFT
 import io.outblock.lilico.manager.transaction.TransactionState.Companion.TYPE_TRANSFER_COIN
@@ -87,8 +89,16 @@ class SendProcessingPresenter(
     @SuppressLint("SetTextI18n")
     private fun setupAmount() {
         ioScope {
-            val amount = transactionState.coinData().amount.formatPrice()
-            uiScope { binding.amountView.text = "$amount Flow" }
+            val coinData = transactionState.coinData()
+            val coin = FlowCoinListManager.getCoin(coinData.coinSymbol) ?: return@ioScope
+            val amount = coinData.amount.formatPrice()
+            uiScope {
+                with(binding) {
+                    amountView.text = "$amount ${coin.name}"
+                    Glide.with(coinIconView).load(coin.icon).into(coinIconView)
+                    coinNameView.text = coin.name
+                }
+            }
         }
     }
 

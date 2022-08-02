@@ -131,9 +131,9 @@ suspend fun cadenceEnableToken(coin: FlowCoin): String? {
     return transactionId
 }
 
-suspend fun cadenceTransferToken(toAddress: String, amount: Float): String? {
+suspend fun cadenceTransferToken(coin: FlowCoin, toAddress: String, amount: Float): String? {
     logd(TAG, "cadenceTransferToken()")
-    val transactionId = CADENCE_TRANSFER_TOKEN.transactionByMainWallet {
+    val transactionId = coin.formatCadence(CADENCE_TRANSFER_TOKEN).transactionByMainWallet {
         arg { ufix64(amount) }
         arg { address(toAddress.toAddress()) }
     }

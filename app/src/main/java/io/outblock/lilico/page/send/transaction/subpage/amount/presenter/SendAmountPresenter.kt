@@ -85,6 +85,7 @@ class SendAmountPresenter(
             }
 
             updateTransferAmountConvert()
+            Glide.with(balanceIconView).load(FlowCoinListManager.getCoin(viewModel.currentCoin())?.icon).into(balanceIconView)
             coinWrapper.isEnabled = viewModel.currentCoin() != COIN_USD_SYMBOL
             coinMoreArrowView.setVisible(viewModel.currentCoin() != COIN_USD_SYMBOL)
         }

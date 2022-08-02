@@ -32,7 +32,7 @@ class TransactionPresenter(
     private val contact by lazy { viewModel.transaction.target }
 
     init {
-        binding.sendButton.setOnProcessing { viewModel.send() }
+        binding.sendButton.setOnProcessing { viewModel.send(coin) }
         binding.amountWrapper.setVisible()
     }
 

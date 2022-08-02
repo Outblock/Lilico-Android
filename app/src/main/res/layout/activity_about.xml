@@ -57,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="(Alpha)"
+            android:visibility="gone"
             android:textColor="@color/neutrals3"
             android:textSize="15sp"/>
 

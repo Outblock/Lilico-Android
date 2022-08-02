@@ -40,7 +40,9 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
                 }
             }
             if (state.type == TransactionState.TYPE_TRANSFER_COIN) {
-                CoinRateManager.fetchCoinRate(FlowCoinListManager.coinList().first { it.isFlowCoin() })
+                val coinData = state.coinData()
+                val coin = FlowCoinListManager.getCoin(coinData.coinSymbol) ?: return@viewModelIOScope
+                CoinRateManager.fetchCoinRate(coin)
             }
         }
     }
@@ -56,5 +58,4 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
         amountConvertLiveData.postValue(price * state.coinData().amount)
     }
-
 }
