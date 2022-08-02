@@ -3,6 +3,7 @@ package io.outblock.lilico.network.functions
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import io.outblock.lilico.firebase.analytics.reportException
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.manager.app.isTestnet
@@ -59,7 +60,7 @@ private suspend fun executeHttp(functionName: String, data: Any? = null) = suspe
             addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         }
     }.build()
-    val body = if (data == null) data else (if (data is String) data else Gson().toJson(data))
+    val body = if (data == null) data else (if (data is String) data else GsonBuilder().serializeNulls().create().toJson(data))
 
     val request = Request.Builder().url("$HOST$functionName")
         .post(body.orEmpty().toRequestBody("application/json; charset=utf-8".toMediaType()))
@@ -76,7 +77,8 @@ private suspend fun executeHttp(functionName: String, data: Any? = null) = suspe
 
 private suspend fun execute(functionName: String, data: Any? = null) = suspendCoroutine<String?> { continuation ->
     ioScope {
-        val body = (if (data == null) data else (if (data is String) data else Gson().toJson(data))).wrapFunctionBody()
+        val body =
+            (if (data == null) data else (if (data is String) data else GsonBuilder().serializeNulls().create().toJson(data))).wrapFunctionBody()
         logd(TAG, "execute $functionName > body:$body")
 
         functions.getHttpsCallable(functionName)
