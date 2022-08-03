@@ -25,6 +25,7 @@ class ProfileFragment : Fragment() {
         presenter = ProfileFragmentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[ProfileFragmentViewModel::class.java].apply {
             profileLiveData.observe(viewLifecycleOwner) { presenter.bind(ProfileFragmentModel(userInfo = it)) }
+            inboxCountLiveData.observe(viewLifecycleOwner) { presenter.bind(ProfileFragmentModel(inboxCount = it)) }
         }
     }
 

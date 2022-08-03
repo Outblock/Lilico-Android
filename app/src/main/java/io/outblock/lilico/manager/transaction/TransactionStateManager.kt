@@ -186,6 +186,7 @@ data class TransactionState(
     var errorMsg: String? = null,
 ) : Parcelable {
     companion object {
+        const val TYPE_TRANSACTION_DEFAULT = 0
         const val TYPE_NFT = 1
         const val TYPE_TRANSFER_COIN = 2
         const val TYPE_ADD_TOKEN = 3

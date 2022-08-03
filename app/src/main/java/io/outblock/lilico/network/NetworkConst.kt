@@ -35,3 +35,26 @@ fun retrofit(disableConverter: Boolean = false): Retrofit {
     }
     return builder.baseUrl(API_HOST).client(client).build()
 }
+
+fun retrofitWithHost(host: String, disableConverter: Boolean = false): Retrofit {
+    val client = OkHttpClient.Builder().apply {
+        addInterceptor(HeaderInterceptor())
+
+        callTimeout(10, TimeUnit.SECONDS)
+        connectTimeout(10, TimeUnit.SECONDS)
+        readTimeout(10, TimeUnit.SECONDS)
+        writeTimeout(10, TimeUnit.SECONDS)
+
+        if (isTesting()) {
+            addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+        }
+    }.build()
+
+    val builder = Retrofit.Builder()
+    if (disableConverter) {
+        builder.addConverterFactory(ScalarsConverterFactory.create())
+    } else {
+        builder.addConverterFactory(GsonConverterFactory.create())
+    }
+    return builder.baseUrl(host).client(client).build()
+}

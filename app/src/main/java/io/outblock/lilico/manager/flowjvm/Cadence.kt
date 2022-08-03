@@ -261,3 +261,85 @@ const val CADENCE_NFT_TRANSFER = """
     }
   }
 """
+
+const val CADENCE_CLAIM_INBOX_TOKEN = """
+  import Domains from 0xDomains
+  import FungibleToken from 0xFungibleToken
+  import Flowns from 0xFlowns
+  import <Token> from <TokenAddress>
+  transaction(name: String, root:String, key:String, amount: UFix64) {
+    var domain: &{Domains.DomainPrivate}
+    var vaultRef: &<Token>.Vault
+    prepare(account: AuthAccount) {
+      let prefix = "0x"
+      let rootHahsh = Flowns.hash(node: "", lable: root)
+      let nameHash = prefix.concat(Flowns.hash(node: rootHahsh, lable: name))
+      let collectionCap = account.getCapability<&{Domains.CollectionPublic}>(Domains.CollectionPublicPath) 
+      let collection = collectionCap.borrow()!
+      var domain: &{Domains.DomainPrivate}? = nil
+      let collectionPrivate = account.borrow<&{Domains.CollectionPrivate}>(from: Domains.CollectionStoragePath) ?? panic("Could not find your domain collection cap")
+      
+      let ids = collection.getIDs()
+      let id = Domains.getDomainId(nameHash)
+      if id != nil && !Domains.isDeprecated(nameHash: nameHash, domainId: id!) {
+        domain = collectionPrivate.borrowDomainPrivate(id!)
+      }
+      self.domain = domain!
+      let vaultRef = account.borrow<&<Token>.Vault>(from: <TokenStoragePath>)
+      if vaultRef == nil {
+        account.save(<- <Token>.createEmptyVault(), to: <TokenStoragePath>)
+        account.link<&<Token>.Vault{FungibleToken.Receiver}>(
+          <TokenReceiverPath>,
+          target: <TokenStoragePath>
+        )
+        account.link<&<Token>.Vault{FungibleToken.Balance}>(
+          <TokenBalancePath>,
+          target: <TokenStoragePath>
+        )
+        self.vaultRef = account.borrow<&<Token>.Vault>(from: <TokenStoragePath>)
+      ?? panic("Could not borrow reference to the owner's Vault!")
+      } else {
+        self.vaultRef = vaultRef!
+      }
+    }
+    execute {
+      self.vaultRef.deposit(from: <- self.domain.withdrawVault(key: key, amount: amount))
+    }
+  }
+"""
+
+const val CADENCE_CLAIM_INBOX_NFT = """
+  import Domains from 0xDomains
+  import Flowns from 0xFlowns
+  import NonFungibleToken from 0xNonFungibleToken
+  import <NFT> from <NFTAddress>
+  // key will be 'A.f8d6e0586b0a20c7.Domains.Collection' of a NFT collection
+  transaction(name: String, root: String, key: String, itemId: UInt64) {
+    var domain: &{Domains.DomainPrivate}
+    var collectionRef: &<NFT>.Collection
+    prepare(account: AuthAccount) {
+      let prefix = "0x"
+      let rootHahsh = Flowns.hash(node: "", lable: root)
+      let nameHash = prefix.concat(Flowns.hash(node: rootHahsh, lable: name))
+      var domain: &{Domains.DomainPrivate}? = nil
+      let collectionPrivate = account.borrow<&{Domains.CollectionPrivate}>(from: Domains.CollectionStoragePath) ?? panic("Could not find your domain collection cap")
+      let id = Domains.getDomainId(nameHash)
+      if id !=nil {
+        domain = collectionPrivate.borrowDomainPrivate(id!)
+      }
+      self.domain = domain!
+      let collectionRef = account.borrow<&<NFT>.Collection>(from: <CollectionStoragePath>)
+      if collectionRef == nil {
+        account.save(<- FLOAT.createEmptyCollection(), to: FLOAT.FLOATCollectionStoragePath)
+        account.link<&<NFT>.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, <CollectionPublic>}>(<CollectionPublicPath>, target: <CollectionStoragePath>)
+        self.collectionRef = account.borrow<&<NFT>.Collection>(from: <CollectionStoragePath>)?? panic("Can not borrow collection")
+      } else {
+        self.collectionRef = collectionRef!
+      }
+    
+    }
+    execute {
+      self.collectionRef.deposit(token: <- self.domain.withdrawNFT(key: key, itemId: itemId))
+    }
+  }
+"""

@@ -40,7 +40,8 @@ private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMAR
 private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
 private val KEY_ACCOUNT_TRANSACTION_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSACTION_COUNT")
 private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
-private val KEY_IS_MEOW_DOMAIN_CLAINED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAINED")
+private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAIMED")
+private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -171,10 +172,16 @@ fun setGuidePageShown() {
     sharedPreferencesTraditional.edit().putBoolean(KEY_IS_GUIDE_PAGE_SHOWN, true).apply()
 }
 
-suspend fun isMeowDomainClaimed(): Boolean = dataStore.data.map { it[KEY_IS_MEOW_DOMAIN_CLAINED] ?: false }.first()
+suspend fun isMeowDomainClaimed(): Boolean = dataStore.data.map { it[KEY_IS_MEOW_DOMAIN_CLAIMED] ?: false }.first()
 
 suspend fun setMeowDomainClaimed(isClaimed: Boolean) {
-    dataStore.edit { it[KEY_IS_MEOW_DOMAIN_CLAINED] = isClaimed }
+    dataStore.edit { it[KEY_IS_MEOW_DOMAIN_CLAIMED] = isClaimed }
+}
+
+suspend fun getInboxReadList(): String = dataStore.data.map { it[KEY_INBOX_READ_LIST] ?: "" }.first()
+
+suspend fun updateInboxReadListPref(list: String) {
+    dataStore.edit { it[KEY_INBOX_READ_LIST] = list }
 }
 
 private fun edit(unit: suspend () -> Unit) {

@@ -38,12 +38,7 @@ class TransactionSendPresenter(
 
     private val searchViewModel by lazy { ViewModelProvider(activity)[AddressBookViewModel::class.java] }
     private val viewModel by lazy { ViewModelProvider(activity)[SelectSendAddressViewModel::class.java] }
-    private val tabTitles by lazy {
-        listOf(
-            R.string.recent, R.string.address_book,
-            //R.string.my_accounts
-        )
-    }
+    private val tabTitles by lazy { listOf(R.string.recent, R.string.address_book) }
 
     init {
         with(binding) {

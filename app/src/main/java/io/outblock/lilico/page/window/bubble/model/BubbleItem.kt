@@ -22,7 +22,7 @@ fun BubbleItem.icon(): Any? {
     return when (data) {
         is BrowserTab -> data.url()?.toFavIcon()
         is TransactionState -> data.icon()
-        else -> null
+        else -> R.mipmap.ic_launcher_round
     }
 }
 

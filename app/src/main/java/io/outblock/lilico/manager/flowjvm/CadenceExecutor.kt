@@ -11,6 +11,7 @@ import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.transaction.sendTransaction
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.address.FlowDomainServer
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
@@ -214,6 +215,42 @@ suspend fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
     }
     logd(TAG, "cadenceTransferNft() transactionId:$transactionId")
     return transactionId
+}
+
+suspend fun cadenceClaimInboxToken(
+    domain: String,
+    key: String,
+    coin: FlowCoin,
+    amount: Float,
+    root: String = FlowDomainServer.MEOW.domain,
+): String? {
+    logd(TAG, "cadenceClaimInboxToken()")
+    val txid = coin.formatCadence(CADENCE_CLAIM_INBOX_TOKEN).transactionByMainWallet {
+        arg { string(domain) }
+        arg { string(root) }
+        arg { string(key) }
+        arg { ufix64(amount) }
+    }
+    logd(TAG, "cadenceClaimInboxToken() txid:$txid")
+    return txid
+}
+
+suspend fun cadenceClaimInboxNft(
+    domain: String,
+    key: String,
+    collection: NftCollection,
+    itemId: Number,
+    root: String = FlowDomainServer.MEOW.domain,
+): String? {
+    logd(TAG, "cadenceClaimInboxToken()")
+    val txid = collection.formatCadence(CADENCE_CLAIM_INBOX_NFT).transactionByMainWallet {
+        arg { string(domain) }
+        arg { string(root) }
+        arg { string(key) }
+        arg { uint64(itemId) }
+    }
+    logd(TAG, "cadenceClaimInboxToken() txid:$txid")
+    return txid
 }
 
 private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {

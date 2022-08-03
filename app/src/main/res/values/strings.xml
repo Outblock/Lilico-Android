@@ -274,4 +274,10 @@
     <string name="nft_count">%1$d NFTs</string>
     <string name="mnemonic_incorrect">Incorrect mnemonic</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="inbox">Inbox</string>
+    <string name="token">Token</string>
+    <string name="token_with_count">Token (%1$d)</string>
+    <string name="nft_with_count">NFT (%1$d)</string>
+    <string name="reject">Reject</string>
+    <string name="claim_failed">Claim failed</string>
 </resources>

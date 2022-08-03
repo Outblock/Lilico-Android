@@ -2,6 +2,7 @@ package io.outblock.lilico.cache
 
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.manager.app.isMainnet
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.TokenStateCache
 import io.outblock.lilico.manager.nft.NftCollectionStateCache
 import io.outblock.lilico.network.model.*
@@ -48,6 +49,12 @@ fun tokenStateCache(): CacheManager<TokenStateCache> {
 fun nftCollectionStateCache(): CacheManager<NftCollectionStateCache> {
     return CacheManager(NFT_COLLECTION_STATE, NftCollectionStateCache::class.java)
 }
+
+fun inboxCache(): CacheManager<InboxResponse> {
+    return CacheManager("inbox_response".cacheFile(), InboxResponse::class.java)
+}
+
+private fun String.cacheFile() = "${this.hashCode()}.${if (isTestnet()) "t" else "m"}"
 
 data class NftSelections(
     @SerializedName("data")
