@@ -28,7 +28,10 @@ fun WebView?.postMessage(message: String) {
 }
 
 fun WebView?.postAuthnViewReadyResponse(fcl: FclAuthnResponse, address: String) {
-    uiScope { postMessage(fclAuthnResponse(fcl, address)) }
+    ioScope {
+        val response = fclAuthnResponse(fcl, address)
+        postMessage(response)
+    }
 }
 
 fun WebView?.postPreAuthzResponse() {
@@ -43,19 +46,19 @@ fun WebView?.postAuthzPayloadSignResponse(fcl: FclAuthzResponse) {
         val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
         val signature = hdWallet().signData(fcl.body.message.hexToBytes())
         val keyId = FlowAddress(address).lastBlockAccountKeyId()
-        uiScope { fclAuthzResponse(address, signature, keyId).also { postMessage(it) } }
+        fclAuthzResponse(address, signature, keyId).also { postMessage(it) }
     }
 }
 
 fun WebView?.postAuthzEnvelopeSignResponse(sign: SignPayerResponse.EnvelopeSigs) {
     ioScope {
-        uiScope { fclAuthzResponse(sign.address, sign.sig, sign.keyId).also { postMessage(it) } }
+        fclAuthzResponse(sign.address, sign.sig, sign.keyId).also { postMessage(it) }
     }
 }
 
 fun WebView?.postSignMessageResponse(fcl: FclSignMessageResponse) {
     ioScope {
         val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
-        uiScope { fclSignMessageResponse(fcl, address).also { postMessage(it) } }
+        fclSignMessageResponse(fcl, address).also { postMessage(it) }
     }
 }

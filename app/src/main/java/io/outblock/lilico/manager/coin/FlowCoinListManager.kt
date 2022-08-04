@@ -48,15 +48,15 @@ class FlowCoin(
     @SerializedName("storage_path")
     val storagePath: FlowCoinStoragePath,
     @SerializedName("decimal")
-    val decimal: Int,
+    val decimal: Int?,
     @SerializedName("icon")
     val icon: String,
     @SerializedName("symbol")
     val symbol: String,
     @SerializedName("website")
-    val website: String,
+    val website: String?,
 ) : Parcelable {
-    fun address() = if (isTestnet()) address.testnet.orEmpty() else address.mainnet
+    fun address() = if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty()
 
     fun isFlowCoin() = symbol.lowercase() == "flow"
 
@@ -69,7 +69,7 @@ class FlowCoin(
 @Parcelize
 class FlowCoinAddress(
     @SerializedName("mainnet")
-    val mainnet: String,
+    val mainnet: String?,
     @SerializedName("testnet")
     val testnet: String?,
 ) : Parcelable

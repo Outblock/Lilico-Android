@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.guide.presenter
 
 import android.view.View
+import com.bumptech.glide.Glide
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemGuidePageBinding
@@ -14,7 +15,7 @@ class GuideItemPresenter(
 
     override fun bind(model: GuideItemModel) {
         with(binding) {
-            coverView.setImageResource(model.cover)
+            Glide.with(coverView).load(model.cover).into(coverView)
             titleView.setText(model.title)
             descView.setText(model.desc)
         }

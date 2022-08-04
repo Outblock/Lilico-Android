@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletBinding
+import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
@@ -39,6 +40,7 @@ class WalletFragmentPresenter(
 
     override fun bind(model: WalletFragmentModel) {
         model.data?.let {
+            reportEvent("wallet_coin_list_loaded", mapOf("count" to it.size.toString()))
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
         }
