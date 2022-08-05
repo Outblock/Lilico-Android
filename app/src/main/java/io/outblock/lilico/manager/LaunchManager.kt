@@ -15,10 +15,7 @@ import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.service.MessagingService
-import io.outblock.lilico.utils.getThemeMode
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.startServiceSafe
-import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.wallet.restoreMnemonicV0
 
 object LaunchManager {
@@ -27,6 +24,7 @@ object LaunchManager {
         application.startServiceSafe(Intent(application, MessagingService::class.java))
         PageLifecycleObserver.init(application)
         AppLifecycleObserver.observe()
+        safeRun { System.loadLibrary("TrustWalletCore") }
         asyncInit()
         readPreference()
         firebaseInitialize(application)
@@ -39,7 +37,6 @@ object LaunchManager {
 
     private fun asyncInit() {
         ioScope {
-            System.loadLibrary("TrustWalletCore")
             FlowApi.refreshConfig()
         }
     }
