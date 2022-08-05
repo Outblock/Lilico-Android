@@ -16,6 +16,7 @@ import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logv
 import io.outblock.lilico.wallet.toAddress
+import java.math.BigDecimal
 
 private const val TAG = "CadenceExecutor"
 
@@ -132,10 +133,10 @@ suspend fun cadenceEnableToken(coin: FlowCoin): String? {
     return transactionId
 }
 
-suspend fun cadenceTransferToken(coin: FlowCoin, toAddress: String, amount: Float): String? {
+suspend fun cadenceTransferToken(coin: FlowCoin, toAddress: String, amount: Double): String? {
     logd(TAG, "cadenceTransferToken()")
     val transactionId = coin.formatCadence(CADENCE_TRANSFER_TOKEN).transactionByMainWallet {
-        arg { ufix64(amount) }
+        arg { ufix64(BigDecimal(amount)) }
         arg { address(toAddress.toAddress()) }
     }
     logd(TAG, "cadenceTransferToken() transactionId:$transactionId")

@@ -24,11 +24,13 @@ fun reportEvent(event: String, params: Map<String, String>) {
     }
 }
 
-fun reportException(event: String, ex: Throwable?) {
+fun reportException(event: String, ex: Throwable?, params: Map<String, String>? = null) {
     reportEvent(
-        event, mapOf(
+        event, mutableMapOf(
             "exception" to ex?.javaClass?.simpleName.orEmpty(),
             "message" to ex?.message.orEmpty(),
-        )
+        ).apply {
+            params?.forEach { put(it.key, it.value) }
+        }
     )
 }

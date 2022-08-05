@@ -4,7 +4,7 @@ import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.outblock.lilico.firebase.analytics.reportException
+import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.interceptor.HeaderInterceptor
@@ -70,6 +70,7 @@ private suspend fun executeHttp(functionName: String, data: Any? = null) = suspe
     if (!response.isSuccessful) {
         logw(TAG, response.toString())
         continuation.resume(null)
+        reportError(functionName, response.message, true)
         return@suspendCancellableCoroutine
     }
     continuation.resume(response.body?.string())
@@ -85,7 +86,7 @@ private suspend fun execute(functionName: String, data: Any? = null) = suspendCo
             .call(body).continueWith { task ->
                 if (!task.isSuccessful) {
                     loge(task.exception)
-                    reportException("firebase_function_exception", task.exception)
+                    reportError(functionName, task.exception?.message, false)
                     continuation.resume(null)
                     return@continueWith
                 }
@@ -112,4 +113,14 @@ private suspend fun String?.wrapFunctionBody(): String {
 
 private fun getNetwork(): String {
     return if (isTestnet()) "testnet" else "mainnet"
+}
+
+private fun reportError(functionName: String, message: String?, isHttp: Boolean) {
+    reportEvent(
+        "firebase_function_error", mapOf(
+            "function" to functionName,
+            "isHttp" to "$isHttp",
+            "message" to message.orEmpty(),
+        )
+    )
 }
