@@ -26,9 +26,9 @@ class AboutActivity : BaseActivity() {
 
         with(binding) {
             versionView.text = getString(R.string.about_version, BuildConfig.VERSION_NAME)
-            discordButton.setOnClickListener { "https://discord.com/invite/DtZkFTay2U".openInSystemBrowser(this@AboutActivity) }
-            twitterButton.setOnClickListener { "https://twitter.com/0xOutblock".openInSystemBrowser(this@AboutActivity) }
-            emailButton.setOnClickListener { sendEmail(this@AboutActivity, email = "hi@outblock.io") }
+            discordButton.setOnClickListener { "https://discord.gg/2jUaEQ8MQk".openInSystemBrowser(this@AboutActivity) }
+            twitterButton.setOnClickListener { "https://twitter.com/lilico_app".openInSystemBrowser(this@AboutActivity) }
+            emailButton.setOnClickListener { sendEmail(this@AboutActivity, email = "hi@lilico.app") }
             madeByView.movementMethod = LinkMovementMethod.getInstance()
         }
         setupToolbar()
