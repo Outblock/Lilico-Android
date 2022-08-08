@@ -3,7 +3,6 @@ package io.outblock.lilico.page.walletcreate.fragments.pincode.guide
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
@@ -17,6 +16,7 @@ import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.setBiometricEnable
 import io.outblock.lilico.utils.setRegistered
+import io.outblock.lilico.utils.toast
 
 class WalletCreatePinCodeGuidePresenter(
     private val fragment: Fragment,
@@ -36,9 +36,11 @@ class WalletCreatePinCodeGuidePresenter(
                 BlockBiometricManager.showBiometricPrompt(fragment.requireActivity()) { isSuccess ->
                     if (isSuccess) {
                         setBiometricEnable(true)
-                        MainActivity.launch(fragment.requireContext())
+                        if (fragment.isAdded) {
+                            MainActivity.launch(fragment.requireContext())
+                        }
                     } else {
-                        Toast.makeText(fragment.requireContext(), "Auth error", Toast.LENGTH_SHORT).show()
+                        toast(msgRes = R.string.auth_error)
                     }
                 }
             }

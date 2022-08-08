@@ -280,4 +280,5 @@
     <string name="nft_with_count">NFT (%1$d)</string>
     <string name="reject">Reject</string>
     <string name="claim_failed">Claim failed</string>
+    <string name="auth_error">Auth error</string>
 </resources>

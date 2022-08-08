@@ -19,8 +19,6 @@ import io.outblock.lilico.utils.isNightMode
 
 class TokenDetailActivity : BaseActivity() {
 
-    private val coin by lazy { intent.getParcelableExtra<FlowCoin>(EXTRA_COIN)!! }
-
     private lateinit var binding: ActivityTokenDetailBinding
     private lateinit var presenter: TokenDetailPresenter
     private lateinit var chartPresenter: TokenDetailChartPresenter
@@ -29,6 +27,11 @@ class TokenDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val coin = intent.getParcelableExtra<FlowCoin>(EXTRA_COIN)
+        if (coin == null) {
+            finish()
+            return
+        }
         binding = ActivityTokenDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

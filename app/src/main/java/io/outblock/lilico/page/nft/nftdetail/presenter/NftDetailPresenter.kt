@@ -92,7 +92,7 @@ class NftDetailPresenter(
             }
             collectButton.setLikeDrawableTint(R.color.colorSecondary.res2color())
             shareButton.setOnClickListener { showShareNft() }
-            sendButton.setOnClickListener { NftSendAddressDialog.newInstance(nft!!).show(activity.supportFragmentManager, "") }
+            sendButton.setOnClickListener { NftSendAddressDialog.newInstance(nft!!.uniqueId()).show(activity.supportFragmentManager, "") }
         }
     }
 
