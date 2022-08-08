@@ -8,7 +8,7 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import java.util.*
 
-fun reportEvent(event: String, params: Map<String, String>) {
+fun reportEvent(event: String, params: Map<String, String> = mapOf()) {
     ioScope {
         val bundle = Bundle()
         params.forEach { bundle.putString(it.key, it.value) }

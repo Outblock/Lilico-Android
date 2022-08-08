@@ -11,10 +11,11 @@ import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.DialogSendNftAddressBinding
+import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.network.model.AddressBookContact
-import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.address.AddressBookViewModel
+import io.outblock.lilico.page.nft.nftlist.getNftByIdFromCache
 import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmDialog
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
@@ -25,7 +26,7 @@ import io.outblock.lilico.utils.registerBarcodeLauncher
 import io.outblock.lilico.utils.uiScope
 
 class NftSendAddressDialog : BottomSheetDialogFragment() {
-    private val nft by lazy { arguments?.getParcelable<Nft>(EXTRA_NFT)!! }
+    private val nft by lazy { getNftByIdFromCache(arguments?.getString(EXTRA_ID)!!) }
 
     private lateinit var binding: DialogSendNftAddressBinding
     private lateinit var presenter: TransactionSendPresenter
@@ -43,6 +44,7 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        reportEvent("page_nft_send_address_dialog")
         childFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
         presenter = TransactionSendPresenter(childFragmentManager, binding.addressContent)
@@ -65,6 +67,7 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
         contact ?: return
         ioScope {
             val wallet = walletCache().read() ?: return@ioScope
+            val nft = this@NftSendAddressDialog.nft ?: return@ioScope
             uiScope {
                 val activity = requireActivity()
                 dismiss()
@@ -81,13 +84,11 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val EXTRA_NFT = "extra_nft"
+        private const val EXTRA_ID = "extra_nft"
 
-        fun newInstance(nft: Nft): NftSendAddressDialog {
+        fun newInstance(nftUniqueId: String): NftSendAddressDialog {
             return NftSendAddressDialog().apply {
-                arguments = Bundle().apply {
-                    putParcelable(EXTRA_NFT, nft)
-                }
+                arguments = Bundle().apply { putString(EXTRA_ID, nftUniqueId) }
             }
         }
     }

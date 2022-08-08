@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogSendConfirmBinding
+import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.nft.confirm.model.NftSendConfirmDialogModel
 import io.outblock.lilico.page.send.nft.confirm.presenter.NftSendConfirmPresenter
@@ -22,6 +23,7 @@ class NftSendConfirmDialog : BottomSheetDialogFragment() {
     private lateinit var viewModel: NftSendConfirmViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        reportEvent("page_nft_send_confirm_dialog")
         binding = DialogSendConfirmBinding.inflate(inflater)
         return binding.root
     }

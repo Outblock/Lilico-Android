@@ -5,6 +5,8 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.outblock.lilico.cache.NftSelections
+import io.outblock.lilico.cache.nftListCache
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.NFTListData
@@ -111,4 +113,8 @@ fun findSwipeRefreshLayout(view: View): SwipeRefreshLayout? {
     if (view.parent is SwipeRefreshLayout) return (view.parent as SwipeRefreshLayout)
 
     return findSwipeRefreshLayout(view.parent as View)
+}
+
+fun getNftByIdFromCache(uniqueId: String): Nft? {
+    return nftListCache(walletCache().read()?.primaryWalletAddress()).read()?.nfts?.firstOrNull { it.uniqueId() == uniqueId }
 }
