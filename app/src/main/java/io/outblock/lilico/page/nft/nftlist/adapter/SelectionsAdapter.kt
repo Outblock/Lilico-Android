@@ -14,7 +14,7 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftSelectionsBinding
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
@@ -37,7 +37,7 @@ private class ViewHolder(
 
     private val corners by lazy { 10.dp2px().toInt() }
 
-    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModelV0::class.java] }
 
     init {
         val size = (ScreenUtils.getScreenWidth() * 0.7f).toInt()

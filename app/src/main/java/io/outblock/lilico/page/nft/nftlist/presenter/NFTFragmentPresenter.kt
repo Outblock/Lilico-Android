@@ -9,7 +9,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentNftBinding
 import io.outblock.lilico.page.nft.collectionlist.NftCollectionListActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragment
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.adapter.NftListPageAdapter
 import io.outblock.lilico.page.nft.nftlist.model.NFTFragmentModel
 import io.outblock.lilico.utils.ScreenUtils
@@ -23,7 +23,7 @@ class NFTFragmentPresenter(
     private val binding: FragmentNftBinding,
 ) : BasePresenter<NFTFragmentModel> {
 
-    private val viewModel by lazy { ViewModelProvider(fragment.requireActivity())[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(fragment.requireActivity())[NFTFragmentViewModelV0::class.java] }
 
     private var isTopSelectionExist = false
 

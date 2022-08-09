@@ -18,7 +18,7 @@ const val TOKEN_STATE = "token_state"
 const val NFT_COLLECTION_STATE = "nft_collection_state"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
-    return CacheManager("${address}_$CACHE_NFT_LIST", NFTListData::class.java)
+    return CacheManager("${address}_$CACHE_NFT_LIST".cacheFile(), NFTListData::class.java)
 }
 
 fun nftSelectionCache(address: String?): CacheManager<NftSelections> {
@@ -54,7 +54,7 @@ fun inboxCache(): CacheManager<InboxResponse> {
     return CacheManager("inbox_response".cacheFile(), InboxResponse::class.java)
 }
 
-private fun String.cacheFile() = "${this.hashCode()}.${if (isTestnet()) "t" else "m"}"
+fun String.cacheFile() = "${this.hashCode()}.${if (isTestnet()) "t" else "m"}"
 
 data class NftSelections(
     @SerializedName("data")

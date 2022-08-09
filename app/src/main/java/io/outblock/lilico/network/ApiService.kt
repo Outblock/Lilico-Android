@@ -34,7 +34,21 @@ interface ApiService {
     suspend fun nftList(
         @Query("address") address: String,
         @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 25,
     ): NFTListResponse
+
+    @GET("/v2/nft/single")
+    suspend fun nftsOfCollection(
+        @Query("address") address: String,
+        @Query("contractName") contractName: String,
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 25,
+    ): NFTListResponse
+
+    @GET("/v2/nft/collections")
+    suspend fun nftCollections(
+        @Query("address") address: String,
+    ): NftCollectionsResponse
 
     @GET("/v2/nft/detail")
     suspend fun nftMeta(

@@ -17,7 +17,7 @@ import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 internal class NftGridFragment : Fragment() {
 
     private lateinit var binding: FragmentNftGridBinding
-    private lateinit var viewModel: NFTFragmentViewModel
+    private lateinit var viewModel: NftViewModel
 
     private val adapter by lazy { NFTListAdapter() }
 
@@ -31,8 +31,9 @@ internal class NftGridFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         binding.root.setBackgroundResource(R.color.background)
-        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            gridDataLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
+        viewModel = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
+            gridNftLiveData.observe(viewLifecycleOwner) { adapter.setNewDiffData(it) }
+            requestGrid()
         }
     }
 

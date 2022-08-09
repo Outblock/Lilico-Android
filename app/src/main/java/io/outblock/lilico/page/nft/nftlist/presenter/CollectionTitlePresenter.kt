@@ -7,7 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTitleBinding
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTitleModel
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
@@ -17,7 +17,7 @@ class CollectionTitlePresenter(
 ) : BaseViewHolder(view), BasePresenter<CollectionTitleModel> {
     private val binding by lazy { ItemNftListCollectionTitleBinding.bind(view) }
 
-    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NftViewModel::class.java] }
 
     init {
         binding.toggleView.setOnClickListener { viewModel.toggleCollectionExpand() }

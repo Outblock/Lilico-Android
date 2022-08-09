@@ -2,6 +2,7 @@ package io.outblock.lilico.page.nft.nftlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.nftSelectionCache
@@ -16,16 +17,18 @@ import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.nft.nftlist.model.*
 import io.outblock.lilico.utils.*
 
-class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener, OnWalletDataUpdate {
+class NFTFragmentViewModelV0 : ViewModel(), OnNftSelectionChangeListener, OnWalletDataUpdate {
 
-    val listDataLiveData = MutableLiveData<List<Any>>()
+    private val listDataLiveData = MutableLiveData<List<Any>>()
     val topSelectionLiveData = MutableLiveData<NftSelections>()
     val selectionIndexLiveData = MutableLiveData<Int>()
     val listScrollChangeLiveData = MutableLiveData<Int>()
-    val collectionTabChangeLiveData = MutableLiveData<String>()
-    val collectionTabsLiveData = MutableLiveData<CollectionTabsModel>()
-    val collectionTitleLiveData = MutableLiveData<CollectionTitleModel>()
-    val collectionExpandChangeLiveData = MutableLiveData<Boolean>()
+
+    private val collectionTabChangeLiveData = MutableLiveData<String>()
+    private val collectionTabsLiveData = MutableLiveData<CollectionTabsModel>()
+    private val collectionTitleLiveData = MutableLiveData<CollectionTitleModel>()
+    private val collectionExpandChangeLiveData = MutableLiveData<Boolean>()
+
     val emptyLiveData = MutableLiveData<Boolean>()
 
     val gridDataLiveData = MutableLiveData<List<Any>>()
@@ -222,6 +225,9 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener, OnWallet
     }
 
     private fun address(): String? {
+        if (BuildConfig.DEBUG) {
+            return "0xccea80173b51e028"
+        }
         return cacheWallet.read()?.primaryWalletAddress()
     }
 
@@ -230,6 +236,6 @@ class NFTFragmentViewModel : ViewModel(), OnNftSelectionChangeListener, OnWallet
     private fun cacheSelections() = nftSelectionCache(address())
 
     companion object {
-        private val TAG = NFTFragmentViewModel::class.java.simpleName
+        private val TAG = NFTFragmentViewModelV0::class.java.simpleName
     }
 }

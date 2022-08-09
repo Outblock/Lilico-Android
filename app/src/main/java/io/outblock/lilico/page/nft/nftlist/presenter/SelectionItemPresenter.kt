@@ -10,18 +10,15 @@ import androidx.core.view.children
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.card.MaterialCardView
-import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
-import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.databinding.ItemNftTopSelectionHeaderBinding
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.widget.NftCardView
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
-import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.logd
@@ -34,7 +31,7 @@ class SelectionItemPresenter(
 
     private val activity by lazy { findActivity(view) as FragmentActivity }
 
-    private val viewModel by lazy { ViewModelProvider(activity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(activity)[NFTFragmentViewModelV0::class.java] }
 
     private var currentIndex = 0
 

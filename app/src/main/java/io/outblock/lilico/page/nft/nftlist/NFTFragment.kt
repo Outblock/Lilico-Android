@@ -19,7 +19,9 @@ class NFTFragment : Fragment() {
     private lateinit var presenter: NFTFragmentPresenter
     private lateinit var emptyPresenter: NftEmptyPresenter
 
-    private lateinit var viewModel: NFTFragmentViewModel
+    private lateinit var viewModel: NFTFragmentViewModelV0
+
+    private lateinit var viewModelV1: NftViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNftBinding.inflate(inflater)
@@ -29,10 +31,13 @@ class NFTFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter = NFTFragmentPresenter(this, binding)
         emptyPresenter = NftEmptyPresenter(binding.emptyContainer)
-        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            listDataLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
+        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModelV0::class.java].apply {
             topSelectionLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(topSelection = it)) }
             listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
+        }
+
+        viewModelV1 = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
+            listNftLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
             emptyLiveData.observe(viewLifecycleOwner) { isEmpty ->
                 emptyPresenter.setVisible(isEmpty)
                 stopShimmer(binding.shimmerLayout.shimmerLayout)

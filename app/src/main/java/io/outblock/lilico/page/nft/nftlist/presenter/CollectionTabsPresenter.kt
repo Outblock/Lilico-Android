@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.adapter.CollectionTabsAdapter
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.utils.extensions.dp2px
@@ -23,7 +23,7 @@ class CollectionTabsPresenter(
     private val recyclerView by lazy { view as RecyclerView }
 
     private val activity by lazy { findActivity(view) as FragmentActivity }
-    private val viewModel by lazy { ViewModelProvider(activity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(activity)[NftViewModel::class.java] }
 
     private val adapter by lazy { CollectionTabsAdapter() }
 

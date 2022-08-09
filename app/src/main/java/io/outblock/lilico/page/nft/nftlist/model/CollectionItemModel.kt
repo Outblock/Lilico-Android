@@ -6,6 +6,6 @@ data class CollectionItemModel(
     val name: String?,
     val count: Int,
     val address: String,
-    val nfts: List<Nft>?,
+    val nfts: List<Nft>? = null,
     var isSelected: Boolean = false,
 )

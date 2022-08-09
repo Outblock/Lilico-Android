@@ -17,7 +17,7 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTabBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
@@ -46,13 +46,13 @@ private class TabsViewHolder(
 
     private val activity by lazy { findActivity(view) as FragmentActivity }
 
-    private val viewModel by lazy { ViewModelProvider(activity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(activity)[NftViewModel::class.java] }
 
     private var model: CollectionItemModel? = null
 
     init {
         view.setOnClickListener {
-            model?.let { viewModel.updateSelectCollections(it.address) }
+            model?.let { viewModel.selectCollection(it.address) }
         }
     }
 

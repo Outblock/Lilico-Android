@@ -25,101 +25,117 @@
             android:background="@drawable/bg_nft_selection_card_gradient"/>
     </FrameLayout>
 
-        <io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout
-            android:id="@+id/scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/app_bar_layout"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                app:elevation="0dp"
-                >
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <FrameLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:elevation="0dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <FrameLayout
+                        android:id="@+id/top_selection_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:minHeight="78dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="#ddd"
+                        tools:layout_height="100dp"
+                        tools:visibility="visible">
 
-                        <FrameLayout
-                            android:id="@+id/top_selection_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="78dp"
-                            android:visibility="gone"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:background="#ddd"
-                            tools:layout_height="100dp"
-                            tools:visibility="visible">
+                        <include layout="@layout/item_nft_top_selection_header"/>
+                    </FrameLayout>
 
-                            <include layout="@layout/item_nft_top_selection_header"/>
-                        </FrameLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"/>
-
-                        <FrameLayout
-                            android:id="@+id/collection_title_wrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/nft_list_divider_size"
-                            app:layout_constraintTop_toBottomOf="@id/top_selection_header"
-                            app:layout_goneMarginTop="78dp"
-                            tools:visibility="visible">
-
-                            <include
-                                android:id="@+id/collection_title"
-                                layout="@layout/item_nft_list_collection_title"/>
-                        </FrameLayout>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/collection_tabs_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:paddingVertical="12dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/collection_title_wrapper"
-                    app:layout_scrollFlags="scroll|snap"
-                    tools:visibility="visible">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/collection_tabs"
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:clipToPadding="false"
-                        android:paddingHorizontal="@dimen/nft_list_divider_size"
-                        tools:itemCount="3"
-                        tools:listitem="@layout/item_nft_list_collection_tab"
-                        tools:orientation="horizontal"/>
-                </FrameLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+                        android:layout_height="1dp"/>
 
-            <io.outblock.lilico.widgets.NestedRecyclerView
-                android:id="@+id/recycler_view"
+                    <FrameLayout
+                        android:id="@+id/collection_title_wrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/nft_list_divider_size"
+                        app:layout_constraintTop_toBottomOf="@id/top_selection_header"
+                        app:layout_goneMarginTop="78dp"
+                        tools:visibility="visible">
+
+                        <include
+                            android:id="@+id/collection_title"
+                            layout="@layout/item_nft_list_collection_title"/>
+                    </FrameLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/collection_tabs_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_top_radius_16dp"
-                android:backgroundTint="@color/front_color"
-                android:clipToPadding="false"
-                android:minHeight="600dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="100dp"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                app:layout_constraintTop_toBottomOf="@id/collection_tabs_wrapper"/>
-        </io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout>
+                android:background="@color/background"
+                android:paddingVertical="12dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/collection_title_wrapper"
+                app:layout_scrollFlags="scroll|snap"
+                tools:visibility="visible">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/collection_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/nft_list_divider_size"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_nft_list_collection_tab"
+                    tools:orientation="horizontal"/>
+            </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <io.outblock.lilico.widgets.NestedRecyclerView
+            android:id="@+id/nft_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_top_radius_16dp"
+            android:backgroundTint="@color/front_color"
+            android:clipToPadding="false"
+            android:minHeight="600dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="100dp"
+            android:visibility="gone"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintTop_toBottomOf="@id/collection_tabs_wrapper"
+            tools:visibility="visible"/>
+
+        <io.outblock.lilico.widgets.NestedRecyclerView
+            android:id="@+id/collection_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/front_color"
+            android:clipToPadding="false"
+            android:minHeight="600dp"
+            android:paddingHorizontal="@dimen/nft_list_divider_size"
+            android:paddingBottom="100dp"
+            android:visibility="gone"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintTop_toBottomOf="@id/collection_tabs_wrapper"
+            tools:visibility="visible"/>
+    </io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout>
 </FrameLayout>
 

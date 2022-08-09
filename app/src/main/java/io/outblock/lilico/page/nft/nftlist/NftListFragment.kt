@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.nft.nftlist
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -23,18 +25,22 @@ import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTitlePresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.SelectionItemPresenter
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 internal class NftListFragment : Fragment() {
 
     private lateinit var binding: FragmentNftListBinding
-    private lateinit var viewModel: NFTFragmentViewModel
+    private lateinit var viewModel: NFTFragmentViewModelV0
+    private lateinit var viewModelV1: NftViewModel
 
-    private val adapter by lazy { NFTListAdapter() }
+    private val nftAdapter by lazy { NFTListAdapter() }
+    private val collectionsAdapter by lazy { NFTListAdapter() }
 
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2dip().toDouble() }
 
@@ -49,11 +55,11 @@ internal class NftListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupRecyclerView()
+        setupNftRecyclerView()
+        setupCollectionsRecyclerView()
         setupScrollView()
         binding.root.setBackgroundResource(R.color.background)
-        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModel::class.java].apply {
-            listDataLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
+        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModelV0::class.java].apply {
             topSelectionLiveData.observe(viewLifecycleOwner) { data ->
                 selectionPresenter.bind(data)
                 if (data.data.isEmpty()) {
@@ -61,23 +67,26 @@ internal class NftListFragment : Fragment() {
                 }
             }
             selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
-            collectionTabsLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(it) }
-            collectionExpandChangeLiveData.observe(viewLifecycleOwner) { collectionTabsPresenter.bind(CollectionTabsModel(isExpand = it)) }
+        }
+
+        viewModelV1 = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
+            requestList()
+            listNftLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
+            collectionsLiveData.observe(viewLifecycleOwner) { data -> updateCollections(data) }
             collectionTitleLiveData.observe(viewLifecycleOwner) { collectionTitlePresenter.bind(it) }
         }
     }
 
     private fun updateListData(data: List<Any>) {
-        adapter.setNewDiffData(data)
-        with(binding.recyclerView) {
-            if (viewModel.isCollectionExpanded()) {
-                setBackgroundResource(R.drawable.bg_top_radius_16dp)
-                setPadding(paddingLeft, R.dimen.nft_list_divider_size.res2pix(), paddingRight, paddingBottom)
-            } else {
-                setBackgroundResource(R.color.transparent)
-                setPadding(paddingLeft, 0, paddingRight, paddingBottom)
-            }
-        }
+        nftAdapter.setNewDiffData(data)
+        binding.nftRecyclerView.setVisible(!viewModelV1.isCollectionExpanded())
+    }
+
+    private fun updateCollections(data: List<CollectionItemModel>) {
+        collectionsAdapter.setNewDiffData(data)
+        collectionTabsPresenter.bind(CollectionTabsModel(data))
+        binding.collectionRecyclerView.setVisible(viewModelV1.isCollectionExpanded())
+        collectionTabsPresenter.bind(CollectionTabsModel(isExpand = !viewModelV1.isCollectionExpanded()))
     }
 
     private fun setupScrollView() {
@@ -96,9 +105,9 @@ internal class NftListFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        with(binding.recyclerView) {
-            adapter = this@NftListFragment.adapter
+    private fun setupNftRecyclerView() {
+        with(binding.nftRecyclerView) {
+            adapter = this@NftListFragment.nftAdapter
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
@@ -106,19 +115,20 @@ internal class NftListFragment : Fragment() {
                     }
                 }
             }
-            addItemDecoration(
-                GridSpaceItemDecoration(
-                    vertical = dividerSize,
-                    horizontal = dividerSize,
-                    start = dividerSize,
-                    end = dividerSize
-                )
-            )
+            addItemDecoration(GridSpaceItemDecoration(vertical = dividerSize, horizontal = dividerSize, start = dividerSize, end = dividerSize))
+        }
+    }
+
+    private fun setupCollectionsRecyclerView() {
+        with(binding.collectionRecyclerView) {
+            adapter = this@NftListFragment.collectionsAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, dividerSize.toInt()))
         }
     }
 
     private fun isSingleLineItem(position: Int): Boolean {
-        val item = adapter.getData().getOrNull(position) ?: return false
+        val item = nftAdapter.getData().getOrNull(position) ?: return false
         return item is HeaderPlaceholderModel || item is NFTTitleModel || item is NftSelections
           || item is CollectionTitleModel || item is CollectionItemModel || item is CollectionTabsModel
     }

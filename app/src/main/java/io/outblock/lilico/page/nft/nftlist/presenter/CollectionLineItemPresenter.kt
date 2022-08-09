@@ -12,7 +12,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionLineBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.collection.CollectionActivity
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModel
+import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.findActivity
@@ -22,7 +22,7 @@ class CollectionLineItemPresenter(
 ) : BaseViewHolder(view), BasePresenter<CollectionItemModel> {
     private val binding by lazy { ItemNftListCollectionLineBinding.bind(view) }
 
-    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModelV0::class.java] }
 
     private val corner by lazy { 12.dp2px().toInt() }
 
