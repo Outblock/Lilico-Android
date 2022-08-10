@@ -14,6 +14,7 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftSelectionsBinding
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.utils.ScreenUtils
@@ -49,12 +50,7 @@ private class ViewHolder(
             Glide.with(imageView).load(model.cover()).transform(CenterCrop(), RoundedCorners(corners)).into(imageView)
         }
         view.setOnClickListener {
-            io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.launch(
-                view.context,
-                viewModel.getWalletAddress()!!,
-                model.contract.address,
-                model.id.tokenId
-            )
+            NftDetailActivity.launch(view.context, model.uniqueId())
         }
     }
 }

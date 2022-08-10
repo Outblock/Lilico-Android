@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.FragmentNftGridBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
-import io.outblock.lilico.page.nft.nftlist.model.NFTCountTitleModel
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 
@@ -60,7 +59,7 @@ internal class NftGridFragment : Fragment() {
 
     private fun isSingleLineItem(position: Int): Boolean {
         val item = adapter.getData().getOrNull(position) ?: return false
-        return item is NFTCountTitleModel
+        return isSingleNftItem(item)
     }
 
     companion object {

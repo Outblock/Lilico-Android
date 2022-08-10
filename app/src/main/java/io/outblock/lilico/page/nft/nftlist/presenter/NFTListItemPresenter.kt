@@ -12,6 +12,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.collection.CollectionActivity
+import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
@@ -42,12 +43,7 @@ class NFTListItemPresenter(
             priceView.text = "#${nft.id.tokenId}"
 
             coverViewWrapper.setOnClickListener {
-                io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.launch(
-                    context,
-                    viewModel.getWalletAddress().orEmpty(),
-                    nft.contract.address,
-                    nft.id.tokenId,
-                )
+                NftDetailActivity.launch(context, nft.uniqueId())
             }
             coverViewWrapper.setOnLongClickListener {
                 NftItemPopupMenu(coverView, model.nft).show()
@@ -56,15 +52,9 @@ class NFTListItemPresenter(
 
             view.setBackgroundResource(R.color.transparent)
             view.setPadding(0, 0, 0, 0)
-
         }
         view.setOnClickListener {
-            io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.launch(
-                context,
-                viewModel.getWalletAddress().orEmpty(),
-                nft.contract.address,
-                nft.id.tokenId
-            )
+            NftDetailActivity.launch(context, nft.uniqueId())
         }
     }
 

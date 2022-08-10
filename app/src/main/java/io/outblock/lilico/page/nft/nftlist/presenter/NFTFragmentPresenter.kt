@@ -9,7 +9,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentNftBinding
 import io.outblock.lilico.page.nft.collectionlist.NftCollectionListActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragment
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
+import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.adapter.NftListPageAdapter
 import io.outblock.lilico.page.nft.nftlist.model.NFTFragmentModel
 import io.outblock.lilico.utils.ScreenUtils
@@ -23,7 +23,7 @@ class NFTFragmentPresenter(
     private val binding: FragmentNftBinding,
 ) : BasePresenter<NFTFragmentModel> {
 
-    private val viewModel by lazy { ViewModelProvider(fragment.requireActivity())[NFTFragmentViewModelV0::class.java] }
+    private val viewModel by lazy { ViewModelProvider(fragment.requireActivity())[NftViewModel::class.java] }
 
     private var isTopSelectionExist = false
 
@@ -35,7 +35,7 @@ class NFTFragmentPresenter(
 
             with(refreshLayout) {
                 isEnabled = false
-                setOnRefreshListener { viewModel.refresh() }
+                setOnRefreshListener { refresh() }
                 setColorSchemeColors(R.color.colorSecondary.res2color())
             }
         }
@@ -59,7 +59,7 @@ class NFTFragmentPresenter(
             setTabData(listOf(R.string.list.res2String(), R.string.grid.res2String()).toTypedArray())
             setOnTabSelectListener(object : OnTabSelectListener {
                 override fun onTabSelect(position: Int) {
-                    viewModel.updateLayoutMode(position != 0)
+//                    viewModel.updateLayoutMode(position != 0)
 
                     if (position != 0) binding.refreshLayout.isEnabled = true
 
@@ -79,8 +79,10 @@ class NFTFragmentPresenter(
     }
 
     private fun updateToolbarBackground(scrollY: Int = -1) {
-        val isList = !viewModel.isGridMode()
-        if (isList) {
+        if (isGridTabSelected()) {
+            binding.toolbar.background.alpha = 255
+            binding.tabsBackground.background.setTint(R.color.neutrals4.res2color())
+        } else {
             if (!isTopSelectionExist) {
                 // no selection
                 binding.toolbar.background.alpha = 255
@@ -96,10 +98,17 @@ class NFTFragmentPresenter(
                     ) as Int
                 )
             }
-        } else {
-            binding.toolbar.background.alpha = 255
-            binding.tabsBackground.background.setTint(R.color.neutrals4.res2color())
         }
     }
+
+    private fun refresh() {
+        if (isGridTabSelected()) {
+            viewModel.requestGrid()
+        } else {
+            viewModel.requestList()
+        }
+    }
+
+    private fun isGridTabSelected() = binding.tabs.currentTab != 0
 
 }

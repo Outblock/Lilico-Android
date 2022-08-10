@@ -40,7 +40,7 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
             collectionList.clear()
             collectionList.addAll(
                 NftCollectionConfig.list()
-                    .filter { it.address(forceMainnet = false).isNotEmpty() }
+                    .filter { it.address().isNotEmpty() }
                     .map { NftCollectionItem(collection = it, isAdded = NftCollectionStateManager.isTokenAdded(it.address()), isAdding = false) })
             collectionListLiveData.postValue(collectionList.toList())
 

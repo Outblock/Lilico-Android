@@ -2,19 +2,21 @@ package io.outblock.lilico.page.nft.nftdetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
+import io.outblock.lilico.page.nft.nftlist.utils.NftCache
 import io.outblock.lilico.utils.viewModelIOScope
 
 class NftDetailViewModel : ViewModel() {
 
     val nftLiveData = MutableLiveData<Nft>()
 
-    fun load(walletAddress: String, nftAddress: String, tokenId: String) {
+    fun load(uniqueId: String) {
         viewModelIOScope(this) {
-            val nft = nftListCache(walletAddress).read()?.nfts?.firstOrNull { it.contract.address == nftAddress && it.id.tokenId == tokenId }
+            val walletAddress = nftWalletAddress()
+            val nft = NftCache(walletAddress).findNftById(uniqueId)
             nft?.let {
                 nftLiveData.postValue(it)
                 requestMeta(walletAddress, it)

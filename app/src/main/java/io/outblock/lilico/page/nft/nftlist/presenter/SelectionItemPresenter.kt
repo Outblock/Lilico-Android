@@ -15,6 +15,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.databinding.ItemNftTopSelectionHeaderBinding
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.widget.NftCardView
 import io.outblock.lilico.utils.ScreenUtils
@@ -42,12 +43,7 @@ class SelectionItemPresenter(
             layoutParams.height = (ScreenUtils.getScreenWidth() * 0.7f + 32.dp2px()).toInt()
             setOnClickListener {
                 data?.getOrNull(currentIndex)?.let {
-                    io.outblock.lilico.page.nft.nftdetail.NftDetailActivity.launch(
-                        activity,
-                        viewModel.getWalletAddress()!!,
-                        it.contract.address,
-                        it.id.tokenId
-                    )
+                    NftDetailActivity.launch(activity, it.uniqueId())
                 }
             }
 

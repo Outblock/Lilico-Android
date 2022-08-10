@@ -33,15 +33,17 @@ class NFTFragment : Fragment() {
         emptyPresenter = NftEmptyPresenter(binding.emptyContainer)
         viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModelV0::class.java].apply {
             topSelectionLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(topSelection = it)) }
-            listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
         }
 
         viewModelV1 = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
             listNftLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
+            gridNftLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
+
             emptyLiveData.observe(viewLifecycleOwner) { isEmpty ->
                 emptyPresenter.setVisible(isEmpty)
                 stopShimmer(binding.shimmerLayout.shimmerLayout)
             }
+            listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
         }
     }
 

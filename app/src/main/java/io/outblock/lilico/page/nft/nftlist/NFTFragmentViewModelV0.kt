@@ -22,16 +22,16 @@ class NFTFragmentViewModelV0 : ViewModel(), OnNftSelectionChangeListener, OnWall
     private val listDataLiveData = MutableLiveData<List<Any>>()
     val topSelectionLiveData = MutableLiveData<NftSelections>()
     val selectionIndexLiveData = MutableLiveData<Int>()
-    val listScrollChangeLiveData = MutableLiveData<Int>()
+    private val listScrollChangeLiveData = MutableLiveData<Int>()
 
     private val collectionTabChangeLiveData = MutableLiveData<String>()
     private val collectionTabsLiveData = MutableLiveData<CollectionTabsModel>()
     private val collectionTitleLiveData = MutableLiveData<CollectionTitleModel>()
     private val collectionExpandChangeLiveData = MutableLiveData<Boolean>()
 
-    val emptyLiveData = MutableLiveData<Boolean>()
+    private val emptyLiveData = MutableLiveData<Boolean>()
 
-    val gridDataLiveData = MutableLiveData<List<Any>>()
+    private val gridDataLiveData = MutableLiveData<List<Any>>()
 
     private var isGridMode = false
     private var isCollectionExpanded = false
@@ -45,8 +45,8 @@ class NFTFragmentViewModelV0 : ViewModel(), OnNftSelectionChangeListener, OnWall
     }
 
     fun refresh() {
-        loadList()
-        loadGrid()
+//        loadList()
+//        loadGrid()
     }
 
     fun updateLayoutMode(isGridMode: Boolean) {

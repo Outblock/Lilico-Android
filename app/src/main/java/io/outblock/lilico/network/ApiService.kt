@@ -57,6 +57,21 @@ interface ApiService {
         @Query("nftID") tokenId: String,
     ): CommonResponse
 
+    @GET("/v2/nft/favorite")
+    suspend fun getNftFavorite(
+    ): CommonResponse
+
+    @PUT("/v2/nft/favorite")
+    suspend fun addNftFavorite(
+        @Query("contract") contractName: String,
+        @Query("ids") tokenId: String,
+    ): CommonResponse
+
+    @POST("/v2/nft/favorite")
+    suspend fun updateFavorite(
+        @Query("ids") uniqueIds: String,
+    ): CommonResponse
+
     @GET("/v1/user/info")
     suspend fun userInfo(): UserInfoResponse
 

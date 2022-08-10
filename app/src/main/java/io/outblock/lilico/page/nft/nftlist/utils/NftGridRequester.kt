@@ -1,13 +1,12 @@
 package io.outblock.lilico.page.nft.nftlist.utils
 
-import io.outblock.lilico.BuildConfig
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
 
 class NftGridRequester {
-    private val limit = 25
+    private val limit = 24
     private var offset = 0
 
     private var count = -1
@@ -16,11 +15,14 @@ class NftGridRequester {
 
     private val dataList = mutableListOf<Nft>()
 
+    private var isLoadMoreRequesting = false
+
     fun cachedNfts() = cache().grid().read() ?: NftList()
 
     suspend fun request(): NftList {
         resetOffset()
-        val response = service.nftList(address(), offset, limit)
+        dataList.clear()
+        val response = service.nftList(nftWalletAddress(), offset, limit)
         if (response.status > 200) {
             throw Exception("request grid list error: $response")
         }
@@ -34,7 +36,7 @@ class NftGridRequester {
 
         count = response.data.nftCount
 
-        cache().grid().cache(NftList(response.data.nfts.orEmpty()))
+        cache().grid().cacheSync(NftList(response.data.nfts.orEmpty(), count = count))
 
         dataList.addAll(response.data.nfts.orEmpty())
 
@@ -42,30 +44,33 @@ class NftGridRequester {
     }
 
     suspend fun nextPage(): NftList {
+        if (isLoadMoreRequesting) throw RuntimeException("load more is running")
+
+        isLoadMoreRequesting = true
         offset += limit
-        val response = service.nftList(address(), offset, limit)
+        val response = service.nftList(nftWalletAddress(), offset, limit)
         response.data ?: return NftList()
         count = response.data.nftCount
 
         dataList.addAll(response.data.nfts.orEmpty())
 
+        isLoadMoreRequesting = false
         return NftList(list = response.data.nfts.orEmpty(), count = response.data.nftCount)
     }
 
     fun count() = count
 
-    fun dataList() = dataList.toList()
+    fun dataList(): List<Nft> {
+        return if (dataList.isEmpty()) cachedNfts().list else dataList
+    }
 
     fun haveMore() = count >= 0 && offset < count
 
-    private fun resetOffset() = apply { offset = 0 }
-    private fun cache() = NftCache(address())
-
-    private fun address(): String {
-        if (BuildConfig.DEBUG) {
-            return "0xccea80173b51e028"
-        }
-        return walletCache().read()?.primaryWalletAddress().orEmpty()
+    private fun resetOffset() = apply {
+        offset = 0
+        count = -1
+        isLoadMoreRequesting = false
     }
 
+    private fun cache() = NftCache(nftWalletAddress())
 }

@@ -14,12 +14,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftSelectionCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.FragmentNftListBinding
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
-import io.outblock.lilico.page.nft.nftlist.model.*
+import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
+import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTabsPresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTitlePresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.SelectionItemPresenter
@@ -93,7 +93,7 @@ internal class NftListFragment : Fragment() {
         var preOffset = 0
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             binding.backgroundWrapper.translationY = verticalOffset.toFloat()
-            viewModel.onListScrollChange(-verticalOffset)
+            viewModelV1.onListScrollChange(-verticalOffset)
             if (preOffset != verticalOffset) {
                 findSwipeRefreshLayout(binding.root)?.isEnabled = verticalOffset >= 0
                 logd("xxx", "NftListFragment: ${findSwipeRefreshLayout(binding.root)}")
@@ -129,8 +129,7 @@ internal class NftListFragment : Fragment() {
 
     private fun isSingleLineItem(position: Int): Boolean {
         val item = nftAdapter.getData().getOrNull(position) ?: return false
-        return item is HeaderPlaceholderModel || item is NFTTitleModel || item is NftSelections
-          || item is CollectionTitleModel || item is CollectionItemModel || item is CollectionTabsModel
+        return isSingleNftItem(item)
     }
 
     private fun updateSelection(index: Int) {

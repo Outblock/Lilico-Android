@@ -23,7 +23,6 @@ import com.google.android.exoplayer2.MediaItem
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.nft.NftSelectionManager
@@ -145,10 +144,7 @@ class NftDetailPresenter(
             bindVideo(nft)
 
             collectionWrapper.setOnClickListener {
-                ioScope {
-                    val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
-                    CollectionActivity.launch(activity, address, nft.contract.address)
-                }
+                CollectionActivity.launch(activity, nft.contract.address)
             }
 
             ioScope { updateSelectionState(isNftInSelection(nft)) }

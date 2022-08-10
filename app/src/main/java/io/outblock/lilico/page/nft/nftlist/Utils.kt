@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.walletCache
@@ -12,9 +13,7 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.NFTListData
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
-import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
-import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
+import io.outblock.lilico.page.nft.nftlist.model.*
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -117,4 +116,16 @@ fun findSwipeRefreshLayout(view: View): SwipeRefreshLayout? {
 
 fun getNftByIdFromCache(uniqueId: String): Nft? {
     return nftListCache(walletCache().read()?.primaryWalletAddress()).read()?.nfts?.firstOrNull { it.uniqueId() == uniqueId }
+}
+
+fun isSingleNftItem(model: Any): Boolean {
+    return model is NFTCountTitleModel || model is HeaderPlaceholderModel || model is NFTTitleModel || model is NftSelections
+      || model is CollectionTitleModel || model is CollectionItemModel || model is CollectionTabsModel || model is NftLoadMoreModel
+}
+
+fun nftWalletAddress(): String {
+    if (BuildConfig.DEBUG) {
+        return "0x53f389d96fb4ce5e"
+    }
+    return walletCache().read()?.primaryWalletAddress().orEmpty()
 }

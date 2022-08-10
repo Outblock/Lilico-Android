@@ -28,10 +28,12 @@ class CacheManager<T>(
     }
 
     fun cache(data: T) {
-        ioScope {
-            val str = Gson().toJson(data)
-            str.saveToFile(file)
-        }
+        ioScope { cacheSync(data) }
+    }
+
+    fun cacheSync(data: T) {
+        val str = Gson().toJson(data)
+        str.saveToFile(file)
     }
 
     fun clear() {

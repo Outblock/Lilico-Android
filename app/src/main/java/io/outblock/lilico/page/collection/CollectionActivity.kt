@@ -19,7 +19,6 @@ class CollectionActivity : BaseActivity() {
     private lateinit var binding: ActivityCollectionBinding
 
     private val address by lazy { intent.getStringExtra(EXTRA_ADDRESS).orEmpty() }
-    private val walletAddress by lazy { intent.getStringExtra(EXTRA_WALLET_ADDRESS).orEmpty() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +29,7 @@ class CollectionActivity : BaseActivity() {
         presenter = CollectionContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[CollectionViewModel::class.java].apply {
             dataLiveData.observe(this@CollectionActivity) { presenter.bind(CollectionContentModel(data = it)) }
-            load(walletAddress, address)
+            load(address)
         }
     }
 
@@ -44,11 +43,9 @@ class CollectionActivity : BaseActivity() {
 
     companion object {
         private const val EXTRA_ADDRESS = "extra_address"
-        private const val EXTRA_WALLET_ADDRESS = "extra_wallet_address"
 
-        fun launch(context: Context, walletAddress: String, address: String) {
+        fun launch(context: Context, address: String) {
             context.startActivity(Intent(context, CollectionActivity::class.java).apply {
-                putExtra(EXTRA_WALLET_ADDRESS, walletAddress)
                 putExtra(EXTRA_ADDRESS, address)
             })
         }
