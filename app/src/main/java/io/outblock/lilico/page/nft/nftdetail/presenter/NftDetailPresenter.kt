@@ -144,7 +144,7 @@ class NftDetailPresenter(
             bindVideo(nft)
 
             collectionWrapper.setOnClickListener {
-                CollectionActivity.launch(activity, nft.contract.address)
+                CollectionActivity.launch(activity, nft.contract.name.orEmpty())
             }
 
             ioScope { updateSelectionState(isNftInSelection(nft)) }

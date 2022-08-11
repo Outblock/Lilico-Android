@@ -111,7 +111,7 @@ internal class NftListFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (isSingleLineItem(position)) spanCount else 1
+                        return if (this@NftListFragment.nftAdapter.isSingleLineItem(position)) spanCount else 1
                     }
                 }
             }
@@ -125,11 +125,6 @@ internal class NftListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, dividerSize.toInt()))
         }
-    }
-
-    private fun isSingleLineItem(position: Int): Boolean {
-        val item = nftAdapter.getData().getOrNull(position) ?: return false
-        return isSingleNftItem(item)
     }
 
     private fun updateSelection(index: Int) {

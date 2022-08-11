@@ -65,7 +65,7 @@ data class NftCollection(
     @SerializedName("name")
     val name: String,
     @SerializedName("official_website")
-    val officialWebsite: String,
+    val officialWebsite: String?,
     @SerializedName("path")
     val path: Path
 ) : Parcelable {

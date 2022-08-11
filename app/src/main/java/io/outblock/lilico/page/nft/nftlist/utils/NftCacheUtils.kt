@@ -19,8 +19,8 @@ class NftCache(
         return CacheManager("${address}_nft_collection".cacheFile(), NftCollections::class.java)
     }
 
-    fun list(collectionAddress: String): CacheManager<NftList> {
-        return CacheManager("${address}_${collectionAddress}_nft_list".cacheFile(), NftList::class.java)
+    fun list(contractName: String): CacheManager<NftList> {
+        return CacheManager("${address}_${contractName}_nft_list".cacheFile(), NftList::class.java)
     }
 
     fun findNftById(uniqueId: String): Nft? {
@@ -28,7 +28,7 @@ class NftCache(
     }
 
     private fun findNftFromCollection(uniqueId: String): Nft? {
-        val collections = collection().read()?.collections?.mapNotNull { it.collection?.address() } ?: return null
+        val collections = collection().read()?.collections?.mapNotNull { it.collection?.contractName } ?: return null
         for (collection in collections) {
             val nfts = list(collection).read()?.list ?: continue
             return nfts.firstOrNull { it.uniqueId() == uniqueId } ?: continue

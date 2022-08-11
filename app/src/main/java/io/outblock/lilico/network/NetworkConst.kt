@@ -17,10 +17,10 @@ fun retrofit(disableConverter: Boolean = false): Retrofit {
     val client = OkHttpClient.Builder().apply {
         addInterceptor(HeaderInterceptor())
 
-        callTimeout(10, TimeUnit.SECONDS)
-        connectTimeout(10, TimeUnit.SECONDS)
-        readTimeout(10, TimeUnit.SECONDS)
-        writeTimeout(10, TimeUnit.SECONDS)
+        callTimeout(20, TimeUnit.SECONDS)
+        connectTimeout(20, TimeUnit.SECONDS)
+        readTimeout(20, TimeUnit.SECONDS)
+        writeTimeout(20, TimeUnit.SECONDS)
 
         if (isTesting()) {
             addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })

@@ -36,7 +36,7 @@ class NftListRequester {
         return collections?.sort()
     }
 
-    fun cachedNfts(collection: NftCollection) = cache().list(collection.address()).read()?.list
+    fun cachedNfts(collection: NftCollection) = cache().list(collection.contractName).read()?.list
 
     suspend fun request(collection: NftCollection): List<Nft> {
         resetOffset()
@@ -55,9 +55,9 @@ class NftListRequester {
 
         count = response.data.nftCount
 
-        cache().list(collection.address()).cacheSync(NftList(response.data.nfts.orEmpty()))
-
         dataList.addAll(response.data.nfts.orEmpty())
+
+        cache().list(collection.contractName).cacheSync(NftList(dataList.toList()))
 
         return response.data.nfts.orEmpty()
     }
@@ -73,6 +73,8 @@ class NftListRequester {
 
         dataList.addAll(response.data.nfts.orEmpty())
 
+        cache().list(collection.contractName).cacheSync(NftList(dataList.toList()))
+
         isLoadMoreRequesting = false
 
         return response.data.nfts.orEmpty()
@@ -83,7 +85,8 @@ class NftListRequester {
     fun haveMore() = count >= 0 && offset < count
 
     fun dataList(collection: NftCollection): List<Nft> {
-        return if (dataList.isEmpty()) cachedNfts(collection).orEmpty() else dataList
+        val list = if (dataList.firstOrNull()?.contract?.name == collection.contractName) dataList.toList() else emptyList()
+        return list.ifEmpty { cachedNfts(collection).orEmpty() }
     }
 
     private fun resetOffset() = apply {
@@ -98,5 +101,4 @@ class NftListRequester {
         this ?: return null
         return this.sortedBy { it.collection?.name?.take(1) }.sortedByDescending { it.count }
     }
-
 }

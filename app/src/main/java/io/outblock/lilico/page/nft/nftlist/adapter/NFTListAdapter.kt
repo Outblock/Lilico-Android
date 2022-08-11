@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
+import io.outblock.lilico.page.nft.nftlist.isSingleNftItem
 import io.outblock.lilico.page.nft.nftlist.model.*
 import io.outblock.lilico.page.nft.nftlist.nftListDiffCallback
 import io.outblock.lilico.page.nft.nftlist.presenter.*
@@ -51,6 +52,11 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is NftCountTitlePresenter -> holder.bind(getItem(position) as NFTCountTitleModel)
             is NftLoadMorePresenter -> holder.bind(getItem(position) as NftLoadMoreModel)
         }
+    }
+
+    fun isSingleLineItem(position: Int): Boolean {
+        val item = getData().getOrNull(position) ?: return false
+        return isSingleNftItem(item)
     }
 
     companion object {

@@ -1,7 +1,8 @@
 package io.outblock.lilico.page.collection.model
 
-import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
+import io.outblock.lilico.network.model.NftCollectionWrapper
 
 class CollectionContentModel(
-    val data: List<NFTItemModel>? = null,
+    val data: List<Any>? = null,
+    val collection: NftCollectionWrapper? = null,
 )

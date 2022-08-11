@@ -1,11 +1,9 @@
 package io.outblock.lilico.page.nft.nftlist.model
 
-import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.manager.config.NftCollection
 
 data class CollectionItemModel(
-    val name: String?,
     val count: Int,
-    val address: String,
-    val nfts: List<Nft>? = null,
+    val collection: NftCollection,
     var isSelected: Boolean = false,
 )

@@ -16,7 +16,6 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTabBinding
-import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.utils.extensions.dp2px
@@ -52,12 +51,12 @@ private class TabsViewHolder(
 
     init {
         view.setOnClickListener {
-            model?.let { viewModel.selectCollection(it.address) }
+            model?.collection?.contractName?.let { viewModel.selectCollection(it) }
         }
     }
 
     override fun bind(model: CollectionItemModel) {
-        val config = NftCollectionConfig.get(model.address) ?: return
+        val config = model.collection
         with(binding) {
             if (this@TabsViewHolder.model != model) {
                 Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corners)).into(coverView)
@@ -72,7 +71,7 @@ private class TabsViewHolder(
 
 val diffCallback = object : DiffUtil.ItemCallback<CollectionItemModel>() {
     override fun areItemsTheSame(oldItem: CollectionItemModel, newItem: CollectionItemModel): Boolean {
-        return oldItem.address == newItem.address
+        return oldItem.collection.contractName == newItem.collection.contractName
     }
 
     @SuppressLint("DiffUtilEquals")

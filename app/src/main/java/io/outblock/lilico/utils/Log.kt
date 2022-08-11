@@ -24,12 +24,14 @@ fun loge(tag: String?, msg: Any?) {
     log(tag, msg, Log.ERROR)
 }
 
-fun loge(msg: Throwable?, printStackTrace: Boolean = true) {
+fun loge(msg: Throwable?, printStackTrace: Boolean = true, report: Boolean = true) {
     log("Exception", msg?.message ?: "", Log.ERROR)
     if (printLog() && printStackTrace) {
         msg?.printStackTrace()
     }
-    ioScope { msg?.let { reportException("exception_report", it) } }
+    if (report) {
+        ioScope { msg?.let { reportException("exception_report", it) } }
+    }
 }
 
 private fun log(tag: String?, msg: Any?, version: Int) {

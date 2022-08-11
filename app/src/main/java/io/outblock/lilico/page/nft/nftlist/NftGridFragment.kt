@@ -42,7 +42,7 @@ internal class NftGridFragment : Fragment() {
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (isSingleLineItem(position)) spanCount else 1
+                        return if (this@NftGridFragment.adapter.isSingleLineItem(position)) spanCount else 1
                     }
                 }
             }
@@ -55,11 +55,6 @@ internal class NftGridFragment : Fragment() {
                 )
             )
         }
-    }
-
-    private fun isSingleLineItem(position: Int): Boolean {
-        val item = adapter.getData().getOrNull(position) ?: return false
-        return isSingleNftItem(item)
     }
 
     companion object {

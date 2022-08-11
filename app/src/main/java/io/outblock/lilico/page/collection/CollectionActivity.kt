@@ -18,7 +18,7 @@ class CollectionActivity : BaseActivity() {
     private lateinit var viewModel: CollectionViewModel
     private lateinit var binding: ActivityCollectionBinding
 
-    private val address by lazy { intent.getStringExtra(EXTRA_ADDRESS).orEmpty() }
+    private val contractName by lazy { intent.getStringExtra(EXTRA_CONTRACT_NAME).orEmpty() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,8 @@ class CollectionActivity : BaseActivity() {
         presenter = CollectionContentPresenter(this, binding)
         viewModel = ViewModelProvider(this)[CollectionViewModel::class.java].apply {
             dataLiveData.observe(this@CollectionActivity) { presenter.bind(CollectionContentModel(data = it)) }
-            load(address)
+            collectionLiveData.observe(this@CollectionActivity) { presenter.bind(CollectionContentModel(collection = it)) }
+            load(contractName)
         }
     }
 
@@ -42,11 +43,11 @@ class CollectionActivity : BaseActivity() {
     }
 
     companion object {
-        private const val EXTRA_ADDRESS = "extra_address"
+        private const val EXTRA_CONTRACT_NAME = "extra_address"
 
-        fun launch(context: Context, address: String) {
+        fun launch(context: Context, contractName: String) {
             context.startActivity(Intent(context, CollectionActivity::class.java).apply {
-                putExtra(EXTRA_ADDRESS, address)
+                putExtra(EXTRA_CONTRACT_NAME, contractName)
             })
         }
     }

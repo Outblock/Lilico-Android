@@ -9,10 +9,9 @@ import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteRequester
 import io.outblock.lilico.page.nft.nftlist.utils.NftGridRequester
 import io.outblock.lilico.page.nft.nftlist.utils.NftList
 import io.outblock.lilico.page.nft.nftlist.utils.NftListRequester
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isNftCollectionExpanded
-import io.outblock.lilico.utils.updateNftCollectionExpanded
-import io.outblock.lilico.utils.viewModelIOScope
+import io.outblock.lilico.utils.*
+
+private val TAG = NftViewModel::class.java.simpleName
 
 class NftViewModel : ViewModel() {
 
@@ -40,10 +39,13 @@ class NftViewModel : ViewModel() {
             // read from cache
             val cacheCollections = listRequester.cacheCollections().orEmpty()
             notifyCollectionList(cacheCollections)
-            collectionTitleLiveData.postValue(CollectionTitleModel(count = cacheCollections.size))
-            (selectedCollection ?: cacheCollections.firstOrNull()?.collection)?.let { notifyNftList(it) }
-
             updateDefaultSelectCollection()
+
+            collectionTitleLiveData.postValue(CollectionTitleModel(count = cacheCollections.size))
+            (selectedCollection ?: cacheCollections.firstOrNull()?.collection)?.let {
+                logd(TAG, "notifyNftList 2")
+                notifyNftList(it)
+            }
 
             if (cacheCollections.isNotEmpty()) {
                 emptyLiveData.postValue(false)
@@ -56,11 +58,11 @@ class NftViewModel : ViewModel() {
 
             collectionTitleLiveData.postValue(CollectionTitleModel(count = onlineCollections.size))
             notifyCollectionList(onlineCollections)
-
             updateDefaultSelectCollection()
 
             (selectedCollection ?: onlineCollections.firstOrNull()?.collection)?.let {
                 listRequester.request(it)
+                logd(TAG, "notifyNftList 1")
                 notifyNftList(it)
             }
 
@@ -72,7 +74,7 @@ class NftViewModel : ViewModel() {
         val cacheCollections = listRequester.cacheCollections()
         selectedCollection = selectedCollection ?: cacheCollections?.firstOrNull()?.collection
         if (selectedCollection != null && cacheCollections?.firstOrNull { it.collection?.contractName == selectedCollection?.contractName } == null) {
-            cacheCollections?.firstOrNull()?.collection?.address()?.let { selectCollection(it) }
+            cacheCollections?.firstOrNull()?.collection?.contractName?.let { selectCollection(it) }
         }
     }
 
@@ -89,9 +91,8 @@ class NftViewModel : ViewModel() {
         viewModelIOScope(this) {
             val collection = selectedCollection ?: return@viewModelIOScope
             listRequester.nextPage(collection)
-            if (collection.contractName == selectedCollection?.contractName) {
-                notifyNftList(collection)
-            }
+            logd(TAG, "notifyNftList 3")
+            notifyNftList(collection)
         }
     }
 
@@ -109,21 +110,21 @@ class NftViewModel : ViewModel() {
         }
     }
 
-    fun selectCollection(collectionAddress: String) {
-        if (selectedCollection?.address() == collectionAddress) {
+    fun selectCollection(contractName: String) {
+        if (selectedCollection?.contractName == contractName) {
             return
         }
-        val collection = listRequester.cacheCollections()?.firstOrNull { it.collection?.address() == collectionAddress } ?: return
-        collectionTabChangeLiveData.postValue(collectionAddress)
+        val collection = listRequester.cacheCollections()?.firstOrNull { it.collection?.contractName == contractName } ?: return
+        collectionTabChangeLiveData.postValue(contractName)
         selectedCollection = collection.collection
         viewModelIOScope(this) {
             val tmpCollection = selectedCollection ?: return@viewModelIOScope
+            logd(TAG, "notifyNftList 4")
             notifyNftList(tmpCollection)
 
             listRequester.request(tmpCollection)
-            if (tmpCollection.contractName == selectedCollection?.contractName) {
-                notifyNftList(tmpCollection)
-            }
+            logd(TAG, "notifyNftList 5")
+            notifyNftList(tmpCollection)
         }
     }
 
@@ -132,23 +133,25 @@ class NftViewModel : ViewModel() {
     fun onListScrollChange(scrollY: Int) = apply { listScrollChangeLiveData.postValue(scrollY) }
 
     private fun notifyNftList(collection: NftCollection) {
+        if (collection.contractName != selectedCollection?.contractName) {
+            return
+        }
         val list = mutableListOf<Any>().apply { addAll(listRequester.dataList(collection).map { NFTItemModel(nft = it) }) }
         if (listRequester.haveMore()) {
             list.add(NftLoadMoreModel(isListLoadMore = true))
         }
+        logd(TAG, "notifyNftList collection:${collection.name} size:${list.size}")
         listNftLiveData.postValue(list)
     }
 
     private fun notifyCollectionList(collections: List<NftCollectionWrapper>?) {
-        val selectedAddress = selectedCollection?.address() ?: collections?.firstOrNull()?.collection?.address()
-        collectionsLiveData.postValue(collections.orEmpty().map {
-            val collection = it.collection
+        val selectedCollection = selectedCollection?.contractName ?: collections?.firstOrNull()?.collection?.contractName
+        collectionsLiveData.postValue(collections.orEmpty().mapNotNull {
+            val collection = it.collection ?: return@mapNotNull null
             CollectionItemModel(
-                name = collection?.name,
+                collection = collection,
                 count = it.count ?: 0,
-                address = collection?.address().orEmpty(),
-                nfts = listOf(),
-                isSelected = selectedAddress == collection?.address(),
+                isSelected = selectedCollection == collection.contractName
             )
         })
     }

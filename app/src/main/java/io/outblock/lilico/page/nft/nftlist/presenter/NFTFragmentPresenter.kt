@@ -59,8 +59,6 @@ class NFTFragmentPresenter(
             setTabData(listOf(R.string.list.res2String(), R.string.grid.res2String()).toTypedArray())
             setOnTabSelectListener(object : OnTabSelectListener {
                 override fun onTabSelect(position: Int) {
-//                    viewModel.updateLayoutMode(position != 0)
-
                     if (position != 0) binding.refreshLayout.isEnabled = true
 
                     updateToolbarBackground()

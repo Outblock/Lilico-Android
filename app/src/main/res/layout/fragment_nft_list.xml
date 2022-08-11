@@ -106,26 +106,23 @@
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <io.outblock.lilico.widgets.NestedRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/nft_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:background="@drawable/bg_top_radius_16dp"
             android:backgroundTint="@color/front_color"
             android:clipToPadding="false"
-            android:minHeight="600dp"
             android:paddingTop="16dp"
             android:paddingBottom="100dp"
-            android:visibility="gone"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:layout_constraintTop_toBottomOf="@id/collection_tabs_wrapper"
             tools:visibility="visible"/>
 
-        <io.outblock.lilico.widgets.NestedRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/collection_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:backgroundTint="@color/front_color"
             android:clipToPadding="false"

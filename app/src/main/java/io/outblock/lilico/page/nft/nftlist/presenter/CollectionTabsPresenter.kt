@@ -34,9 +34,9 @@ class CollectionTabsPresenter(
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 12.dp2px().toInt(), LinearLayout.HORIZONTAL))
         }
 
-        viewModel.collectionTabChangeLiveData.observe(activity) { address ->
+        viewModel.collectionTabChangeLiveData.observe(activity) { contractName ->
             if (view.isShown) {
-                val data = adapter.getData().toList().map { it.copy() }.onEach { it.isSelected = it.address == address }
+                val data = adapter.getData().toList().map { it.copy() }.onEach { it.isSelected = it.collection.contractName == contractName }
                 adapter.setNewDiffData(data)
             }
         }

@@ -11,12 +11,11 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityCollectionBinding
-import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.network.model.NftCollectionWrapper
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.collection.model.CollectionContentModel
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
-import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
@@ -38,7 +37,13 @@ class CollectionContentPresenter(
     init {
         with(binding.recyclerView) {
             adapter = this@CollectionContentPresenter.adapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (this@CollectionContentPresenter.adapter.isSingleLineItem(position)) spanCount else 1
+                    }
+                }
+            }
             addItemDecoration(
                 GridSpaceItemDecoration(vertical = dividerSize, horizontal = dividerSize, start = dividerSize, end = dividerSize)
             )
@@ -54,29 +59,25 @@ class CollectionContentPresenter(
     }
 
     override fun bind(model: CollectionContentModel) {
-        model.data?.let { bindData(it) }
+        model.data?.let { adapter.setNewDiffData(it) }
+        model.collection?.let { bindHeader(it) }
     }
 
-    private fun bindData(data: List<NFTItemModel>) {
-        bindHeader(data)
-        adapter.setNewDiffData(data)
-    }
-
-    private fun bindHeader(data: List<NFTItemModel>) {
-        val config = NftCollectionConfig.get(data.first().nft.contract.address) ?: return
+    private fun bindHeader(collectionWrapper: NftCollectionWrapper) {
+        val collection = collectionWrapper.collection ?: return
         with(binding) {
-            Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(16.dp2px().toInt())).into(coverView)
-            Glide.with(backgroundImage).load(config.logo)
+            Glide.with(coverView).load(collection.logo).transform(CenterCrop(), RoundedCorners(16.dp2px().toInt())).into(coverView)
+            Glide.with(backgroundImage).load(collection.logo)
                 .transition(DrawableTransitionOptions.withCrossFade(100))
                 .transform(BlurTransformation(15, 30))
                 .into(backgroundImage)
 
-            titleView.text = config.name
-            subtitleView.text = activity.getString(R.string.collections_count, data.size)
+            titleView.text = collection.name
+            subtitleView.text = activity.getString(R.string.collections_count, collectionWrapper.count)
 
-            toolbar.title = config.name
+            toolbar.title = collection.name
 
-            NftCollectionConfig.get(data.first().nft.contract.address)?.officialWebsite?.let { url ->
+            collection.officialWebsite.let { url ->
                 exploreButton.setOnClickListener { openBrowser(activity, url) }
             }
         }

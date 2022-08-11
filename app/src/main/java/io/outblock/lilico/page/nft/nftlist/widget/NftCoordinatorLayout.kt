@@ -6,6 +6,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import io.outblock.lilico.page.nft.nftlist.findSwipeRefreshLayout
+import io.outblock.lilico.utils.logd
 import kotlin.math.absoluteValue
 
 class NftCoordinatorLayout : CoordinatorLayout, GestureDetector.OnGestureListener {
@@ -17,8 +18,11 @@ class NftCoordinatorLayout : CoordinatorLayout, GestureDetector.OnGestureListene
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
       : super(context, attrs, defStyleAttr)
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         gestureDetector.onTouchEvent(ev)
+        if (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_CANCEL) {
+            findSwipeRefreshLayout(this)?.isEnabled = true
+        }
         return super.dispatchTouchEvent(ev)
     }
 
@@ -29,7 +33,9 @@ class NftCoordinatorLayout : CoordinatorLayout, GestureDetector.OnGestureListene
     override fun onSingleTapUp(e: MotionEvent?): Boolean = false
 
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+        logd("xxx", "NftCoordinatorLayout onScroll distanceX:$distanceX-distanceY: $distanceY")
         if (distanceX.absoluteValue > distanceY.absoluteValue) {
+            logd("xxx", "NftCoordinatorLayout requestDisallowInterceptTouchEvent")
             requestDisallowInterceptTouchEvent(true)
             findSwipeRefreshLayout(this)?.isEnabled = false
             return true

@@ -10,7 +10,6 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionLineBinding
-import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
@@ -28,11 +27,11 @@ class CollectionLineItemPresenter(
 
     override fun bind(model: CollectionItemModel) {
         with(binding) {
-            val config = NftCollectionConfig.get(model.address) ?: return@with
+            val config = model.collection
             nameView.text = config.name
             countView.text = view.context.getString(R.string.collections_count, model.count)
             Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corner)).into(coverView)
         }
-        view.setOnClickListener { CollectionActivity.launch(view.context, model.address) }
+        view.setOnClickListener { CollectionActivity.launch(view.context, model.collection.contractName) }
     }
 }
