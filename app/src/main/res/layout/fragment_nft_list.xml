@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"

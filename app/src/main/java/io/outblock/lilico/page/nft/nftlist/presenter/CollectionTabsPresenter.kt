@@ -11,6 +11,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.adapter.CollectionTabsAdapter
+import io.outblock.lilico.page.nft.nftlist.findParentAppBarLayout
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.setVisible
@@ -47,6 +48,7 @@ class CollectionTabsPresenter(
         model.isExpand?.let {
             (view.parent as View).setVisible(it)
             view.setVisible(it)
+            findParentAppBarLayout(view)?.requestLayout()
         }
     }
 }

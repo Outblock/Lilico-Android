@@ -17,6 +17,7 @@ import io.outblock.lilico.databinding.ItemNftTopSelectionHeaderBinding
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.nft.nftlist.NftViewModel
+import io.outblock.lilico.page.nft.nftlist.findParentAppBarLayout
 import io.outblock.lilico.page.nft.nftlist.widget.NftCardView
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
@@ -75,6 +76,7 @@ class SelectionItemPresenter(
             binding.motionLayout.post { binding.carousel.jumpToIndex(currentIndex) }
             binding.carousel.refresh()
             viewModel.updateSelectionIndex(if (list.isEmpty()) -1 else currentIndex)
+            findParentAppBarLayout(view)?.requestLayout()
         }
     }
 

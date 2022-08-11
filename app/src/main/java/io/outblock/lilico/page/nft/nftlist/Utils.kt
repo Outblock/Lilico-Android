@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.AppBarLayout
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.nftListCache
@@ -74,6 +75,13 @@ fun findSwipeRefreshLayout(view: View): SwipeRefreshLayout? {
     if (view.parent is SwipeRefreshLayout) return (view.parent as SwipeRefreshLayout)
 
     return findSwipeRefreshLayout(view.parent as View)
+}
+
+fun findParentAppBarLayout(view: View): AppBarLayout? {
+    if (view.parent == null) return null
+    if (view.parent is AppBarLayout) return (view.parent as AppBarLayout)
+
+    return findParentAppBarLayout(view.parent as View)
 }
 
 fun getNftByIdFromCache(uniqueId: String): Nft? {
