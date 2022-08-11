@@ -46,8 +46,8 @@ class NFTFragmentPresenter(
     }
 
     override fun bind(model: NFTFragmentModel) {
-        model.topSelection?.let {
-            isTopSelectionExist = it.data.isNotEmpty()
+        model.favorite?.let {
+            isTopSelectionExist = it.isNotEmpty()
             updateToolbarBackground()
         }
         model.onListScrollChange?.let { updateToolbarBackground(it) }

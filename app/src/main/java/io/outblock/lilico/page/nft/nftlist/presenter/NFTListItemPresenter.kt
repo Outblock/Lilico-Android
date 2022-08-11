@@ -3,7 +3,6 @@ package io.outblock.lilico.page.nft.nftlist.presenter
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import io.outblock.lilico.R
@@ -13,7 +12,6 @@ import io.outblock.lilico.databinding.ItemNftListBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
 import io.outblock.lilico.page.nft.nftlist.widget.NftItemPopupMenu
@@ -26,7 +24,6 @@ class NFTListItemPresenter(
 ) : BaseViewHolder(view), BasePresenter<NFTItemModel> {
     private val binding by lazy { ItemNftListBinding.bind(view) }
     private val activity by lazy { findActivity(view) as FragmentActivity }
-    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModelV0::class.java] }
     private val context = view.context
 
     private val dividerSize by lazy { R.dimen.nft_list_divider_size.res2pix() }

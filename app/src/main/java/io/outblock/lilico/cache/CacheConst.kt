@@ -10,7 +10,6 @@ import io.outblock.lilico.network.model.*
 
 const val CACHE_NFT_LIST = "nft_list"
 const val CACHE_WALLET = "wallet"
-const val CACHE_NFT_SELECTION = "nft_selection"
 const val USER_INFO = "user_info"
 const val ADDRESS_BOOK = "address_book"
 const val RECENT_ADDRESS_BOOK = "recent_address_book"
@@ -19,10 +18,6 @@ const val NFT_COLLECTION_STATE = "nft_collection_state"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST".cacheFile(), NFTListData::class.java)
-}
-
-fun nftSelectionCache(address: String?): CacheManager<NftSelections> {
-    return CacheManager("${address}_CACHE_NFT_SELECTION", NftSelections::class.java)
 }
 
 fun walletCache(): CacheManager<WalletListData> {

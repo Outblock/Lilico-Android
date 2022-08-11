@@ -2,23 +2,26 @@ package io.outblock.lilico.page.nft.nftlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.manager.account.OnWalletDataUpdate
+import io.outblock.lilico.manager.account.WalletManager
 import io.outblock.lilico.manager.config.NftCollection
+import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.NftCollectionWrapper
+import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.nft.nftlist.model.*
-import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteRequester
-import io.outblock.lilico.page.nft.nftlist.utils.NftGridRequester
-import io.outblock.lilico.page.nft.nftlist.utils.NftList
-import io.outblock.lilico.page.nft.nftlist.utils.NftListRequester
+import io.outblock.lilico.page.nft.nftlist.utils.*
 import io.outblock.lilico.utils.*
 
 private val TAG = NftViewModel::class.java.simpleName
 
-class NftViewModel : ViewModel() {
+class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdate {
 
     val collectionsLiveData = MutableLiveData<List<CollectionItemModel>>()
     val collectionTitleLiveData = MutableLiveData<CollectionTitleModel>()
     val listNftLiveData = MutableLiveData<List<Any>>()
     val collectionTabChangeLiveData = MutableLiveData<String>()
+    val favoriteLiveData = MutableLiveData<List<Nft>>()
+    val favoriteIndexLiveData = MutableLiveData<Int>()
 
     val gridNftLiveData = MutableLiveData<List<Any>>()
 
@@ -27,10 +30,14 @@ class NftViewModel : ViewModel() {
 
     private val gridRequester by lazy { NftGridRequester() }
     private val listRequester by lazy { NftListRequester() }
-    private val favoriteRequester by lazy { NftFavoriteRequester() }
 
     private var selectedCollection: NftCollection? = null
     private var isCollectionExpanded = false
+
+    init {
+        NftFavoriteManager.addOnNftSelectionChangeListener(this)
+        observeWalletUpdate()
+    }
 
     fun requestList() {
         viewModelIOScope(this) {
@@ -51,6 +58,8 @@ class NftViewModel : ViewModel() {
                 emptyLiveData.postValue(false)
             }
 
+            requestFavorite()
+
             // read from server
             val onlineCollections = listRequester.requestCollection().orEmpty()
 
@@ -65,8 +74,29 @@ class NftViewModel : ViewModel() {
                 logd(TAG, "notifyNftList 1")
                 notifyNftList(it)
             }
+        }
+    }
 
-            favoriteRequester.request()
+    override fun onNftFavoriteChange(nfts: List<Nft>) {
+        favoriteLiveData.postValue(nfts)
+    }
+
+    private fun requestFavorite() {
+        viewModelIOScope(this) { NftFavoriteManager.request() }
+    }
+
+    override fun onWalletDataUpdate(wallet: WalletListData) {
+        requestList()
+        requestGrid()
+    }
+
+    private fun observeWalletUpdate() {
+        ioScope {
+            // wallet not loaded yet
+            if (nftWalletAddress().isEmpty()) {
+                logd(TAG, "wallet not loaded yet")
+                WalletManager.addListener(this)
+            }
         }
     }
 
@@ -108,6 +138,10 @@ class NftViewModel : ViewModel() {
             isCollectionExpanded = isNftCollectionExpanded()
             requestList()
         }
+    }
+
+    fun updateSelectionIndex(position: Int) {
+        favoriteIndexLiveData.value = position
     }
 
     fun selectCollection(contractName: String) {

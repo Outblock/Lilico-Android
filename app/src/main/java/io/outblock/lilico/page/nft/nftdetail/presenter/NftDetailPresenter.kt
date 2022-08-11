@@ -25,7 +25,6 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
-import io.outblock.lilico.manager.nft.NftSelectionManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftdetail.model.NftDetailModel
@@ -34,6 +33,7 @@ import io.outblock.lilico.page.nft.nftdetail.widget.NftMorePopupMenu
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.desc
 import io.outblock.lilico.page.nft.nftlist.name
+import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteManager
 import io.outblock.lilico.page.nft.nftlist.video
 import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
@@ -244,10 +244,10 @@ class NftDetailPresenter(
     private fun toggleNftSelection(nft: Nft) {
         ioScope {
             if (isNftInSelection(nft)) {
-                NftSelectionManager.removeNftFromSelection(nft)
+                NftFavoriteManager.removeFavorite(nft.contractName(), nft.tokenId())
                 updateSelectionState(false)
             } else {
-                NftSelectionManager.addNftToSelection(nft)
+                NftFavoriteManager.addFavorite(nft.contractName(), nft.tokenId())
                 updateSelectionState(true)
             }
         }

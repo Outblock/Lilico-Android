@@ -1,13 +1,9 @@
 package io.outblock.lilico.page.nft.nftlist.widget
 
 import android.view.View
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
 import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.popupMenu
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.popup.PopupListView
@@ -16,7 +12,6 @@ class NftItemPopupMenu(
     private val view: View,
     val nft: Nft,
 ) {
-    private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[NFTFragmentViewModelV0::class.java] }
 
     fun show() {
         uiScope {

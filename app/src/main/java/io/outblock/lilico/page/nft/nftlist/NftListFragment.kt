@@ -14,15 +14,16 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.nftSelectionCache
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.databinding.FragmentNftListBinding
+import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionTabsModel
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTabsPresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.CollectionTitlePresenter
 import io.outblock.lilico.page.nft.nftlist.presenter.SelectionItemPresenter
+import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteManager
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.extensions.setVisible
@@ -36,8 +37,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 internal class NftListFragment : Fragment() {
 
     private lateinit var binding: FragmentNftListBinding
-    private lateinit var viewModel: NFTFragmentViewModelV0
-    private lateinit var viewModelV1: NftViewModel
+    private lateinit var viewModel: NftViewModel
 
     private val nftAdapter by lazy { NFTListAdapter() }
     private val collectionsAdapter by lazy { NFTListAdapter() }
@@ -59,41 +59,41 @@ internal class NftListFragment : Fragment() {
         setupCollectionsRecyclerView()
         setupScrollView()
         binding.root.setBackgroundResource(R.color.background)
-        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModelV0::class.java].apply {
-            topSelectionLiveData.observe(viewLifecycleOwner) { data ->
-                selectionPresenter.bind(data)
-                if (data.data.isEmpty()) {
-                    Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
-                }
-            }
-            selectionIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
-        }
 
-        viewModelV1 = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
+        viewModel = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
             requestList()
             listNftLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
             collectionsLiveData.observe(viewLifecycleOwner) { data -> updateCollections(data) }
             collectionTitleLiveData.observe(viewLifecycleOwner) { collectionTitlePresenter.bind(it) }
+            favoriteLiveData.observe(viewLifecycleOwner) { updateFavorite(it) }
+            favoriteIndexLiveData.observe(viewLifecycleOwner) { updateSelection(it) }
+        }
+    }
+
+    private fun updateFavorite(nfts: List<Nft>) {
+        selectionPresenter.bind(NftSelections(nfts.toMutableList()))
+        if (nfts.isEmpty()) {
+            Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
         }
     }
 
     private fun updateListData(data: List<Any>) {
         nftAdapter.setNewDiffData(data)
-        binding.nftRecyclerView.setVisible(!viewModelV1.isCollectionExpanded())
+        binding.nftRecyclerView.setVisible(!viewModel.isCollectionExpanded())
     }
 
     private fun updateCollections(data: List<CollectionItemModel>) {
         collectionsAdapter.setNewDiffData(data)
         collectionTabsPresenter.bind(CollectionTabsModel(data))
-        binding.collectionRecyclerView.setVisible(viewModelV1.isCollectionExpanded())
-        collectionTabsPresenter.bind(CollectionTabsModel(isExpand = !viewModelV1.isCollectionExpanded()))
+        binding.collectionRecyclerView.setVisible(viewModel.isCollectionExpanded())
+        collectionTabsPresenter.bind(CollectionTabsModel(isExpand = !viewModel.isCollectionExpanded()))
     }
 
     private fun setupScrollView() {
         var preOffset = 0
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             binding.backgroundWrapper.translationY = verticalOffset.toFloat()
-            viewModelV1.onListScrollChange(-verticalOffset)
+            viewModel.onListScrollChange(-verticalOffset)
             if (preOffset != verticalOffset) {
                 findSwipeRefreshLayout(binding.root)?.isEnabled = verticalOffset >= 0
                 logd("xxx", "NftListFragment: ${findSwipeRefreshLayout(binding.root)}")
@@ -132,10 +132,9 @@ internal class NftListFragment : Fragment() {
             Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
         }
         ioScope {
-            val data = nftSelectionCache(walletCache().read()?.primaryWalletAddress()).read()?.data?.reversed() ?: return@ioScope
-            val nft = data.getOrNull(index) ?: return@ioScope
+            val nft = NftFavoriteManager.favoriteList().getOrNull(index) ?: return@ioScope
             uiScope {
-                if (viewModel.selectionIndexLiveData.value != index) {
+                if (viewModel.favoriteIndexLiveData.value != index) {
                     return@uiScope
                 }
                 val oldUrl = binding.backgroundImage.tag as? String

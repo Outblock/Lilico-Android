@@ -19,9 +19,7 @@ class NFTFragment : Fragment() {
     private lateinit var presenter: NFTFragmentPresenter
     private lateinit var emptyPresenter: NftEmptyPresenter
 
-    private lateinit var viewModel: NFTFragmentViewModelV0
-
-    private lateinit var viewModelV1: NftViewModel
+    private lateinit var viewModel: NftViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNftBinding.inflate(inflater)
@@ -31,11 +29,8 @@ class NFTFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter = NFTFragmentPresenter(this, binding)
         emptyPresenter = NftEmptyPresenter(binding.emptyContainer)
-        viewModel = ViewModelProvider(requireActivity())[NFTFragmentViewModelV0::class.java].apply {
-            topSelectionLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(topSelection = it)) }
-        }
 
-        viewModelV1 = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
+        viewModel = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
             listNftLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
             gridNftLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(listPageData = it)) }
 
@@ -44,11 +39,13 @@ class NFTFragment : Fragment() {
                 stopShimmer(binding.shimmerLayout.shimmerLayout)
             }
             listScrollChangeLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(onListScrollChange = it)) }
+            favoriteLiveData.observe(viewLifecycleOwner) { presenter.bind(NFTFragmentModel(favorite = it)) }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.refresh()
+        viewModel.requestList()
+        viewModel.requestGrid()
     }
 }

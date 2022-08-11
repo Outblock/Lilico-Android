@@ -16,7 +16,7 @@ import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.databinding.ItemNftTopSelectionHeaderBinding
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
-import io.outblock.lilico.page.nft.nftlist.NFTFragmentViewModelV0
+import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.widget.NftCardView
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
@@ -32,7 +32,7 @@ class SelectionItemPresenter(
 
     private val activity by lazy { findActivity(view) as FragmentActivity }
 
-    private val viewModel by lazy { ViewModelProvider(activity)[NFTFragmentViewModelV0::class.java] }
+    private val viewModel by lazy { ViewModelProvider(activity)[NftViewModel::class.java] }
 
     private var currentIndex = 0
 
