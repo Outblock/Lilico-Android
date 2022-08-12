@@ -20,6 +20,7 @@ import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlin.math.min
@@ -59,7 +60,10 @@ class CollectionContentPresenter(
     }
 
     override fun bind(model: CollectionContentModel) {
-        model.data?.let { adapter.setNewDiffData(it) }
+        model.data?.let {
+            binding.progressBar.setVisible(it.isEmpty())
+            adapter.setNewDiffData(it)
+        }
         model.collection?.let { bindHeader(it) }
     }
 

@@ -12,6 +12,7 @@ import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftlist.model.*
+import kotlin.math.min
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -99,3 +100,5 @@ fun nftWalletAddress(): String {
     }
     return walletCache().read()?.primaryWalletAddress().orEmpty()
 }
+
+internal fun generateEmptyNftPlaceholders(count: Int) = (0 until min(count, 12)).map { NftItemShimmerModel() }

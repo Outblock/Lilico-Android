@@ -66,7 +66,7 @@ class NftGridRequester {
         return if (dataList.isEmpty()) cachedNfts().list else dataList
     }
 
-    fun haveMore() = count >= 0 && offset < count
+    fun haveMore() = count > limit && offset < count
 
     private fun resetOffset() = apply {
         offset = 0

@@ -171,10 +171,17 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
             return
         }
         val list = mutableListOf<Any>().apply { addAll(listRequester.dataList(collection).map { NFTItemModel(nft = it) }) }
-        if (listRequester.haveMore()) {
+        if (list.isNotEmpty() && listRequester.haveMore()) {
             list.add(NftLoadMoreModel(isListLoadMore = true))
         }
+
         logd(TAG, "notifyNftList collection:${collection.name} size:${list.size}")
+
+        if (list.isEmpty()) {
+            val count = listRequester.cacheCollections()?.firstOrNull { it.collection?.contractName == collection.contractName }?.count ?: 0
+            list.addAll(generateEmptyNftPlaceholders(count))
+        }
+
         listNftLiveData.postValue(list)
     }
 

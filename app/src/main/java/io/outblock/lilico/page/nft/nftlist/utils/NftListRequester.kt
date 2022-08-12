@@ -82,7 +82,7 @@ class NftListRequester {
 
     fun count() = count
 
-    fun haveMore() = count >= 0 && offset < count
+    fun haveMore() = count > limit && offset < count
 
     fun dataList(collection: NftCollection): List<Nft> {
         val list = if (dataList.firstOrNull()?.contract?.name == collection.contractName) dataList.toList() else emptyList()

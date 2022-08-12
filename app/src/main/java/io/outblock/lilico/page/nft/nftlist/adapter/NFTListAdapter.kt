@@ -23,6 +23,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is CollectionTabsModel -> TYPE_COLLECTION_TABS
             is NFTCountTitleModel -> TYPE_COUNT_TITLE
             is NftLoadMoreModel -> TYPE_LOAD_MORE
+            is NftItemShimmerModel -> TYPE_PLACE_HOLDER
             else -> TYPE_NONE
         }
     }
@@ -37,6 +38,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             TYPE_COLLECTION_TABS -> CollectionTabsPresenter(parent.inflate(R.layout.item_nft_list_collection_tabs))
             TYPE_COUNT_TITLE -> NftCountTitlePresenter(parent.inflate(R.layout.item_nft_count_title))
             TYPE_LOAD_MORE -> NftLoadMorePresenter(parent.inflate(R.layout.item_nft_load_more))
+            TYPE_PLACE_HOLDER -> NftItemShimmerPresenter(parent.inflate(R.layout.layout_shimmer_nft_item))
             else -> BaseViewHolder(View(parent.context))
         }
     }
@@ -51,6 +53,7 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
             is HeaderPlaceholderPresenter -> holder.bind(getItem(position) as HeaderPlaceholderModel)
             is NftCountTitlePresenter -> holder.bind(getItem(position) as NFTCountTitleModel)
             is NftLoadMorePresenter -> holder.bind(getItem(position) as NftLoadMoreModel)
+            is NftItemShimmerPresenter -> holder.bind(getItem(position) as NftItemShimmerModel)
         }
     }
 
@@ -69,5 +72,6 @@ class NFTListAdapter : BaseAdapter<Any>(nftListDiffCallback) {
         private const val TYPE_COLLECTION_TABS = 7
         private const val TYPE_COUNT_TITLE = 8
         private const val TYPE_LOAD_MORE = 9
+        private const val TYPE_PLACE_HOLDER = 10
     }
 }
