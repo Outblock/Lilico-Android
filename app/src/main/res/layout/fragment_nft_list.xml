@@ -5,26 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/background_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/background_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:ignore="ContentDescription"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_nft_selection_card_gradient"/>
-    </FrameLayout>
-
     <io.outblock.lilico.page.nft.nftlist.widget.NftCoordinatorLayout
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -37,17 +17,42 @@
             android:background="@color/transparent"
             app:elevation="0dp">
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:elevation="0dp"
                 app:layout_scrollFlags="scroll">
 
+                <FrameLayout
+                    android:id="@+id/background_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/background_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:ignore="ContentDescription"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_nft_selection_card_gradient"/>
+                </FrameLayout>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/header_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/nft_tool_bar_height"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <FrameLayout
                         android:id="@+id/top_selection_header"
@@ -81,7 +86,7 @@
                             layout="@layout/item_nft_list_collection_title"/>
                     </FrameLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
-            </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
                 android:id="@+id/collection_tabs_wrapper"

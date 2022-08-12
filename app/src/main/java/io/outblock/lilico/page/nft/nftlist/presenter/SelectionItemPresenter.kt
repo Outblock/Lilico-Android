@@ -61,9 +61,8 @@ class SelectionItemPresenter(
     }
 
     override fun bind(model: NftSelections) {
-        val list = model.data.reversed()
         currentIndex = 0
-        updateData(list)
+        updateData(model.data)
     }
 
     private fun updateData(list: List<Nft>) {

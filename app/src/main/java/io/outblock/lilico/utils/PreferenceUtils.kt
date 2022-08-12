@@ -8,7 +8,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import io.outblock.lilico.manager.config.GasConfig
-import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.utils.extensions.toSafeInt
 import kotlinx.coroutines.CoroutineScope
@@ -60,21 +59,6 @@ suspend fun isRegistered(): Boolean = dataStore.data.map { it[KEY_REGISTERED] ?:
 
 fun setRegistered() {
     edit { dataStore.edit { it[KEY_REGISTERED] = true } }
-}
-
-//fun isRegistered(): Boolean = sharedPreferencesTraditional.getBoolean(KEY_REGISTERED, false)
-//
-//fun setRegistered() {
-//    sharedPreferencesTraditional.edit().putBoolean(KEY_REGISTERED, true).apply()
-//}
-
-suspend fun isNftInSelection(nft: Nft): Boolean {
-    val list = dataStore.data.map { it[KEY_NFT_SELECTIONS] }.first().orEmpty().split(",")
-    return list.contains(nft.uniqueId())
-}
-
-suspend fun updateNftSelectionsPref(list: List<String>) {
-    dataStore.edit { block -> block[KEY_NFT_SELECTIONS] = list.joinToString(",") { it } }
 }
 
 suspend fun isNftCollectionExpanded(): Boolean = dataStore.data.map { it[KEY_NFT_COLLECTION_EXPANDED] ?: false }.first()

@@ -72,6 +72,7 @@ internal class NftListFragment : Fragment() {
 
     private fun updateFavorite(nfts: List<Nft>) {
         selectionPresenter.bind(NftSelections(nfts.toMutableList()))
+        binding.backgroundWrapper.setVisible(nfts.isNotEmpty())
         if (nfts.isEmpty()) {
             Glide.with(binding.backgroundImage).clear(binding.backgroundImage)
         }
@@ -92,7 +93,6 @@ internal class NftListFragment : Fragment() {
     private fun setupScrollView() {
         var preOffset = 0
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            binding.backgroundWrapper.translationY = verticalOffset.toFloat()
             viewModel.onListScrollChange(-verticalOffset)
             if (preOffset != verticalOffset) {
                 findSwipeRefreshLayout(binding.root)?.isEnabled = verticalOffset >= 0
@@ -100,7 +100,7 @@ internal class NftListFragment : Fragment() {
             }
             preOffset = verticalOffset
         })
-        with(binding.scrollView) {
+        with(binding.header1) {
             setPadding(paddingLeft, R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight, paddingRight, paddingBottom)
         }
     }

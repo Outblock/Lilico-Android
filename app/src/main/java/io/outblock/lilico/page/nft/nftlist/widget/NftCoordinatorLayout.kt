@@ -19,10 +19,10 @@ class NftCoordinatorLayout : CoordinatorLayout, GestureDetector.OnGestureListene
       : super(context, attrs, defStyleAttr)
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        gestureDetector.onTouchEvent(ev)
-        if (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_CANCEL) {
-            findSwipeRefreshLayout(this)?.isEnabled = true
-        }
+//        gestureDetector.onTouchEvent(ev)
+//        if (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_CANCEL) {
+//            findSwipeRefreshLayout(this)?.isEnabled = true
+//        }
         return super.dispatchTouchEvent(ev)
     }
 

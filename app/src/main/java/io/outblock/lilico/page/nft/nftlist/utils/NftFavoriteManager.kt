@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
 import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.network.model.*
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
 import io.outblock.lilico.utils.ioScope
@@ -25,17 +25,23 @@ object NftFavoriteManager {
     }
 
     suspend fun request() {
-        // TODO read from cache then dispatch
-        service.getNftFavorite()
-        // TODO save to cache then dispatch
+        dispatchListener(cache().read()?.nfts.orEmpty())
+
+        val response = service.getNftFavorite(nftWalletAddress())
+        val nfts = response.data.nfts()
+
+        cache().cacheSync(FavoriteCache(nfts))
+
+        dispatchListener(nfts)
     }
 
-    fun addFavorite(contractName: String?, tokenId: String?) {
-        contractName ?: return
-        tokenId ?: return
+    fun addFavorite(nft: Nft) {
         ioScope {
-            service.addNftFavorite(contractName, tokenId)
-            request()
+            val resp = service.addNftFavorite(AddNftFavoriteRequest(nft.contractName().orEmpty(), nft.tokenId()))
+            if (resp.status == 200) {
+                cache().cacheSync(FavoriteCache(favoriteList.apply { add(0, nft) }))
+                request()
+            }
         }
     }
 
@@ -45,23 +51,31 @@ object NftFavoriteManager {
         ioScope {
             val favorites = favoriteList().toMutableList()
             favorites.removeAll { it.contractName() == contractName && it.tokenId() == tokenId }
-            updateFavorite(favorites.map { it.uniqueId() })
-            request()
+            val resp = updateFavorite(favorites.map { it.uniqueId() })
+            if (resp.status == 200) {
+                favorites.removeAll { it.contractName() == contractName && it.tokenId() == tokenId }
+                cache().cacheSync(FavoriteCache(favorites))
+                request()
+            }
         }
-    }
-
-    private suspend fun updateFavorite(ids: List<String>) {
-        service.updateFavorite(uniqueIds = ids.joinToString(","))
     }
 
     fun favoriteList() = if (favoriteList.isEmpty()) cache().read()?.nfts.orEmpty() else favoriteList.toList()
 
+    fun isFavoriteNft(nft: Nft) = favoriteList().firstOrNull { it.uniqueId() == nft.uniqueId() } != null
+
+    private suspend fun updateFavorite(ids: List<String>): CommonResponse {
+        return service.updateFavorite(UpdateNftFavoriteRequest(ids.map { it.trim() }.distinct().joinToString(",")))
+    }
+
     private fun cache() = CacheManager("${nftWalletAddress()}_nft_favorite".cacheFile(), FavoriteCache::class.java)
 
-    private fun dispatchListener(ids: List<Nft>) {
+    private fun dispatchListener(nfts: List<Nft>) {
+        favoriteList.clear()
+        favoriteList.addAll(nfts)
         uiScope {
             listeners.removeAll { it.get() == null }
-            listeners.forEach { it.get()?.onNftFavoriteChange(ids) }
+            listeners.forEach { it.get()?.onNftFavoriteChange(nfts) }
         }
     }
 

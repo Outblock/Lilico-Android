@@ -123,7 +123,7 @@ class NftDetailPresenter(
             val title = "${config.name} #${nft.id.tokenId}"
             toolbar.title = title
 
-            uiScope { updateSelectionState(isNftInSelection(nft)) }
+            ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
 
             bindCover(nft)
             Glide.with(backgroundImage).load(nft.cover())
@@ -147,7 +147,7 @@ class NftDetailPresenter(
                 CollectionActivity.launch(activity, nft.contract.name.orEmpty())
             }
 
-            ioScope { updateSelectionState(isNftInSelection(nft)) }
+            ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
         }
     }
 
@@ -193,7 +193,7 @@ class NftDetailPresenter(
             }
 
             shareButton.setColorFilter(color)
-            uiScope { updateSelectionState(isNftInSelection(nft!!)) }
+            ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft!!)) }
             tags.children.forEach { tag ->
                 tag.background.setTint(color)
                 tag.findViewById<TextView>(R.id.title_view).setTextColor(color)
@@ -243,11 +243,11 @@ class NftDetailPresenter(
 
     private fun toggleNftSelection(nft: Nft) {
         ioScope {
-            if (isNftInSelection(nft)) {
+            if (NftFavoriteManager.isFavoriteNft(nft)) {
                 NftFavoriteManager.removeFavorite(nft.contractName(), nft.tokenId())
                 updateSelectionState(false)
             } else {
-                NftFavoriteManager.addFavorite(nft.contractName(), nft.tokenId())
+                NftFavoriteManager.addFavorite(nft)
                 updateSelectionState(true)
             }
         }
