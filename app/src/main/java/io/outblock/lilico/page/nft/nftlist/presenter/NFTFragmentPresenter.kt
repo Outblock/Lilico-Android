@@ -34,7 +34,7 @@ class NFTFragmentPresenter(
             addButton.setOnClickListener { NftCollectionListActivity.launch(fragment.requireContext()) }
 
             with(refreshLayout) {
-                isEnabled = false
+                isEnabled = true
                 setOnRefreshListener { refresh() }
                 setColorSchemeColors(R.color.colorSecondary.res2color())
             }
@@ -59,7 +59,7 @@ class NFTFragmentPresenter(
             setTabData(listOf(R.string.list.res2String(), R.string.grid.res2String()).toTypedArray())
             setOnTabSelectListener(object : OnTabSelectListener {
                 override fun onTabSelect(position: Int) {
-                    if (position != 0) binding.refreshLayout.isEnabled = false
+                    if (position != 0) binding.refreshLayout.isEnabled = true
 
                     updateToolbarBackground()
                     binding.viewPager.setCurrentItem(position, false)

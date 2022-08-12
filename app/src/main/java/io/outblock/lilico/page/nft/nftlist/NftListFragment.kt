@@ -28,7 +28,6 @@ import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
@@ -93,14 +92,14 @@ internal class NftListFragment : Fragment() {
     private fun setupScrollView() {
         var preOffset = 0
         binding.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.backgroundWrapper.translationY = verticalOffset.toFloat()
             viewModel.onListScrollChange(-verticalOffset)
             if (preOffset != verticalOffset) {
                 findSwipeRefreshLayout(binding.root)?.isEnabled = verticalOffset >= 0
-                logd("xxx", "NftListFragment: ${findSwipeRefreshLayout(binding.root)}")
             }
             preOffset = verticalOffset
         })
-        with(binding.header1) {
+        with(binding.scrollView) {
             setPadding(paddingLeft, R.dimen.nft_tool_bar_height.res2pix() + statusBarHeight, paddingRight, paddingBottom)
         }
     }
