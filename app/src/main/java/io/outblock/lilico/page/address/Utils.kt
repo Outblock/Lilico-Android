@@ -59,6 +59,9 @@ fun List<AddressBookContact>.removeRepeated(): List<AddressBookContact> {
 
 fun queryAddressBookFromBlockchain(keyword: String, server: FlowDomainServer): AddressBookContact? {
     val name = keyword.lowercase().removeSuffix(".${server.domain}")
+    if (name.contains(".")) {
+        return null
+    }
     val address = when (server) {
         FlowDomainServer.FIND -> cadenceQueryAddressByDomainFind(name)
         FlowDomainServer.FLOWNS, FlowDomainServer.MEOW -> cadenceQueryAddressByDomainFlowns(name, root = server.domain)
