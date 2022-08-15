@@ -7,7 +7,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
-import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
@@ -83,10 +82,6 @@ fun findParentAppBarLayout(view: View): AppBarLayout? {
     if (view.parent is AppBarLayout) return (view.parent as AppBarLayout)
 
     return findParentAppBarLayout(view.parent as View)
-}
-
-fun getNftByIdFromCache(uniqueId: String): Nft? {
-    return nftListCache(walletCache().read()?.primaryWalletAddress()).read()?.nfts?.firstOrNull { it.uniqueId() == uniqueId }
 }
 
 fun isSingleNftItem(model: Any): Boolean {

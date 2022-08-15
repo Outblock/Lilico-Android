@@ -47,7 +47,9 @@ data class Nft(
     @SerializedName("postMedia")
     val postMedia: PostMedia,
 ) : Parcelable {
-    fun uniqueId() = "${contract.name}-${id.tokenId}"
+    fun uniqueId() = "${contract.address}.${contract.name}-${id.tokenId}"
+
+    fun serverId() = "${contract.name}-${id.tokenId}"
 
     fun contractName() = contract.name
 

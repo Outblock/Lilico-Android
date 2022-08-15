@@ -37,5 +37,5 @@ fun NftFavoriteData.nfts(): List<Nft> {
 
     val nftCache = NftCache(nftWalletAddress())
     return ids.split(",").map { it.trim() }.distinct()
-        .mapNotNull { id -> nfts?.firstOrNull { it.uniqueId() == id } ?: nftCache.findNftById(id) }
+        .mapNotNull { id -> nfts?.firstOrNull { it.serverId() == id } ?: nftCache.findNftById(id) }
 }

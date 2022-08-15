@@ -15,7 +15,8 @@ import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.address.AddressBookViewModel
-import io.outblock.lilico.page.nft.nftlist.getNftByIdFromCache
+import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
+import io.outblock.lilico.page.nft.nftlist.utils.NftCache
 import io.outblock.lilico.page.send.nft.confirm.NftSendConfirmDialog
 import io.outblock.lilico.page.send.transaction.SelectSendAddressViewModel
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
@@ -26,7 +27,7 @@ import io.outblock.lilico.utils.registerBarcodeLauncher
 import io.outblock.lilico.utils.uiScope
 
 class NftSendAddressDialog : BottomSheetDialogFragment() {
-    private val nft by lazy { getNftByIdFromCache(arguments?.getString(EXTRA_ID)!!) }
+    private val nft by lazy { NftCache(nftWalletAddress()).findNftById(arguments?.getString(EXTRA_ID)!!) }
 
     private lateinit var binding: DialogSendNftAddressBinding
     private lateinit var presenter: TransactionSendPresenter
