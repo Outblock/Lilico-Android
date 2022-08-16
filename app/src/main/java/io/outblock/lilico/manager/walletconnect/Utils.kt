@@ -10,7 +10,6 @@ import io.outblock.lilico.manager.flowjvm.transaction.Signable
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
-import io.outblock.lilico.widgets.webview.fcl.fclAuthnResponseWithAccountProofSign
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 
 private const val TAG = "WalletConnectUtils"
@@ -24,7 +23,7 @@ fun Sign.Model.SessionProposal.approveSession() {
         val accounts = proposalNamespace.chains.map { "$it:$walletAddress" }
         caip2Namespace to Sign.Model.Namespace.Session(accounts = accounts, proposalNamespace.methods, proposalNamespace.events, extensions = null)
     }.toMap()
-
+    logd(TAG, "approveSession: $namespaces")
     SignClient.approveSession(Sign.Params.Approve(proposerPublicKey, namespaces)) { error -> loge(error.throwable) }
 }
 
@@ -46,16 +45,14 @@ suspend fun Sign.Model.SessionRequest.dispatch() {
     }
 }
 
-private suspend fun Sign.Model.SessionRequest.respondAuthn() {
+private fun Sign.Model.SessionRequest.respondAuthn() {
     val address = walletCache().read()?.primaryWalletAddress() ?: return
+    val services = walletConnectAuthnServiceResponse(address)
     val response = Sign.Params.Response(
         sessionTopic = topic,
-        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(
-            request.id,
-            fclAuthnResponseWithAccountProofSign(address = address),
-        )
+        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, services)
     )
-    logd(TAG,"respondAuthn: $response")
+    logd(TAG, "respondAuthn:\n${services}")
 
     SignClient.respond(response) { error -> loge(error.throwable) }
 }
@@ -74,8 +71,8 @@ private suspend fun Sign.Model.SessionRequest.respondAuthz() {
         )
     )
 
-    FclAuthzDialog.observe { isApprove->
-        if(isApprove){
+    FclAuthzDialog.observe { isApprove ->
+        if (isApprove) {
             val response = Sign.Params.Response(
                 sessionTopic = topic,
                 jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(

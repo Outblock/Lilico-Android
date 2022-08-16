@@ -1,5 +1,6 @@
 package io.outblock.lilico.manager.flowjvm
 
+import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.FlowAccount
@@ -112,10 +113,12 @@ fun (CadenceArgumentsBuilder.() -> Unit).builder(): CadenceArgumentsBuilder {
     return argsBuilder
 }
 
+@WorkerThread
 fun FlowAddress.lastBlockAccount(): FlowAccount? {
     return FlowApi.get().getAccountAtLatestBlock(this)
 }
 
+@WorkerThread
 fun FlowAddress.lastBlockAccountKeyId(): Int {
     return lastBlockAccount()?.keys?.firstOrNull()?.id ?: 0
 }
