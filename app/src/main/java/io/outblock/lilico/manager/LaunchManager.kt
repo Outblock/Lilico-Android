@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.wallet.restoreMnemonicV0
@@ -33,6 +34,7 @@ object LaunchManager {
         runWorker(application)
         readCache()
         runCompatibleScript()
+        WalletConnect.init(application)
     }
 
     private fun asyncInit() {

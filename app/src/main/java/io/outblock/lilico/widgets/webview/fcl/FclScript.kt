@@ -3,7 +3,6 @@ package io.outblock.lilico.widgets.webview.fcl
 import com.nftco.flow.sdk.DomainTag
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.hexToBytes
-import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.config.GasConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
@@ -229,14 +228,22 @@ suspend fun fclAuthnResponse(fcl: FclAuthnResponse, address: String): String {
         hdWallet().signData(fcl.encodeAccountProof(address))
     } else ""
 
+    return fclAuthnResponseWithAccountProofSign(accountProofSign, fcl.body.nonce, address)
+}
+
+suspend fun fclAuthnResponseWithAccountProofSign(
+    accountProofSign: String? = null,
+    nonce: String? = null,
+    address: String,
+): String {
     return FCL_AUTHN_RESPONSE
         .replace(ADDRESS_REPLACEMENT, address)
         .replace(PRE_AUTHZ_REPLACEMENT, generateAuthnPreAuthz())
         .replace(USER_SIGNATURE_REPLACEMENT, FCL_AUTHN_RESPONSE_USER_SIGNATURE)
         .replace(
             ACCOUNT_PROOF_REPLACEMENT,
-            if (accountProofSign.isEmpty()) "" else FCL_AUTHN_RESPONSE_ACCOUNT_PROOF.replace(ADDRESS_REPLACEMENT, address)
-                .replace(SIGNATURE_REPLACEMENT, accountProofSign).replace(NONCE_REPLACEMENT, fcl.body.nonce.orEmpty())
+            if (accountProofSign.isNullOrEmpty()) "" else FCL_AUTHN_RESPONSE_ACCOUNT_PROOF.replace(ADDRESS_REPLACEMENT, address)
+                .replace(SIGNATURE_REPLACEMENT, accountProofSign).replace(NONCE_REPLACEMENT, nonce.orEmpty())
         )
 }
 
