@@ -3,6 +3,8 @@ package io.outblock.lilico.network.model
 import com.google.gson.annotations.SerializedName
 
 data class AddNftFavoriteRequest(
+    @SerializedName("address")
+    val address: String,
     @SerializedName("contract")
     val contractName: String,
     @SerializedName("ids")
