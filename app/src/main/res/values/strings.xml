@@ -281,4 +281,9 @@
     <string name="reject">Reject</string>
     <string name="claim_failed">Claim failed</string>
     <string name="auth_error">Auth error</string>
+    <string name="wallet_connect">WalletConnect</string>
+    <string name="main_wallet">Main Wallet</string>
+    <string name="details">Details</string>
+    <string name="expiry">Expiry</string>
+    <string name="disconnect">Disconnect</string>
 </resources>

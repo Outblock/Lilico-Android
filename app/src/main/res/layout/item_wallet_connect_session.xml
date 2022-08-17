@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/deep_bg"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:rippleColor="@color/black_10"
+    tools:layout_margin="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/cover_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="40dp"
+            tools:background="#999"/>
+
+        <TextView
+            android:id="@+id/title_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/neutrals1"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/desc_view"
+            app:layout_constraintEnd_toStartOf="@id/device_view"
+            app:layout_constraintStart_toEndOf="@id/cover_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="NBA Top Shot Marketplace"/>
+
+        <TextView
+            android:id="@+id/desc_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/note"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/title_view"
+            app:layout_constraintStart_toStartOf="@id/title_view"
+            app:layout_constraintTop_toBottomOf="@id/title_view"
+            tools:text="google.com"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/device_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#999"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

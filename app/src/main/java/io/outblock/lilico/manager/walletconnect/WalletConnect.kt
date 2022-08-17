@@ -14,6 +14,16 @@ class WalletConnect {
         SignClient.pair(Sign.Params.Pair(uri)) { error -> loge(error.throwable) }
     }
 
+    fun sessionCount(): Int = sessions().size
+
+    fun sessions() = SignClient.getListOfSettledSessions().filter { it.metaData != null }
+
+    fun disconnect(topic: String) {
+        SignClient.disconnect(
+            Sign.Params.Disconnect(sessionTopic = topic)
+        ) { error -> loge(error.throwable) }
+    }
+
     companion object {
         private lateinit var instance: WalletConnect
 

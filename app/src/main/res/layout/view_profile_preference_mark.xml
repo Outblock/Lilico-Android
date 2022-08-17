@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="20dp"
+    android:background="@drawable/bg_inbox_num_sign"
+    android:backgroundTint="@color/violet5"
+    android:fontFamily="@font/inter_medium"
+    android:gravity="center"
+    android:minWidth="28dp"
+    android:paddingHorizontal="5dp"
+    android:textColor="@color/violet1"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toBottomOf="@id/inbox_icon"
+    app:layout_constraintEnd_toEndOf="@id/inbox_icon"
+    tools:text="5"/>

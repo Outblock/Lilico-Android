@@ -7,6 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
 import io.outblock.lilico.manager.app.isTestnet
+import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.address.AddressBookActivity
 import io.outblock.lilico.page.inbox.InboxActivity
@@ -23,6 +24,7 @@ import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClai
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
+import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.isVisible
@@ -53,6 +55,7 @@ class ProfileFragmentPresenter(
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
+        binding.group5.walletConnectPreference.setOnClickListener { WalletConnectSessionActivity.launch(context) }
         updatePreferenceState()
         updateClaimDomainState()
         observeMeowDomainClaimedStateChange(this)
@@ -94,9 +97,11 @@ class ProfileFragmentPresenter(
                     notLoggedIn.root.setVisible(!isSignIn)
                     actionGroup.root.setVisible(isSignIn)
                     group1.root.setVisible(isSignIn)
+                    group5.root.setVisible(isSignIn)
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
                 }
+                updateWalletConnectSessionCount()
             }
         }
     }
@@ -117,5 +122,12 @@ class ProfileFragmentPresenter(
     private fun updateInboxCount(count: Int) {
         binding.actionGroup.inboxUnreadCount.setVisible(count != 0)
         binding.actionGroup.inboxUnreadCount.text = count.toString()
+    }
+
+    private fun updateWalletConnectSessionCount() {
+        ioScope {
+            val count = WalletConnect.get().sessionCount()
+            uiScope { binding.group5.walletConnectPreference.setMarkText(if (count == 0) "" else "$count") }
+        }
     }
 }
