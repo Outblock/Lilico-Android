@@ -18,13 +18,13 @@ fun walletConnectUserSignResponse(address: String, message: String): String {
   "f_type": "PollingResponse",
   "status": "APPROVED",
   "f_vsn": "1.0.0",
-  "data": [{
+  "data": {
     "f_type": "CompositeSignature",
     "f_vsn": "1.0.0",
     "addr": "${address.removeAddressPrefix()}",
     "signature": "${hdWallet().signData(DomainTag.USER_DOMAIN_TAG + message.hexToBytes())}",
     "keyId": 0
-  }]
+  }
 }
     """.trimIndent()
 }

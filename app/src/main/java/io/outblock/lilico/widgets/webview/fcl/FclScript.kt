@@ -10,7 +10,6 @@ import io.outblock.lilico.wallet.hdWallet
 import io.outblock.lilico.wallet.signData
 import io.outblock.lilico.wallet.toAddress
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
-import io.outblock.lilico.widgets.webview.fcl.model.FclSignMessageResponse
 
 private const val PRE_AUTHZ_REPLACEMENT = "#pre-authz"
 private const val ADDRESS_REPLACEMENT = "#address"
@@ -260,11 +259,11 @@ fun fclAuthzResponse(address: String, signature: String, keyId: Int? = 0): Strin
         .replace(KEY_ID_REPLACEMENT, "$keyId")
 }
 
-fun fclSignMessageResponse(fcl: FclSignMessageResponse, address: String): String {
-    val message = fcl.body?.message?.hexToBytes() ?: throw IllegalArgumentException("Message is empty")
+fun fclSignMessageResponse(message: String?, address: String): String {
+    val messageBytes = message?.hexToBytes() ?: throw IllegalArgumentException("Message is empty")
     return FCL_SIGN_MESSAGE_RESPONSE
         .replace(ADDRESS_REPLACEMENT, address)
-        .replace(SIGNATURE_REPLACEMENT, hdWallet().signData(DomainTag.USER_DOMAIN_TAG + message))
+        .replace(SIGNATURE_REPLACEMENT, hdWallet().signData(DomainTag.USER_DOMAIN_TAG + messageBytes))
 }
 
 private suspend fun generateAuthnPreAuthz(): String {

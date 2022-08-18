@@ -59,6 +59,6 @@ fun WebView?.postAuthzEnvelopeSignResponse(sign: SignPayerResponse.EnvelopeSigs)
 fun WebView?.postSignMessageResponse(fcl: FclSignMessageResponse) {
     ioScope {
         val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
-        fclSignMessageResponse(fcl, address).also { postMessage(it) }
+        fclSignMessageResponse(fcl.body?.message, address).also { postMessage(it) }
     }
 }

@@ -3,16 +3,24 @@ package io.outblock.lilico.manager.walletconnect
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.nftco.flow.sdk.FlowAddress
+import com.nftco.flow.sdk.hexToBytes
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.manager.flowjvm.transaction.Signable
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.wallet.hdWallet
+import io.outblock.lilico.wallet.signData
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
+import io.outblock.lilico.widgets.webview.fcl.fclAuthzResponse
+import io.outblock.lilico.widgets.webview.fcl.fclSignMessageResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 
 private const val TAG = "WalletConnectUtils"
@@ -63,8 +71,10 @@ private fun Sign.Model.SessionRequest.respondAuthn() {
 
 private suspend fun Sign.Model.SessionRequest.respondAuthz() {
     val activity = BaseActivity.getCurrentActivity() ?: return
+    logd("xxx", request.params.firstOrNull())
     val json = Gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
+    val message = signable.message ?: return
     uiScope {
         FclAuthzDialog.show(
             activity.supportFragmentManager,
@@ -77,8 +87,14 @@ private suspend fun Sign.Model.SessionRequest.respondAuthz() {
         )
 
         FclAuthzDialog.observe { isApprove ->
-            if (isApprove) approve("") else reject()
-            FclAuthzDialog.dismiss()
+            ioScope {
+                val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
+                val signature = hdWallet().signData(message.hexToBytes())
+                val keyId = FlowAddress(address).lastBlockAccountKeyId()
+
+                if (isApprove) approve(fclAuthzResponse(address, signature, keyId)) else reject()
+                uiScope { FclAuthzDialog.dismiss() }
+            }
         }
     }
 }
@@ -100,7 +116,7 @@ private fun Sign.Model.SessionRequest.respondUserSign() {
         )
 
         FclSignMessageDialog.observe { isApprove ->
-            if (isApprove) approve(walletConnectUserSignResponse(address, message)) else reject()
+            if (isApprove) approve(fclSignMessageResponse(message, address)) else reject()
             FclAuthzDialog.dismiss()
         }
     }

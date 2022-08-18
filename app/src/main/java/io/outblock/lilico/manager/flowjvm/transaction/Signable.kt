@@ -80,7 +80,7 @@ data class Interaction(
     @SerializedName("params")
     var params: Map<String, String> = mapOf(),
     @SerializedName("payer")
-    var payer: String? = null,
+    var payer: List<String>? = null,
     @SerializedName("proposer")
     var proposer: String? = null,
     @SerializedName("status")
@@ -271,7 +271,7 @@ fun Interaction.toFlowTransaction(): FlowTransaction {
     val ix = this
     val propKey = createFlowProposalKey()
 
-    val payerAccount = payer
+    val payerAccount = payer?.firstOrNull()
     val payer = accounts[payerAccount]?.addr ?: throw RuntimeException("missing payer")
 
     val insideSigners = findInsideSigners()
@@ -373,14 +373,13 @@ fun Interaction.findInsideSigners(): List<String> {
     val inside = authorizations.toMutableSet()
     proposer?.let { inside.add(it) }
 
-    payer?.let { inside.remove(it) }
+    payer?.forEach { inside.remove(it) }
     return inside.toList()
 }
 
 fun Interaction.findOutsideSigners(): List<String> {
     // Outside Signers Are: (payer)
-    val payer = payer ?: return emptyList()
-    return listOf(payer)
+    return payer.orEmpty()
 }
 
 fun Signable.generateVoucher(): Voucher {
@@ -412,7 +411,7 @@ fun Signable.generateVoucher(): Voucher {
         computeLimit = interaction.message.computeLimit,
         arguments = interaction.message.arguments.mapNotNull { interaction.arguments[it]?.asArgument },
         proposalKey = interaction.createProposalKey(),
-        payer = interaction.accounts[interaction.payer.orEmpty()]?.addr?.removeAddressPrefix(),
+        payer = interaction.accounts[interaction.payer?.firstOrNull().orEmpty()]?.addr?.removeAddressPrefix(),
         authorizers = interaction.authorizations.mapNotNull { interaction.accounts[it]?.addr?.removeAddressPrefix() }.distinct(),
         payloadSigs = insideSigners,
         envelopeSigs = outsideSigners,
