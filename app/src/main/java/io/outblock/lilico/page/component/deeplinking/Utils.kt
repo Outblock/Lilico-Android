@@ -22,8 +22,8 @@ private fun dispatchWalletConnect(uri: Uri): Boolean {
     return runCatching {
         val data = URLDecoder.decode(uri.getQueryParameter("uri"), "UTF-8")
         logd(TAG, "dispatchWalletConnect: $data")
-        if (data.startsWith("wc:")) {
-            WalletConnect.get().pair(data)
-        }
+        assert(data.startsWith("wc:"))
+
+        WalletConnect.get().pair(data)
     }.getOrNull() != null
 }
