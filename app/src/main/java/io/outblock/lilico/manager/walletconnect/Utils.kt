@@ -32,6 +32,7 @@ fun Sign.Model.SessionProposal.approveSession() {
         val caip2Namespace = item.key
         val proposalNamespace = item.value
         val accounts = proposalNamespace.chains.map { "$it:$walletAddress" }
+//        val methods = proposalNamespace.methods.toMutableSet().apply { add("flow_pre_authz") }
         caip2Namespace to Sign.Model.Namespace.Session(accounts = accounts, proposalNamespace.methods, proposalNamespace.events, extensions = null)
     }.toMap()
     logd(TAG, "approveSession: $namespaces")

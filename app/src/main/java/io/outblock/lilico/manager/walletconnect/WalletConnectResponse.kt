@@ -1,33 +1,11 @@
 package io.outblock.lilico.manager.walletconnect
 
 import androidx.annotation.WorkerThread
-import com.nftco.flow.sdk.DomainTag
 import com.nftco.flow.sdk.FlowAddress
-import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.manager.config.GasConfig
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
-import io.outblock.lilico.wallet.hdWallet
 import io.outblock.lilico.wallet.removeAddressPrefix
-import io.outblock.lilico.wallet.signData
 import io.outblock.lilico.wallet.toAddress
-
-@WorkerThread
-fun walletConnectUserSignResponse(address: String, message: String): String {
-    return """
-{
-  "f_type": "PollingResponse",
-  "status": "APPROVED",
-  "f_vsn": "1.0.0",
-  "data": {
-    "f_type": "CompositeSignature",
-    "f_vsn": "1.0.0",
-    "addr": "${address.removeAddressPrefix()}",
-    "signature": "${hdWallet().signData(DomainTag.USER_DOMAIN_TAG + message.hexToBytes())}",
-    "keyId": 0
-  }
-}
-    """.trimIndent()
-}
 
 @WorkerThread
 fun walletConnectAuthnServiceResponse(
