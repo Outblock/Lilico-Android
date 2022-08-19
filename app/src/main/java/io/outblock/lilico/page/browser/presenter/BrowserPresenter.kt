@@ -31,7 +31,8 @@ class BrowserPresenter(
             contentWrapper.post {
                 statusBarHolder.layoutParams.height = statusBarHeight
                 with(root) {
-                    setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom + navigationBarHeight)
+                    val navBarHeight = if (navigationBarHeight < 50) 0 else navigationBarHeight
+                    setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom + navBarHeight)
                 }
             }
             with(binding.toolbar) {
