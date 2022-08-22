@@ -92,6 +92,7 @@
     <string name="purchase_price">Purchase Price</string>
     <string name="collections">Collections</string>
     <string name="collections_count">%1$d Collections</string>
+    <string name="collectibles_count">%1$d Collectibles</string>
     <string name="share">Share</string>
     <string name="send">Send</string>
     <string name="more">More</string>

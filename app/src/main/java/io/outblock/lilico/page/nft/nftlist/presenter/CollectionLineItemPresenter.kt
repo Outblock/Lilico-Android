@@ -23,7 +23,7 @@ class CollectionLineItemPresenter(
         with(binding) {
             val config = model.collection
             nameView.text = config.name
-            countView.text = view.context.getString(R.string.collections_count, model.count)
+            countView.text = view.context.getString(R.string.collectibles_count, model.count)
             Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corner)).into(coverView)
         }
         view.setOnClickListener { CollectionActivity.launch(view.context, model.collection.contractName) }

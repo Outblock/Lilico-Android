@@ -64,6 +64,8 @@ fun Nft.video(): String? {
     return postMedia.video
 }
 
+fun Nft.title():String? = postMedia.title
+
 fun Nft.isSameNft(other: Nft): Boolean {
     return contract.address == other.contract.address && id.tokenId == other.id.tokenId
 }
@@ -95,5 +97,7 @@ fun nftWalletAddress(): String {
 //    }
     return walletCache().read()?.primaryWalletAddress().orEmpty()
 }
+
+fun Nft.isDomain() = media?.firstOrNull { it.uri.contains("flowns.org") && it.uri.contains(".meow") } != null
 
 internal fun generateEmptyNftPlaceholders(count: Int) = (0 until min(count, 12)).map { NftItemShimmerModel() }

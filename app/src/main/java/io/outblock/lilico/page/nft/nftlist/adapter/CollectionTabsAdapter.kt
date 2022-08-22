@@ -61,7 +61,7 @@ private class TabsViewHolder(
             if (this@TabsViewHolder.model != model) {
                 Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corners)).into(coverView)
                 nameView.text = config.name
-                countView.text = view.context.getString(R.string.collections_count, model.count)
+                countView.text = view.context.getString(R.string.collectibles_count, model.count)
             }
             root.strokeColor = if (model.isSelected) R.color.neutrals4.res2color() else Color.TRANSPARENT
         }

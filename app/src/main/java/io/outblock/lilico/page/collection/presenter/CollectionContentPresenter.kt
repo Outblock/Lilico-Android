@@ -77,7 +77,7 @@ class CollectionContentPresenter(
                 .into(backgroundImage)
 
             titleView.text = collection.name
-            subtitleView.text = activity.getString(R.string.collections_count, collectionWrapper.count)
+            subtitleView.text = activity.getString(R.string.collectibles_count, collectionWrapper.count)
 
             toolbar.title = collection.name
 

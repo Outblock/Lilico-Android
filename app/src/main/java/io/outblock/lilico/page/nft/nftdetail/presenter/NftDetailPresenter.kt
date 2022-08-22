@@ -30,15 +30,13 @@ import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nft.nftdetail.shareNft
 import io.outblock.lilico.page.nft.nftdetail.widget.NftMorePopupMenu
-import io.outblock.lilico.page.nft.nftlist.cover
-import io.outblock.lilico.page.nft.nftlist.desc
-import io.outblock.lilico.page.nft.nftlist.name
+import io.outblock.lilico.page.nft.nftlist.*
 import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteManager
-import io.outblock.lilico.page.nft.nftlist.video
 import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.exoplayer.createExoPlayer
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.ProgressDialog
 import io.outblock.lilico.widgets.likebutton.LikeButton
 import io.outblock.lilico.widgets.likebutton.OnLikeListener
@@ -119,8 +117,9 @@ class NftDetailPresenter(
     private fun bindData(nft: Nft) {
         this.nft = nft
         with(binding) {
-            val config = NftCollectionConfig.get(nft.contract.address) ?: return
-            val title = "${config.name} #${nft.id.tokenId}"
+            val config = NftCollectionConfig.get(nft.contract.address)
+            val name = config?.name?:nft.contractName()
+            val title = "$name #${nft.id.tokenId}"
             toolbar.title = title
 
             ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
@@ -132,8 +131,8 @@ class NftDetailPresenter(
                 .into(backgroundImage)
 
             titleView.text = title
-            subtitleView.text = config.name
-            Glide.with(collectionIcon).load(config.logo).transform(CenterCrop(), CircleCrop()).into(collectionIcon)
+            subtitleView.text = name
+            Glide.with(collectionIcon).load(config?.logo).transform(CenterCrop(), CircleCrop()).into(collectionIcon)
             descView.text = nft.desc()
 
             purchaseDate.text = "01.01.2022"
@@ -148,6 +147,8 @@ class NftDetailPresenter(
             }
 
             ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
+
+            sendButton.setVisible(!nft.isDomain())
         }
     }
 

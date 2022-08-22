@@ -13,7 +13,7 @@ import io.outblock.lilico.R
 fun ImageView.loadAvatar(url: String, placeholderEnable: Boolean = true, transformation: Transformation<Bitmap>? = null) {
     val avatar = url.parseAvatarUrl()
     logd("loadAvatar", avatar)
-    if (avatar.contains("boringavatars.com")) {
+    if (avatar.contains("boringavatars.com") || avatar.contains("flovatar.com")) {
         loadAvatarSvg(avatar, placeholderEnable)
     } else {
         loadAvatarNormal(avatar, placeholderEnable, transformation)
