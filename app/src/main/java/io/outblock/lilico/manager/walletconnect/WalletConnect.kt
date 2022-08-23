@@ -5,6 +5,7 @@ import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.logw
 
 private val TAG = WalletConnect::class.java.simpleName
 
@@ -51,8 +52,10 @@ private fun setup(application: Application) {
         application = application,
         relayServerUrl = "wss://relay.walletconnect.com?projectId=29b38ec12be4bd19bf03d7ccef29aaa6",
         metadata = appMetaData,
+        connectionType = Sign.ConnectionType.MANUAL,
     ), onError = { error ->
         loge(error.throwable)
     })
     SignClient.setWalletDelegate(WalletConnectDelegate())
+    SignClient.WebSocket.open { error -> logw(TAG, "open error:$error") }
 }

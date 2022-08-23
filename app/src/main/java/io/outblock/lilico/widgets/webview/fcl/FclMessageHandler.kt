@@ -93,6 +93,7 @@ class FclMessageHandler(
         if (fcl.isDispatching()) {
             return
         }
+        logd(TAG, "dispatchAuthn")
         fclResponse = fcl
         val approve = FclAuthnDialog().show(
             activity().supportFragmentManager,
