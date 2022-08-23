@@ -81,3 +81,4 @@
 -keep class io.outblock.lilico.widgets.webview.JsInterface.** {*;}
 
 -keep class com.walletconnect.** {*;}
+-keep class net.sqlcipher.** {*;}
