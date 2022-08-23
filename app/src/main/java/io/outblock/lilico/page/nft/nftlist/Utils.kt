@@ -5,12 +5,12 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
-import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftlist.model.*
+import java.net.URLEncoder
 import kotlin.math.min
 
 val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
@@ -45,7 +45,13 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 }
 
 fun Nft.cover(): String? {
-    return postMedia.image ?: postMedia.video
+    var image = postMedia.image
+
+    if (!image.isNullOrBlank() && postMedia.isSvg == true) {
+        image = "https://lilico.app/api/svg2png?url=${URLEncoder.encode(image, "UTF-8")}"
+    }
+
+    return image ?: video()
 }
 
 fun Nft.name(): String? {
@@ -64,7 +70,7 @@ fun Nft.video(): String? {
     return postMedia.video
 }
 
-fun Nft.title():String? = postMedia.title
+fun Nft.title(): String? = postMedia.title
 
 fun Nft.isSameNft(other: Nft): Boolean {
     return contract.address == other.contract.address && id.tokenId == other.id.tokenId

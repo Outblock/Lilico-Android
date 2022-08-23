@@ -68,6 +68,8 @@ data class PostMedia(
     val image: String? = null,
     @SerializedName("music")
     val music: String? = null,
+    @SerializedName("isSvg")
+    val isSvg: Boolean? = null,
 ) : Parcelable
 
 @Parcelize
