@@ -29,7 +29,8 @@ class TransactionRecordActivity : BaseActivity() {
         presenter = TransactionRecordPresenter(binding, this)
         viewModel = ViewModelProvider(this)[TransactionRecordViewModel::class.java].apply {
             setContractId(contractId)
-            transactionListLiveData.observe(this@TransactionRecordActivity) { presenter.bind(TransactionRecordPageModel(data = it)) }
+            transactionCountLiveData.observe(this@TransactionRecordActivity) { presenter.bind(TransactionRecordPageModel(transactionCount = it)) }
+            transferCountLiveData.observe(this@TransactionRecordActivity) { presenter.bind(TransactionRecordPageModel(transferCount = it)) }
             load()
         }
 

@@ -131,4 +131,20 @@ interface ApiService {
 
     @POST("/v1/flowns/signature")
     suspend fun claimDomainSignature(@Body params: PayerSignable): ClaimDomainSignatureResponse
+
+
+    @GET("/v1/account/tokentransfer")
+    suspend fun getTransferRecordByToken(
+        @Query("address") walletAddress: String,
+        @Query("token") tokenId: String,
+        @Query("limit") limit: Int = 25,
+        @Query("after") after: String = "",
+    ): TransferRecordResponse
+
+    @GET("/v1/account/transfers")
+    suspend fun getTransferRecord(
+        @Query("address") walletAddress: String,
+        @Query("limit") limit: Int = 25,
+        @Query("after") after: String = "",
+    ): TransferRecordResponse
 }

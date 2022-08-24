@@ -290,4 +290,8 @@
     <string name="public_key">Public Key</string>
     <string name="hash_algorithm">Hash Algorithm\n%1$s</string>
     <string name="sign_algorithm">Sign Algorithm\n%1$s</string>
+    <string name="transaction_with_count">Transaction (%1$d)</string>
+    <string name="transfer_with_count">Transfer (%1$d)</string>
+    <string name="to_address">To %1$s</string>
+    <string name="from_address">From %1$s</string>
 </resources>

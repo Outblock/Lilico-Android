@@ -6,6 +6,7 @@ import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.TokenStateCache
 import io.outblock.lilico.manager.nft.NftCollectionStateCache
 import io.outblock.lilico.network.model.*
+import io.outblock.lilico.page.transaction.record.model.TransactionRecordList
 
 
 const val CACHE_NFT_LIST = "nft_list"
@@ -48,6 +49,11 @@ fun nftCollectionStateCache(): CacheManager<NftCollectionStateCache> {
 fun inboxCache(): CacheManager<InboxResponse> {
     return CacheManager("inbox_response".cacheFile(), InboxResponse::class.java)
 }
+
+fun transactionRecordCache(): CacheManager<TransactionRecordList> {
+    return CacheManager("transaction_record".cacheFile(), TransactionRecordList::class.java)
+}
+
 
 fun String.cacheFile() = "${this.hashCode()}.${if (isTestnet()) "t" else "m"}"
 
