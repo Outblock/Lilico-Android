@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 app:desc="@string/sync"
                 app:descColor="@color/warning3"
-                app:icon="@drawable/ic_profile_temp"
+                app:icon="@drawable/ic_google_drive"
                 app:title="Google Drive"/>
 
             <View
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 app:desc="@string/sync"
                 app:descColor="@color/warning3"
-                app:icon="@drawable/ic_profile_temp"
+                app:icon="@drawable/ic_profile_backup_manually"
                 app:title="@string/manually"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>

@@ -12,6 +12,7 @@ import io.outblock.lilico.databinding.ActivityWalletSettingBinding
 import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.profile.subpage.wallet.dialog.WalletResetConfirmDialog
+import io.outblock.lilico.page.security.recovery.SecurityPrivateKeyActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.securityOpen
 import io.outblock.lilico.utils.*
@@ -44,10 +45,10 @@ class WalletSettingActivity : BaseActivity() {
     private fun setup() {
         with(binding) {
             privatePreference.setOnClickListener {
-                securityOpen(SecurityRecoveryActivity.launchIntent(this@WalletSettingActivity, SecurityRecoveryActivity.TYPE_PRIVATE_KEY))
+                securityOpen(SecurityPrivateKeyActivity.launchIntent(this@WalletSettingActivity))
             }
             recoveryPreference.setOnClickListener {
-                securityOpen(SecurityRecoveryActivity.launchIntent(this@WalletSettingActivity, SecurityRecoveryActivity.TYPE_PHRASES))
+                securityOpen(SecurityRecoveryActivity.launchIntent(this@WalletSettingActivity))
             }
 
             uiScope { freeGasPreference.setChecked(isFreeGasPreferenceEnable()) }

@@ -16,7 +16,6 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.textToClipboard
 import io.outblock.lilico.utils.toast
 import io.outblock.lilico.wallet.Wallet
-import io.outblock.lilico.wallet.getPrivateKey
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,7 +24,6 @@ class SecurityRecoveryActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySecurityRecoveryBinding
 
-    private val type by lazy { intent.getIntExtra(EXTRA_TYPE, TYPE_PHRASES) }
     private val adapter by lazy { MnemonicAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +31,7 @@ class SecurityRecoveryActivity : BaseActivity() {
         binding = ActivitySecurityRecoveryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
-        if (type == TYPE_PRIVATE_KEY) {
-            initPrivateKey()
-        } else {
-            initPhrases()
-        }
+        initPhrases()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -60,16 +54,6 @@ class SecurityRecoveryActivity : BaseActivity() {
         binding.copyButton.setOnClickListener { copyToClipboard(Wallet.store().mnemonic()) }
     }
 
-    private fun initPrivateKey() {
-        with(binding.stringContainer) {
-            setVisible()
-            text = getPrivateKey()
-        }
-
-        binding.mnemonicContainer.setVisible(false)
-        binding.copyButton.setOnClickListener { copyToClipboard(getPrivateKey()) }
-    }
-
     private fun loadMnemonic() {
         ioScope {
             val str = Wallet.store().mnemonic()
@@ -89,7 +73,7 @@ class SecurityRecoveryActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title = (if (type == TYPE_PRIVATE_KEY) R.string.private_key else R.string.recovery_phrase).res2String()
+        title = R.string.recovery_phrase.res2String()
     }
 
     private fun copyToClipboard(text: String) {
@@ -98,17 +82,10 @@ class SecurityRecoveryActivity : BaseActivity() {
     }
 
     companion object {
-        const val TYPE_PRIVATE_KEY = 1
-        const val TYPE_PHRASES = 2
-
-        private const val EXTRA_TYPE = "EXTRA_TYPE"
-
-        fun launch(context: Context, type: Int) {
-            context.startActivity(launchIntent(context, type))
+        fun launch(context: Context) {
+            context.startActivity(launchIntent(context))
         }
 
-        fun launchIntent(context: Context, type: Int): Intent = Intent(context, SecurityRecoveryActivity::class.java).apply {
-            putExtra(EXTRA_TYPE, type)
-        }
+        fun launchIntent(context: Context): Intent = Intent(context, SecurityRecoveryActivity::class.java)
     }
 }

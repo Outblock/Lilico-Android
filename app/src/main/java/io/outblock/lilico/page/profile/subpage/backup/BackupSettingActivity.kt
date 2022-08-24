@@ -15,7 +15,6 @@ import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.ActivityBackupSettingBinding
 import io.outblock.lilico.manager.drive.*
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
-import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity.Companion.TYPE_PHRASES
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.widgets.ProgressDialog
 import kotlinx.coroutines.delay
@@ -68,7 +67,7 @@ class BackupSettingActivity : BaseActivity() {
                 }
             }
             manuallyPreference.setOnClickListener {
-                SecurityRecoveryActivity.launch(this@BackupSettingActivity, TYPE_PHRASES)
+                SecurityRecoveryActivity.launch(this@BackupSettingActivity)
                 setBackupManually()
             }
         }

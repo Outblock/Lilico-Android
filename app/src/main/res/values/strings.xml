@@ -287,4 +287,7 @@
     <string name="details">Details</string>
     <string name="expiry">Expiry</string>
     <string name="disconnect">Disconnect</string>
+    <string name="public_key">Public Key</string>
+    <string name="hash_algorithm">Hash Algorithm\n%1$s</string>
+    <string name="sign_algorithm">Sign Algorithm\n%1$s</string>
 </resources>

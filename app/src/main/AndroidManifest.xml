@@ -71,6 +71,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name="io.outblock.lilico.page.security.recovery.SecurityPrivateKeyActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity"
             android:screenOrientation="portrait"/>
 
