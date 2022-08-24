@@ -206,9 +206,10 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="lilico.app"
+                    android:host="link.lilico.app"
                     android:scheme="http"/>
                 <data android:scheme="https"/>
+                <data android:scheme="lilico"/>
             </intent-filter>
         </activity>
 

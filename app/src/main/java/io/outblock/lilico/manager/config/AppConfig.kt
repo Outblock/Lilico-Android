@@ -9,15 +9,17 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isFreeGasPreferenceEnable
 import io.outblock.lilico.utils.safeRun
 
-suspend fun isGasFree() = GasConfig.isFreeGas() && isFreeGasPreferenceEnable()
+suspend fun isGasFree() = AppConfig.isFreeGas() && isFreeGasPreferenceEnable()
 
-object GasConfig {
+object AppConfig {
 
     private var config: Config? = null
 
     fun isFreeGas() = config().features.freeGas
 
     fun payer() = if (isTestnet()) config().payer.testnet else config().payer.mainnet
+
+    fun walletConnectEnable() = config().features.walletConnect
 
     fun sync() {
         ioScope { reloadConfig() }
@@ -44,7 +46,9 @@ private data class Config(
 
 private data class Features(
     @SerializedName("free_gas")
-    val freeGas: Boolean
+    val freeGas: Boolean,
+    @SerializedName("wallet_connect")
+    val walletConnect: Boolean,
 )
 
 private data class Payer(

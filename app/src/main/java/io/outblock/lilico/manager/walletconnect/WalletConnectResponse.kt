@@ -2,7 +2,7 @@ package io.outblock.lilico.manager.walletconnect
 
 import androidx.annotation.WorkerThread
 import com.nftco.flow.sdk.FlowAddress
-import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.wallet.removeAddressPrefix
 import io.outblock.lilico.wallet.toAddress
@@ -89,8 +89,8 @@ private fun preAuthz(): String {
     "endpoint": "flow_pre_authz",
     "method": "WC/RPC",
     "data": {
-      "address": "${GasConfig.payer().address.removeAddressPrefix()}",
-      "keyId": ${FlowAddress(GasConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
+      "address": "${AppConfig.payer().address.removeAddressPrefix()}",
+      "keyId": ${FlowAddress(AppConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
     }
 }
     """.trimIndent()

@@ -8,7 +8,7 @@ import com.nftco.flow.sdk.cadence.TYPE_STRING
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.cache.walletCache
-import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.transaction.*
 import io.outblock.lilico.manager.transaction.TransactionState
@@ -74,7 +74,7 @@ class ClaimDomainViewModel : ViewModel() {
 
             authorizers(listOf(walletAddress, prepare.lilicoServerAddress!!, prepare.flownsServerAddress!!).map { FlowAddress(it) }.toMutableList())
 
-            payerAddress = FlowAddress(GasConfig.payer().address)
+            payerAddress = FlowAddress(AppConfig.payer().address)
 
             addPayloadSignatures {
                 signature(

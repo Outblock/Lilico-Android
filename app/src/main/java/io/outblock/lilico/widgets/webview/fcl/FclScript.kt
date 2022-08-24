@@ -3,7 +3,7 @@ package io.outblock.lilico.widgets.webview.fcl
 import com.nftco.flow.sdk.DomainTag
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.hexToBytes
-import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.wallet.hdWallet
@@ -249,7 +249,7 @@ suspend fun fclAuthnResponseWithAccountProofSign(
 fun fclPreAuthzResponse(address: String): String {
     return FCL_PRE_AUTHZ_RESPONSE
         .replace(ADDRESS_REPLACEMENT, address)
-        .replace(PAYER_ADDRESS_REPLACEMENT, GasConfig.payer().address)
+        .replace(PAYER_ADDRESS_REPLACEMENT, AppConfig.payer().address)
 }
 
 fun fclAuthzResponse(address: String, signature: String, keyId: Int? = 0): String {
@@ -277,8 +277,8 @@ private suspend fun generateAuthnPreAuthz(): String {
                 "endpoint": "android://pre-authz.lilico.app",
                 "method": "EXT/RPC",
                 "data": {
-                    "address": "${GasConfig.payer().address.toAddress()}",
-                    "keyId": ${FlowAddress(GasConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
+                    "address": "${AppConfig.payer().address.toAddress()}",
+                    "keyId": ${FlowAddress(AppConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
                 }
             },
         """.trimIndent()

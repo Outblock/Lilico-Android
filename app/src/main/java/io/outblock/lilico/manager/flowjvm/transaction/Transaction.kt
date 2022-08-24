@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
-import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
@@ -78,7 +78,7 @@ private suspend fun prepare(builder: TransactionBuilder): Voucher {
         arguments = builder.arguments.map { AsArgument(it.type, it.value?.toString().orEmpty()) },
         cadence = builder.script?.replaceFlowAddress(),
         computeLimit = builder.limit ?: 9999,
-        payer = builder.payer ?: (if (isGasFree()) GasConfig.payer().address else builder.walletAddress),
+        payer = builder.payer ?: (if (isGasFree()) AppConfig.payer().address else builder.walletAddress),
         proposalKey = ProposalKey(
             address = account.address.base16Value,
             keyId = account.keys.first().id,
@@ -111,7 +111,7 @@ fun FlowTransaction.buildPayerSignable(): PayerSignable? {
         },
         envelopeSigs = listOf(
             Singature(
-                address = GasConfig.payer().address.toAddress(),
+                address = AppConfig.payer().address.toAddress(),
                 keyId = payerAccount.keys.first().id,
             )
         ),

@@ -40,7 +40,7 @@
         android:maxLines="1"
         android:textColor="@color/text"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/desc_view"
+        app:layout_constraintBottom_toTopOf="@id/time_view"
         app:layout_constraintEnd_toStartOf="@id/amount_view"
         app:layout_constraintStart_toEndOf="@id/transfer_type_view"
         app:layout_constraintTop_toTopOf="parent"

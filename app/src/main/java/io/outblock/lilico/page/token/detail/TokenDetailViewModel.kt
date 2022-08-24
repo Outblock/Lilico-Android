@@ -2,6 +2,8 @@ package io.outblock.lilico.page.token.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.cache.transferRecordCache
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.Balance
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.OnBalanceUpdate
@@ -11,11 +13,11 @@ import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.flowscan.flowScanTokenTransferQuery
+import io.outblock.lilico.network.flowscan.contractId
 import io.outblock.lilico.network.model.CryptowatchSummaryData
+import io.outblock.lilico.network.model.TransferRecord
+import io.outblock.lilico.network.model.TransferRecordList
 import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.page.transaction.record.model.TransactionRecord
-import io.outblock.lilico.page.transaction.toTransactionRecord
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.updateQuoteMarket
@@ -33,7 +35,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnT
     val chartDataLiveData = MutableLiveData<List<Quote>>()
     val chartLoadingLiveData = MutableLiveData<Boolean>()
     val summaryLiveData = MutableLiveData<CryptowatchSummaryData.Result>()
-    val transactionListLiveData = MutableLiveData<List<TransactionRecord>>()
+    val transferListLiveData = MutableLiveData<List<TransferRecord>>()
 
     private var coinRate = 0.0f
 
@@ -134,9 +136,18 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnT
 
     private fun transactionQuery() {
         viewModelIOScope(this) {
-            val query = flowScanTokenTransferQuery(coin).orEmpty()
-            val processing = TransactionStateManager.getProcessingTransaction().map { it.toTransactionRecord() }
-            transactionListLiveData.postValue((processing + query).take(3))
+            val cache = transferRecordCache(coin.contractId()).read()?.list
+            if (!cache.isNullOrEmpty()) {
+                transferListLiveData.postValue(cache.take(3))
+            }
+
+            val service = retrofit().create(ApiService::class.java)
+            val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return@viewModelIOScope
+            val resp = service.getTransferRecordByToken(walletAddress, coin.contractId(), limit = 3)
+            val data = resp.data?.transactions.orEmpty()
+            transferListLiveData.postValue(data)
+
+            transferRecordCache(coin.contractId()).cache(TransferRecordList(data))
         }
     }
 }

@@ -7,6 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentProfileBinding
 import io.outblock.lilico.manager.app.isTestnet
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.address.AddressBookActivity
@@ -97,7 +98,7 @@ class ProfileFragmentPresenter(
                     notLoggedIn.root.setVisible(!isSignIn)
                     actionGroup.root.setVisible(isSignIn)
                     group1.root.setVisible(isSignIn)
-                    group5.root.setVisible(isSignIn)
+                    group5.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
                 }

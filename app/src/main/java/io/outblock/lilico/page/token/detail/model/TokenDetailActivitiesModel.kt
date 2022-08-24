@@ -1,7 +1,7 @@
 package io.outblock.lilico.page.token.detail.model
 
-import io.outblock.lilico.page.transaction.record.model.TransactionRecord
+import io.outblock.lilico.network.model.TransferRecord
 
 class TokenDetailActivitiesModel(
-    val recordList: List<TransactionRecord>? = null,
+    val recordList: List<TransferRecord>? = null,
 )

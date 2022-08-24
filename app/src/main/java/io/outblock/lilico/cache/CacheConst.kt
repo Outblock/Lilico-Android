@@ -54,6 +54,10 @@ fun transactionRecordCache(): CacheManager<TransactionRecordList> {
     return CacheManager("transaction_record".cacheFile(), TransactionRecordList::class.java)
 }
 
+fun transferRecordCache(tokenId: String = ""): CacheManager<TransferRecordList> {
+    return CacheManager("transfer_record_$tokenId".cacheFile(), TransferRecordList::class.java)
+}
+
 
 fun String.cacheFile() = "${this.hashCode()}.${if (isTestnet()) "t" else "m"}"
 

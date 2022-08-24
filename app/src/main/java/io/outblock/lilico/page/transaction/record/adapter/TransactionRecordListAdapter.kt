@@ -46,11 +46,18 @@ private val diffCallback = object : DiffUtil.ItemCallback<Any>() {
         if (oldItem is TransactionRecord && newItem is TransactionRecord) {
             return oldItem.transaction.hash == newItem.transaction.hash
         }
+        if (oldItem is TransferRecord && newItem is TransferRecord) {
+            return oldItem.txid == newItem.txid
+        }
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         if (oldItem is TransactionRecord && newItem is TransactionRecord) {
+            return oldItem == newItem
+        }
+
+        if (oldItem is TransferRecord && newItem is TransferRecord) {
             return oldItem == newItem
         }
         return false

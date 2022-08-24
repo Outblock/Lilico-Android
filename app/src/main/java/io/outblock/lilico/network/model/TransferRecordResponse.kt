@@ -58,3 +58,8 @@ data class TransferRecord(
         const val TRANSFER_TYPE_RECEIVE = 2
     }
 }
+
+data class TransferRecordList(
+    @SerializedName("list")
+    val list: List<TransferRecord>,
+)

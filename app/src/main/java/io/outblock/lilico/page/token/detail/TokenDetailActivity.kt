@@ -48,7 +48,7 @@ class TokenDetailActivity : BaseActivity() {
             balancePriceLiveData.observe(this@TokenDetailActivity) { presenter.bind(TokenDetailModel(balancePrice = it)) }
             summaryLiveData.observe(this@TokenDetailActivity) { chartPresenter.bind(TokenDetailChartModel(summary = it)) }
             chartDataLiveData.observe(this@TokenDetailActivity) { chartPresenter.bind(TokenDetailChartModel(chartData = it)) }
-            transactionListLiveData.observe(this@TokenDetailActivity) { activitiesPresenter.bind(TokenDetailActivitiesModel(recordList = it)) }
+            transferListLiveData.observe(this@TokenDetailActivity) { activitiesPresenter.bind(TokenDetailActivitiesModel(recordList = it)) }
             load()
         }
     }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import io.outblock.lilico.manager.config.GasConfig
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.utils.extensions.toSafeInt
 import kotlinx.coroutines.CoroutineScope
@@ -38,6 +38,7 @@ private val KEY_HIDE_WALLET_BALANCE = booleanPreferencesKey("KEY_HIDE_WALLET_BAL
 private val KEY_BOOKMARK_PREPOPULATE_FILLED = booleanPreferencesKey("KEY_BOOKMARK_PREPOPULATE_FILLED")
 private val KEY_FREE_GAS_ENABLE = booleanPreferencesKey("KEY_FREE_GAS_ENABLE")
 private val KEY_ACCOUNT_TRANSACTION_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSACTION_COUNT")
+private val KEY_ACCOUNT_TRANSFER_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSFER_COUNT")
 private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
 private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAIMED")
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
@@ -136,7 +137,7 @@ suspend fun setBookmarkPrepopulateFilled(isFilled: Boolean) {
     dataStore.edit { it[KEY_BOOKMARK_PREPOPULATE_FILLED] = isFilled }
 }
 
-suspend fun isFreeGasPreferenceEnable(): Boolean = dataStore.data.map { it[KEY_FREE_GAS_ENABLE] ?: GasConfig.isFreeGas() }.first()
+suspend fun isFreeGasPreferenceEnable(): Boolean = dataStore.data.map { it[KEY_FREE_GAS_ENABLE] ?: AppConfig.isFreeGas() }.first()
 
 suspend fun setFreeGasPreferenceEnable(isEnable: Boolean) {
     dataStore.edit { it[KEY_FREE_GAS_ENABLE] = isEnable }
@@ -146,6 +147,12 @@ suspend fun getAccountTransactionCountLocal(): Int = dataStore.data.map { it[KEY
 
 suspend fun updateAccountTransactionCountLocal(count: Int) {
     dataStore.edit { it[KEY_ACCOUNT_TRANSACTION_COUNT] = count }
+}
+
+suspend fun getAccountTransferCount(): Int = dataStore.data.map { it[KEY_ACCOUNT_TRANSFER_COUNT] ?: 0 }.first()
+
+suspend fun updateAccountTransferCount(count: Int) {
+    dataStore.edit { it[KEY_ACCOUNT_TRANSFER_COUNT] = count }
 }
 
 fun isGuidePageShown(): Boolean {
