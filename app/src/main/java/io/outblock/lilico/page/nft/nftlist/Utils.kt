@@ -47,7 +47,7 @@ val nftListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
 fun Nft.cover(): String? {
     var image = postMedia.image
 
-    if (!image.isNullOrBlank() && postMedia.isSvg == true) {
+    if (!image.isNullOrBlank() && postMedia.isSvg == "true") {
         image = "https://lilico.app/api/svg2png?url=${URLEncoder.encode(image, "UTF-8")}"
     }
 

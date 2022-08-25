@@ -15,8 +15,11 @@ import io.outblock.lilico.network.model.TransferRecordList
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.transaction.record.model.TransactionRecord
 import io.outblock.lilico.page.transaction.record.model.TransactionRecordList
+import io.outblock.lilico.page.transaction.record.model.TransactionViewMoreModel
 import io.outblock.lilico.page.transaction.toTransactionRecord
 import io.outblock.lilico.utils.*
+
+private const val LIMIT = 30
 
 class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
     private var contractId: String? = null
@@ -24,7 +27,7 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
     val transactionCountLiveData = MutableLiveData<Int>()
     val transferCountLiveData = MutableLiveData<Int>()
 
-    val transactionListLiveData = MutableLiveData<List<TransactionRecord>>()
+    val transactionListLiveData = MutableLiveData<List<Any>>()
     val transferListLiveData = MutableLiveData<List<Any>>()
 
     init {
@@ -55,12 +58,17 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
         }
 
         val processing = TransactionStateManager.getProcessingTransaction().map { it.toTransactionRecord() }
-        val data = processing + query.orEmpty()
+        val transactions = processing + query.orEmpty()
+        val data = mutableListOf<Any>().apply { addAll(transactions) }
+        val count = flowScanAccountTransferCountQuery() + processing.size
+        if (count > LIMIT) {
+            data.add(TransactionViewMoreModel(walletCache().read()?.primaryWalletAddress()!!))
+        }
 
-        transactionCountLiveData.postValue(flowScanAccountTransferCountQuery() + processing.size)
+        transactionCountLiveData.postValue(count)
         transactionListLiveData.postValue(data)
 
-        transactionRecordCache().cache(TransactionRecordList(data.map { it.transaction }))
+        transactionRecordCache().cache(TransactionRecordList(transactions.map { it.transaction }))
 
 
         updateAccountTransactionCountLocal(transactionCountLiveData.value ?: 0)
@@ -73,15 +81,20 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
         val service = retrofit().create(ApiService::class.java)
         val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return
         val resp = if (isQueryByToken()) {
-            service.getTransferRecordByToken(walletAddress, contractId!!)
+            service.getTransferRecordByToken(walletAddress, contractId!!, limit = LIMIT)
         } else {
-            service.getTransferRecord(walletAddress)
+            service.getTransferRecord(walletAddress, limit = LIMIT)
         }
-        val data = resp.data?.transactions.orEmpty()
+        val transfers = resp.data?.transactions.orEmpty()
+        val data = mutableListOf<Any>().apply { addAll(transfers) }
+        if ((resp.data?.total ?: 0) > LIMIT) {
+            data.add(TransactionViewMoreModel(walletCache().read()?.primaryWalletAddress()!!))
+        }
+
         transferListLiveData.postValue(data)
         transferCountLiveData.postValue(resp.data?.total ?: 0)
 
-        transferRecordCache(contractId.orEmpty()).cache(TransferRecordList(data))
+        transferRecordCache(contractId.orEmpty()).cache(TransferRecordList(transfers))
         updateAccountTransferCount(resp.data?.total ?: 0)
     }
 

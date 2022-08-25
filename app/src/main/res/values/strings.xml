@@ -294,4 +294,5 @@
     <string name="transfer_with_count">Transfer (%1$d)</string>
     <string name="to_address">To %1$s</string>
     <string name="from_address">From %1$s</string>
+    <string name="view_more_transactions">View more transactions</string>
 </resources>

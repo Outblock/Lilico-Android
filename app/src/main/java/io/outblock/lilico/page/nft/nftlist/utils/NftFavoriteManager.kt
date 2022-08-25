@@ -27,22 +27,20 @@ object NftFavoriteManager {
 
     suspend fun request() {
         dispatchListener(cache().read()?.nfts.orEmpty())
-
-        val response = service.getNftFavorite(nftWalletAddress())
-        val nfts = response.data.nfts()
-
-        cache().cacheSync(FavoriteCache(nfts))
-
-        dispatchListener(nfts)
+        fetchFromServer()
     }
 
     fun addFavorite(nft: Nft) {
         ioScope {
+            val favorites = favoriteList().toMutableList()
+
+            dispatchListener(favorites.apply { add(0, nft) })
+            cache().cacheSync(FavoriteCache(favorites))
+
             val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
             val resp = service.addNftFavorite(AddNftFavoriteRequest(address, nft.contractName().orEmpty(), nft.tokenId()))
             if (resp.status == 200) {
-                cache().cacheSync(FavoriteCache(favoriteList.apply { add(0, nft) }))
-                request()
+                fetchFromServer()
             }
         }
     }
@@ -53,11 +51,13 @@ object NftFavoriteManager {
         ioScope {
             val favorites = favoriteList().toMutableList()
             favorites.removeAll { it.contractName() == contractName && it.tokenId() == tokenId }
+            dispatchListener(favorites)
+            cache().cacheSync(FavoriteCache(favorites))
+
             val resp = updateFavorite(favorites.map { it.serverId() })
             if (resp.status == 200) {
                 favorites.removeAll { it.contractName() == contractName && it.tokenId() == tokenId }
-                cache().cacheSync(FavoriteCache(favorites))
-                request()
+                fetchFromServer()
             }
         }
     }
@@ -65,6 +65,15 @@ object NftFavoriteManager {
     fun favoriteList() = if (favoriteList.isEmpty()) cache().read()?.nfts.orEmpty() else favoriteList.toList()
 
     fun isFavoriteNft(nft: Nft) = favoriteList().firstOrNull { it.uniqueId() == nft.uniqueId() } != null
+
+    private suspend fun fetchFromServer() {
+        val response = service.getNftFavorite(nftWalletAddress())
+        val nfts = response.data.nfts()
+
+        cache().cacheSync(FavoriteCache(nfts))
+
+        dispatchListener(nfts)
+    }
 
     private suspend fun updateFavorite(ids: List<String>): CommonResponse {
         return service.updateFavorite(UpdateNftFavoriteRequest(ids.map { it.trim() }.distinct().joinToString(",")))

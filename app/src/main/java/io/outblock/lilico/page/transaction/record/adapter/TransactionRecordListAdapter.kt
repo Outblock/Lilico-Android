@@ -9,11 +9,14 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.network.model.TransferRecord
 import io.outblock.lilico.page.transaction.record.model.TransactionRecord
+import io.outblock.lilico.page.transaction.record.model.TransactionViewMoreModel
 import io.outblock.lilico.page.transaction.record.presenter.TransactionRecordItemPresenter
+import io.outblock.lilico.page.transaction.record.presenter.TransactionViewMoreItemPresenter
 import io.outblock.lilico.page.transaction.record.presenter.TransferRecordItemPresenter
 
 private const val TYPE_TRANSACTION = 0
 private const val TYPE_TRANSFER = 1
+private const val TYPE_VIEW_MORE = 2
 private const val TYPE_NONE = -1
 
 class TransactionRecordListAdapter : BaseAdapter<Any>(diffCallback) {
@@ -21,6 +24,7 @@ class TransactionRecordListAdapter : BaseAdapter<Any>(diffCallback) {
         return when (getItem(position)) {
             is TransactionRecord -> TYPE_TRANSACTION
             is TransferRecord -> TYPE_TRANSFER
+            is TransactionViewMoreModel -> TYPE_VIEW_MORE
             else -> TYPE_NONE
         }
     }
@@ -29,6 +33,7 @@ class TransactionRecordListAdapter : BaseAdapter<Any>(diffCallback) {
         return when (viewType) {
             TYPE_TRANSACTION -> TransactionRecordItemPresenter(parent.inflate(R.layout.item_transaction_record))
             TYPE_TRANSFER -> TransferRecordItemPresenter(parent.inflate(R.layout.item_transfer_record))
+            TYPE_VIEW_MORE -> TransactionViewMoreItemPresenter(parent.inflate(R.layout.item_transaction_view_more))
             else -> BaseViewHolder(View(parent.context))
         }
     }
@@ -37,6 +42,7 @@ class TransactionRecordListAdapter : BaseAdapter<Any>(diffCallback) {
         when (holder) {
             is TransactionRecordItemPresenter -> holder.bind(getItem(position) as TransactionRecord)
             is TransferRecordItemPresenter -> holder.bind(getItem(position) as TransferRecord)
+            is TransactionViewMoreItemPresenter -> holder.bind(getItem(position) as TransactionViewMoreModel)
         }
     }
 }

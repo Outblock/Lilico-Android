@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_more_transactions"
+        android:textColor="@color/text"
+        android:textSize="14sp"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:tint="@color/note"/>
+</LinearLayout>
