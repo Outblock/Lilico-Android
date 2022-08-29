@@ -38,11 +38,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_padding"
-                android:text="Blowfish Wallet"
-                android:textColor="#fdfbf9"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Blowfish Wallet"/>
+
+            <LinearLayout
+                android:id="@+id/domain_wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="13dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/wallet_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/wallet_name"
+                tools:visibility="visible">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_domain_logo_flowns"
+                    app:round="15dp"/>
+
+                <TextView
+                    android:id="@+id/domain_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:textColor="#bfbfbf"
+                    android:textSize="14sp"
+                    tools:text="domain.meow"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/balance_num"
@@ -107,8 +138,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible"/>
+        tools:ignore="ContentDescription"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/transaction_count_wrapper"

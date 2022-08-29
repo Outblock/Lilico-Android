@@ -64,6 +64,7 @@ class WalletHeaderPresenter(
             }
 
             bindTransactionCount(model.transactionCount)
+            bindDomain(model.walletList.username)
         }
     }
 
@@ -83,6 +84,13 @@ class WalletHeaderPresenter(
     private fun TextView.diffSetText(text: String?) {
         if (text != this.text.toString()) {
             this.text = text
+        }
+    }
+
+    private fun bindDomain(username: String) {
+        uiScope {
+            binding.domainWrapper.setVisible(isMeowDomainClaimed())
+            binding.domainView.text = "$username.meow"
         }
     }
 }
