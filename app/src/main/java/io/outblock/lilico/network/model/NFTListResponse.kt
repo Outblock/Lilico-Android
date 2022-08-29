@@ -77,9 +77,9 @@ data class NFTContract(
     @SerializedName("address")
     val address: String,
     @SerializedName("contractMetadata")
-    val contractMetadata: NFTContractMetadata,
+    val contractMetadata: NFTContractMetadata?,
     @SerializedName("externalDomain")
-    val externalDomain: String,
+    val externalDomain: String?,
     @SerializedName("name")
     val name: String?,
 ) : Parcelable
@@ -87,11 +87,11 @@ data class NFTContract(
 @Parcelize
 data class NFTContractMetadata(
     @SerializedName("publicCollectionName")
-    val publicCollectionName: String,
+    val publicCollectionName: String?,
     @SerializedName("publicPath")
-    val publicPath: String,
+    val publicPath: String?,
     @SerializedName("storagePath")
-    val storagePath: String
+    val storagePath: String?,
 ) : Parcelable
 
 @Parcelize

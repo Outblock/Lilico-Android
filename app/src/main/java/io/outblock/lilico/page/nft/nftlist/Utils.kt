@@ -99,7 +99,7 @@ fun isSingleNftItem(model: Any): Boolean {
 
 fun nftWalletAddress(): String {
 //    if (BuildConfig.DEBUG) {
-//        return "0x53f389d96fb4ce5e"
+//        return "0x95601dba5c2506eb"
 //    }
     return walletCache().read()?.primaryWalletAddress().orEmpty()
 }
