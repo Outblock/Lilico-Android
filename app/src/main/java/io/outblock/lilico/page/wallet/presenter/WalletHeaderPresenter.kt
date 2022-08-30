@@ -18,6 +18,7 @@ import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.transaction.record.TransactionRecordActivity
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
+import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
@@ -53,7 +54,7 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
-            buyButton.setOnClickListener { toast(msgRes = R.string.future_coming_soon) }
+            buyButton.setOnClickListener { SwapDialog.show((findActivity(view) as FragmentActivity).supportFragmentManager) }
 
             hideButton.setOnClickListener {
                 uiScope {

@@ -39,7 +39,11 @@ class LilicoWebView : WebView {
             callback?.onScrollChange(scrollX, scrollY - oldScrollY)
         }
 
-        CookieManager.getInstance().setAcceptThirdPartyCookies(this, true)
+        with(CookieManager.getInstance()) {
+            setAcceptThirdPartyCookies(this@LilicoWebView, true)
+            acceptCookie()
+            setAcceptCookie(true)
+        }
     }
 
     fun setWebViewCallback(callback: WebviewCallback?) {

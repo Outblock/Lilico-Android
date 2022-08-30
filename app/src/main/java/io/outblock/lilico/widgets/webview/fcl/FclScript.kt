@@ -1,11 +1,9 @@
 package io.outblock.lilico.widgets.webview.fcl
 
 import com.nftco.flow.sdk.DomainTag
-import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.config.isGasFree
-import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.wallet.hdWallet
 import io.outblock.lilico.wallet.signData
 import io.outblock.lilico.wallet.toAddress
@@ -278,7 +276,7 @@ private suspend fun generateAuthnPreAuthz(): String {
                 "method": "EXT/RPC",
                 "data": {
                     "address": "${AppConfig.payer().address.toAddress()}",
-                    "keyId": ${FlowAddress(AppConfig.payer().address.toAddress()).lastBlockAccountKeyId()}
+                    "keyId": 0
                 }
             },
         """.trimIndent()

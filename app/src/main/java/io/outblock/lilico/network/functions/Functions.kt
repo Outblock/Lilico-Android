@@ -22,6 +22,10 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "FirebaseFunctions"
 
 const val FUNCTION_SIGN_AS_PAYER = "signAsPayer"
+
+// https://us-central1-lilico-dev.cloudfunctions.net/moonPaySignature?url=https://buy-sandbox.moonpay.com?apiKey=pk_test_F0Y1SznEgbvGOWxFYJqStfjLeZ7XT&defaultCurrencyCode=FLOW&colorCode=%23FC814A&walletAddress=0x7d2b880d506db7cc
+const val FUNCTION_MOON_PAY_SIGN = "moonPaySignature"
+
 const val FUNCTION_REGISTER = "register"
 const val FUNCTION_CREATE_WALLET = "createWallet"
 
