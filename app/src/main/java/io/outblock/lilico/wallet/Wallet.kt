@@ -103,8 +103,8 @@ private fun saveCurrentUserPassword(password: String) {
 }
 
 private fun passwordMap(): HashMap<String, String> {
-    val pref = readWalletPassword()
-    return if (pref.isBlank()) {
+    val pref = runCatching { readWalletPassword() }.getOrNull()
+    return if (pref.isNullOrBlank()) {
         HashMap<String, String>()
     } else {
         Gson().fromJson(pref, object : TypeToken<HashMap<String, String>>() {}.type)
