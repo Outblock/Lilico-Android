@@ -253,6 +253,7 @@
             app:iconTint="@color/neutrals8"
             app:rippleColor="@color/black_10"/>
 
+        <!-- TODO hide now -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buy_button"
             android:layout_width="0dp"
@@ -270,6 +271,8 @@
             android:textAllCaps="false"
             android:textColor="@color/text"
             android:textSize="14sp"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_buy"
