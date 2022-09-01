@@ -55,6 +55,8 @@ class WalletHeaderPresenter(
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
             buyButton.setOnClickListener { SwapDialog.show((findActivity(view) as FragmentActivity).supportFragmentManager) }
+            // TODO hide now
+            buyButton.setVisible(false)
 
             hideButton.setOnClickListener {
                 uiScope {
