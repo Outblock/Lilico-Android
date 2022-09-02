@@ -3,13 +3,18 @@ package io.outblock.lilico.page.nft.nftdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
+import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
+import io.outblock.lilico.page.ar.ArActivity
 import io.outblock.lilico.page.nft.nftdetail.model.NftDetailModel
 import io.outblock.lilico.page.nft.nftdetail.presenter.NftDetailPresenter
+import io.outblock.lilico.page.nft.nftlist.cover
+import io.outblock.lilico.page.nft.nftlist.video
 import io.outblock.lilico.utils.isNightMode
 
 class NftDetailActivity : BaseActivity() {
@@ -47,9 +52,18 @@ class NftDetailActivity : BaseActivity() {
         presenter.bind(NftDetailModel(onDestroy = true))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.nft_detail, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
+            R.id.view_in_ar -> {
+                val nft = viewModel.nftLiveData.value ?: return true
+                ArActivity.launch(this, nft.cover(), nft.video())
+            }
             else -> super.onOptionsItemSelected(item)
         }
         return true

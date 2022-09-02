@@ -5,6 +5,15 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- Sceneform requires OpenGLES 3.0 or later. -->
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="true"/>
 
     <application
         android:name=".LilicoApplication"
@@ -194,6 +203,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".page.ar.ArActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".page.component.deeplinking.DeepLinkingActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -241,6 +254,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondary"/>
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required"/>
     </application>
 
 </manifest>
