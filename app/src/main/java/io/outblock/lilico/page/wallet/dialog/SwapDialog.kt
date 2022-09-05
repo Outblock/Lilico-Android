@@ -15,6 +15,7 @@ import io.outblock.lilico.databinding.DialogSwapCoinListBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.functions.FUNCTION_MOON_PAY_SIGN
 import io.outblock.lilico.network.functions.executeHttpFunction
+import io.outblock.lilico.page.browser.BrowserParams
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.viewModelIOScope
@@ -43,7 +44,7 @@ class SwapDialog : BottomSheetDialogFragment() {
 
     private fun openUrl(url: String?) {
         url ?: return
-        openBrowser(requireActivity(), url)
+        openBrowser(requireActivity(), url, BrowserParams(hideToolBar = true))
         dismiss()
     }
 

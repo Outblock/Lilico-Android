@@ -271,7 +271,7 @@
             android:textAllCaps="false"
             android:textColor="@color/text"
             android:textSize="14sp"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible"
             app:cornerRadius="12dp"
             app:elevation="0dp"

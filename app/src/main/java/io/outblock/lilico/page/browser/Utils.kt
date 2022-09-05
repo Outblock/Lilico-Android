@@ -37,14 +37,22 @@ fun openBrowser(
     url: String? = null,
     searchBoxPosition: Point? = null,
 ) {
+    openBrowser(activity, url, BrowserParams(searchBoxPosition))
+}
+
+fun openBrowser(
+    activity: Activity,
+    url: String? = null,
+    params: BrowserParams,
+) {
     WindowFrame.browserContainer()?.setVisible()
     if (browserInstance() != null) {
         val browser = browserInstance()!!
         url?.let { browser.loadUrl(it) }
-        browser.open(searchBoxPosition)
+        browser.open(params)
         return
     } else {
-        attachBrowser(activity, url, searchBoxPosition)
+        attachBrowser(activity, url, params)
     }
 }
 
@@ -165,4 +173,9 @@ fun String.toFavIcon(size: Int = 256): String {
 fun openInFlowScan(activity: Activity, transactionId: String) {
     openBrowser(activity, "https://${if (isTestnet()) "testnet." else ""}flowscan.org/transaction/$transactionId")
 }
+
+class BrowserParams(
+    val searchBoxPosition: Point? = null,
+    val hideToolBar: Boolean? = null,
+)
 

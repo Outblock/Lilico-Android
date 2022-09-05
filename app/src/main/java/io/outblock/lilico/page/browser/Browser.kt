@@ -1,7 +1,6 @@
 package io.outblock.lilico.page.browser
 
 import android.content.Context
-import android.graphics.Point
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,6 +15,7 @@ class Browser : FrameLayout {
     private var binding: LayoutBrowserBinding = LayoutBrowserBinding.inflate(LayoutInflater.from(context))
     private var presenter: BrowserPresenter
     private var inputPresenter: BrowserInputPresenter
+    private var browserParams = BrowserParams()
 
     private val viewModel by lazy { BrowserViewModel() }
 
@@ -68,10 +68,10 @@ class Browser : FrameLayout {
         presenter.bind(BrowserModel(url = url))
     }
 
-    fun open(searchBoxPosition: Point? = null) {
+    fun open(params: BrowserParams) {
         focus()
-        searchBoxPosition?.let {
-            presenter.bind(BrowserModel(searchBoxPosition = it))
+        presenter.bind(BrowserModel(params = params))
+        params.searchBoxPosition?.let {
             inputPresenter.bind(BrowserInputModel(searchBoxPosition = it))
         }
     }

@@ -48,7 +48,7 @@ class BrowserPresenter(
     override fun bind(model: BrowserModel) {
         model.url?.let { onOpenNewUrl(it) }
         model.onPageClose?.let { browserTabLast()?.webView?.saveRecentRecord() }
-        model.searchBoxPosition?.let { }
+        model.params?.hideToolBar?.let { binding.toolbar.root.setVisible(false) }
         model.removeTab?.let { removeTab(it) }
         model.onTabChange?.let { onBrowserTabChange() }
     }
@@ -62,6 +62,7 @@ class BrowserPresenter(
                 return
             }
             val toTranslationY = if (offset > 0) height.toFloat() * 2 else 0.0f
+            binding.toolbar.root.setVisible(true)
             toolbarTranslationAnimator = ObjectAnimator.ofFloat(this, "translationY", translationY, toTranslationY).apply {
                 duration = 200
                 start()
