@@ -69,8 +69,8 @@ internal class SwapViewModel : ViewModel() {
 
     var moonPayUrl: String? = null
 
-    private val moonPayApiKey = if (isTestnet()) "pk_test_F0Y1SznEgbvGOWxFYJqStfjLeZ7XT" else ""
-    private val moonPayHost = if (isTestnet()) "https://buy-sandbox.moonpay.com" else "https://buy.moonpay.com"
+    private val moonPayApiKey = if (isTestnet()) "pk_test_F0Y1SznEgbvGOWxFYJqStfjLeZ7XT" else "pk_test_F0Y1SznEgbvGOWxFYJqStfjLeZ7XT"
+    private val moonPayHost = if (isTestnet()) "https://buy-sandbox.moonpay.com" else "https://buy-sandbox.moonpay.com"
 
     fun load() {
         viewModelIOScope(this) {
