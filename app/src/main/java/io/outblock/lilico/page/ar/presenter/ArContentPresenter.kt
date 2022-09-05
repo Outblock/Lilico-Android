@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.ar.core.Anchor
+import com.google.ar.core.Config
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
@@ -18,6 +19,7 @@ import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.uiScope
+import kotlinx.coroutines.delay
 
 class ArContentPresenter(
     private val arFragment: ArFragment,
@@ -39,6 +41,7 @@ class ArContentPresenter(
     }
 
     override fun bind(model: ArContentModel) {
+        model.onResume?.let { onResume() }
         if (!video.isNullOrBlank()) {
             model.onPause?.let { safeRun { videoPlayer.pause() } }
             model.onRestart?.let { safeRun { videoPlayer.play() } }
@@ -95,5 +98,16 @@ class ArContentPresenter(
 //            prepare()
 //            play()
 //        }
+    }
+
+    private fun onResume() {
+        uiScope {
+            delay(1000)
+            arFragment.arSceneView.session?.apply {
+                config.planeFindingMode = Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL
+                configure(config)
+                arFragment.arSceneView.setupSession(this)
+            }
+        }
     }
 }

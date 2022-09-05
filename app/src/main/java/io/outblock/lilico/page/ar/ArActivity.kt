@@ -51,6 +51,11 @@ class ArActivity : BaseActivity() {
         presenter.bind(ArContentModel(onRestart = true))
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.bind(ArContentModel(onResume = true))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.bind(ArContentModel(onDestroy = true))
