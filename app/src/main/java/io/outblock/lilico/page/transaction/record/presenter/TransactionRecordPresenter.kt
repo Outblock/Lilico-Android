@@ -13,7 +13,7 @@ class TransactionRecordPresenter(
     private val activity: TransactionRecordActivity,
 ) : BasePresenter<TransactionRecordPageModel> {
 
-    private val titles = listOf(R.string.transaction_with_count, R.string.transfer_with_count)
+    private val titles = listOf(R.string.transfer_with_count, R.string.transaction_with_count)
 
     init {
         binding.refreshLayout.isEnabled = false

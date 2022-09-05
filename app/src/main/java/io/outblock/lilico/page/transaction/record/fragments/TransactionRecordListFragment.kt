@@ -45,8 +45,8 @@ class TransactionRecordListFragment : BaseFragment() {
     companion object {
         private const val EXTRA_TYPE = "type"
 
-        const val TYPE_TRANSACTION = 0
-        const val TYPE_TRANSFER = 1
+        const val TYPE_TRANSFER = 0
+        const val TYPE_TRANSACTION = 1
         fun newInstance(type: Int): TransactionRecordListFragment {
             return TransactionRecordListFragment().apply {
                 arguments = Bundle().apply { putInt(EXTRA_TYPE, type) }
