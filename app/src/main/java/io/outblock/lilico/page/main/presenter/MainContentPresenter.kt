@@ -5,9 +5,10 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityMainBinding
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.main.activeColor
 import io.outblock.lilico.page.main.adapter.MainPageAdapter
 import io.outblock.lilico.page.main.model.MainContentModel
-import io.outblock.lilico.utils.extensions.colorStateList
+import io.outblock.lilico.page.main.setLottieDrawable
 
 class MainContentPresenter(
     private val activity: MainActivity,
@@ -41,19 +42,30 @@ class MainContentPresenter(
         })
         binding.navigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.bottom_navigation_home -> onNavigationItemSelected(0, R.color.bottom_navigation_color_wallet)
-                R.id.bottom_navigation_nft -> onNavigationItemSelected(1, R.color.bottom_navigation_color_nft)
-                R.id.bottom_navigation_explore -> onNavigationItemSelected(2, R.color.bottom_navigation_color_explore)
-                R.id.bottom_navigation_profile -> onNavigationItemSelected(3, R.color.bottom_navigation_color_profile)
+                R.id.bottom_navigation_home -> onNavigationItemSelected(0)
+                R.id.bottom_navigation_nft -> onNavigationItemSelected(1)
+                R.id.bottom_navigation_explore -> onNavigationItemSelected(2)
+                R.id.bottom_navigation_profile -> onNavigationItemSelected(3)
             }
             true
         }
+
+        binding.navigationView.post {
+            with(binding.navigationView.menu) {
+                (0 until size()).forEach { binding.navigationView.setLottieDrawable(it, it == 0) }
+            }
+        }
     }
 
-    private fun onNavigationItemSelected(index: Int, color: Int) {
+    private fun onNavigationItemSelected(index: Int) {
+        val prvIndex = binding.viewPager.currentItem
         binding.viewPager.setCurrentItem(index, false)
-        binding.navigationView.itemIconTintList = color.colorStateList(activity)?.apply {
-            binding.navigationView.updateIndicatorColor(getColorForState(intArrayOf(android.R.attr.state_checked), 0))
+        binding.navigationView.updateIndicatorColor(binding.navigationView.activeColor(index))
+
+        if (prvIndex != index) {
+            binding.navigationView.setLottieDrawable(prvIndex, false)
         }
+
+        binding.navigationView.setLottieDrawable(index, true, prvIndex != index)
     }
 }
