@@ -23,7 +23,7 @@ private val lottieMenu by lazy {
     listOf(
         io.outblock.lilico.R.raw.lottie_coinhover,
         io.outblock.lilico.R.raw.lottie_grid,
-        io.outblock.lilico.R.raw.lottie_compass,
+        io.outblock.lilico.R.raw.lottie_category,
         io.outblock.lilico.R.raw.lottie_avatar,
     )
 }
