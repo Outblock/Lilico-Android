@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/view_in_ar"
-        android:icon="@drawable/ic_baseline_view_in_ar_24"
-        android:iconTint="@color/neutrals1"
-        android:iconTintMode="src_atop"
+        android:actionLayout="@layout/menu_ar_action"
+        app:actionLayout="@layout/menu_ar_action"
         android:title="@string/ar"
-        app:iconTint="@color/neutrals1"
         app:showAsAction="always"/>
 </menu>

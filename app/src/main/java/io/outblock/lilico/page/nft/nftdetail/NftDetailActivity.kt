@@ -54,19 +54,22 @@ class NftDetailActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.nft_detail, menu)
+        menu.findItem(R.id.view_in_ar).actionView.setOnClickListener { openInAr() }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-            R.id.view_in_ar -> {
-                val nft = viewModel.nftLiveData.value ?: return true
-                ArActivity.launch(this, nft.cover(), nft.video())
-            }
+            R.id.view_in_ar -> openInAr()
             else -> super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    private fun openInAr() {
+        val nft = viewModel.nftLiveData.value ?: return
+        ArActivity.launch(this, nft.cover(), nft.video())
     }
 
     companion object {
