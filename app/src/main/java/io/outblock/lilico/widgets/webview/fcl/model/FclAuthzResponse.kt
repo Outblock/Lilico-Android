@@ -37,8 +37,6 @@ data class FclAuthzResponse(
         data class Roles(
             @SerializedName("authorizer")
             val authorizer: Boolean,
-            @SerializedName("param")
-            val `param`: Boolean,
             @SerializedName("payer")
             val payer: Boolean,
             @SerializedName("proposer")

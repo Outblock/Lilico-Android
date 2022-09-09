@@ -15,8 +15,7 @@ import io.outblock.lilico.databinding.DialogSwapCoinListBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.functions.FUNCTION_MOON_PAY_SIGN
 import io.outblock.lilico.network.functions.executeHttpFunction
-import io.outblock.lilico.page.browser.BrowserParams
-import io.outblock.lilico.page.browser.openBrowser
+import io.outblock.lilico.utils.extensions.openInSystemBrowser
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.viewModelIOScope
 import java.net.URLEncoder
@@ -27,7 +26,7 @@ class SwapDialog : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: SwapViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogSwapCoinListBinding.inflate(inflater)
         return binding.root
     }
@@ -44,7 +43,7 @@ class SwapDialog : BottomSheetDialogFragment() {
 
     private fun openUrl(url: String?) {
         url ?: return
-        openBrowser(requireActivity(), url, BrowserParams(hideToolBar = true))
+        url.openInSystemBrowser(requireActivity())
         dismiss()
     }
 

@@ -3,7 +3,13 @@ package io.outblock.lilico.utils.extensions
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK
+import androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM
 import androidx.core.content.ContextCompat.startActivity
+import io.outblock.lilico.R
+import io.outblock.lilico.utils.drawableResToBitmap
+import io.outblock.lilico.utils.isNightMode
 import java.net.URL
 import java.net.URLEncoder
 
@@ -27,8 +33,17 @@ fun String.removeUrlParams(): String {
 
 fun String.urlEncode(): String = URLEncoder.encode(this)
 
-fun String.openInSystemBrowser(context: Context) {
-    startActivity(context, Intent(Intent.ACTION_VIEW, Uri.parse(this)), null)
+fun String.openInSystemBrowser(context: Context, ignoreInAppBrowser: Boolean = false) {
+    if (ignoreInAppBrowser) {
+        startActivity(context, Intent(Intent.ACTION_VIEW, Uri.parse(this)), null)
+    } else {
+        val closeIcon = drawableResToBitmap(context, R.drawable.ic_baseline_close_24, R.color.gray_55.res2color())
+        val customTabsIntent = CustomTabsIntent.Builder().apply {
+            if (closeIcon != null) setCloseButtonIcon(closeIcon)
+            setColorScheme(if (isNightMode()) COLOR_SCHEME_DARK else COLOR_SCHEME_SYSTEM)
+        }.build()
+        customTabsIntent.launchUrl(context, Uri.parse(this))
+    }
 }
 
 fun String.urlHost(): String {

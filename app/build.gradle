@@ -200,6 +200,7 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.3'
     implementation 'commons-validator:commons-validator:1.7'
     implementation 'com.airbnb.android:lottie:5.2.0'
+    implementation 'androidx.browser:browser:1.4.0'
 
     /** FLOW **/
     implementation "com.nftco:flow-jvm-sdk:0.7.1"
