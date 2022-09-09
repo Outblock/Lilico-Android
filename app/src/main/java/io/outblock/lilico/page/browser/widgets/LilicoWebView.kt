@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.page.browser.subpage.filepicker.showWebviewFilePicker
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.safeRun
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.*
 
@@ -30,7 +31,6 @@ class LilicoWebView : WebView {
             webViewClient = WebViewClient()
             webChromeClient = WebChromeClient()
             domStorageEnabled = true
-//            userAgentString = USER_AGENT
         }
         setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
 
@@ -39,10 +39,12 @@ class LilicoWebView : WebView {
             callback?.onScrollChange(scrollX, scrollY - oldScrollY)
         }
 
-        with(CookieManager.getInstance()) {
-            setAcceptThirdPartyCookies(this@LilicoWebView, true)
-            acceptCookie()
-            setAcceptCookie(true)
+        safeRun {
+            with(CookieManager.getInstance()) {
+                setAcceptThirdPartyCookies(this@LilicoWebView, true)
+                acceptCookie()
+                setAcceptCookie(true)
+            }
         }
     }
 
