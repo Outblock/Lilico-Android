@@ -1,27 +1,14 @@
 package io.outblock.lilico.manager.walletconnect
 
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
-import com.nftco.flow.sdk.FlowAddress
-import com.nftco.flow.sdk.hexToBytes
+import com.nftco.flow.sdk.bytesToHex
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.walletCache
-import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
-import io.outblock.lilico.manager.flowjvm.transaction.Signable
-import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
-import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.wallet.hdWallet
-import io.outblock.lilico.wallet.signData
-import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
-import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
-import io.outblock.lilico.widgets.webview.fcl.fclAuthzResponse
-import io.outblock.lilico.widgets.webview.fcl.fclSignMessageResponse
-import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 
 private const val TAG = "WalletConnectUtils"
 
@@ -50,88 +37,16 @@ fun Sign.Model.SessionProposal.reject() {
     SignClient.rejectSession(reject) { error -> loge(error.throwable) }
 }
 
-suspend fun Sign.Model.SessionRequest.dispatch() {
-    when (request.method) {
-        "flow_authn" -> respondAuthn()
-        "flow_authz" -> respondAuthz()
-        "flow_user_sign" -> respondUserSign()
-    }
-}
-
-private fun Sign.Model.SessionRequest.respondAuthn() {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return
-    val services = walletConnectAuthnServiceResponse(address)
+internal fun Sign.Model.SessionRequest.approve(result: String) {
+    logd(TAG, "SessionRequest.approve:$result")
     val response = Sign.Params.Response(
         sessionTopic = topic,
-        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, services)
-    )
-    logd(TAG, "respondAuthn:\n${services}")
-
-    SignClient.respond(response) { error -> loge(error.throwable) }
-}
-
-private suspend fun Sign.Model.SessionRequest.respondAuthz() {
-    val activity = BaseActivity.getCurrentActivity() ?: return
-    logd("xxx", request.params.firstOrNull())
-    val json = Gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
-    val signable = json.firstOrNull() ?: return
-    val message = signable.message ?: return
-    uiScope {
-        FclAuthzDialog.show(
-            activity.supportFragmentManager,
-            FclDialogModel(
-                title = peerMetaData?.name,
-                logo = peerMetaData?.icons?.firstOrNull(),
-                url = peerMetaData?.url,
-                cadence = signable.cadence,
-            )
-        )
-
-        FclAuthzDialog.observe { isApprove ->
-            ioScope {
-                val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
-                val signature = hdWallet().signData(message.hexToBytes())
-                val keyId = FlowAddress(address).lastBlockAccountKeyId()
-
-                if (isApprove) approve(fclAuthzResponse(address, signature, keyId)) else reject()
-                uiScope { FclAuthzDialog.dismiss() }
-            }
-        }
-    }
-}
-
-private fun Sign.Model.SessionRequest.respondUserSign() {
-    val activity = BaseActivity.getCurrentActivity() ?: return
-    val address = walletCache().read()?.primaryWalletAddress() ?: return
-    val param = Gson().fromJson<List<SignableMessage>>(request.params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
-    val message = param?.message ?: return
-    uiScope {
-        FclSignMessageDialog.show(
-            activity.supportFragmentManager,
-            FclDialogModel(
-                title = peerMetaData?.name,
-                logo = peerMetaData?.icons?.firstOrNull(),
-                url = peerMetaData?.url,
-                signMessage = message,
-            )
-        )
-
-        FclSignMessageDialog.observe { isApprove ->
-            if (isApprove) approve(fclSignMessageResponse(message, address)) else reject()
-            FclAuthzDialog.dismiss()
-        }
-    }
-}
-
-private fun Sign.Model.SessionRequest.approve(result: String) {
-    val response = Sign.Params.Response(
-        sessionTopic = topic,
-        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, result)
+        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, result.responseParse(this))
     )
     SignClient.respond(response) { error -> loge(error.throwable) }
 }
 
-private fun Sign.Model.SessionRequest.reject() {
+internal fun Sign.Model.SessionRequest.reject() {
     SignClient.respond(
         Sign.Params.Response(
             sessionTopic = topic,
@@ -140,7 +55,27 @@ private fun Sign.Model.SessionRequest.reject() {
     ) { error -> loge(error.throwable) }
 }
 
-private class SignableMessage(
+internal fun String.responseParse(model: Sign.Model.SessionRequest): String {
+    if (model.isFromFclSdk()) {
+        return this.toByteArray().bytesToHex()
+    }
+    return this
+}
+
+internal fun Sign.Model.SessionRequest.isFromFclSdk(): Boolean {
+    return peerMetaData?.redirect?.contains("\$fromSdk") == true
+}
+
+internal fun Sign.Model.SessionRequest.redirectToSourceApp() {
+    if (!isFromFclSdk()) {
+        return
+    }
+    val context = BaseActivity.getCurrentActivity() ?: Env.getApp()
+    val intent = context.packageManager.getLaunchIntentForPackage(peerMetaData?.redirect!!.split("\$").first())
+    context.startActivity(intent)
+}
+
+internal class SignableMessage(
     @SerializedName("addr")
     val addr: String?,
     @SerializedName("message")

@@ -13,6 +13,15 @@ private val accountProofTag = DomainTag.normalize("FCL-ACCOUNT-PROOF-V0.0")
 fun FclAuthnResponse.encodeAccountProof(address: String, includeDomainTag: Boolean = true): ByteArray {
     val nonce = body.nonce ?: return byteArrayOf()
     val appIdentifier = body.appIdentifier ?: throw IllegalStateException("Encode Message For Provable Authn Error: appIdentifier must be defined")
+    return encodeAccountProof(address, nonce, appIdentifier, includeDomainTag)
+}
+
+fun encodeAccountProof(
+    address: String,
+    nonce: String,
+    appIdentifier: String,
+    includeDomainTag: Boolean,
+): ByteArray {
     assert(address.isNotBlank()) { "Encode Message For Provable Authn Error: address must be defined" }
     assert(nonce.length >= 64) { "Encode Message For Provable Authn Error: nonce must be minimum of 32 bytes" }
 
