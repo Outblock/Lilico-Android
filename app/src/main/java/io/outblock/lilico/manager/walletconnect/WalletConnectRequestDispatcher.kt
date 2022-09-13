@@ -43,7 +43,7 @@ private fun Sign.Model.SessionRequest.respondAuthn() {
     val address = walletCache().read()?.primaryWalletAddress() ?: return
     val json = gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
-    val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"))
+    val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"), isFromFclSdk())
     val response = Sign.Params.Response(
         sessionTopic = topic,
         jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, services.responseParse(this))

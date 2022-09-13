@@ -16,6 +16,7 @@ fun walletConnectAuthnServiceResponse(
     address: String,
     nonce: String?,
     appIdentifier: String?,
+    isFromSdk: Boolean,
 ): String {
     return """
 {
@@ -26,12 +27,24 @@ fun walletConnectAuthnServiceResponse(
     "fVsn": "1.0.0",
     "paddr": null,
     "services": [
-      ${authn(address.removeAddressPrefix())},
-      ${authz(address.removeAddressPrefix())},
-      ${userSign(address.removeAddressPrefix())},
-      ${preAuthz()},
-      ${signMessage()},
-      ${accountProof(address, nonce, appIdentifier)}${if (nonce.isNullOrBlank() || appIdentifier.isNullOrBlank()) "" else ","}
+      ${
+        if (isFromSdk) {
+            """
+                  ${authn(address.removeAddressPrefix())},
+                  ${authz(address.removeAddressPrefix())},
+                  ${userSign(address.removeAddressPrefix())},
+                  ${preAuthz()},
+                  ${signMessage()},
+                  ${accountProof(address, nonce, appIdentifier)}${if (nonce.isNullOrBlank() || appIdentifier.isNullOrBlank()) "" else ","}
+              """.trimIndent()
+        } else {
+            """
+                  ${authn(address.removeAddressPrefix())},
+                  ${authz(address.removeAddressPrefix())},
+                  ${userSign(address.removeAddressPrefix())},
+              """.trimIndent()
+        }
+    }
     ],
     "addr": "${address.toAddress()}",
     "fType": "AuthnResponse"
