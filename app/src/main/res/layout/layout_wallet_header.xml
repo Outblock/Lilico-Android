@@ -205,7 +205,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/send_button"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/deep_bg"
             android:elevation="0dp"
@@ -221,16 +221,15 @@
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_send"
-            app:iconGravity="textStart"
+            app:iconGravity="textTop"
             app:iconPadding="12dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/neutrals8"
+            app:iconTint="@color/neutrals9"
             app:rippleColor="@color/black_10"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/receive_button"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_weight="1"
             android:backgroundTint="@color/deep_bg"
@@ -241,23 +240,22 @@
             android:letterSpacing="0"
             android:stateListAnimator="@null"
             android:text="@string/receive"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/text"
             android:textSize="14sp"
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_receive"
-            app:iconGravity="textStart"
+            app:iconGravity="textTop"
             app:iconPadding="12dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/neutrals8"
+            app:iconTint="@color/neutrals9"
             app:rippleColor="@color/black_10"/>
 
         <!-- TODO hide now -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buy_button"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_weight="1"
             android:backgroundTint="@color/deep_bg"
@@ -268,7 +266,7 @@
             android:letterSpacing="0"
             android:stateListAnimator="@null"
             android:text="@string/buy"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/text"
             android:textSize="14sp"
             android:visibility="visible"
@@ -276,10 +274,9 @@
             app:cornerRadius="12dp"
             app:elevation="0dp"
             app:icon="@drawable/ic_buy"
-            app:iconGravity="textStart"
+            app:iconGravity="textTop"
             app:iconPadding="12dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/neutrals8"
+            app:iconTint="@color/neutrals9"
             app:rippleColor="@color/black_10"/>
 
         <com.google.android.material.button.MaterialButton
@@ -291,7 +288,7 @@
             android:fontFamily="@font/inter_semi_bold"
             android:letterSpacing="0"
             android:text="@string/swap"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/note"
             android:visibility="gone"
             app:cornerRadius="16dp"
