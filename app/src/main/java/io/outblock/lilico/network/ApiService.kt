@@ -146,4 +146,7 @@ interface ApiService {
         @Query("limit") limit: Int = 25,
         @Query("after") after: String = "",
     ): TransferRecordResponse
+
+    @POST("/v1/templates/search")
+    suspend fun securityCadenceCheck(@Body params: CadenceSecurityCheck): CadenceSecurityCheckResponse
 }

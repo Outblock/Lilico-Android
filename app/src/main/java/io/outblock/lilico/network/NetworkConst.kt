@@ -36,9 +36,9 @@ fun retrofit(disableConverter: Boolean = false): Retrofit {
     return builder.baseUrl(API_HOST).client(client).build()
 }
 
-fun retrofitWithHost(host: String, disableConverter: Boolean = false): Retrofit {
+fun retrofitWithHost(host: String, disableConverter: Boolean = false, ignoreAuthorization: Boolean = true): Retrofit {
     val client = OkHttpClient.Builder().apply {
-        addInterceptor(HeaderInterceptor())
+        addInterceptor(HeaderInterceptor(ignoreAuthorization))
 
         callTimeout(10, TimeUnit.SECONDS)
         connectTimeout(10, TimeUnit.SECONDS)

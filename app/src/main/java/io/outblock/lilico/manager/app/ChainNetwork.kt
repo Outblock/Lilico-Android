@@ -19,3 +19,7 @@ fun chainNetwork() = network
 
 fun isMainnet() = network == NETWORK_MAINNET
 fun isTestnet() = network == NETWORK_TESTNET
+
+fun chainNetWorkString(): String {
+    return if (isTestnet()) "testnet" else "mainnet"
+}

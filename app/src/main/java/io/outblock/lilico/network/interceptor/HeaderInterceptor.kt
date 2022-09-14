@@ -21,9 +21,15 @@ private fun deviceName(): String {
     return "${Build.MANUFACTURER.capitalizeV2()} ${Build.MODEL}"
 }
 
-class HeaderInterceptor : Interceptor {
+class HeaderInterceptor(
+    private val ignoreAuthorization: Boolean = false
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        if (ignoreAuthorization) {
+            return chain.proceed(chain.request())
+        }
+
         val jwt = runBlocking { getFirebaseJwt() }
 
         logd("HeaderInterceptor", "jwt:$jwt")
