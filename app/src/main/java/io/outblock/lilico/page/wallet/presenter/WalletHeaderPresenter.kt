@@ -11,6 +11,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
+import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.page.receive.ReceiveActivity
@@ -66,6 +67,8 @@ class WalletHeaderPresenter(
 
             bindTransactionCount(model.transactionCount)
             bindDomain(model.walletList.username)
+
+            buyButton.setVisible(isMainnet())
         }
     }
 
