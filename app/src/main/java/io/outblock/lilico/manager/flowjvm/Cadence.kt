@@ -330,7 +330,7 @@ const val CADENCE_CLAIM_INBOX_NFT = """
       self.domain = domain!
       let collectionRef = account.borrow<&<NFT>.Collection>(from: <CollectionStoragePath>)
       if collectionRef == nil {
-        account.save(<- FLOAT.createEmptyCollection(), to: FLOAT.FLOATCollectionStoragePath)
+        account.save(<- <NFT>.createEmptyCollection(), to: <CollectionStoragePath>)
         account.link<&<NFT>.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, <CollectionPublic>}>(<CollectionPublicPath>, target: <CollectionStoragePath>)
         self.collectionRef = account.borrow<&<NFT>.Collection>(from: <CollectionStoragePath>)?? panic("Can not borrow collection")
       } else {
