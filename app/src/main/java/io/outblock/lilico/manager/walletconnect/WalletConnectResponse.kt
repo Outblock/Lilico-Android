@@ -41,7 +41,7 @@ fun walletConnectAuthnServiceResponse(
             """
                   ${authn(address.removeAddressPrefix())},
                   ${authz(address.removeAddressPrefix())},
-                  ${userSign(address.removeAddressPrefix())},
+                  ${userSign(address.removeAddressPrefix())}
               """.trimIndent()
         }
     }
