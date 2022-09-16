@@ -207,6 +207,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".page.swap.SwapActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".page.component.deeplinking.DeepLinkingActivity"
             android:exported="true"
             android:launchMode="singleTop"

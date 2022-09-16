@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/swap"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:titleTextColor="@color/text"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/data_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="7dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/from_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/bg_icon"
+            android:paddingBottom="22dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/from_input"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="21dp"
+                android:background="@color/transparent"
+                android:backgroundTint="@color/background"
+                android:digits="01234567890."
+                android:fontFamily="@font/inter_medium"
+                android:hint="@string/enter_amount"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
+                android:text="0.00"
+                android:textColor="@color/text"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="@id/from_button"
+                app:layout_constraintEnd_toStartOf="@id/from_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/from_button"
+                tools:ignore="HardcodedText,LabelFor"/>
+
+            <TextView
+                android:id="@+id/price_amount_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="14dp"
+                android:textColor="@color/text_sub"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/from_input"
+                app:layout_constraintTop_toBottomOf="@id/from_input"
+                tools:text="$ 0.0 "/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/from_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                app:cardBackgroundColor="@color/outline"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="@color/black_10">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/from_coin_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:scaleType="centerCrop"
+                        app:round="32dp"
+                        tools:src="@drawable/ic_coin_flow"/>
+
+                    <TextView
+                        android:id="@+id/from_coin_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_sub"
+                        android:textSize="14sp"
+                        tools:text="FLOW"/>
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                        app:tint="@color/text"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/max_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/background"
+                android:fontFamily="@font/inter_medium"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:stateListAnimator="@null"
+                android:text="@string/max"
+                android:textAllCaps="false"
+                android:textColor="@color/text"
+                android:textSize="12sp"
+                app:cornerRadius="16dp"
+                app:elevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/price_amount_view"
+                app:layout_constraintEnd_toEndOf="@id/from_button"
+                app:layout_constraintTop_toTopOf="@id/price_amount_view"
+                app:rippleColor="@color/black_20"
+                tools:ignore="SmallSp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/to_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/bg_icon"
+            android:paddingVertical="16dp"
+            app:layout_constraintTop_toBottomOf="@id/from_wrapper">
+
+            <EditText
+                android:id="@+id/to_input"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="21dp"
+                android:background="@color/transparent"
+                android:backgroundTint="@color/background"
+                android:digits="01234567890."
+                android:fontFamily="@font/inter_medium"
+                android:hint="@string/enter_amount"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
+                android:text="0.00"
+                android:textColor="@color/text"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="@id/to_button"
+                app:layout_constraintEnd_toStartOf="@id/to_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/to_button"
+                tools:ignore="HardcodedText,LabelFor"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/to_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                app:cardBackgroundColor="@color/outline"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="@color/black_10"
+                app:strokeColor="@color/salmon_primary">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/to_coin_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_swap_default"
+                        app:round="32dp"/>
+
+                    <TextView
+                        android:id="@+id/to_coin_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/select"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_sub"
+                        android:textSize="14sp"/>
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                        app:tint="@color/text"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/switch_button"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_swap_switch"
+            app:layout_constraintBottom_toTopOf="@id/to_wrapper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/from_wrapper"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:indeterminateTint="@color/colorSecondary"
+            android:progressTint="@color/colorSecondary"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/switch_button"
+            app:layout_constraintEnd_toEndOf="@id/switch_button"
+            app:layout_constraintStart_toStartOf="@id/switch_button"
+            app:layout_constraintTop_toTopOf="@id/switch_button"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/convert_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/text_sub"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/to_wrapper"
+            tools:text="1 FLOW  ≈ 35.1293 USDC"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="33dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/to_wrapper"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="32dp"
+                android:background="@color/card_bg"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/best_price"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/best_price_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/success"
+                    android:textSize="14sp"
+                    tools:text="1 FLOW  ≈ 35.1293 USDC"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/provider"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:id="@+id/provider_icon_view"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="7dp"
+                    android:scaleType="centerCrop"
+                    app:round="100dp"
+                    tools:background="#999"/>
+
+                <TextView
+                    android:id="@+id/provider_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"
+                    tools:text="Increment.fi"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/price_impact"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/price_impact_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/success"
+                    android:textSize="14sp"
+                    tools:text="0.06%"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/estimated_fees"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/estimated_fees_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/text"
+                    android:textSize="14sp"
+                    tools:text="$0.29"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/swap_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="29dp"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:text="@string/swap"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/white_20"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

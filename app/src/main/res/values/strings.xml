@@ -299,4 +299,9 @@
     <string name="scan_to_connect">Scan to Connect</string>
     <string name="scan_wallet_connect_desc">With WalletConnect, you can connect your wallet with hundreds of apps</string>
     <string name="new_connection">New Connection</string>
+    <string name="best_price">Best price</string>
+    <string name="provider">Provider</string>
+    <string name="price_impact">Price Impact</string>
+    <string name="estimated_fees">Estimated Fees</string>
+    <string name="select">Select</string>
 </resources>

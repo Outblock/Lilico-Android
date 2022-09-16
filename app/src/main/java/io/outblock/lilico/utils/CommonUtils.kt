@@ -40,3 +40,8 @@ fun sendEmail(
         context.startActivitySafe(Intent.createChooser(intent, chooserTitle))
     }
 }
+
+fun CharSequence.isLegalAmountNumber(): Boolean {
+    val number = toString().toFloatOrNull()
+    return number != null && number > 0
+}
