@@ -149,4 +149,13 @@ interface ApiService {
 
     @POST("/v1/templates/search")
     suspend fun securityCadenceCheck(@Body params: CadenceSecurityCheck): CadenceSecurityCheckResponse
+
+
+    @GET("/api/swap/v1/testnet/estimate")
+    suspend fun getSwapEstimate(
+        @Query("inToken") inToken: String,
+        @Query("outToken") outToken: String,
+        @Query("inAmount") inAmount: Float? = null,
+        @Query("outAmount") outAmount: Float? = null,
+    ): SwapEstimateResponse
 }

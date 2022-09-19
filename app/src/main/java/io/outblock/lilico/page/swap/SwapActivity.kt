@@ -29,6 +29,11 @@ class SwapActivity : BaseActivity() {
         viewModel = ViewModelProvider(this)[SwapViewModel::class.java].apply {
             fromCoinLiveData.observe(this@SwapActivity) { presenter.bind(SwapModel(fromCoin = it)) }
             toCoinLiveData.observe(this@SwapActivity) { presenter.bind(SwapModel(toCoin = it)) }
+            onBalanceUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onBalanceUpdate = it)) }
+            onCoinRateUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onCoinRateUpdate = it)) }
+            onEstimateFromUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateFromUpdate = it)) }
+            onEstimateToUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateToUpdate = it)) }
+            onEstimateLoading.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateLoading = it)) }
         }
     }
 

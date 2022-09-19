@@ -304,4 +304,5 @@
     <string name="price_impact">Price Impact</string>
     <string name="estimated_fees">Estimated Fees</string>
     <string name="select">Select</string>
+    <string name="select_token">Select Token</string>
 </resources>
