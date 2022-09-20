@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import io.outblock.lilico.R
+import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySwapBinding
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.network.model.SwapEstimateResponse
@@ -14,7 +15,6 @@ import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.toSafeFloat
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.formatPrice
-import io.outblock.lilico.utils.isLegalAmountNumber
 
 
 fun ActivitySwapBinding.viewModel(): SwapViewModel {
@@ -52,6 +52,27 @@ fun ActivitySwapBinding.updateProgressState(isLoading: Boolean) {
     switchButton.setVisible(!isLoading, invisible = true)
 }
 
+fun ActivitySwapBinding.switchCoin() {
+    val fromAmount = fromAmount()
+    val toAmount = toAmount()
+
+    if (fromInput.hasFocus() || toInput.hasFocus()) {
+        if (fromInput.hasFocus()) {
+            fromInput.clearFocus()
+            toInput.requestFocus()
+        } else {
+            toInput.clearFocus()
+            fromInput.requestFocus()
+        }
+    }
+
+    fromInput.setText(if (toInput.text.isEmpty()) "" else "$toAmount")
+    toInput.setText(if (fromInput.text.isEmpty()) "" else "$fromAmount")
+
+    if (fromInput.hasFocus()) fromInput.setSelection(fromInput.length())
+    if (toInput.hasFocus()) toInput.setSelection(toInput.length())
+}
+
 fun ActivitySwapBinding.updateEstimate(data: SwapEstimateResponse.Data) {
     val viewModel = viewModel()
     val fromCoin = viewModel.fromCoin() ?: return
@@ -66,10 +87,10 @@ fun ActivitySwapBinding.updateEstimate(data: SwapEstimateResponse.Data) {
 private fun ActivitySwapBinding.bindFromListener() {
     with(fromInput) {
         doOnTextChanged { _, _, _, _ ->
-            if (!hasFocus()) return@doOnTextChanged
-            viewModel().updateFromAmount(fromAmount())
             updateAmountPrice()
             legalCheck()
+            if (!hasFocus()) return@doOnTextChanged
+            viewModel().updateExactToken(ExactToken.FROM)
         }
         setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -84,10 +105,9 @@ private fun ActivitySwapBinding.bindFromListener() {
 private fun ActivitySwapBinding.bindToListener() {
     with(toInput) {
         doOnTextChanged { _, _, _, _ ->
-            if (!hasFocus()) return@doOnTextChanged
-            viewModel().updateToAmount(toAmount())
-            updateAmountPrice()
             legalCheck()
+            if (!hasFocus()) return@doOnTextChanged
+            viewModel().updateExactToken(ExactToken.TO)
         }
         setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -100,14 +120,14 @@ private fun ActivitySwapBinding.bindToListener() {
 }
 
 fun ActivitySwapBinding.onBalanceUpdate() {
-
+    legalCheck()
 }
 
 fun ActivitySwapBinding.onCoinRateUpdate() {
     updateAmountPrice()
 }
 
-fun ActivitySwapBinding.updateAmountPrice() {
+private fun ActivitySwapBinding.updateAmountPrice() {
     val amount = fromInput.text.toString().toSafeFloat()
     priceAmountView.text = "$ ${(viewModel().fromCoinRate() * amount).formatPrice()}"
 }
@@ -131,27 +151,23 @@ private fun ActivitySwapBinding.legalCheck() {
     swapButton.isEnabled = toAmount() > 0
 }
 
-private fun ActivitySwapBinding.fromAmount() = fromInput.text.toString().toSafeFloat()
-private fun ActivitySwapBinding.toAmount() = toInput.text.toString().toSafeFloat()
+fun swapPageBinding(): ActivitySwapBinding? {
+    if (BaseActivity.getCurrentActivity()?.javaClass != SwapActivity::class.java) {
+        return null
+    }
 
+    val activity = BaseActivity.getCurrentActivity() ?: return null
 
-private fun ActivitySwapBinding.fromLegalCheck(): Boolean {
-    return false
+    return ActivitySwapBinding.bind(activity.findViewById(R.id.root_view))
 }
 
-private fun ActivitySwapBinding.toLegalCheck(): Boolean {
-    return false
-}
+fun ActivitySwapBinding.fromAmount() = fromInput.text.toString().toSafeFloat()
+fun ActivitySwapBinding.toAmount() = toInput.text.toString().toSafeFloat()
 
 fun ActivitySwapBinding.setMaxAmount() {
     val viewModel = viewModel()
-    fromInput.setText(viewModel.fromCoinBalance().formatPrice())
+    val balance = viewModel.fromCoinBalance()
+    fromInput.requestFocus()
+    fromInput.setText(balance.formatPrice())
+    fromInput.setSelection(fromInput.length())
 }
-
-private fun ActivitySwapBinding.showSendDialog() {
-
-}
-
-private fun ActivitySwapBinding.isLegalFrom() = fromInput.text.isLegalAmountNumber()
-
-private fun ActivitySwapBinding.isLegalTo() = toInput.text.isLegalAmountNumber()

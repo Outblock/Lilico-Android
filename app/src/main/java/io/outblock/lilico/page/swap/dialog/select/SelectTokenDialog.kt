@@ -21,12 +21,13 @@ import kotlin.coroutines.suspendCoroutine
 class SelectTokenDialog : BottomSheetDialogFragment() {
 
     private var selectedCoin: String? = null
+    private var disableCoin: String? = null
     private var result: Continuation<FlowCoin?>? = null
 
     private lateinit var binding: DialogSelectTokenBinding
 
     private val adapter by lazy {
-        TokenListAdapter(selectedCoin) {
+        TokenListAdapter(selectedCoin, disableCoin) {
             result?.resume(it)
             dismiss()
         }
@@ -56,9 +57,11 @@ class SelectTokenDialog : BottomSheetDialogFragment() {
 
     suspend fun show(
         selectedCoin: String?,
+        disableCoin: String?,
         fragmentManager: FragmentManager,
     ) = suspendCoroutine<FlowCoin?> { result ->
         this.selectedCoin = selectedCoin
+        this.disableCoin = disableCoin
         this.result = result
         show(fragmentManager, "")
     }

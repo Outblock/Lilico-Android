@@ -25,7 +25,11 @@ class SwapPresenter(
             root.addStatusBarTopPadding()
             root.addNavigationBarBottomPadding()
             maxButton.setOnClickListener { setMaxAmount() }
-            switchButton.setOnClickListener { viewModel().switchCoin() }
+            switchButton.setOnClickListener {
+                if (viewModel().fromCoin() == null || viewModel().toCoin() == null) return@setOnClickListener
+                viewModel().switchCoin()
+                binding.switchCoin()
+            }
             swapButton.setOnClickListener { SwapTokenConfirmDialog.show(activity.supportFragmentManager) }
             fromButton.setOnClickListener { showSelectTokenDialog(true) }
             toButton.setOnClickListener { showSelectTokenDialog(false) }
@@ -47,7 +51,11 @@ class SwapPresenter(
         uiScope {
             val viewModel = binding.viewModel()
             val symbol = if (isFrom) viewModel.fromCoin()?.symbol else viewModel.toCoin()?.symbol
-            SelectTokenDialog().show(symbol, activity.supportFragmentManager)?.let {
+            SelectTokenDialog().show(
+                selectedCoin = symbol,
+                disableCoin = if (isFrom) viewModel.toCoin()?.symbol else viewModel.fromCoin()?.symbol,
+                activity.supportFragmentManager,
+            )?.let {
                 if (isFrom) viewModel.updateFromCoin(it) else viewModel.updateToCoin(it)
             }
         }

@@ -14,6 +14,7 @@ import io.outblock.lilico.utils.extensions.setVisible
 class TokenItemPresenter(
     private val view: View,
     private val selectedCoin: String? = null,
+    private var disableCoin: String? = null,
     private val callback: (FlowCoin) -> Unit
 ) : BaseViewHolder(view), BasePresenter<FlowCoin> {
 
@@ -26,8 +27,18 @@ class TokenItemPresenter(
             Glide.with(iconView).load(model.icon).into(iconView)
             stateButton.setVisible(false)
         }
-        view.backgroundTintList =
-            ColorStateList.valueOf(if (selectedCoin == model.symbol) R.color.salmon4.res2color() else R.color.background.res2color())
-        view.setOnClickListener { callback.invoke(model) }
+
+        val backgroundColor = when (model.symbol) {
+            selectedCoin -> R.color.salmon4.res2color()
+            disableCoin -> R.color.transparent.res2color()
+            else -> R.color.background.res2color()
+        }
+
+        view.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+        view.setOnClickListener {
+            if (disableCoin != model.symbol) {
+                callback.invoke(model)
+            }
+        }
     }
 }

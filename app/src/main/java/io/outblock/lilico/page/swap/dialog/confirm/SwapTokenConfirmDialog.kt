@@ -11,6 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogSwapTokenConfirmBinding
 import io.outblock.lilico.page.swap.SwapViewModel
+import io.outblock.lilico.page.swap.fromAmount
+import io.outblock.lilico.page.swap.swapPageBinding
+import io.outblock.lilico.page.swap.toAmount
 import io.outblock.lilico.utils.formatPrice
 
 class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
@@ -40,8 +43,9 @@ class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
         fromNameView.text = fromCoin.symbol.uppercase()
         toNameView.text = fromCoin.symbol.uppercase()
 
-        fromAddressView.text = "${viewModel.fromAmount.formatPrice()} ${fromCoin.symbol.uppercase()}"
-        toAddressView.text = "${viewModel.toAmount.formatPrice()} ${toCoin.symbol.uppercase()}"
+        val pageBinding = swapPageBinding() ?: return
+        fromAddressView.text = "${pageBinding.fromAmount().formatPrice()} ${fromCoin.symbol.uppercase()}"
+        toAddressView.text = "${pageBinding.toAmount().formatPrice()} ${toCoin.symbol.uppercase()}"
     }
 
     private fun DialogSwapTokenConfirmBinding.bindEstimate() {

@@ -33,10 +33,7 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     private val balanceMap: MutableMap<String, Balance> = mutableMapOf()
     private val coinRateMap: MutableMap<String, Float> = mutableMapOf()
 
-    var fromAmount = 0.0f
-        private set
-    var toAmount = 0.0f
-        private set
+    private var exactToken = ExactToken.FROM
 
     init {
         val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW)!!
@@ -56,29 +53,24 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     fun fromCoinRate(): Float = coinRateMap[fromCoin()!!.symbol] ?: 0.0f
 
     fun updateFromCoin(coin: FlowCoin) {
+        if (fromCoin() == coin) return
         fromCoinLiveData.value = coin
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
-        requestEstimate(true)
+        requestEstimate()
     }
 
     fun updateToCoin(coin: FlowCoin) {
+        if (toCoin() == coin) return
         toCoinLiveData.value = coin
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
-        requestEstimate(true)
+        requestEstimate()
     }
 
-    fun updateFromAmount(amount: Float) {
-        if (fromAmount == amount) return
-        fromAmount = amount
-        requestEstimate(true)
-    }
-
-    fun updateToAmount(amount: Float) {
-        if (toAmount == amount) return
-        toAmount = amount
-        requestEstimate(false)
+    fun updateExactToken(exactToken: ExactToken) {
+        this.exactToken = exactToken
+        requestEstimate()
     }
 
     fun switchCoin() {
@@ -87,6 +79,8 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         if (fromCoin == null || toCoin == null) {
             return
         }
+
+        exactToken = if (exactToken == ExactToken.FROM) ExactToken.TO else ExactToken.FROM
 
         updateFromCoin(toCoin)
         updateToCoin(fromCoin)
@@ -106,26 +100,34 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         onCoinRateUpdate.value = true
     }
 
-    private fun requestEstimate(isFrom: Boolean) {
+    private fun requestEstimate() {
         if (fromCoin() == null || toCoin() == null) return
-        if (fromAmount == 0.0f && toAmount == 0.0f) return
+        val binding = swapPageBinding() ?: return
+        if (binding.fromAmount() == 0.0f && binding.toAmount() == 0.0f) return
 
         onEstimateLoading.value = true
         viewModelIOScope(this) {
-            val response = retrofitWithHost("https://lilico.app").create(ApiService::class.java).getSwapEstimate(
-                network = chainNetWorkString(),
-                inToken = fromCoin()!!.contractId(),
-                outToken = toCoin()!!.contractId(),
-                inAmount = if (isFrom) fromAmount else null,
-                outAmount = if (isFrom) null else toAmount,
-            )
-            val data = response.data ?: return@viewModelIOScope
-            val matched = if (isFrom) data.tokenInAmount == fromAmount else data.tokenOutAmount == toAmount
+            val response = kotlin.runCatching {
+                retrofitWithHost("https://lilico.app").create(ApiService::class.java).getSwapEstimate(
+                    network = chainNetWorkString(),
+                    inToken = fromCoin()!!.contractId(),
+                    outToken = toCoin()!!.contractId(),
+                    inAmount = if (exactToken == ExactToken.FROM) binding.fromAmount() else null,
+                    outAmount = if (exactToken == ExactToken.TO) binding.toAmount() else null,
+                )
+            }.getOrNull()!!
+            val data = response.data
+            val matched = if (exactToken == ExactToken.FROM) data.tokenInAmount == binding.fromAmount() else data.tokenOutAmount == binding.toAmount()
             if (matched) {
-                if (isFrom) onEstimateToUpdate.postValue(data.tokenOutAmount) else onEstimateFromUpdate.postValue(data.tokenInAmount)
+                if (exactToken == ExactToken.FROM) onEstimateToUpdate.postValue(data.tokenOutAmount) else onEstimateFromUpdate.postValue(data.tokenInAmount)
                 onEstimateLoading.postValue(false)
                 estimateLiveData.postValue(data)
             }
         }
     }
+}
+
+enum class ExactToken {
+    FROM,
+    TO
 }
