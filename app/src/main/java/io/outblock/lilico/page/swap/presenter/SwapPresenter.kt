@@ -6,6 +6,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivitySwapBinding
 import io.outblock.lilico.page.swap.*
+import io.outblock.lilico.page.swap.dialog.confirm.SwapTokenConfirmDialog
 import io.outblock.lilico.page.swap.dialog.select.SelectTokenDialog
 import io.outblock.lilico.page.swap.model.SwapModel
 import io.outblock.lilico.utils.extensions.res2String
@@ -25,7 +26,7 @@ class SwapPresenter(
             root.addNavigationBarBottomPadding()
             maxButton.setOnClickListener { setMaxAmount() }
             switchButton.setOnClickListener { viewModel().switchCoin() }
-            swapButton.setOnClickListener { }
+            swapButton.setOnClickListener { SwapTokenConfirmDialog.show(activity.supportFragmentManager) }
             fromButton.setOnClickListener { showSelectTokenDialog(true) }
             toButton.setOnClickListener { showSelectTokenDialog(false) }
         }
@@ -39,6 +40,7 @@ class SwapPresenter(
         model.onEstimateFromUpdate?.let { binding.updateFromAmount(it) }
         model.onEstimateToUpdate?.let { binding.updateToAmount(it) }
         model.onEstimateLoading?.let { binding.updateProgressState(it) }
+        model.estimateData?.let { binding.updateEstimate(it) }
     }
 
     private fun showSelectTokenDialog(isFrom: Boolean) {

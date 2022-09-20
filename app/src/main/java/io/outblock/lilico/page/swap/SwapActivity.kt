@@ -34,6 +34,7 @@ class SwapActivity : BaseActivity() {
             onEstimateFromUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateFromUpdate = it)) }
             onEstimateToUpdate.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateToUpdate = it)) }
             onEstimateLoading.observe(this@SwapActivity) { presenter.bind(SwapModel(onEstimateLoading = it)) }
+            estimateLiveData.observe(this@SwapActivity) { presenter.bind(SwapModel(estimateData = it)) }
         }
     }
 

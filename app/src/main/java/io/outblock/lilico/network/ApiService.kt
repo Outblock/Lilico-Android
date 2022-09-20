@@ -151,8 +151,9 @@ interface ApiService {
     suspend fun securityCadenceCheck(@Body params: CadenceSecurityCheck): CadenceSecurityCheckResponse
 
 
-    @GET("/api/swap/v1/testnet/estimate")
+    @GET("/api/swap/v1/{network}/estimate")
     suspend fun getSwapEstimate(
+        @Path("network") network: String,
         @Query("inToken") inToken: String,
         @Query("outToken") outToken: String,
         @Query("inAmount") inAmount: Float? = null,

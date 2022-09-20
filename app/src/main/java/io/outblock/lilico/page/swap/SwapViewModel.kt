@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import io.outblock.lilico.manager.account.Balance
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.OnBalanceUpdate
+import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.flowscan.contractId
+import io.outblock.lilico.network.model.SwapEstimateResponse
 import io.outblock.lilico.network.retrofitWithHost
 import io.outblock.lilico.utils.viewModelIOScope
 
@@ -24,12 +26,17 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     val onEstimateToUpdate = MutableLiveData<Float>()
 
     val onEstimateLoading = MutableLiveData<Boolean>()
+    val estimateLiveData = MutableLiveData<SwapEstimateResponse.Data>()
+
+    val onSwapTransactionSent = MutableLiveData<Boolean>()
 
     private val balanceMap: MutableMap<String, Balance> = mutableMapOf()
     private val coinRateMap: MutableMap<String, Float> = mutableMapOf()
 
-    private var fromAmount = 0.0f
-    private var toAmount = 0.0f
+    var fromAmount = 0.0f
+        private set
+    var toAmount = 0.0f
+        private set
 
     init {
         val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW)!!
@@ -52,12 +59,14 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         fromCoinLiveData.value = coin
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
+        requestEstimate(true)
     }
 
     fun updateToCoin(coin: FlowCoin) {
         toCoinLiveData.value = coin
         BalanceManager.getBalanceByCoin(coin)
         CoinRateManager.fetchCoinRate(coin)
+        requestEstimate(true)
     }
 
     fun updateFromAmount(amount: Float) {
@@ -83,6 +92,10 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         updateToCoin(fromCoin)
     }
 
+    fun swap() {
+
+    }
+
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
         balanceMap[coin.symbol] = balance
         onBalanceUpdate.value = true
@@ -94,12 +107,13 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     }
 
     private fun requestEstimate(isFrom: Boolean) {
-        if (fromCoin() == null || toCoin() == null) {
-            return
-        }
+        if (fromCoin() == null || toCoin() == null) return
+        if (fromAmount == 0.0f && toAmount == 0.0f) return
+
         onEstimateLoading.value = true
         viewModelIOScope(this) {
             val response = retrofitWithHost("https://lilico.app").create(ApiService::class.java).getSwapEstimate(
+                network = chainNetWorkString(),
                 inToken = fromCoin()!!.contractId(),
                 outToken = toCoin()!!.contractId(),
                 inAmount = if (isFrom) fromAmount else null,
@@ -110,6 +124,7 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             if (matched) {
                 if (isFrom) onEstimateToUpdate.postValue(data.tokenOutAmount) else onEstimateFromUpdate.postValue(data.tokenInAmount)
                 onEstimateLoading.postValue(false)
+                estimateLiveData.postValue(data)
             }
         }
     }

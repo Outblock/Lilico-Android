@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.ActivitySwapBinding
 import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.network.model.SwapEstimateResponse
 import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.toSafeFloat
@@ -34,6 +35,7 @@ fun ActivitySwapBinding.updateFromCoin(coin: FlowCoin) {
 fun ActivitySwapBinding.updateToCoin(coin: FlowCoin) {
     Glide.with(toCoinIcon).load(coin.icon).into(toCoinIcon)
     toCoinName.text = coin.symbol.uppercase()
+    toButton.strokeWidth = 0
     legalCheck()
 }
 
@@ -48,6 +50,17 @@ fun ActivitySwapBinding.updateToAmount(amount: Float) {
 fun ActivitySwapBinding.updateProgressState(isLoading: Boolean) {
     progressBar.setVisible(isLoading)
     switchButton.setVisible(!isLoading, invisible = true)
+}
+
+fun ActivitySwapBinding.updateEstimate(data: SwapEstimateResponse.Data) {
+    val viewModel = viewModel()
+    val fromCoin = viewModel.fromCoin() ?: return
+    val toCoin = viewModel.toCoin() ?: return
+
+    val amountIn = data.routes.firstOrNull()?.routeAmountIn ?: return
+    val amountOut = data.routes.firstOrNull()?.routeAmountOut ?: return
+    convertView.setVisible(true)
+    convertView.text = "1 ${fromCoin.symbol.uppercase()} ≈ ${(amountOut / amountIn).formatPrice()} ${toCoin.symbol.uppercase()}"
 }
 
 private fun ActivitySwapBinding.bindFromListener() {
