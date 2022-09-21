@@ -50,6 +50,7 @@ fun ActivitySwapBinding.updateToAmount(amount: Float) {
 fun ActivitySwapBinding.updateProgressState(isLoading: Boolean) {
     progressBar.setVisible(isLoading)
     switchButton.setVisible(!isLoading, invisible = true)
+    if (isLoading) swapButton.isEnabled = false
 }
 
 fun ActivitySwapBinding.switchCoin() {

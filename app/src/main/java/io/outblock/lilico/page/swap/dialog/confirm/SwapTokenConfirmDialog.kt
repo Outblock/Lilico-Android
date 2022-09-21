@@ -29,6 +29,7 @@ class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.onSwapTransactionSent.observe(this) { dismiss() }
+        viewModel.swapTransactionStateLiveData.observe(this) { if (it) requireActivity().finish() else dismiss() }
         binding.bindHeader()
         binding.bindEstimate()
         binding.sendButton.setOnProcessing { viewModel.swap() }

@@ -2,6 +2,9 @@ package io.outblock.lilico.page.swap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.nftco.flow.sdk.FlowTransactionStatus
+import io.outblock.lilico.R
 import io.outblock.lilico.manager.account.Balance
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.OnBalanceUpdate
@@ -10,10 +13,16 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
+import io.outblock.lilico.manager.transaction.TransactionState
+import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.flowscan.contractId
 import io.outblock.lilico.network.model.SwapEstimateResponse
 import io.outblock.lilico.network.retrofitWithHost
+import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.safeRun
+import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.viewModelIOScope
 
 class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
@@ -30,10 +39,13 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     val onSwapTransactionSent = MutableLiveData<Boolean>()
 
+    val swapTransactionStateLiveData = MutableLiveData<Boolean>()
+
     private val balanceMap: MutableMap<String, Balance> = mutableMapOf()
     private val coinRateMap: MutableMap<String, Float> = mutableMapOf()
 
-    private var exactToken = ExactToken.FROM
+    var exactToken = ExactToken.FROM
+        private set
 
     init {
         val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW)!!
@@ -87,7 +99,24 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     }
 
     fun swap() {
-
+        val data = estimateLiveData.value ?: return
+        ioScope {
+            val txid = swapSend(data)
+            safeRun { swapTransactionStateLiveData.postValue(!txid.isNullOrBlank()) }
+            if (txid.isNullOrBlank()) {
+                toast(msgRes = R.string.swap_failed)
+                return@ioScope
+            }
+            val transactionState = TransactionState(
+                transactionId = txid,
+                time = System.currentTimeMillis(),
+                state = FlowTransactionStatus.PENDING.num,
+                type = TransactionState.TYPE_TRANSACTION_DEFAULT,
+                data = Gson().toJson(data),
+            )
+            TransactionStateManager.newTransaction(transactionState)
+            pushBubbleStack(transactionState)
+        }
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
@@ -115,8 +144,15 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
                     inAmount = if (exactToken == ExactToken.FROM) binding.fromAmount() else null,
                     outAmount = if (exactToken == ExactToken.TO) binding.toAmount() else null,
                 )
-            }.getOrNull()!!
-            val data = response.data
+            }.getOrNull()
+
+            val data = response?.data
+
+            if (data == null) {
+                onEstimateLoading.postValue(false)
+                return@viewModelIOScope
+            }
+
             val matched = if (exactToken == ExactToken.FROM) data.tokenInAmount == binding.fromAmount() else data.tokenOutAmount == binding.toAmount()
             if (matched) {
                 if (exactToken == ExactToken.FROM) onEstimateToUpdate.postValue(data.tokenOutAmount) else onEstimateFromUpdate.postValue(data.tokenInAmount)

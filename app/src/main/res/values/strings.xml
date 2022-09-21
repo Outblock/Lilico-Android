@@ -307,4 +307,5 @@
     <string name="select_token">Select Token</string>
     <string name="swap_price">Swap price</string>
     <string name="hold_to_swap">Hold to swap</string>
+    <string name="swap_failed">Swap failed</string>
 </resources>

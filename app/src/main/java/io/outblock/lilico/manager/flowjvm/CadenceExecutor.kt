@@ -22,7 +22,7 @@ private const val TAG = "CadenceExecutor"
 
 fun cadenceQueryAddressByDomainFlowns(domain: String, root: String = "fn"): String? {
     logd(TAG, "cadenceQueryAddressByDomainFlowns(): domain=$domain, root=$root")
-    val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FLOWNS.executeScript {
+    val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FLOWNS.executeCadence {
         arg { marshall { string(domain) } }
         arg { marshall { string(root) } }
     }
@@ -32,7 +32,7 @@ fun cadenceQueryAddressByDomainFlowns(domain: String, root: String = "fn"): Stri
 
 fun cadenceQueryDomainByAddressFlowns(address: String): FlowScriptResponse? {
     logd(TAG, "cadenceQueryDomainByAddressFlowns()")
-    val result = CADENCE_QUERY_DOMAIN_BY_ADDRESS_FLOWNS.executeScript {
+    val result = CADENCE_QUERY_DOMAIN_BY_ADDRESS_FLOWNS.executeCadence {
         arg { address(address) }
     }
     logd(TAG, "cadenceQueryDomainByAddressFlowns response:${String(result?.bytes ?: byteArrayOf())}")
@@ -41,7 +41,7 @@ fun cadenceQueryDomainByAddressFlowns(address: String): FlowScriptResponse? {
 
 fun cadenceQueryAddressByDomainFind(domain: String): String? {
     logd(TAG, "cadenceQueryAddressByDomainFind()")
-    val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FIND.executeScript {
+    val result = CADENCE_QUERY_ADDRESS_BY_DOMAIN_FIND.executeCadence {
         arg { marshall { string(domain) } }
     }
     logd(TAG, "cadenceQueryAddressByDomainFind response:${String(result?.bytes ?: byteArrayOf())}")
@@ -50,7 +50,7 @@ fun cadenceQueryAddressByDomainFind(domain: String): String? {
 
 fun cadenceQueryDomainByAddressFind(address: String): FlowScriptResponse? {
     logd(TAG, "cadenceQueryDomainByAddressFind()")
-    val result = CADENCE_QUERY_DOMAIN_BY_ADDRESS_FIND.executeScript {
+    val result = CADENCE_QUERY_DOMAIN_BY_ADDRESS_FIND.executeCadence {
         arg { address(address) }
     }
     logd(TAG, "cadenceQueryDomainByAddressFind response:${String(result?.bytes ?: byteArrayOf())}")
@@ -60,7 +60,7 @@ fun cadenceQueryDomainByAddressFind(address: String): FlowScriptResponse? {
 fun cadenceCheckTokenEnabled(coin: FlowCoin): Boolean? {
     logd(TAG, "cadenceCheckTokenEnabled() address:${coin.address()}")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
-    val result = coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED).executeScript {
+    val result = coin.formatCadence(CADENCE_CHECK_TOKEN_IS_ENABLED).executeCadence {
         arg { address(walletAddress) }
     }
     logd(TAG, "cadenceCheckTokenEnabled response:${String(result?.bytes ?: byteArrayOf())}")
@@ -109,7 +109,7 @@ fun cadenceCheckTokenListEnabled(coins: List<FlowCoin>): List<Boolean>? {
         .replace("<TokenCall>", tokenCalls)
 
 
-    val result = cadence.executeScript {
+    val result = cadence.executeCadence {
         arg { address(walletAddress) }
     }
     logd(TAG, "cadenceCheckTokenListEnabled response:${String(result?.bytes ?: byteArrayOf())}")
@@ -119,7 +119,7 @@ fun cadenceCheckTokenListEnabled(coins: List<FlowCoin>): List<Boolean>? {
 fun cadenceQueryTokenBalance(coin: FlowCoin): Float? {
     val walletAddress = walletCache().read()?.primaryWalletAddress()?.toAddress() ?: return 0f
     logd(TAG, "cadenceQueryTokenBalance()")
-    val result = coin.formatCadence(CADENCE_GET_BALANCE).executeScript {
+    val result = coin.formatCadence(CADENCE_GET_BALANCE).executeCadence {
         arg { address(walletAddress) }
     }
     logd(TAG, "cadenceQueryTokenBalance response:${String(result?.bytes ?: byteArrayOf())}")
@@ -147,7 +147,7 @@ fun cadenceNftCheckEnabled(nft: NftCollection): Boolean? {
     logd(TAG, "cadenceNftCheckEnabled() nft:${nft.name}")
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     logd(TAG, "cadenceNftCheckEnabled() walletAddress:${walletAddress}")
-    val result = nft.formatCadence(CADENCE_NFT_CHECK_ENABLED).executeScript {
+    val result = nft.formatCadence(CADENCE_NFT_CHECK_ENABLED).executeCadence {
         arg { address(walletAddress) }
     }
     logd(TAG, "cadenceNftCheckEnabled response:${String(result?.bytes ?: byteArrayOf())}")
@@ -200,7 +200,7 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
         .replace("<TokenImports>", tokenImports)
         .replace("<TokenCall>", tokenCalls)
 
-    val result = cadence.executeScript {
+    val result = cadence.executeCadence {
         arg { address(walletAddress) }
     }
 
@@ -254,11 +254,11 @@ suspend fun cadenceClaimInboxNft(
     return txid
 }
 
-private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
+fun String.executeCadence(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
     logv(TAG, "executeScript:\n${Flow.DEFAULT_ADDRESS_REGISTRY.processScript(this, chainId = Flow.DEFAULT_CHAIN_ID)}")
     return try {
         FlowApi.get().simpleFlowScript {
-            script { this@executeScript.trimIndent().replaceFlowAddress() }
+            script { this@executeCadence.trimIndent().replaceFlowAddress() }
             block()
         }
     } catch (e: Throwable) {
@@ -267,7 +267,7 @@ private fun String.executeScript(block: ScriptBuilder.() -> Unit): FlowScriptRes
     }
 }
 
-private suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
+suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
     logd(TAG, "transactionByMainWallet() walletAddress:$walletAddress")
     val args = CadenceArgumentsBuilder().apply { arguments(this) }

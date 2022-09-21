@@ -1,5 +1,6 @@
 package io.outblock.lilico.manager.flowjvm
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.nftco.flow.sdk.Flow
 import com.nftco.flow.sdk.FlowAccessApi
 import com.nftco.flow.sdk.FlowChainId
@@ -13,6 +14,14 @@ internal object FlowApi {
     private const val HOST_CANARYNET = "access.canary.nodes.onflow.org"
 
     private var api: FlowAccessApi? = null
+
+    init {
+//        Flow.OBJECT_MAPPER.()
+        Flow.OBJECT_MAPPER.configure(
+            DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT,
+            true
+        )
+    }
 
     fun refreshConfig() {
         logd("FlowApi", "refreshConfig start")

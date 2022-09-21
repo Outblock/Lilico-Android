@@ -96,7 +96,7 @@ class CadenceArgumentsBuilder {
 
     fun arg(arg: Field<*>) = _values.add(arg)
 
-    fun arg(arg: JsonCadenceBuilder.() -> Field<*>) = arg(arg(JsonCadenceBuilder()))
+    fun arg(builder: JsonCadenceBuilder.() -> Field<*>) = arg(builder(JsonCadenceBuilder()))
 
     fun build(): MutableList<Field<*>> = _values
 

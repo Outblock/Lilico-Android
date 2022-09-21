@@ -345,9 +345,127 @@ const val CADENCE_CLAIM_INBOX_NFT = """
 """
 
 // want use how many token to swap other token
-const val CADENCE_SWAP_EXACT_TOKENS_FOR_TOKENS =
-    """import Token1Name from Token1Addr\nimport FungibleToken from 0x9a0766d93b6608b7\nimport SwapRouter from 0x2f8af5ed05bbde0d\nimport SwapError from 0xddb929038d45d4b3\ntransaction(\n    tokenKeyFlatSplitPath: [String],\n    amountInSplit: [UFix64],\n    amountOutMin: UFix64,\n    deadline: UFix64,\n    tokenInVaultPath: StoragePath,\n    tokenOutVaultPath: StoragePath,\n    tokenOutReceiverPath: PublicPath,\n    tokenOutBalancePath: PublicPath,\n) {\n    prepare(userAccount: AuthAccount) {\n        assert(deadline >= getCurrentBlock().timestamp, message:\n            SwapError.ErrorEncode(\n                msg: \"EXPIRED\",\n                err: SwapError.ErrorCode.EXPIRED\n            )\n        )\n        let len = tokenKeyFlatSplitPath.length\n        let tokenInKey = tokenKeyFlatSplitPath[0]\n        let tokenOutKey = tokenKeyFlatSplitPath[len-1]\n        var tokenOutAmountTotal = 0.0\n        var tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)\n        if tokenOutReceiverRef == nil {\n            userAccount.save(<- Token1Name.createEmptyVault(), to: tokenOutVaultPath)\n            userAccount.link<&Token1Name.Vault{FungibleToken.Receiver}>(tokenOutReceiverPath, target: tokenOutVaultPath)\n            userAccount.link<&Token1Name.Vault{FungibleToken.Balance}>(tokenOutBalancePath, target: tokenOutVaultPath)\n            tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)\n        }\n        var pathIndex = 0\n        var i = 0\n        var path: [String] = []\n        while(i < len) {\n            var curTokenKey = tokenKeyFlatSplitPath[i]\n            path.append(curTokenKey)\n            if (curTokenKey == tokenOutKey) {\n                log(path)\n                let tokenInAmount = amountInSplit[pathIndex]\n                let tokenInVault <- userAccount.borrow<&FungibleToken.Vault>(from: tokenInVaultPath)!.withdraw(amount: tokenInAmount)\n                let tokenOutVault <- SwapRouter.swapWithPath(vaultIn: <- tokenInVault, tokenKeyPath: path, exactAmounts: nil)\n                tokenOutAmountTotal = tokenOutAmountTotal + tokenOutVault.balance\n                tokenOutReceiverRef!.deposit(from: <- tokenOutVault)\n                path = []\n                pathIndex = pathIndex + 1\n            }\n            i = i + 1\n        }\n        assert(tokenOutAmountTotal >= amountOutMin, message:\n            SwapError.ErrorEncode(\n                msg: \"SLIPPAGE_OFFSET_TOO_LARGE expect min \".concat(amountOutMin.toString()).concat(\" got \").concat(tokenOutAmountTotal.toString()),\n                err: SwapError.ErrorCode.SLIPPAGE_OFFSET_TOO_LARGE\n            )\n        )\n    }\n}"""
+const val CADENCE_SWAP_EXACT_TOKENS_TO_OTHER_TOKENS =
+    """import Token1Name from Token1Addr
+    import FungibleToken from 0x9a0766d93b6608b7
+    import SwapRouter from 0x2f8af5ed05bbde0d
+    import SwapError from 0xddb929038d45d4b3
+    transaction(
+        tokenKeyFlatSplitPath: [String],
+        amountInSplit: [UFix64],
+        amountOutMin: UFix64,
+        deadline: UFix64,
+        tokenInVaultPath: StoragePath,
+        tokenOutVaultPath: StoragePath,
+        tokenOutReceiverPath: PublicPath,
+        tokenOutBalancePath: PublicPath,
+    ) {
+        prepare(userAccount: AuthAccount) {
+            assert(deadline >= getCurrentBlock().timestamp, message:
+                SwapError.ErrorEncode(
+                    msg: "EXPIRED",
+                    err: SwapError.ErrorCode.EXPIRED
+                )
+            )
+            let len = tokenKeyFlatSplitPath.length
+            let tokenInKey = tokenKeyFlatSplitPath[0]
+            let tokenOutKey = tokenKeyFlatSplitPath[len-1]
+            var tokenOutAmountTotal = 0.0
+            var tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)
+            if tokenOutReceiverRef == nil {
+                userAccount.save(<- Token1Name.createEmptyVault(), to: tokenOutVaultPath)
+                userAccount.link<&Token1Name.Vault{FungibleToken.Receiver}>(tokenOutReceiverPath, target: tokenOutVaultPath)
+                userAccount.link<&Token1Name.Vault{FungibleToken.Balance}>(tokenOutBalancePath, target: tokenOutVaultPath)
+                tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)
+            }
+            var pathIndex = 0
+            var i = 0
+            var path: [String] = []
+            while(i < len) {
+                var curTokenKey = tokenKeyFlatSplitPath[i]
+                path.append(curTokenKey)
+                if (curTokenKey == tokenOutKey) {
+                    log(path)
+                    let tokenInAmount = amountInSplit[pathIndex]
+                    let tokenInVault <- userAccount.borrow<&FungibleToken.Vault>(from: tokenInVaultPath)!.withdraw(amount: tokenInAmount)
+                    let tokenOutVault <- SwapRouter.swapWithPath(vaultIn: <- tokenInVault, tokenKeyPath: path, exactAmounts: nil)
+                    tokenOutAmountTotal = tokenOutAmountTotal + tokenOutVault.balance
+                    tokenOutReceiverRef!.deposit(from: <- tokenOutVault)
+                    path = []
+                    pathIndex = pathIndex + 1
+                }
+                i = i + 1
+            }
+            assert(tokenOutAmountTotal >= amountOutMin, message:
+                SwapError.ErrorEncode(
+                    msg: "SLIPPAGE_OFFSET_TOO_LARGE expect min ".concat(amountOutMin.toString()).concat(" got ").concat(tokenOutAmountTotal.toString()),
+                    err: SwapError.ErrorCode.SLIPPAGE_OFFSET_TOO_LARGE
+                )
+            )
+        }
+    }"""
 
 // want swap how many other token
-const val CADENCE_SWAP_TOKENS_FOR_EXACT_TOKENS =
-    """import Token1Name from Token1Addr\nimport FungibleToken from 0x9a0766d93b6608b7\nimport SwapRouter from 0x2f8af5ed05bbde0d\nimport SwapError from 0xddb929038d45d4b3\ntransaction(\n    tokenKeyFlatSplitPath: [String],\n    amountOutSplit: [UFix64],\n    amountInMax: UFix64,\n    deadline: UFix64,\n    tokenInVaultPath: StoragePath,\n    tokenOutVaultPath: StoragePath,\n    tokenOutReceiverPath: PublicPath,\n    tokenOutBalancePath: PublicPath,\n) {\n    prepare(userAccount: AuthAccount) {\n        assert( deadline >= getCurrentBlock().timestamp, message:\n            SwapError.ErrorEncode(\n                msg: \"EXPIRED\",\n                err: SwapError.ErrorCode.EXPIRED\n            )\n        )\n        let len = tokenKeyFlatSplitPath.length\n        let tokenInKey = tokenKeyFlatSplitPath[0]\n        let tokenOutKey = tokenKeyFlatSplitPath[len-1]\n        var tokenOutAmountTotal = 0.0\n        var tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)\n        if tokenOutReceiverRef == nil {\n            userAccount.save(<- Token1Name.createEmptyVault(), to: tokenOutVaultPath)\n            userAccount.link<&Token1Name.Vault{FungibleToken.Receiver}>(tokenOutReceiverPath, target: tokenOutVaultPath)\n            userAccount.link<&Token1Name.Vault{FungibleToken.Balance}>(tokenOutBalancePath, target: tokenOutVaultPath)\n            tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)\n        }\n        var pathIndex = 0\n        var i = 0\n        var path: [String] = []\n        var amountInTotal = 0.0\n        while(i < len) {\n            var curTokenKey = tokenKeyFlatSplitPath[i]\n            path.append(curTokenKey)\n            if (curTokenKey == tokenOutKey) {\n                log(path)\n                let tokenOutExpectAmount = amountOutSplit[pathIndex]\n                let amounts = SwapRouter.getAmountsIn(amountOut: tokenOutExpectAmount, tokenKeyPath: path)\n                let tokenInAmount = amounts[0]\n                amountInTotal = amountInTotal + tokenInAmount\n                let tokenInVault <- userAccount.borrow<&FungibleToken.Vault>(from: tokenInVaultPath)!.withdraw(amount: tokenInAmount)\n                let tokenOutVault <- SwapRouter.swapWithPath(vaultIn: <- tokenInVault, tokenKeyPath: path, exactAmounts: amounts)\n                tokenOutAmountTotal = tokenOutAmountTotal + tokenOutVault.balance\n                tokenOutReceiverRef!.deposit(from: <- tokenOutVault)\n                path = []\n                pathIndex = pathIndex + 1\n            }\n            i = i + 1\n        }\n        assert(amountInTotal <= amountInMax, message:\n            SwapError.ErrorEncode(\n                msg: \"SLIPPAGE_OFFSET_TOO_LARGE\",\n                err: SwapError.ErrorCode.SLIPPAGE_OFFSET_TOO_LARGE\n            )\n        )\n    }\n}"""
+const val CADENCE_SWAP_TOKENS_FROM_EXACT_TOKENS =
+    """import Token1Name from Token1Addr
+    import FungibleToken from 0x9a0766d93b6608b7
+    import SwapRouter from 0x2f8af5ed05bbde0d
+    import SwapError from 0xddb929038d45d4b3
+    transaction(
+        tokenKeyFlatSplitPath: [String],
+        amountOutSplit: [UFix64],
+        amountInMax: UFix64,
+        deadline: UFix64,
+        tokenInVaultPath: StoragePath,
+        tokenOutVaultPath: StoragePath,
+        tokenOutReceiverPath: PublicPath,
+        tokenOutBalancePath: PublicPath,
+    ) {
+        prepare(userAccount: AuthAccount) {
+            assert( deadline >= getCurrentBlock().timestamp, message:
+                SwapError.ErrorEncode(
+                    msg: "EXPIRED",
+                    err: SwapError.ErrorCode.EXPIRED
+                )
+            )
+            let len = tokenKeyFlatSplitPath.length
+            let tokenInKey = tokenKeyFlatSplitPath[0]
+            let tokenOutKey = tokenKeyFlatSplitPath[len-1]
+            var tokenOutAmountTotal = 0.0
+            var tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)
+            if tokenOutReceiverRef == nil {
+                userAccount.save(<- Token1Name.createEmptyVault(), to: tokenOutVaultPath)
+                userAccount.link<&Token1Name.Vault{FungibleToken.Receiver}>(tokenOutReceiverPath, target: tokenOutVaultPath)
+                userAccount.link<&Token1Name.Vault{FungibleToken.Balance}>(tokenOutBalancePath, target: tokenOutVaultPath)
+                tokenOutReceiverRef = userAccount.borrow<&FungibleToken.Vault>(from: tokenOutVaultPath)
+            }
+            var pathIndex = 0
+            var i = 0
+            var path: [String] = []
+            var amountInTotal = 0.0
+            while(i < len) {
+                var curTokenKey = tokenKeyFlatSplitPath[i]
+                path.append(curTokenKey)
+                if (curTokenKey == tokenOutKey) {
+                    log(path)
+                    let tokenOutExpectAmount = amountOutSplit[pathIndex]
+                    let amounts = SwapRouter.getAmountsIn(amountOut: tokenOutExpectAmount, tokenKeyPath: path)
+                    let tokenInAmount = amounts[0]
+                    amountInTotal = amountInTotal + tokenInAmount
+                    let tokenInVault <- userAccount.borrow<&FungibleToken.Vault>(from: tokenInVaultPath)!.withdraw(amount: tokenInAmount)
+                    let tokenOutVault <- SwapRouter.swapWithPath(vaultIn: <- tokenInVault, tokenKeyPath: path, exactAmounts: amounts)
+                    tokenOutAmountTotal = tokenOutAmountTotal + tokenOutVault.balance
+                    tokenOutReceiverRef!.deposit(from: <- tokenOutVault)
+                    path = []
+                    pathIndex = pathIndex + 1
+                }
+                i = i + 1
+            }
+            assert(amountInTotal <= amountInMax, message:
+                SwapError.ErrorEncode(
+                    msg: "SLIPPAGE_OFFSET_TOO_LARGE",
+                    err: SwapError.ErrorCode.SLIPPAGE_OFFSET_TOO_LARGE
+                )
+            )
+        }
+    }"""

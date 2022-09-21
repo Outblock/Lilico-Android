@@ -45,6 +45,6 @@ class TransactionBuilder {
     }
 
     override fun toString(): String {
-        return "TransactionBuilder(script=$script, walletAddress=$walletAddress, payer=$payer, arguments=$arguments, limit=$limit)"
+        return "TransactionBuilder(script=$script, walletAddress=$walletAddress, payer=$payer, arguments=${arguments.map { "${it.type}:${it.value}" }}, limit=$limit)"
     }
 }

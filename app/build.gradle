@@ -203,7 +203,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
 
     /** FLOW **/
-    implementation "com.nftco:flow-jvm-sdk:0.7.1"
+    implementation "com.nftco:flow-jvm-sdk:0.7.3"
     implementation 'io.grpc:grpc-okhttp:1.44.0'
     implementation("com.walletconnect:WalletConnectKotlinV2:2.0.0-rc.4")
     /** FLOW **/
