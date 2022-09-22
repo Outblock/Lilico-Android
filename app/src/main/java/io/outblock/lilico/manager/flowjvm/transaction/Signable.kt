@@ -173,7 +173,9 @@ data class AsArgument(
     val type: String,
     @SerializedName("value")
     val value: Any
-)
+) {
+    fun valueString() = if (value is String) value else "$value"
+}
 
 data class Events(
     @SerializedName("blockIds")

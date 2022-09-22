@@ -1,13 +1,15 @@
 package io.outblock.lilico.manager.flowjvm.transaction
 
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
+import io.outblock.lilico.manager.flowjvm.toAsArgument
+import io.outblock.lilico.manager.flowjvm.valueString
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.utils.logd
@@ -75,7 +77,7 @@ private suspend fun prepare(builder: TransactionBuilder): Voucher {
     val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(builder.walletAddress?.toAddress().orEmpty()))
         ?: throw RuntimeException("get wallet account error")
     return Voucher(
-        arguments = builder.arguments.map { AsArgument(it.type, it.value?.toString().orEmpty()) },
+        arguments = builder.arguments.map { AsArgument(it.type, it.valueString()) },
         cadence = builder.script?.replaceFlowAddress(),
         computeLimit = builder.limit ?: 9999,
         payer = builder.payer ?: (if (isGasFree()) AppConfig.payer().address else builder.walletAddress),
@@ -94,7 +96,7 @@ fun FlowTransaction.buildPayerSignable(): PayerSignable? {
         cadence = script.stringValue,
         refBlock = referenceBlockId.base16Value,
         computeLimit = gasLimit.toInt(),
-        arguments = arguments.map { it.jsonCadence }.map { AsArgument(it.type, it.value.toString()) },
+        arguments = arguments.map { it.toAsArgument() },
         proposalKey = ProposalKey(
             address = proposalKey.address.base16Value.toAddress(),
             keyId = proposalKey.keyIndex,
@@ -134,12 +136,7 @@ fun Voucher.toFlowTransaction(): FlowTransaction {
     var tx = flowTransaction {
         script { transaction.cadence.orEmpty() }
 
-        arguments = transaction.arguments.orEmpty().map {
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("type", it.type)
-            jsonObject.addProperty("value", it.value.toString())
-            jsonObject.toString().toByteArray()
-        }.map { FlowArgument(it) }.toMutableList()
+        arguments = transaction.arguments.orEmpty().map { it.toBytes() }.map { FlowArgument(it) }.toMutableList()
 
         referenceBlockId = FlowId(transaction.refBlock.orEmpty())
 
@@ -210,4 +207,19 @@ fun updateSecurityProvider() {
     }
     Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
     Security.insertProviderAt(BouncyCastleProvider(), 1)
+}
+
+private fun AsArgument.toBytes(): ByteArray {
+    return if (isObjectValue()) {
+        """{"type":"$type","value":${value}}""".toByteArray()
+    } else Gson().toJson(mapOf("type" to type, "value" to "$value")).toByteArray()
+}
+
+private fun AsArgument.isObjectValue(): Boolean {
+    // is map or list
+    return runCatching {
+        Gson().fromJson<Map<String, Any>>(value.toString(), object : TypeToken<Map<String, Any>>() {}.type)
+    }.getOrNull() != null || runCatching {
+        Gson().fromJson<List<Any>>(value.toString(), object : TypeToken<List<Any>>() {}.type)
+    }.getOrNull() != null
 }

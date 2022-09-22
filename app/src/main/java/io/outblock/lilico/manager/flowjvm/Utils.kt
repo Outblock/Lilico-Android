@@ -3,15 +3,13 @@ package io.outblock.lilico.manager.flowjvm
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nftco.flow.sdk.FlowAccount
-import com.nftco.flow.sdk.FlowAddress
-import com.nftco.flow.sdk.FlowArgumentsBuilder
-import com.nftco.flow.sdk.FlowScriptResponse
+import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.cadence.Field
 import com.nftco.flow.sdk.cadence.JsonCadenceBuilder
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
+import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.loge
 
@@ -121,4 +119,35 @@ fun FlowAddress.lastBlockAccount(): FlowAccount? {
 @WorkerThread
 fun FlowAddress.lastBlockAccountKeyId(): Int {
     return lastBlockAccount()?.keys?.firstOrNull()?.id ?: 0
+}
+
+fun Field<*>.valueString(): String = if (value is String) value as String else Flow.OBJECT_MAPPER.writeValueAsString(value)
+
+fun FlowArgument.toAsArgument(): AsArgument {
+    with(jsonCadence) {
+        return AsArgument(
+            type = type,
+            value = when (value) {
+                is Array<*> -> (value as Array<*>).map { (it as? Field<*>)?.toObj() ?: it.toString() }
+                is String -> value as String
+                else -> valueToObj()
+            },
+        )
+    }
+}
+
+private fun Field<*>.toObj(): Any {
+    if (value is String) return mapOf("type" to type, "value" to value as String)
+
+    val json = Flow.OBJECT_MAPPER.writeValueAsString(value)
+    return runCatching {
+        Gson().fromJson<Map<String, Any>>(json, object : TypeToken<Map<String, Any>>() {}.type)
+    }.getOrNull() ?: json
+}
+
+private fun Field<*>.valueToObj(): Any {
+    val json = Flow.OBJECT_MAPPER.writeValueAsString(value)
+    return runCatching {
+        Gson().fromJson<Map<String, Any>>(json, object : TypeToken<Map<String, Any>>() {}.type)
+    }.getOrNull() ?: json
 }
