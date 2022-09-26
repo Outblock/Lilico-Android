@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import androidx.transition.*
+import androidx.transition.AutoTransition
+import androidx.transition.Scene
+import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthzBinding
@@ -66,6 +68,9 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
                     val auditor = response.data?.auditors?.firstOrNull()
                     binding.auditorsTitle.text = requireContext().getString(R.string.auditors_by, auditor?.name.orEmpty())
 
+                    TransitionManager.go(Scene(binding.rootView), AutoTransition().apply { duration = 150 })
+                    changeDialogBounds()
+
                     binding.securityCheckWrapper.setVisible(template != null)
                     binding.auditorsWrapper.setVisible(auditor != null)
                 }
@@ -85,14 +90,19 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
 
     private fun toggleScriptVisible() {
         with(binding) {
-            TransitionManager.go(Scene(scriptLayout), TransitionSet().apply {
-                addTransition(ChangeBounds().apply { duration = 150 })
-                addTransition(Fade(Fade.IN).apply { duration = 150 })
-            })
+            TransitionManager.go(Scene(scriptLayout), AutoTransition().apply { duration = 150 })
+            changeDialogBounds()
+
             val toVisible = !scriptTextWrapper.isVisible()
             scriptTextWrapper.setVisible(toVisible)
             scriptArrow.rotation = if (toVisible) 0f else 270f
         }
+    }
+
+    private fun changeDialogBounds() {
+//        TransitionManager.go(Scene(binding.root.parent as ViewGroup), TransitionSet().apply {
+//            addTransition(ChangeBounds().apply { duration = 150 })
+//        })
     }
 
     companion object {
