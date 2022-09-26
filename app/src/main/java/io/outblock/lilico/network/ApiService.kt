@@ -147,7 +147,7 @@ interface ApiService {
         @Query("after") after: String = "",
     ): TransferRecordResponse
 
-    @POST("/v1/templates/search")
+    @POST("/api/template")
     suspend fun securityCadenceCheck(@Body params: CadenceSecurityCheck): CadenceSecurityCheckResponse
 
 

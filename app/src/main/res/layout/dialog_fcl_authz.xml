@@ -78,11 +78,48 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/auditors_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/quote_up_opacity"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="16dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_shield"/>
+
+        <TextView
+            android:id="@+id/auditors_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textAllCaps="false"
+            android:textColor="#38B000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="@string/auditors_by"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/security_check_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/neutrals10"
         android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="16dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -90,10 +127,10 @@
             android:id="@+id/security_check_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montsettat"
+            android:fontFamily="@font/inter_semi_bold"
             android:textAllCaps="false"
             android:textColor="@color/text"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:text="Transfer Tokens"/>
 
@@ -101,15 +138,11 @@
             android:id="@+id/security_check_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_round_12dp"
-            android:backgroundTint="@color/neutrals10"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/inter_medium"
-            android:paddingHorizontal="18dp"
-            android:paddingVertical="20dp"
             android:textAllCaps="false"
-            android:textColor="@color/text"
-            android:textSize="12sp"
+            android:textColor="@color/neutrals5"
+            android:textSize="14sp"
             tools:text="Transfer tokens from one account to another"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
