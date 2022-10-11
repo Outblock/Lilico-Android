@@ -10,6 +10,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.firebase.analytics.reportEvent
+import io.outblock.lilico.page.main.presenter.openDrawerLayout
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
@@ -40,10 +41,9 @@ class WalletFragmentPresenter(
             setOnRefreshListener { viewModel.load() }
             setColorSchemeColors(R.color.colorSecondary.res2color())
         }
-        ioScope {
-            val userInfo = userInfoCache().read() ?: return@ioScope
-            uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
-        }
+
+        binding.avatarView.setOnClickListener { openDrawerLayout(fragment.requireContext()) }
+        bindAvatar()
     }
 
     override fun bind(model: WalletFragmentModel) {
@@ -51,6 +51,14 @@ class WalletFragmentPresenter(
             reportEvent("wallet_coin_list_loaded", mapOf("count" to it.size.toString()))
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
+            bindAvatar()
+        }
+    }
+
+    private fun bindAvatar() {
+        ioScope {
+            val userInfo = userInfoCache().read() ?: return@ioScope
+            uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
         }
     }
 }
