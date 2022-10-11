@@ -207,6 +207,7 @@
     <string name="add_collection">Add Collection</string>
     <string name="search_nft_collection">Search NFT Collection</string>
     <string name="scan_qr_code">Scan QR code</string>
+    <string name="scan">Scan</string>
     <string name="explore_search_hint">Site Name or URL</string>
     <string name="bookmark">Bookmark</string>
     <string name="drag_here_to_unpin">Drag Here To Unpin</string>
@@ -309,4 +310,5 @@
     <string name="hold_to_swap">Hold to swap</string>
     <string name="swap_failed">Swap failed</string>
     <string name="auditors_by">Verified by %1$s</string>
+    <string name="drawer_desc">Since %1$s · %2$d NFTs</string>
 </resources>

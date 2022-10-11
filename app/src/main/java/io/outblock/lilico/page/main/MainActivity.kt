@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
 import io.outblock.lilico.page.guide.GuideActivity
 import io.outblock.lilico.page.main.model.MainContentModel
+import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
+import io.outblock.lilico.page.main.presenter.DrawerLayoutPresenter
 import io.outblock.lilico.page.main.presenter.MainContentPresenter
 import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.isGuidePageShown
@@ -17,9 +20,11 @@ import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.uiScope
 
+
 class MainActivity : BaseActivity() {
 
     private lateinit var contentPresenter: MainContentPresenter
+    private lateinit var drawerLayoutPresenter: DrawerLayoutPresenter
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
@@ -36,8 +41,10 @@ class MainActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
         contentPresenter = MainContentPresenter(this, binding)
+        drawerLayoutPresenter = DrawerLayoutPresenter(binding.drawerLayout, binding.drawerLayoutContent)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java].apply {
             changeTabLiveData.observe(this@MainActivity) { contentPresenter.bind(MainContentModel(onChangeTab = it)) }
+            openDrawerLayoutLiveData.observe(this@MainActivity) { drawerLayoutPresenter.bind(MainDrawerLayoutModel(openDrawer = it)) }
         }
         uiScope { isRegistered = isRegistered() }
         WindowFrame.attach(this)
@@ -47,12 +54,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onRestart() {
         super.onRestart()
         uiScope {
             if (isRegistered != isRegistered()) {
                 viewModel.walletRegisterSuccessLiveData.value = isRegistered()
             }
+            drawerLayoutPresenter.bind(MainDrawerLayoutModel(refreshData = true))
         }
     }
 

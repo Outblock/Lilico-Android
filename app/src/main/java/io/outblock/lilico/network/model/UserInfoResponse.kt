@@ -27,4 +27,6 @@ data class UserInfoData(
     var address: String? = null,
     @SerializedName("private")
     var isPrivate: Int,
+    @SerializedName("created")
+    var created: String,
 ) : Parcelable

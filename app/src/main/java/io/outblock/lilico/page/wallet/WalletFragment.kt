@@ -10,6 +10,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.fragment.BaseFragment
 import io.outblock.lilico.databinding.FragmentWalletBinding
+import io.outblock.lilico.page.main.presenter.openDrawerLayout
 import io.outblock.lilico.page.scan.dispatchScanResult
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.page.wallet.presenter.WalletFragmentPresenter
@@ -46,6 +47,7 @@ class WalletFragment : BaseFragment() {
         headerPlaceholderPresenter = WalletHeaderPlaceholderPresenter(binding.shimmerPlaceHolder.root)
 
         binding.scanButton.setOnClickListener { barcodeLauncher.launch() }
+        binding.avatarView.setOnClickListener { openDrawerLayout(requireContext()) }
 
         viewModel = ViewModelProvider(requireActivity())[WalletFragmentViewModel::class.java].apply {
             dataListLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletFragmentModel(data = it)) }

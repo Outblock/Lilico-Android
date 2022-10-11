@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
+import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
@@ -14,6 +15,9 @@ import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
 class WalletFragmentPresenter(
@@ -35,6 +39,10 @@ class WalletFragmentPresenter(
         with(binding.refreshLayout) {
             setOnRefreshListener { viewModel.load() }
             setColorSchemeColors(R.color.colorSecondary.res2color())
+        }
+        ioScope {
+            val userInfo = userInfoCache().read() ?: return@ioScope
+            uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
         }
     }
 

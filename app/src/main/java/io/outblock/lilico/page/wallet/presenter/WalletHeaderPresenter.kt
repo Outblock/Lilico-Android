@@ -49,7 +49,7 @@ class WalletHeaderPresenter(
                 hideButton.setImageResource(if (isHideBalance) R.drawable.ic_eye_off else R.drawable.ic_eye_on)
             }
 
-            val count = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }.count()
+            val count = FlowCoinListManager.coinList().count { TokenStateManager.isTokenAdded(it.address()) }
             coinCountView.text = view.context.getString(R.string.coins_count, count)
 
             sendButton.setOnClickListener { TransactionSendActivity.launch(view.context) }

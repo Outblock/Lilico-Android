@@ -68,4 +68,9 @@
         <attr name="defaultText" format="string|reference"/>
         <attr name="processingText" format="string|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="DrawerItem">
+        <attr name="drawer_item_icon" format="reference"/>
+        <attr name="drawer_item_text" format="string|reference"/>
+    </declare-styleable>
 </resources>
