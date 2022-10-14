@@ -1,21 +1,19 @@
 package io.outblock.lilico.manager.config
 
 import android.os.Parcelable
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
+import io.outblock.lilico.cache.nftCollectionsCache
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
+import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.model.NftCollectionListResponse
+import io.outblock.lilico.network.retrofitApi
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.readTextFromAssets
-import io.outblock.lilico.utils.safeRun
 import kotlinx.parcelize.Parcelize
 
 object NftCollectionConfig {
-    private const val KEY = "nft_collections"
 
     private val config = mutableListOf<NftCollection>()
 
@@ -29,27 +27,43 @@ object NftCollectionConfig {
         }
         val list = config.toList()
 
-        return list.firstOrNull { it.address() == address }
+        return list.firstOrNull { it.address == address }
     }
 
-    fun list() = config.filter { if (isTestnet()) it.secureCadenceCompatible.testnet else it.secureCadenceCompatible.mainnet }.toList()
+    fun list() = config.toList()
 
     private fun reloadConfig() {
-        var text = Firebase.remoteConfig.getString(KEY)
-        if (text.isBlank()) {
-            text = readTextFromAssets("config/collections.json") ?: return
+        ioScope {
+            config.clear()
+            config.addAll(loadFromCache())
+            NftCollectionStateManager.fetchState()
+            val response = retrofitApi().create(ApiService::class.java).nftCollections()
+            if (response.data.isNotEmpty()) {
+                config.clear()
+                config.addAll(response.data)
+            }
+            NftCollectionStateManager.fetchState()
         }
-        logd("NftCollectionConfig", text.take(300))
-        config.clear()
-        safeRun { config.addAll(Gson().fromJson(text, object : TypeToken<List<NftCollection>>() {}.type)) }
-        NftCollectionStateManager.fetchState()
+    }
+
+    private fun loadFromCache(): List<NftCollection> {
+        val cache = nftCollectionsCache()
+        return cache.read()?.data ?: loadFromAssets()
+    }
+
+
+    private fun loadFromAssets(): List<NftCollection> {
+        val text =
+            if (isTestnet()) readTextFromAssets("config/nft_collections_testnet.json") else readTextFromAssets("config/nft_collections_mainnet.json")
+        val data = Gson().fromJson(text, NftCollectionListResponse::class.java)
+        return data.data
     }
 }
 
 @Parcelize
 data class NftCollection(
     @SerializedName("address")
-    val address: Address,
+    val address: String,
     @SerializedName("banner")
     val banner: String,
     @SerializedName("contract_name")
@@ -69,9 +83,6 @@ data class NftCollection(
     @SerializedName("path")
     val path: Path
 ) : Parcelable {
-
-    fun address(forceMainnet: Boolean = false): String =
-        if (forceMainnet) address.mainnet.orEmpty() else (if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty())
 
     @Parcelize
     data class Address(

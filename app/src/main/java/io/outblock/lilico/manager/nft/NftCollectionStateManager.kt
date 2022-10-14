@@ -39,9 +39,9 @@ object NftCollectionStateManager {
         }
         collectionList.forEachIndexed { index, collection ->
             val isEnable = isEnableList[index]
-            val oldState = tokenStateList.firstOrNull { it.address == collection.address(forceMainnet = false) }
+            val oldState = tokenStateList.firstOrNull { it.address == collection.address }
             tokenStateList.remove(oldState)
-            tokenStateList.add(NftCollectionState(collection.name, collection.address(), isEnable))
+            tokenStateList.add(NftCollectionState(collection.name, collection.address, isEnable))
             if (oldState?.isAdded != isEnable) {
                 dispatchListeners(collection, isEnable)
             }
@@ -55,7 +55,7 @@ object NftCollectionStateManager {
         if (isEnable != null) {
             val oldState = tokenStateList.firstOrNull { it.name == collection.name }
             tokenStateList.remove(oldState)
-            tokenStateList.add(NftCollectionState(collection.name, collection.address(), isEnable))
+            tokenStateList.add(NftCollectionState(collection.name, collection.address, isEnable))
             if (oldState?.isAdded != isEnable) {
                 dispatchListeners(collection, isEnable)
             }

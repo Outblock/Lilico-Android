@@ -1,6 +1,7 @@
 package io.outblock.lilico.cache
 
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.TokenStateCache
@@ -56,6 +57,10 @@ fun transactionRecordCache(): CacheManager<TransactionRecordList> {
 
 fun transferRecordCache(tokenId: String = ""): CacheManager<TransferRecordList> {
     return CacheManager("transfer_record_$tokenId".cacheFile(), TransferRecordList::class.java)
+}
+
+fun nftCollectionsCache(): CacheManager<NftCollectionListResponse> {
+    return CacheManager("nft_collections_${chainNetWorkString()}".cacheFile(), NftCollectionListResponse::class.java)
 }
 
 

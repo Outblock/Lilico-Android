@@ -5,7 +5,6 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
-import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.NftSelections
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
@@ -99,9 +98,9 @@ fun isSingleNftItem(model: Any): Boolean {
 }
 
 fun nftWalletAddress(): String {
-    if (BuildConfig.DEBUG) {
-        return "0x95601dba5c2506eb"
-    }
+//    if (BuildConfig.DEBUG) {
+//        return "0x95601dba5c2506eb"
+//    }
     return walletCache().read()?.primaryWalletAddress().orEmpty()
 }
 

@@ -42,6 +42,8 @@ class CacheManager<T>(
 
     fun isCacheExist(): Boolean = file.exists() && file.length() > 0
 
+    fun modifyTime() = file.lastModified()
+
     companion object {
         private val TAG = CacheManager::class.java.simpleName
     }

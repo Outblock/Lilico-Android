@@ -45,8 +45,8 @@ interface ApiService {
         @Query("limit") limit: Int = 25,
     ): NFTListResponse
 
-    @GET("/v2/nft/collections")
-    suspend fun nftCollections(
+    @GET("/api/nft/id")
+    suspend fun nftCollectionsOfAccount(
         @Query("address") address: String,
     ): NftCollectionsResponse
 
@@ -56,6 +56,9 @@ interface ApiService {
         @Query("nftCollection") contractName: String,
         @Query("nftID") tokenId: String,
     ): CommonResponse
+
+    @GET("/api/nft/collections")
+    suspend fun nftCollections(): NftCollectionListResponse
 
     @GET("/v2/nft/favorite")
     suspend fun getNftFavorite(

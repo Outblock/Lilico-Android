@@ -11,6 +11,7 @@ import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.app.refreshChainNetwork
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
@@ -48,6 +49,7 @@ object LaunchManager {
     }
 
     private fun readCache() {
+        NftCollectionConfig.sync()
         BalanceManager.reload()
         TransactionStateManager.reload()
         TokenStateManager.reload()

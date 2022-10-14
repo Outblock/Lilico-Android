@@ -40,8 +40,8 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
             collectionList.clear()
             collectionList.addAll(
                 NftCollectionConfig.list()
-                    .filter { it.address().isNotEmpty() }
-                    .map { NftCollectionItem(collection = it, isAdded = NftCollectionStateManager.isTokenAdded(it.address()), isAdding = false) })
+                    .filter { it.address.isNotEmpty() }
+                    .map { NftCollectionItem(collection = it, isAdded = NftCollectionStateManager.isTokenAdded(it.address), isAdding = false) })
             collectionListLiveData.postValue(collectionList.toList())
 
             onTransactionStateChange()
@@ -93,11 +93,11 @@ class NftCollectionListViewModel : ViewModel(), OnTransactionStateChange, NftCol
                 if (state.type == TransactionState.TYPE_ENABLE_NFT) {
                     val coin = state.nftCollectionData()
 
-                    if (state.isSuccess() && !NftCollectionStateManager.isTokenAdded(coin.address())) {
+                    if (state.isSuccess() && !NftCollectionStateManager.isTokenAdded(coin.address)) {
                         NftCollectionStateManager.fetchStateSingle(state.nftCollectionData(), cache = true)
                     }
                     val index = collectionList.indexOfFirst { it.collection.contractName == coin.contractName }
-                    val isAdded = NftCollectionStateManager.isTokenAdded(coin.address())
+                    val isAdded = NftCollectionStateManager.isTokenAdded(coin.address)
                     collectionList[index] = NftCollectionItem(
                         collection = collectionList[index].collection,
                         isAdding = !state.isFailed() && !isAdded,

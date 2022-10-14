@@ -36,6 +36,10 @@ fun retrofit(disableConverter: Boolean = false): Retrofit {
     return builder.baseUrl(API_HOST).client(client).build()
 }
 
+fun retrofitApi(): Retrofit {
+    return retrofitWithHost(if (isDev()) "https://test.lilico.app" else "https://lilico.app", ignoreAuthorization = false)
+}
+
 fun retrofitWithHost(host: String, disableConverter: Boolean = false, ignoreAuthorization: Boolean = true): Retrofit {
     val client = OkHttpClient.Builder().apply {
         addInterceptor(HeaderInterceptor(ignoreAuthorization))

@@ -5,7 +5,7 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.NftCollectionWrapper
 import io.outblock.lilico.network.model.NftCollections
-import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.network.retrofitApi
 import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
 
 class NftListRequester {
@@ -16,7 +16,7 @@ class NftListRequester {
 
     private var isLoadMoreRequesting = false
 
-    private val service by lazy { retrofit().create(ApiService::class.java) }
+    private val service by lazy { retrofitApi().create(ApiService::class.java) }
 
     private val dataList = mutableListOf<Nft>()
 
@@ -25,11 +25,11 @@ class NftListRequester {
     fun cacheCollections() = cache().collection().read()?.collections?.sort()
 
     suspend fun requestCollection(): List<NftCollectionWrapper>? {
-        val collectionResponse = service.nftCollections(nftWalletAddress())
+        val collectionResponse = service.nftCollectionsOfAccount(nftWalletAddress())
         if (collectionResponse.status > 200) {
             throw Exception("request nft list error: $collectionResponse")
         }
-        val collections = collectionResponse.data?.filter { it.collection?.address()?.isNotBlank() == true }
+        val collections = collectionResponse.data?.filter { it.collection?.address?.isNotBlank() == true }
         collectionList.clear()
         collectionList.addAll(collections ?: listOf())
         cache().collection().cacheSync(NftCollections(collections.orEmpty()))

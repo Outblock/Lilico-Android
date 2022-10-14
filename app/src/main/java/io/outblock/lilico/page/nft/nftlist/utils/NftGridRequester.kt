@@ -2,7 +2,7 @@ package io.outblock.lilico.page.nft.nftlist.utils
 
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.network.retrofit
+import io.outblock.lilico.network.retrofitApi
 import io.outblock.lilico.page.nft.nftlist.nftWalletAddress
 
 class NftGridRequester {
@@ -11,7 +11,7 @@ class NftGridRequester {
 
     private var count = -1
 
-    private val service by lazy { retrofit().create(ApiService::class.java) }
+    private val service by lazy { retrofitApi().create(ApiService::class.java) }
 
     private val dataList = mutableListOf<Nft>()
 
