@@ -32,8 +32,12 @@ object NftCollectionStateManager {
 
     private fun fetchStateSync(onFinish: (() -> Unit)? = null) {
         val collectionList = NftCollectionConfig.list()
-        val isEnableList = cadenceNftListCheckEnabled(collectionList)
-        if (collectionList.size != isEnableList?.size) {
+        val collectionCount = collectionList.size
+        val isEnableList = if (collectionCount > 60) {
+            cadenceNftListCheckEnabled(collectionList.take(60)).orEmpty() + cadenceNftListCheckEnabled(collectionList.takeLast(collectionCount - 60)).orEmpty()
+        } else cadenceNftListCheckEnabled(collectionList).orEmpty()
+
+        if (collectionList.size != isEnableList.size) {
             logw(TAG, "fetch error")
             return
         }

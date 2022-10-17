@@ -163,6 +163,7 @@ suspend fun cadenceNftEnabled(nft: NftCollection): String? {
 
 fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
     logd(TAG, "cadenceNftListCheckEnabled()")
+    if (nfts.isEmpty()) return emptyList()
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return null
 
     val tokenImports = nfts.map { nft -> nft.formatCadence("import <Token> from <TokenAddress>") }.joinToString("\r\n") { it }
