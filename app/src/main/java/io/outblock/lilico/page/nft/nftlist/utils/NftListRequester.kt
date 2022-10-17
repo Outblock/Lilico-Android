@@ -43,7 +43,7 @@ class NftListRequester {
     suspend fun request(collection: NftCollection): List<Nft> {
         resetOffset()
         dataList.clear()
-        val response = service.nftsOfCollection(nftWalletAddress(), collection.contractName, offset, limit)
+        val response = service.nftsOfCollection(nftWalletAddress(), collection.id, offset, limit)
         if (response.status > 200) {
             throw Exception("request nft list error: $response")
         }
@@ -69,7 +69,7 @@ class NftListRequester {
         isLoadMoreRequesting = true
 
         offset += limit
-        val response = service.nftsOfCollection(nftWalletAddress(), collection.contractName, offset, limit)
+        val response = service.nftsOfCollection(nftWalletAddress(), collection.id, offset, limit)
         response.data ?: return emptyList()
         count = response.data.nftCount
 

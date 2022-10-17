@@ -72,6 +72,8 @@ object NftCollectionConfig {
 
 @Parcelize
 data class NftCollection(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("address")
     val address: String,
     @SerializedName("banner")
