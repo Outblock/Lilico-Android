@@ -48,7 +48,7 @@ class NftShareView(
     }
 
     private fun setupNft() {
-        val config = NftCollectionConfig.get(nft.contract.address) ?: return
+        val config = NftCollectionConfig.get(nft.collectionAddress) ?: return
         with(binding) {
             nftNameView.text = nft.name()
             Glide.with(nftCollectionIconView).load(config.logo).transform(RoundedCorners(20.dp2px().toInt())).into(nftCollectionIconView)

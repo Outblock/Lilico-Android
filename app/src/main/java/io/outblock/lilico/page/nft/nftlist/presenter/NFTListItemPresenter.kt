@@ -33,11 +33,11 @@ class NFTListItemPresenter(
     @SuppressLint("SetTextI18n")
     override fun bind(model: NFTItemModel) {
         val nft = model.nft
-        val config = NftCollectionConfig.get(nft.contract.address)
+        val config = NftCollectionConfig.get(nft.collectionAddress)
         with(binding) {
             Glide.with(coverView).load(nft.cover()).transform(RoundedCorners(10.dp2px().toInt())).placeholder(R.drawable.placeholder).into(coverView)
             nameView.text = config?.name ?: nft.contractName()
-            priceView.text = "#${nft.id.tokenId}"
+            priceView.text = "#${nft.id}"
 
             coverViewWrapper.setOnClickListener {
                 NftDetailActivity.launch(context, nft.uniqueId())

@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.nft.nftlist.utils
 
 import io.outblock.lilico.manager.config.NftCollection
+import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.NftCollectionWrapper
@@ -29,11 +30,12 @@ class NftListRequester {
         if (collectionResponse.status > 200) {
             throw Exception("request nft list error: $collectionResponse")
         }
-        val collections = collectionResponse.data?.filter { it.collection?.address?.isNotBlank() == true }
+        val collections = collectionResponse.data?.filter { it.simpleCollection?.address?.isNotBlank() == true }.orEmpty()
+        collections.map { it.collectionOrigin = NftCollectionConfig.get(it.simpleCollection?.address.orEmpty()) }
         collectionList.clear()
-        collectionList.addAll(collections ?: listOf())
-        cache().collection().cacheSync(NftCollections(collections.orEmpty()))
-        return collections?.sort()
+        collectionList.addAll(collections)
+        cache().collection().cacheSync(NftCollections(collections))
+        return collections.sort()
     }
 
     fun cachedNfts(collection: NftCollection) = cache().list(collection.contractName).read()?.list
@@ -99,6 +101,6 @@ class NftListRequester {
 
     private fun List<NftCollectionWrapper>?.sort(): List<NftCollectionWrapper>? {
         this ?: return null
-        return this.sortedBy { it.collection?.name?.take(1) }.sortedByDescending { it.count }
+        return this.sortedBy { it.collectionOrigin?.name?.take(1) }.sortedByDescending { it.count }
     }
 }

@@ -24,11 +24,11 @@ class CollectionViewModel : ViewModel() {
         viewModelIOScope(this) {
             val collectionWrapper = nftCache.collection()
                 .read()?.collections
-                ?.firstOrNull { it.collection?.contractName == contractName } ?: return@viewModelIOScope
+                ?.firstOrNull { it.collectionOrigin?.contractName == contractName } ?: return@viewModelIOScope
 
             this.collectionWrapper = collectionWrapper
 
-            val collection = collectionWrapper.collection ?: return@viewModelIOScope
+            val collection = collectionWrapper.collectionOrigin ?: return@viewModelIOScope
 
             collectionLiveData.postValue(collectionWrapper)
             notifyNftList()
@@ -40,14 +40,14 @@ class CollectionViewModel : ViewModel() {
 
     fun requestListNextPage() {
         viewModelIOScope(this) {
-            val collection = collectionWrapper?.collection ?: return@viewModelIOScope
+            val collection = collectionWrapper?.collectionOrigin ?: return@viewModelIOScope
             requester.nextPage(collection)
             notifyNftList()
         }
     }
 
     private fun notifyNftList() {
-        val collection = collectionWrapper?.collection ?: return
+        val collection = collectionWrapper?.collectionOrigin ?: return
         val list = mutableListOf<Any>().apply { addAll(requester.dataList(collection).map { NFTItemModel(nft = it) }) }
         if (requester.haveMore()) {
             list.add(NftLoadMoreModel(isListLoadMore = true))

@@ -49,7 +49,7 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
             updateDefaultSelectCollection()
 
             collectionTitleLiveData.postValue(CollectionTitleModel(count = cacheCollections.size))
-            (selectedCollection ?: cacheCollections.firstOrNull()?.collection)?.let {
+            (selectedCollection ?: cacheCollections.firstOrNull()?.collectionOrigin)?.let {
                 logd(TAG, "notifyNftList 2")
                 notifyNftList(it)
             }
@@ -69,7 +69,7 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
             notifyCollectionList(onlineCollections)
             updateDefaultSelectCollection()
 
-            (selectedCollection ?: onlineCollections.firstOrNull()?.collection)?.let {
+            (selectedCollection ?: onlineCollections.firstOrNull()?.collectionOrigin)?.let {
                 listRequester.request(it)
                 logd(TAG, "notifyNftList 1")
                 notifyNftList(it)
@@ -102,9 +102,9 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
 
     private fun updateDefaultSelectCollection() {
         val cacheCollections = listRequester.cacheCollections()
-        selectedCollection = selectedCollection ?: cacheCollections?.firstOrNull()?.collection
-        if (selectedCollection != null && cacheCollections?.firstOrNull { it.collection?.contractName == selectedCollection?.contractName } == null) {
-            cacheCollections?.firstOrNull()?.collection?.contractName?.let { selectCollection(it) }
+        selectedCollection = selectedCollection ?: cacheCollections?.firstOrNull()?.collectionOrigin
+        if (selectedCollection != null && cacheCollections?.firstOrNull { it.collectionOrigin?.contractName == selectedCollection?.contractName } == null) {
+            cacheCollections?.firstOrNull()?.collectionOrigin?.contractName?.let { selectCollection(it) }
         }
     }
 
@@ -148,9 +148,9 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
         if (selectedCollection?.contractName == contractName) {
             return
         }
-        val collection = listRequester.cacheCollections()?.firstOrNull { it.collection?.contractName == contractName } ?: return
+        val collection = listRequester.cacheCollections()?.firstOrNull { it.collectionOrigin?.contractName == contractName } ?: return
         collectionTabChangeLiveData.postValue(contractName)
-        selectedCollection = collection.collection
+        selectedCollection = collection.collectionOrigin
         viewModelIOScope(this) {
             val tmpCollection = selectedCollection ?: return@viewModelIOScope
             logd(TAG, "notifyNftList 4")
@@ -178,7 +178,7 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
         logd(TAG, "notifyNftList collection:${collection.name} size:${list.size}")
 
         if (list.isEmpty()) {
-            val count = listRequester.cacheCollections()?.firstOrNull { it.collection?.contractName == collection.contractName }?.count ?: 0
+            val count = listRequester.cacheCollections()?.firstOrNull { it.collectionOrigin?.contractName == collection.contractName }?.count ?: 0
             list.addAll(generateEmptyNftPlaceholders(count))
         }
 
@@ -186,9 +186,9 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
     }
 
     private fun notifyCollectionList(collections: List<NftCollectionWrapper>?) {
-        val selectedCollection = selectedCollection?.contractName ?: collections?.firstOrNull()?.collection?.contractName
+        val selectedCollection = selectedCollection?.contractName ?: collections?.firstOrNull()?.collectionOrigin?.contractName
         collectionsLiveData.postValue(collections.orEmpty().mapNotNull {
-            val collection = it.collection ?: return@mapNotNull null
+            val collection = it.collectionOrigin ?: return@mapNotNull null
             CollectionItemModel(
                 collection = collection,
                 count = it.count ?: 0,

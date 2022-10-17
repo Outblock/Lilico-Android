@@ -37,7 +37,7 @@ data class Nft(
     @SerializedName("description")
     val description: String?,
     @SerializedName("id")
-    val id: NFTId,
+    val id: String,
     @SerializedName("media")
     val media: List<NFTMedia>?,
     @SerializedName("metadata")
@@ -46,14 +46,31 @@ data class Nft(
     val title: String?,
     @SerializedName("postMedia")
     val postMedia: PostMedia,
+
+    @SerializedName("collectionName")
+    val collectionName: String,
+    @SerializedName("collectionContractName")
+    val collectionContractName: String,
+    @SerializedName("contractAddress")
+    val collectionAddress: String,
+    @SerializedName("collectionDescription")
+    val collectionDescription: String,
+    @SerializedName("collectionSquareImage")
+    val collectionSquareImage: String,
+    @SerializedName("collectionBannerImage")
+    val collectionBannerImage: String,
+    @SerializedName("collectionExternalURL")
+    val collectionExternalURL: String,
+    @SerializedName("traits")
+    val traits: List<NftTraits>?,
 ) : Parcelable {
-    fun uniqueId() = "${contract.address}.${contract.name}-${id.tokenId}"
+    fun uniqueId() = "${collectionName}.${collectionContractName}-${id}"
 
-    fun serverId() = "${contract.name}-${id.tokenId}"
+    fun serverId() = "${collectionContractName}-${id}"
 
-    fun contractName() = contract.name
+    fun contractName() = collectionContractName
 
-    fun tokenId() = id.tokenId
+    fun tokenId() = id
 }
 
 @Parcelize
@@ -70,6 +87,14 @@ data class PostMedia(
     val music: String? = null,
     @SerializedName("isSVG")
     val isSvg: String? = null,
+) : Parcelable
+
+@Parcelize
+data class NftTraits(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("value")
+    val value: String,
 ) : Parcelable
 
 @Parcelize
@@ -92,14 +117,6 @@ data class NFTContractMetadata(
     val publicPath: String?,
     @SerializedName("storagePath")
     val storagePath: String?,
-) : Parcelable
-
-@Parcelize
-data class NFTId(
-    @SerializedName("tokenId")
-    val tokenId: String,
-    @SerializedName("tokenMetadata")
-    val tokenMetadata: NFTTokenMetadata
 ) : Parcelable
 
 @Parcelize

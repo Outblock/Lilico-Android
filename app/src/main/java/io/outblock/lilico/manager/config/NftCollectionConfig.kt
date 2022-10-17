@@ -21,13 +21,23 @@ object NftCollectionConfig {
         ioScope { reloadConfig() }
     }
 
-    fun get(address: String): NftCollection? {
+    fun get(address: String?): NftCollection? {
+        address ?: return null
         if (config.isEmpty()) {
             reloadConfig()
         }
         val list = config.toList()
 
         return list.firstOrNull { it.address == address }
+    }
+
+    fun getByContractName(contractName: String): NftCollection? {
+        if (config.isEmpty()) {
+            reloadConfig()
+        }
+        val list = config.toList()
+
+        return list.firstOrNull { it.contractName == contractName }
     }
 
     fun list() = config.toList()

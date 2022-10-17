@@ -117,9 +117,9 @@ class NftDetailPresenter(
     private fun bindData(nft: Nft) {
         this.nft = nft
         with(binding) {
-            val config = NftCollectionConfig.get(nft.contract.address)
-            val name = config?.name?:nft.contractName()
-            val title = "$name #${nft.id.tokenId}"
+            val config = NftCollectionConfig.get(nft.collectionAddress)
+            val name = config?.name ?: nft.contractName()
+            val title = "$name #${nft.id}"
             toolbar.title = title
 
             ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
@@ -206,7 +206,7 @@ class NftDetailPresenter(
     }
 
     private fun bindTags(nft: Nft) {
-        val tags = nft.metadata.metadata ?: return
+        val tags = nft.traits ?: return
         with(binding.tags) {
             tags.filter { !filterMetadata.contains(it.name.lowercase()) && it.value.isNotBlank() && !it.value.startsWith("https://") }
                 .forEach { metadata ->

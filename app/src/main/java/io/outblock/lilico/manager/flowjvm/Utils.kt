@@ -72,7 +72,7 @@ fun addressVerify(address: String): Boolean {
 }
 
 fun Nft.formatCadence(script: String): String {
-    val config = NftCollectionConfig.get(contract.address) ?: return script
+    val config = NftCollectionConfig.get(collectionAddress) ?: return script
     return config.formatCadence(script)
 }
 
