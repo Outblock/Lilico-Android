@@ -51,6 +51,7 @@ object NftCollectionConfig {
             if (response.data.isNotEmpty()) {
                 config.clear()
                 config.addAll(response.data)
+                nftCollectionsCache().cache(response)
             }
             NftCollectionStateManager.fetchState()
         }

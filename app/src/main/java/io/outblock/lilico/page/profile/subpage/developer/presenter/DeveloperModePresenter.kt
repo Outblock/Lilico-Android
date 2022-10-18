@@ -13,6 +13,7 @@ import io.outblock.lilico.page.profile.subpage.developer.model.DeveloperPageMode
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.ProgressDialog
+import kotlinx.coroutines.delay
 
 class DeveloperModePresenter(
     private val activity: FragmentActivity,
@@ -69,10 +70,16 @@ class DeveloperModePresenter(
 
     private fun changeNetwork(network: Int) {
         updateChainNetworkPreference(network) {
-            refreshChainNetwork {
-                viewModel.changeNetwork()
-                binding.mainnetPreference.setChecked(isMainnet())
-                binding.testnetPreference.setChecked(isTestnet())
+            uiScope {
+                delay(200)
+                refreshChainNetwork {
+                    uiScope {
+                        delay(200)
+                        viewModel.changeNetwork()
+                        binding.mainnetPreference.setChecked(isMainnet())
+                        binding.testnetPreference.setChecked(isTestnet())
+                    }
+                }
             }
         }
     }
