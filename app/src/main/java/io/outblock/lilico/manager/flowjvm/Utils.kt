@@ -87,6 +87,8 @@ fun NftCollection.formatCadence(script: String): String {
         .replace("<TokenCollectionStoragePath>", path.storagePath)
         .replace("<TokenCollectionPublic>", path.publicCollectionName)
         .replace("<TokenCollectionPublicPath>", path.publicPath)
+        .replace("<CollectionPublicType>", path.publicType)
+        .replace("<CollectionPrivateType>", path.privateType)
 }
 
 class CadenceArgumentsBuilder {

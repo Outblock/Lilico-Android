@@ -112,7 +112,11 @@ data class NftCollection(
         @SerializedName("public_path")
         val publicPath: String,
         @SerializedName("storage_path")
-        val storagePath: String
+        val storagePath: String,
+        @SerializedName("public_type")
+        val publicType: String,
+        @SerializedName("private_type")
+        val privateType: String,
     ) : Parcelable
 
     @Parcelize

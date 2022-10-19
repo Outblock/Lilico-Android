@@ -23,6 +23,7 @@ internal class FlowAddressRegistry {
             "0xFlowToken" to if (isTestnet()) "0x7e60df042a9c0868" else "0x1654653399040a61",
             "0xFungibleToken" to if (isTestnet()) "0x9a0766d93b6608b7" else "0xf233dcee88fe0abe",
             "0xNonFungibleToken" to if (isTestnet()) "0x631e88ae7f1d7c20" else "0x1d7e57aa55817448",
+            "0xMetadataViews" to if (isTestnet()) "0x631e88ae7f1d7c20" else "0x1d7e57aa55817448",
         )
     }
 }

@@ -138,6 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:drawer_item_icon="@drawable/ic_receive"
+        android:visibility="gone"
         app:drawer_item_text="@string/create_wallet"
         app:layout_constraintTop_toBottomOf="@id/wallet_item"/>
 
@@ -146,6 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:visibility="gone"
         app:drawer_item_icon="@drawable/ic_receive"
         app:drawer_item_text="@string/import_wallet"
         app:layout_constraintTop_toBottomOf="@id/create_wallet_item"/>
