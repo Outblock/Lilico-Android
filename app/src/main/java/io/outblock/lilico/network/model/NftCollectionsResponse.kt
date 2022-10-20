@@ -20,14 +20,11 @@ data class NftCollections(
 
 data class NftCollectionWrapper(
     @SerializedName("collection")
-    val simpleCollection: NftSimpleCollection?,
+    val collection: NftCollection?,
     @SerializedName("count")
     val count: Int?,
     @SerializedName("ids")
     val ids: List<Any>?,
-
-    @SerializedName("collection_origin")
-    var collectionOrigin: NftCollection?,
 )
 
 data class NftSimpleCollection(
