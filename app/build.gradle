@@ -192,7 +192,7 @@ dependencies {
     implementation 'com.sackcentury:shinebutton:1.0.0'
     implementation 'com.github.varunest:sparkbutton:1.0.6'
 
-    implementation 'com.github.li-xiaojun:XPopup:2.7.5'
+    implementation 'com.github.li-xiaojun:XPopup:2.9.4'
     implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

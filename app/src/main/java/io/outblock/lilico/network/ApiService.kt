@@ -60,7 +60,7 @@ interface ApiService {
     @GET("/api/nft/collections")
     suspend fun nftCollections(): NftCollectionListResponse
 
-    @GET("/v2/nft/favorite")
+    @GET("/v3/nft/favorite")
     suspend fun getNftFavorite(
         @Query("address") address: String,
     ): NftFavoriteResponse
