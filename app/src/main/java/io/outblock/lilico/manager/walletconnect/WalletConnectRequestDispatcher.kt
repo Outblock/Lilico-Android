@@ -28,8 +28,8 @@ import java.lang.reflect.Type
 
 private const val TAG = "WalletConnectRequestDispatcher"
 
-suspend fun Sign.Model.SessionRequest.dispatch() {
-    when (request.method) {
+suspend fun WCRequest.dispatch() {
+    when (method) {
         WalletConnectMethod.AUTHN.value -> respondAuthn()
         WalletConnectMethod.AUTHZ.value -> respondAuthz()
         WalletConnectMethod.PRE_AUTHZ.value -> respondPreAuthz()
@@ -39,14 +39,14 @@ suspend fun Sign.Model.SessionRequest.dispatch() {
     }
 }
 
-private fun Sign.Model.SessionRequest.respondAuthn() {
+private fun WCRequest.respondAuthn() {
     val address = walletCache().read()?.primaryWalletAddress() ?: return
-    val json = gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
+    val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"), isFromFclSdk())
     val response = Sign.Params.Response(
         sessionTopic = topic,
-        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, services.responseParse(this))
+        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(requestId, services.responseParse(this))
     )
     logd(TAG, "respondAuthn:\n${services}")
 
@@ -54,18 +54,18 @@ private fun Sign.Model.SessionRequest.respondAuthn() {
     redirectToSourceApp()
 }
 
-private fun Sign.Model.SessionRequest.respondAuthz() {
+private fun WCRequest.respondAuthz() {
     val activity = BaseActivity.getCurrentActivity() ?: return
-    val json = gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
+    val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val message = signable.message ?: return
     uiScope {
         FclAuthzDialog.show(
             activity.supportFragmentManager,
             FclDialogModel(
-                title = peerMetaData?.name,
-                logo = peerMetaData?.icons?.firstOrNull(),
-                url = peerMetaData?.url,
+                title = metaData?.name,
+                logo = metaData?.icons?.firstOrNull(),
+                url = metaData?.url,
                 cadence = signable.cadence,
             )
         )
@@ -84,7 +84,8 @@ private fun Sign.Model.SessionRequest.respondAuthz() {
     redirectToSourceApp()
 }
 
-private fun Sign.Model.SessionRequest.respondPreAuthz() {
+
+private fun WCRequest.respondPreAuthz() {
     val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return
     val payerAddress = if (AppConfig.isFreeGas()) AppConfig.payer().address else walletAddress
     val response = PollingResponse(
@@ -114,18 +115,18 @@ private fun Sign.Model.SessionRequest.respondPreAuthz() {
     approve(gson().toJson(response))
 }
 
-private fun Sign.Model.SessionRequest.respondUserSign() {
+private fun WCRequest.respondUserSign() {
     val activity = BaseActivity.getCurrentActivity() ?: return
     val address = walletCache().read()?.primaryWalletAddress() ?: return
-    val param = gson().fromJson<List<SignableMessage>>(request.params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
+    val param = gson().fromJson<List<SignableMessage>>(params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
     val message = param?.message ?: return
     uiScope {
         FclSignMessageDialog.show(
             activity.supportFragmentManager,
             FclDialogModel(
-                title = peerMetaData?.name,
-                logo = peerMetaData?.icons?.firstOrNull(),
-                url = peerMetaData?.url,
+                title = metaData?.name,
+                logo = metaData?.icons?.firstOrNull(),
+                url = metaData?.url,
                 signMessage = message,
             )
         )
@@ -138,8 +139,8 @@ private fun Sign.Model.SessionRequest.respondUserSign() {
     }
 }
 
-private suspend fun Sign.Model.SessionRequest.respondSignPayer() {
-    val json = gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
+private suspend fun WCRequest.respondSignPayer() {
+    val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val server = executeHttpFunction(
         FUNCTION_SIGN_AS_PAYER, PayerSignable(
@@ -165,20 +166,20 @@ private suspend fun Sign.Model.SessionRequest.respondSignPayer() {
 }
 
 
-private fun Sign.Model.SessionRequest.respondSignProposer() {
+private fun WCRequest.respondSignProposer() {
     val activity = BaseActivity.getCurrentActivity() ?: return
 
-    logd(TAG, "respondSignProposer param:${request.params}")
-    val json = gson().fromJson<List<Signable>>(request.params, object : TypeToken<List<Signable>>() {}.type)
+    logd(TAG, "respondSignProposer param:${params}")
+    val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val address = walletCache().read()?.primaryWalletAddress() ?: return
 
     FclAuthzDialog.show(
         activity.supportFragmentManager,
         FclDialogModel(
-            title = peerMetaData?.name,
-            logo = peerMetaData?.icons?.firstOrNull(),
-            url = peerMetaData?.url,
+            title = metaData?.name,
+            logo = metaData?.icons?.firstOrNull(),
+            url = metaData?.url,
             cadence = signable.voucher?.cadence,
         )
     )

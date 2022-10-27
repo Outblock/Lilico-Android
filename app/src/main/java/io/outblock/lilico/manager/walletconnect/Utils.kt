@@ -6,6 +6,7 @@ import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.walletconnect.model.WCRequest
 import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
@@ -37,41 +38,41 @@ fun Sign.Model.SessionProposal.reject() {
     SignClient.rejectSession(reject) { error -> loge(error.throwable) }
 }
 
-internal fun Sign.Model.SessionRequest.approve(result: String) {
+internal fun WCRequest.approve(result: String) {
     logd(TAG, "SessionRequest.approve:$result")
     val response = Sign.Params.Response(
         sessionTopic = topic,
-        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(request.id, result.responseParse(this))
+        jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcResult(requestId, result.responseParse(this))
     )
     SignClient.respond(response) { error -> loge(error.throwable) }
 }
 
-internal fun Sign.Model.SessionRequest.reject() {
+internal fun WCRequest.reject() {
     SignClient.respond(
         Sign.Params.Response(
             sessionTopic = topic,
-            jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcError(request.id, 0, "User rejected")
+            jsonRpcResponse = Sign.Model.JsonRpcResponse.JsonRpcError(requestId, 0, "User rejected")
         )
     ) { error -> loge(error.throwable) }
 }
 
-internal fun String.responseParse(model: Sign.Model.SessionRequest): String {
+internal fun String.responseParse(model: WCRequest): String {
     if (model.isFromFclSdk()) {
         return this.toByteArray().bytesToHex()
     }
     return this
 }
 
-internal fun Sign.Model.SessionRequest.isFromFclSdk(): Boolean {
-    return peerMetaData?.redirect?.contains("\$fromSdk") == true
+internal fun WCRequest.isFromFclSdk(): Boolean {
+    return metaData?.redirect?.contains("\$fromSdk") == true
 }
 
-internal fun Sign.Model.SessionRequest.redirectToSourceApp() {
+internal fun WCRequest.redirectToSourceApp() {
     if (!isFromFclSdk()) {
         return
     }
     val context = BaseActivity.getCurrentActivity() ?: Env.getApp()
-    val intent = context.packageManager.getLaunchIntentForPackage(peerMetaData?.redirect!!.split("\$").first())
+    val intent = context.packageManager.getLaunchIntentForPackage(metaData?.redirect!!.split("\$").first())
     context.startActivity(intent)
 }
 

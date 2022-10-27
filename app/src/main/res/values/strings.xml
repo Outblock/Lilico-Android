@@ -311,4 +311,6 @@
     <string name="swap_failed">Swap failed</string>
     <string name="auditors_by">Verified by %1$s</string>
     <string name="drawer_desc">Since %1$s · %2$d NFTs</string>
+    <string name="pending_request">Pending Request</string>
+    <string name="connected_site">Connected Site</string>
 </resources>

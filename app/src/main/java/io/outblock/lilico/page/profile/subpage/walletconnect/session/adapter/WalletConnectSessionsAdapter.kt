@@ -8,7 +8,9 @@ import com.walletconnect.sign.client.Sign
 import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
+import io.outblock.lilico.page.profile.subpage.walletconnect.session.model.PendingRequestModel
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.model.WalletConnectSessionTitleModel
+import io.outblock.lilico.page.profile.subpage.walletconnect.session.presenter.WalletConnectPendingItemPresenter
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.presenter.WalletConnectSessionItemPresenter
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.presenter.WalletConnectSessionTitlePresenter
 
@@ -18,6 +20,7 @@ class WalletConnectSessionsAdapter : BaseAdapter<Any>(diffCallback) {
         return when (getItem(position)) {
             is Sign.Model.Session -> TYPE_SESSION
             is WalletConnectSessionTitleModel -> TYPE_TITLE
+            is PendingRequestModel -> TYPE_PENDING_REQUEST
             else -> 0
         }
     }
@@ -26,6 +29,7 @@ class WalletConnectSessionsAdapter : BaseAdapter<Any>(diffCallback) {
         return when (viewType) {
             TYPE_SESSION -> WalletConnectSessionItemPresenter(parent.inflate(R.layout.item_wallet_connect_session))
             TYPE_TITLE -> WalletConnectSessionTitlePresenter(parent.inflate(R.layout.item_wallet_connect_session_title))
+            TYPE_PENDING_REQUEST -> WalletConnectPendingItemPresenter(parent.inflate(R.layout.item_wallet_connect_session))
             else -> BaseViewHolder(View(parent.context))
         }
     }
@@ -34,12 +38,14 @@ class WalletConnectSessionsAdapter : BaseAdapter<Any>(diffCallback) {
         when (holder) {
             is WalletConnectSessionItemPresenter -> holder.bind(getItem(position) as Sign.Model.Session)
             is WalletConnectSessionTitlePresenter -> holder.bind(getItem(position) as WalletConnectSessionTitleModel)
+            is WalletConnectPendingItemPresenter -> holder.bind(getItem(position) as PendingRequestModel)
         }
     }
 
     companion object {
         private const val TYPE_SESSION = 1
         private const val TYPE_TITLE = 2
+        private const val TYPE_PENDING_REQUEST = 3
     }
 }
 

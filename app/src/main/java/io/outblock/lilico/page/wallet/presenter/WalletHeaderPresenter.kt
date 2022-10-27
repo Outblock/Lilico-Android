@@ -14,6 +14,8 @@ import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.walletconnect.getWalletConnectPendingRequests
+import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.swap.SwapActivity
@@ -69,6 +71,7 @@ class WalletHeaderPresenter(
 
             bindTransactionCount(model.transactionCount)
             bindDomain(model.walletList.username)
+            bindPendingRequest()
 
             buyButton.setVisible(isMainnet())
         }
@@ -85,6 +88,15 @@ class WalletHeaderPresenter(
     private fun copyAddress(text: String) {
         textToClipboard(text)
         Toast.makeText(view.context, R.string.copy_address_toast.res2String(), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun bindPendingRequest() {
+        ioScope {
+            val requests = getWalletConnectPendingRequests()
+            binding.pendingRequestWrapper.setVisible(requests.isNotEmpty())
+            binding.pendingCountView.text = "${requests.size}"
+            binding.pendingRequestWrapper.setOnClickListener { WalletConnectSessionActivity.launch(view.context) }
+        }
     }
 
     private fun TextView.diffSetText(text: String?) {

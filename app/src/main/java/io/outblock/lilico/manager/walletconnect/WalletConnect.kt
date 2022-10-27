@@ -61,3 +61,7 @@ private fun setup(application: Application) {
         SignClient.WebSocket.open { error -> logw(TAG, "open error:$error") }
     }
 }
+
+fun getWalletConnectPendingRequests(): List<Sign.Model.PendingRequest> {
+    return SignClient.getListOfSettledSessions().map { SignClient.getPendingRequests(it.topic) }.flatten()
+}

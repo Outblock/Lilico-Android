@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.manager.walletconnect.model.toWcRequest
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
@@ -65,7 +66,7 @@ internal class WalletConnectDelegate : SignClient.WalletDelegate {
     override fun onSessionRequest(sessionRequest: Sign.Model.SessionRequest) {
         logd(TAG, "onSessionRequest() sessionRequest:${Gson().toJson(sessionRequest)}")
         logd(TAG, "onSessionRequest() sessionRequest:$sessionRequest")
-        ioScope { sessionRequest.dispatch() }
+        ioScope { sessionRequest.toWcRequest().dispatch() }
     }
 
     /**
