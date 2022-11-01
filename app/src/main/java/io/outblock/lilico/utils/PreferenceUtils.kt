@@ -8,6 +8,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import io.outblock.lilico.manager.config.AppConfig
+import io.outblock.lilico.page.profile.subpage.currency.model.Currency
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.utils.extensions.toSafeInt
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +43,7 @@ private val KEY_ACCOUNT_TRANSFER_COUNT = intPreferencesKey("KEY_ACCOUNT_TRANSFER
 private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
 private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAIMED")
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
+private val KEY_CURRENCY_FLAG = stringPreferencesKey("KEY_CURRENCY_FLAG")
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -173,6 +175,16 @@ suspend fun getInboxReadList(): String = dataStore.data.map { it[KEY_INBOX_READ_
 
 suspend fun updateInboxReadListPref(list: String) {
     dataStore.edit { it[KEY_INBOX_READ_LIST] = list }
+}
+
+
+suspend fun getCurrencyFlag(): String = dataStore.data.map { it[KEY_CURRENCY_FLAG] ?: Currency.USD.flag }.first()
+
+suspend fun updateCurrencyFlag(flag: String, callback: (() -> Unit)? = null) {
+    dataStore.edit {
+        it[KEY_CURRENCY_FLAG] = flag
+        callback?.invoke()
+    }
 }
 
 private fun edit(unit: suspend () -> Unit) {

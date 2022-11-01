@@ -134,9 +134,12 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".page.profile.subpage.theme.ThemeSettingActivity"
+            android:name=".page.profile.subpage.currency.CurrencyListActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.theme.ThemeSettingActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".page.token.detail.TokenDetailActivity"
             android:screenOrientation="portrait"/>

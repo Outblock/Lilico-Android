@@ -19,10 +19,9 @@
             android:id="@+id/currency_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             app:desc="USD"
             app:icon="@drawable/ic_settings_currency"
-            app:title="Currency"/>
+            app:title="@string/currency"/>
 
         <View
             android:layout_width="match_parent"

@@ -22,6 +22,7 @@ import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
 import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
 import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClaimedStateChange
+import io.outblock.lilico.page.profile.subpage.currency.CurrencyListActivity
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
@@ -55,6 +56,7 @@ class ProfileFragmentPresenter(
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
+        binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
         binding.group5.walletConnectPreference.setOnClickListener { WalletConnectSessionActivity.launch(context) }
         updatePreferenceState()

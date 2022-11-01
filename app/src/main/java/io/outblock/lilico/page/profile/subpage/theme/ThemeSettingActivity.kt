@@ -2,6 +2,7 @@ package io.outblock.lilico.page.profile.subpage.theme
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
@@ -9,6 +10,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivitySettingsThemeBinding
+import io.outblock.lilico.page.profile.subpage.currency.CurrencyListActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.getThemeMode
 import io.outblock.lilico.utils.isNightMode
