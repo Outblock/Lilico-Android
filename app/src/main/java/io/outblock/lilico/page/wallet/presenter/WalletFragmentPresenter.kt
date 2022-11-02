@@ -13,11 +13,13 @@ import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.page.main.presenter.openDrawerLayout
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter
+import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -52,6 +54,11 @@ class WalletFragmentPresenter(
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
             bindAvatar()
+            it.forEach {
+                if (it is WalletCoinItemModel) {
+                    logd("xxxxxxx", "${it.coin.symbol}: ${it.currency},${it.balance}x${it.coinRate}")
+                }
+            }
         }
     }
 

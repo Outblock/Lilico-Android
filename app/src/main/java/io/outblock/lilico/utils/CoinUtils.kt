@@ -1,5 +1,7 @@
 package io.outblock.lilico.utils
 
+import io.outblock.lilico.manager.price.CurrencyManager
+import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -13,10 +15,31 @@ fun Long.formatBalance(): Float {
     return balance.setScale(3, BigDecimal.ROUND_HALF_DOWN).toFloat()
 }
 
-fun Float.formatPrice(digits: Int = 3, roundingMode: RoundingMode = RoundingMode.DOWN): String {
-    return format(digits, roundingMode)
+fun Float.formatPrice(
+    digits: Int = 3,
+    roundingMode: RoundingMode = RoundingMode.DOWN,
+    convertCurrency: Boolean = true,
+    includeSymbol: Boolean = false,
+    includeSymbolSpace: Boolean = false,
+): String {
+    var value = this
+    if (convertCurrency) {
+        if (CurrencyManager.currencyPrice() < 0) {
+            return "-"
+        }
+        value *= CurrencyManager.currencyPrice()
+    }
+    val format = value.format(digits, roundingMode)
+    return if (includeSymbol) "${selectedCurrency().symbol}${if (includeSymbolSpace) " " else ""}$format" else format
 }
 
 fun Float.format(digits: Int = 3, roundingMode: RoundingMode): String {
     return DecimalFormat("0.${"#".repeat(digits)}").apply { setRoundingMode(roundingMode) }.format(this)
+}
+
+fun Float.formatNum(
+    digits: Int = 3,
+    roundingMode: RoundingMode = RoundingMode.DOWN,
+): String {
+    return format(digits, roundingMode)
 }

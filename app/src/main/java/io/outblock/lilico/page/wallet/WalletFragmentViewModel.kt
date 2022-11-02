@@ -5,15 +5,18 @@ import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
+import io.outblock.lilico.manager.price.CurrencyManager
+import io.outblock.lilico.manager.price.CurrencyUpdateListener
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
+import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import java.util.concurrent.CopyOnWriteArrayList
 
-class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener {
+class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener, CurrencyUpdateListener {
 
     val dataListLiveData = MutableLiveData<List<WalletCoinItemModel>>()
 
@@ -26,6 +29,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         TokenStateManager.addListener(this)
         CoinRateManager.addListener(this)
         BalanceManager.addListener(this)
+        CurrencyManager.addCurrencyUpdateListener(this)
     }
 
     fun load() {
@@ -34,6 +38,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             loadWallet()
             loadCoinList()
             loadTransactionCount()
+            CurrencyManager.fetch()
         }
     }
 
@@ -59,6 +64,15 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         updateCoinRate(coin, price)
     }
 
+    override fun onCurrencyUpdate(flag: String, price: Float) {
+        ioScope {
+            val currency = selectedCurrency()
+            dataList.forEachIndexed { index, item -> dataList[index] = item.copy(currency = currency.flag) }
+            dataListLiveData.postValue(dataList)
+            loadCoinList()
+        }
+    }
+
     fun onBalanceHideStateUpdate() {
         viewModelIOScope(this) {
             val isHideBalance = isHideWalletBalance()
@@ -80,10 +94,11 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             val coinList = FlowCoinListManager.coinList().filter { TokenStateManager.isTokenAdded(it.address()) }
 
             val isHideBalance = isHideWalletBalance()
+            val currency = getCurrencyFlag()
             uiScope {
                 val newCoin = coinList.filter { coin -> dataList.firstOrNull { it.coin.symbol == coin.symbol } == null }
                 if (newCoin.isNotEmpty()) {
-                    dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance) })
+                    dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance, currency = currency) })
                     logd(TAG, "loadCoinList newCoin:${newCoin.map { it.symbol }}")
                     logd(TAG, "loadCoinList dataList:${dataList.map { it.coin.symbol }}")
                     dataListLiveData.postValue(dataList)
@@ -93,8 +108,6 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
 
             BalanceManager.refresh()
             CoinRateManager.refresh()
-
-            uiScope { coinList.toList().firstOrNull { it.symbol == "fusd" }?.let { updateCoinRate(it, forceRate = 1.0f) } }
         }
     }
 
@@ -143,4 +156,5 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     companion object {
         private val TAG = WalletFragmentViewModel::class.java.simpleName
     }
+
 }

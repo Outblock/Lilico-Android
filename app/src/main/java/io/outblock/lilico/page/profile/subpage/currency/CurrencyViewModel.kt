@@ -2,9 +2,12 @@ package io.outblock.lilico.page.profile.subpage.currency
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.page.profile.subpage.currency.model.Currency
 import io.outblock.lilico.page.profile.subpage.currency.model.CurrencyItemModel
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.getCurrencyFlag
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.updateCurrencyFlag
 
 class CurrencyViewModel : ViewModel() {
 
@@ -24,6 +27,7 @@ class CurrencyViewModel : ViewModel() {
             this.flag = flag
             updateCurrencyFlag(flag)
             load()
+            CurrencyManager.updateCurrency(flag)
         }
     }
 

@@ -6,6 +6,7 @@ import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.TokenStateCache
 import io.outblock.lilico.manager.nft.NftCollectionStateCache
+import io.outblock.lilico.manager.price.CurrencyCache
 import io.outblock.lilico.network.model.*
 import io.outblock.lilico.page.transaction.record.model.TransactionRecordList
 
@@ -61,6 +62,10 @@ fun transferRecordCache(tokenId: String = ""): CacheManager<TransferRecordList> 
 
 fun nftCollectionsCache(): CacheManager<NftCollectionListResponse> {
     return CacheManager("nft_collections_${chainNetWorkString()}".cacheFile(), NftCollectionListResponse::class.java)
+}
+
+fun currencyCache(): CacheManager<CurrencyCache> {
+    return CacheManager("currency_cache".cacheFile(), CurrencyCache::class.java)
 }
 
 

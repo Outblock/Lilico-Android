@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.swap
 
+import android.annotation.SuppressLint
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentActivity
@@ -14,6 +15,7 @@ import io.outblock.lilico.utils.extensions.hideKeyboard
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.toSafeFloat
 import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 
 
@@ -40,11 +42,11 @@ fun ActivitySwapBinding.updateToCoin(coin: FlowCoin) {
 }
 
 fun ActivitySwapBinding.updateFromAmount(amount: Float) {
-    fromInput.setText(amount.formatPrice())
+    fromInput.setText(amount.formatNum())
 }
 
 fun ActivitySwapBinding.updateToAmount(amount: Float) {
-    toInput.setText(amount.formatPrice())
+    toInput.setText(amount.formatNum())
 }
 
 fun ActivitySwapBinding.updateProgressState(isLoading: Boolean) {
@@ -74,6 +76,7 @@ fun ActivitySwapBinding.switchCoin() {
     if (toInput.hasFocus()) toInput.setSelection(toInput.length())
 }
 
+@SuppressLint("SetTextI18n")
 fun ActivitySwapBinding.updateEstimate(data: SwapEstimateResponse.Data) {
     val viewModel = viewModel()
     val fromCoin = viewModel.fromCoin() ?: return
@@ -82,7 +85,7 @@ fun ActivitySwapBinding.updateEstimate(data: SwapEstimateResponse.Data) {
     val amountIn = data.routes.firstOrNull()?.routeAmountIn ?: return
     val amountOut = data.routes.firstOrNull()?.routeAmountOut ?: return
     convertView.setVisible(true)
-    convertView.text = "1 ${fromCoin.symbol.uppercase()} ≈ ${(amountOut / amountIn).formatPrice()} ${toCoin.symbol.uppercase()}"
+    convertView.text = "1 ${fromCoin.symbol.uppercase()} ≈ ${(amountOut / amountIn).formatNum()} ${toCoin.symbol.uppercase()}"
 }
 
 private fun ActivitySwapBinding.bindFromListener() {
@@ -130,7 +133,7 @@ fun ActivitySwapBinding.onCoinRateUpdate() {
 
 private fun ActivitySwapBinding.updateAmountPrice() {
     val amount = fromInput.text.toString().toSafeFloat()
-    priceAmountView.text = "$ ${(viewModel().fromCoinRate() * amount).formatPrice()}"
+    priceAmountView.text = (viewModel().fromCoinRate() * amount).formatPrice(includeSymbol = true, includeSymbolSpace = true)
 }
 
 private fun ActivitySwapBinding.legalCheck() {
@@ -169,6 +172,6 @@ fun ActivitySwapBinding.setMaxAmount() {
     val viewModel = viewModel()
     val balance = viewModel.fromCoinBalance()
     fromInput.requestFocus()
-    fromInput.setText(balance.formatPrice())
+    fromInput.setText(balance.formatNum())
     fromInput.setSelection(fromInput.length())
 }

@@ -8,6 +8,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletCoinItemBinding
 import io.outblock.lilico.page.token.detail.TokenDetailActivity
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 import java.math.RoundingMode
 
@@ -26,10 +27,10 @@ class WalletCoinItemPresenter(
                 coinBalance.text = "**** ${model.coin.symbol.uppercase()}"
                 coinBalancePrice.text = "****"
             } else {
-                coinBalance.text = "${model.balance.formatPrice(roundingMode = RoundingMode.HALF_UP)} ${model.coin.symbol.uppercase()}"
-                coinBalancePrice.text = "$${(model.balance * model.coinRate).formatPrice()}"
+                coinBalance.text = "${model.balance.formatNum(roundingMode = RoundingMode.HALF_UP)} ${model.coin.symbol.uppercase()}"
+                coinBalancePrice.text = (model.balance * model.coinRate).formatPrice(includeSymbol = true)
             }
-            coinPrice.text = "$" + model.coinRate.formatPrice()
+            coinPrice.text = model.coinRate.formatPrice(includeSymbol = true)
             view.setOnClickListener { TokenDetailActivity.launch(view.context, model.coin) }
         }
     }

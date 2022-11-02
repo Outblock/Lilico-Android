@@ -2,6 +2,7 @@ package io.outblock.lilico.page.profile.subpage.currency.model
 
 import androidx.annotation.DrawableRes
 import io.outblock.lilico.R
+import io.outblock.lilico.manager.price.CurrencyManager
 
 
 enum class Currency(
@@ -23,4 +24,12 @@ enum class Currency(
     TWD("New Taiwan Dollar", "$", "🇹🇼", R.drawable.ic_currency_twd),
     CHF("Swiss Franc", "Fr", "🇨🇭", R.drawable.ic_currency_chf),
     MXN("Mexican Peso", "$", "🇲🇽", R.drawable.ic_currency_mxn),
+}
+
+fun findCurrencyFromFlag(flag: String): Currency {
+    return Currency.values().first { it.flag == flag }
+}
+
+fun selectedCurrency(): Currency {
+    return findCurrencyFromFlag(CurrencyManager.currencyFlag())
 }

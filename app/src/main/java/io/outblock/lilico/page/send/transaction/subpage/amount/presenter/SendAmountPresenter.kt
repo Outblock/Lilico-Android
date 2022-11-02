@@ -17,9 +17,11 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.address.presenter.AddressBookPersonPresenter
+import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountActivity
 import io.outblock.lilico.page.send.transaction.subpage.amount.SendAmountViewModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendAmountModel
@@ -27,11 +29,8 @@ import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalance
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.widget.SendCoinPopupMenu
 import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionDialog
-import io.outblock.lilico.utils.COIN_USD_SYMBOL
+import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.*
-import io.outblock.lilico.utils.formatPrice
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.uiScope
 
 class SendAmountPresenter(
     private val activity: SendAmountActivity,
@@ -78,24 +77,29 @@ class SendAmountPresenter(
     private fun updateCoinState() {
         with(binding) {
             Glide.with(coinIconView).load(viewModel.currentCoin().coinIcon()).into(coinIconView)
-            if (viewModel.currentCoin() == COIN_USD_SYMBOL) {
+            if (viewModel.currentCoin() == selectedCurrency().flag) {
                 coinIconView.imageTintList = ColorStateList.valueOf(R.color.note.res2color())
             } else {
                 coinIconView.imageTintList = null
             }
 
             updateTransferAmountConvert()
-            Glide.with(balanceIconView).load(FlowCoinListManager.getCoin(viewModel.currentCoin())?.icon).into(balanceIconView)
-            coinWrapper.isEnabled = viewModel.currentCoin() != COIN_USD_SYMBOL
-            coinMoreArrowView.setVisible(viewModel.currentCoin() != COIN_USD_SYMBOL)
+
+            val icon =
+                if (viewModel.currentCoin() == selectedCurrency().flag) FlowCoinListManager.getCoin(viewModel.convertCoin())?.icon else FlowCoinListManager.getCoin(
+                    viewModel.currentCoin()
+                )?.icon
+            Glide.with(balanceIconView).load(icon).into(balanceIconView)
+            coinWrapper.isEnabled = viewModel.currentCoin() != selectedCurrency().flag
+            coinMoreArrowView.setVisible(viewModel.currentCoin() != selectedCurrency().flag)
         }
         checkAmount()
     }
 
     private fun checkAmount() {
         val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
-        val coinRate = balance()?.coinRate ?: 0f
-        val inputBalance = if (viewModel.convertCoin() == COIN_USD_SYMBOL) amount else amount / (if (coinRate == 0f) 1f else coinRate)
+        val coinRate = (balance()?.coinRate ?: 0f) * CurrencyManager.currencyPrice()
+        val inputBalance = if (viewModel.convertCoin() == selectedCurrency().flag) amount else amount / (if (coinRate == 0f) 1f else coinRate)
         val isOutOfBalance = inputBalance > (balance()?.balance ?: 0f)
         if (isOutOfBalance && !binding.errorWrapper.isVisible()) {
             TransitionManager.go(Scene(binding.root as ViewGroup), Fade().apply { })
@@ -109,11 +113,11 @@ class SendAmountPresenter(
     @SuppressLint("SetTextI18n")
     private fun updateBalance(balance: SendBalanceModel) {
         with(binding) {
-            balanceAmountView.text = "${balance.balance.formatPrice()} ${FlowCoinListManager.getCoin(balance.symbol)?.name?.capitalizeV2()} "
+            balanceAmountView.text = "${balance.balance.formatNum()} ${FlowCoinListManager.getCoin(balance.symbol)?.name?.capitalizeV2()} "
             balanceAmountConvertView.text =
-                activity.getString(
-                    R.string.coin_rate_usd_convert,
-                    (if (balance.coinRate > 0) balance.coinRate * balance.balance else 0f).formatPrice()
+                "≈ " + (if (balance.coinRate > 0) balance.coinRate * balance.balance else 0f).formatPrice(
+                    includeSymbol = true,
+                    includeSymbolSpace = true
                 )
             transferAmountInput.text = transferAmountInput.text
             transferAmountInput.setSelection(transferAmountInput.text.length)
@@ -124,7 +128,7 @@ class SendAmountPresenter(
     private fun updateTransferAmountConvert() {
         with(binding) {
             Glide.with(convertAmountIconView).load(viewModel.convertCoin().coinIcon()).into(convertAmountIconView)
-            if (viewModel.convertCoin() == COIN_USD_SYMBOL) {
+            if (viewModel.convertCoin() == selectedCurrency().flag) {
                 convertAmountIconView.imageTintList = ColorStateList.valueOf(R.color.note.res2color())
             } else {
                 convertAmountIconView.imageTintList = null
@@ -137,13 +141,13 @@ class SendAmountPresenter(
         ioScope {
             val wallet = walletCache().read() ?: return@ioScope
             val inputAmount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
-            val rate = balance()?.coinRate ?: 0f
-            val amount = if (viewModel.currentCoin() == COIN_USD_SYMBOL) inputAmount / rate else inputAmount
+            val rate = (balance()?.coinRate ?: 0f) * CurrencyManager.currencyPrice()
+            val amount = if (viewModel.currentCoin() == selectedCurrency().flag) inputAmount / rate else inputAmount
             uiScope {
                 TransactionDialog.newInstance(
                     TransactionModel(
                         amount = amount,
-                        coinSymbol = if (viewModel.currentCoin() == COIN_USD_SYMBOL) viewModel.convertCoin() else viewModel.currentCoin(),
+                        coinSymbol = if (viewModel.currentCoin() == selectedCurrency().flag) viewModel.convertCoin() else viewModel.currentCoin(),
                         target = viewModel.contact(),
                         fromAddress = wallet.wallets?.first()?.blockchain?.first()?.address.orEmpty(),
                     )
@@ -165,7 +169,7 @@ class SendAmountPresenter(
     private fun setMaxAmount() {
         val balance = balance()?.balance ?: 0f
         val coinRate = balance()?.coinRate ?: 0f
-        val amount = (if (viewModel.convertCoin() == COIN_USD_SYMBOL) balance else balance * coinRate).formatPrice()
+        val amount = (if (viewModel.convertCoin() == selectedCurrency().flag) balance else balance * coinRate).formatNum()
         with(binding) {
             transferAmountInput.setText(amount)
             transferAmountInput.setSelection(transferAmountInput.text.length)
@@ -187,13 +191,13 @@ class SendAmountPresenter(
 
     private fun getAmountConvert(): String {
         val amount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
-        val rate = balance()?.coinRate ?: 0f
-        val convert = if (viewModel.convertCoin() == COIN_USD_SYMBOL) amount * rate else amount / rate
-        return convert.formatPrice()
+        val rate = (balance()?.coinRate ?: 0f) * CurrencyManager.currencyPrice()
+        val convert = if (viewModel.convertCoin() == selectedCurrency().flag) amount * rate else amount / rate
+        return convert.formatNum()
     }
 
     private fun String.coinIcon(): Any {
-        return if (this == COIN_USD_SYMBOL) R.drawable.ic_coin_usd else FlowCoinListManager.getCoin(this)!!.icon
+        return FlowCoinListManager.getCoin(this)?.icon ?: selectedCurrency().icon
     }
 
 }

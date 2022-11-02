@@ -12,6 +12,7 @@ import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.network.model.InboxToken
 import io.outblock.lilico.page.inbox.InboxViewModel
 import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 
 class InboxTokenItemPresenter(
@@ -26,10 +27,10 @@ class InboxTokenItemPresenter(
         with(binding) {
             val coin = FlowCoinListManager.coinList().firstOrNull { it.address() == model.coinAddress } ?: return
             Glide.with(coinIconView).load(coin.icon).into(coinIconView)
-            amountView.text = "${model.amount.formatPrice()} ${coin.symbol.uppercase()}"
+            amountView.text = "${model.amount.formatNum()} ${coin.symbol.uppercase()}"
 
             val marketValue = model.marketValue
-            priceCountView.text = if (marketValue == null) "$0" else "$ ${marketValue.formatPrice()}"
+            priceCountView.text = marketValue?.formatPrice(includeSymbol = true, includeSymbolSpace = true) ?: "$0"
 
             claimButton.setOnClickListener { viewModel.claimToken(model) }
         }

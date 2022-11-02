@@ -10,6 +10,7 @@ import io.outblock.lilico.manager.account.OnBalanceUpdate
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
+import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.ApiService
@@ -110,7 +111,8 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnT
                     after = if (period == Period.ALL) null else period.getChartPeriodTs(),
                     periods = "${period.getChartPeriodFrequency()}",
                 )
-                val data = result.parseMarketQuoteData(period)
+                val currency = CurrencyManager.currencyPrice()
+                val data = result.parseMarketQuoteData(period).map { it.copy(closePrice = it.closePrice * currency) }
                 chartCache[period.value + market] = data
                 if (this.period == period && this.market == market) {
                     chartDataLiveData.postValue(data)

@@ -13,7 +13,7 @@ import io.outblock.lilico.page.browser.openInFlowScan
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.toSafeFloat
 import io.outblock.lilico.utils.findActivity
-import io.outblock.lilico.utils.formatPrice
+import io.outblock.lilico.utils.formatNum
 import java.math.RoundingMode
 
 class TransferRecordItemPresenter(
@@ -27,7 +27,7 @@ class TransferRecordItemPresenter(
             Glide.with(iconView).load(model.image).into(iconView)
             transferTypeView.rotation = if (model.transferType == TRANSFER_TYPE_SEND) 0.0f else 180.0f
             titleView.text = model.token?.replaceBeforeLast(".", "")?.removePrefix(".")
-            val amount = if (model.amount.isNullOrBlank()) "" else (model.amount.toSafeFloat() / 100000000f).formatPrice(8, RoundingMode.HALF_UP)
+            val amount = if (model.amount.isNullOrBlank()) "" else (model.amount.toSafeFloat() / 100000000f).formatNum(8, RoundingMode.HALF_UP)
             amountView.text = amount
             bindStatus(model)
             bindTime(model)

@@ -7,6 +7,7 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.token.detail.QuoteMarket
 import io.outblock.lilico.page.token.detail.getPricePair
+import io.outblock.lilico.page.token.detail.isUSDStableCoin
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
@@ -44,6 +45,10 @@ object CoinRateManager {
 
     fun fetchCoinRate(coin: FlowCoin) {
         ioScope {
+            if (coin.isUSDStableCoin()) {
+                dispatchListeners(coin, 1.0f)
+                return@ioScope
+            }
             val cacheRate = coinRateMap[coin.symbol]
             cacheRate?.let { dispatchListeners(coin, it.price) }
             if (cacheRate.isExpire()) {

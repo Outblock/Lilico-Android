@@ -15,6 +15,7 @@ import io.outblock.lilico.page.send.transaction.subpage.transaction.TransactionV
 import io.outblock.lilico.page.send.transaction.subpage.transaction.model.TransactionDialogModel
 import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
@@ -62,13 +63,14 @@ class TransactionPresenter(
     @SuppressLint("SetTextI18n")
     private fun setupAmount() {
         with(binding) {
-            amountView.text = "${transaction.amount.formatPrice()} ${coin.name.capitalizeV2()}"
+            amountView.text = "${transaction.amount.formatNum()} ${coin.name.capitalizeV2()}"
             coinNameView.text = coin.name
             Glide.with(coinIconView).load(coin.icon).into(coinIconView)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateAmountConvert(amountConvert: Float) {
-        binding.amountConvertView.text = "≈ \$ ${amountConvert.formatPrice()}"
+        binding.amountConvertView.text = "≈ ${amountConvert.formatPrice(includeSymbol = true, includeSymbolSpace = true)}"
     }
 }

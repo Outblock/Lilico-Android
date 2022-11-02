@@ -82,3 +82,10 @@
 
 -keep class com.walletconnect.** {*;}
 -keep class net.sqlcipher.** {*;}
+
+-keep public enum io.outblock.lilico.page.profile.subpage.currency.model.Currency.** {*;}
+
+-keep public enum io.outblock.lilico.page.profile.subpage.currency.model.Currency$** {
+  **[] $VALUES;
+  public *;
+}

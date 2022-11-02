@@ -18,9 +18,8 @@ class ChartMarker(context: Context) : MarkerView(context, R.layout.layout_chart_
     override fun refreshContent(entry: Entry?, highlight: Highlight?) {
         super.refreshContent(entry, highlight)
         entry ?: return
-        val value = entry.y.formatPrice()
         with(binding) {
-            priceView.text = "$${value}"
+            priceView.text = entry.y.formatPrice(convertCurrency = false, includeSymbol = true)
             dateView.text = (entry.x * 1000).toLong().formatDate()
         }
     }

@@ -18,6 +18,7 @@ import io.outblock.lilico.page.send.transaction.subpage.bindNft
 import io.outblock.lilico.page.send.transaction.subpage.bindUserInfo
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
@@ -91,7 +92,7 @@ class SendProcessingPresenter(
         ioScope {
             val coinData = transactionState.coinData()
             val coin = FlowCoinListManager.getCoin(coinData.coinSymbol) ?: return@ioScope
-            val amount = coinData.amount.formatPrice()
+            val amount = coinData.amount.formatNum()
             uiScope {
                 with(binding) {
                     amountView.text = "$amount ${coin.name}"
@@ -104,7 +105,7 @@ class SendProcessingPresenter(
 
     @SuppressLint("SetTextI18n")
     private fun updateAmountConvert(amountConvert: Float) {
-        binding.amountConvertView.text = "≈ \$ ${amountConvert.formatPrice()}"
+        binding.amountConvertView.text = "≈ ${amountConvert.formatPrice(includeSymbol = true, includeSymbolSpace = true)}"
     }
 
     private fun TransactionState.progressText() = when (state) {

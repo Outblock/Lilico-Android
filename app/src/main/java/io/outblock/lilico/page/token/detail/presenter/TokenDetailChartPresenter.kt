@@ -24,6 +24,7 @@ import io.outblock.lilico.page.token.detail.widget.TokenDetailMarketPopupMenu
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.extensions.toHexColorString
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 import io.outblock.lilico.utils.getQuoteMarket
 import io.outblock.lilico.utils.uiScope
@@ -75,7 +76,7 @@ class TokenDetailChartPresenter(
     @SuppressLint("SetTextI18n")
     private fun updateSummary(summary: CryptowatchSummaryData.Result) {
         with(binding) {
-            priceView.text = "$${summary.price.last.formatPrice()}"
+            priceView.text = "${summary.price.last.formatPrice(includeSymbol = true)}"
 
             val isRise = summary.price.change.percentage >= 0
             quoteChangeWrapper.setVisible()
@@ -83,7 +84,7 @@ class TokenDetailChartPresenter(
                 ColorStateList.valueOf(if (isRise) R.color.quote_up_opacity.res2color() else R.color.quote_down_opacity.res2color())
             quoteChangeIconView.setImageResource(if (isRise) R.drawable.ic_triangle_up else R.drawable.ic_triangle_down)
             quoteChangeView.setTextColor(if (isRise) R.color.quote_up.res2color() else R.color.quote_down.res2color())
-            quoteChangeView.text = "${summary.price.change.percentage.formatPrice(2)}%"
+            quoteChangeView.text = "${summary.price.change.percentage.formatNum(2)}%"
         }
     }
 

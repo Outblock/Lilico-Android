@@ -14,7 +14,7 @@ import io.outblock.lilico.page.swap.SwapViewModel
 import io.outblock.lilico.page.swap.fromAmount
 import io.outblock.lilico.page.swap.swapPageBinding
 import io.outblock.lilico.page.swap.toAmount
-import io.outblock.lilico.utils.formatPrice
+import io.outblock.lilico.utils.formatNum
 
 class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
 
@@ -48,8 +48,8 @@ class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
         toNameView.text = fromCoin.symbol.uppercase()
 
         val pageBinding = swapPageBinding() ?: return
-        fromAddressView.text = "${pageBinding.fromAmount().formatPrice()} ${fromCoin.symbol.uppercase()}"
-        toAddressView.text = "${pageBinding.toAmount().formatPrice()} ${toCoin.symbol.uppercase()}"
+        fromAddressView.text = "${pageBinding.fromAmount().formatNum()} ${fromCoin.symbol.uppercase()}"
+        toAddressView.text = "${pageBinding.toAmount().formatNum()} ${toCoin.symbol.uppercase()}"
     }
 
     private fun DialogSwapTokenConfirmBinding.bindEstimate() {
@@ -59,14 +59,14 @@ class SwapTokenConfirmDialog : BottomSheetDialogFragment() {
         val fromCoin = viewModel.fromCoin() ?: return
         val toCoin = viewModel.toCoin() ?: return
 
-        bestPriceView.text = "1 ${fromCoin.symbol.uppercase()} ≈ ${(amountOut / amountIn).formatPrice()} ${toCoin.symbol.uppercase()}"
+        bestPriceView.text = "1 ${fromCoin.symbol.uppercase()} ≈ ${(amountOut / amountIn).formatNum()} ${toCoin.symbol.uppercase()}"
 
         providerIconView.setImageResource(R.drawable.ic_increment_fi)
         providerView.text = "Increment.fi"
 
-        priceImpactView.text = data.priceImpact.formatPrice(4)
+        priceImpactView.text = data.priceImpact.formatNum(4)
 
-        estimatedFeesView.text = data.priceImpact.formatPrice(4)
+        estimatedFeesView.text = data.priceImpact.formatNum(4)
     }
 
 

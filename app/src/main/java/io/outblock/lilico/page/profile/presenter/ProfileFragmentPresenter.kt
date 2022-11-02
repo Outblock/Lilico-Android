@@ -23,6 +23,7 @@ import io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
 import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClaimedStateChange
 import io.outblock.lilico.page.profile.subpage.currency.CurrencyListActivity
+import io.outblock.lilico.page.profile.subpage.currency.model.findCurrencyFromFlag
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
@@ -102,6 +103,7 @@ class ProfileFragmentPresenter(
                     group1.root.setVisible(isSignIn)
                     group5.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
+                    group2.currencyPreference.setDesc(findCurrencyFromFlag(getCurrencyFlag()).name)
                     group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
                 }
                 updateWalletConnectSessionCount()

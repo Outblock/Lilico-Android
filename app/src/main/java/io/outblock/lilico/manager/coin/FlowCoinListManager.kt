@@ -62,7 +62,13 @@ class FlowCoin(
 
     companion object {
         const val SYMBOL_FLOW = "flow"
-        const val SYMBOL_FLOW_USD = "fusd"
+        const val SYMBOL_FUSD = "fusd"
+        const val SYMBOL_STFLOW = "stFlow"
+        const val SYMBOL_BLT = "blt"
+        const val SYMBOL_USDC = "usdc"
+        const val SYMBOL_MY = "my"
+        const val SYMBOL_THUL = "thul"
+        const val SYMBOL_STARLY = "STARLY"
     }
 }
 

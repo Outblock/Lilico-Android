@@ -10,8 +10,8 @@ import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.network.model.AddressBookContact
+import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.SendBalanceModel
-import io.outblock.lilico.utils.COIN_USD_SYMBOL
 import io.outblock.lilico.utils.viewModelIOScope
 
 class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
@@ -22,7 +22,7 @@ class SendAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     val onCoinSwap = MutableLiveData<Boolean>()
 
     private var currentCoin = FlowCoin.SYMBOL_FLOW
-    private var convertCoin = COIN_USD_SYMBOL
+    private var convertCoin = selectedCurrency().flag
 
     init {
         BalanceManager.addListener(this)

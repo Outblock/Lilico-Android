@@ -3,6 +3,7 @@ package io.outblock.lilico.page.wallet
 import androidx.recyclerview.widget.DiffUtil
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
+import io.outblock.lilico.utils.logd
 
 
 val walletListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
@@ -23,6 +24,7 @@ val walletListDiffCallback = object : DiffUtil.ItemCallback<Any>() {
         }
 
         if (oldItem is WalletCoinItemModel && newItem is WalletCoinItemModel) {
+            logd("xxxxx", "oldItem == newItem:${oldItem == newItem}")
             return oldItem == newItem
         }
 

@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.token.detail.presenter
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -11,12 +12,14 @@ import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.page.browser.openBrowser
+import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 
 class TokenDetailPresenter(
@@ -41,7 +44,7 @@ class TokenDetailPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
         }
 
-        if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FLOW_USD) {
+        if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FUSD) {
             binding.getMoreWrapper.setVisible(false)
             binding.chartWrapper.root.setVisible(false)
         } else if (isTestnet()) {
@@ -49,9 +52,10 @@ class TokenDetailPresenter(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun bind(model: TokenDetailModel) {
-        model.balanceAmount?.let { binding.balanceAmountView.text = it.formatPrice() }
-        model.balancePrice?.let { binding.balancePriceView.text = activity.getString(R.string.usd_balance, it.formatPrice()) }
+        model.balanceAmount?.let { binding.balanceAmountView.text = it.formatNum() }
+        model.balancePrice?.let { binding.balancePriceView.text = "${it.formatPrice(includeSymbol = true)} ${selectedCurrency().name}" }
     }
 
     private fun setupToolbar() {

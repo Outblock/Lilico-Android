@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
+import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.service.MessagingService
@@ -55,6 +56,7 @@ object LaunchManager {
         TokenStateManager.reload()
         NftCollectionStateManager.reload()
         CoinRateManager.init()
+        CurrencyManager.init()
     }
 
     private fun setNightMode() {
