@@ -33,6 +33,7 @@ import io.outblock.lilico.utils.uiScope
 class TransactionSendPresenter(
     private val fragmentManager: FragmentManager,
     private val binding: LayoutSendAddressSelectBinding,
+    private val coinSymbol: String? = null,
 ) : BasePresenter<TransactionSendModel> {
     private val activity by lazy { findActivity(binding.root) as FragmentActivity }
 
@@ -126,7 +127,7 @@ class TransactionSendPresenter(
     }
 
     private fun onAddressSelected(address: AddressBookContact) {
-        SendAmountActivity.launch(activity, address)
+        SendAmountActivity.launch(activity, address, coinSymbol)
     }
 
     private fun onSearchFocusChange(hasFocus: Boolean) {

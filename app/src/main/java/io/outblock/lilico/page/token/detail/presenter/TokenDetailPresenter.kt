@@ -40,7 +40,7 @@ class TokenDetailPresenter(
             Glide.with(iconView).load(coin.icon).into(iconView)
             nameWrapper.setOnClickListener { openBrowser(activity, coin.website) }
             getMoreWrapper.setOnClickListener { }
-            sendButton.setOnClickListener { TransactionSendActivity.launch(activity) }
+            sendButton.setOnClickListener { TransactionSendActivity.launch(activity, coinSymbol = coin.symbol) }
             receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
         }
 

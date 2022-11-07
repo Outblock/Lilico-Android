@@ -10,6 +10,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityTransactionSendBinding
+import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.send.transaction.model.TransactionSendModel
@@ -26,6 +27,8 @@ class TransactionSendActivity : BaseActivity() {
     private lateinit var presenter: TransactionSendPresenter
     private lateinit var viewModel: SelectSendAddressViewModel
 
+    private val coinSymbol by lazy { intent.getStringExtra(COIN_SYMBOL)!! }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransactionSendBinding.inflate(layoutInflater)
@@ -37,7 +40,7 @@ class TransactionSendActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.search_container, AddressBookFragment()).commit()
 
         binding.root.addStatusBarTopPadding()
-        presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent)
+        presenter = TransactionSendPresenter(supportFragmentManager, binding.addressContent, coinSymbol)
         viewModel = ViewModelProvider(this)[SelectSendAddressViewModel::class.java].apply {
             onAddressSelectedLiveData.observe(this@TransactionSendActivity) { presenter.bind(TransactionSendModel(selectedAddress = it)) }
         }
@@ -67,8 +70,11 @@ class TransactionSendActivity : BaseActivity() {
     }
 
     companion object {
-        fun launch(context: Context) {
-            context.startActivity(Intent(context, TransactionSendActivity::class.java))
+        private const val COIN_SYMBOL = "COIN_SYMBOL"
+        fun launch(context: Context, coinSymbol: String = FlowCoin.SYMBOL_FLOW) {
+            context.startActivity(Intent(context, TransactionSendActivity::class.java).apply {
+                putExtra(COIN_SYMBOL, coinSymbol)
+            })
         }
     }
 }
