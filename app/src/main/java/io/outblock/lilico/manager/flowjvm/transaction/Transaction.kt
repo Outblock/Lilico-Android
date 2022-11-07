@@ -7,7 +7,6 @@ import com.nftco.flow.sdk.crypto.Crypto
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.config.isGasFree
 import io.outblock.lilico.manager.flowjvm.FlowApi
-import io.outblock.lilico.manager.flowjvm.replaceFlowAddress
 import io.outblock.lilico.manager.flowjvm.toAsArgument
 import io.outblock.lilico.manager.flowjvm.valueString
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
@@ -78,7 +77,7 @@ private suspend fun prepare(builder: TransactionBuilder): Voucher {
         ?: throw RuntimeException("get wallet account error")
     return Voucher(
         arguments = builder.arguments.map { AsArgument(it.type, it.valueString()) },
-        cadence = builder.script?.replaceFlowAddress(),
+        cadence = builder.script,
         computeLimit = builder.limit ?: 9999,
         payer = builder.payer ?: (if (isGasFree()) AppConfig.payer().address else builder.walletAddress),
         proposalKey = ProposalKey(

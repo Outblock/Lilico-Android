@@ -259,7 +259,7 @@ fun String.executeCadence(block: ScriptBuilder.() -> Unit): FlowScriptResponse? 
     logv(TAG, "executeScript:\n${Flow.DEFAULT_ADDRESS_REGISTRY.processScript(this, chainId = Flow.DEFAULT_CHAIN_ID)}")
     return try {
         FlowApi.get().simpleFlowScript {
-            script { this@executeCadence.trimIndent().replaceFlowAddress() }
+            script { this@executeCadence.trimIndent() }
             block()
         }
     } catch (e: Throwable) {

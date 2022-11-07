@@ -16,24 +16,29 @@ internal object FlowApi {
     private var api: FlowAccessApi? = null
 
     init {
-//        Flow.OBJECT_MAPPER.()
-        Flow.OBJECT_MAPPER.configure(
-            DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT,
-            true
-        )
+        Flow.OBJECT_MAPPER.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true)
     }
 
     fun refreshConfig() {
         logd("FlowApi", "refreshConfig start")
+        logd("FlowApi", "chainId:${if (isTestnet()) FlowChainId.TESTNET else FlowChainId.MAINNET}")
         (api as? FlowAccessApiImpl)?.close()
         Flow.configureDefaults(
             chainId = if (isTestnet()) FlowChainId.TESTNET else FlowChainId.MAINNET,
             addressRegistry = FlowAddressRegistry().addressRegistry()
         )
         api = Flow.newAccessApi(if (isTestnet()) HOST_TESTNET else HOST_MAINNET, 9000)
+        logd("FlowApi", "DEFAULT_CHAIN_ID:${Flow.DEFAULT_CHAIN_ID}")
+        logd("FlowApi", "DEFAULT_ADDRESS_REGISTRY:${Flow.DEFAULT_ADDRESS_REGISTRY}")
         logd("FlowApi", "isTestnet():${isTestnet()}")
         logd("FlowApi", "refreshConfig end")
     }
 
-    fun get() = api ?: Flow.newAccessApi(if (isTestnet()) HOST_TESTNET else HOST_MAINNET, 9000)
+    fun get(): FlowAccessApi {
+        val chainId = if (isTestnet()) FlowChainId.TESTNET else FlowChainId.MAINNET
+        if (Flow.DEFAULT_CHAIN_ID != chainId) {
+            refreshConfig()
+        }
+        return api ?: Flow.newAccessApi(if (isTestnet()) HOST_TESTNET else HOST_MAINNET, 9000)
+    }
 }
