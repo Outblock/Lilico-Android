@@ -6,12 +6,14 @@ import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.*
 import com.nftco.flow.sdk.cadence.Field
 import com.nftco.flow.sdk.cadence.JsonCadenceBuilder
+import com.nftco.flow.sdk.cadence.UFix64NumberField
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
 import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.loge
+import java.util.*
 
 
 internal fun FlowScriptResponse.parseSearchAddress(): String? {
@@ -136,6 +138,10 @@ fun FlowArgument.toAsArgument(): AsArgument {
             },
         )
     }
+}
+
+fun JsonCadenceBuilder.ufix64Safe(number: Number): UFix64NumberField {
+    return UFix64NumberField("%.8f".format(Locale.US, number))
 }
 
 private fun Field<*>.toObj(): Any {

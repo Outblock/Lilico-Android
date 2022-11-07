@@ -3,6 +3,7 @@ package io.outblock.lilico.page.swap
 import io.outblock.lilico.manager.flowjvm.CADENCE_SWAP_EXACT_TOKENS_TO_OTHER_TOKENS
 import io.outblock.lilico.manager.flowjvm.CADENCE_SWAP_TOKENS_FROM_EXACT_TOKENS
 import io.outblock.lilico.manager.flowjvm.transactionByMainWallet
+import io.outblock.lilico.manager.flowjvm.ufix64Safe
 import io.outblock.lilico.network.model.SwapEstimateResponse
 import io.outblock.lilico.wallet.toAddress
 
@@ -67,13 +68,13 @@ private suspend fun swapSendInternal(
             arg { array { swapPaths.map { string(it) } } }
 
             if (isExactFrom) {
-                arg { array(tokenInSplit.map { ufix64(it) }) }
-                arg { ufix64(tokenOutMin) }
+                arg { array(tokenInSplit.map { ufix64Safe(it) }) }
+                arg { ufix64Safe(tokenOutMin) }
             } else {
-                arg { array(tokenOutSplit.map { ufix64(it) }) }
-                arg { ufix64(tokenInMax) }
+                arg { array(tokenOutSplit.map { ufix64Safe(it) }) }
+                arg { ufix64Safe(tokenInMax) }
             }
-            arg { ufix64(deadline) }
+            arg { ufix64Safe(deadline) }
             arg { path(domain = "storage", identifier = tokenInVaultPath) }
             arg { path(domain = "storage", identifier = tokenOutVaultPath) }
             arg { path(domain = "public", identifier = tokenOutReceiverPath) }
