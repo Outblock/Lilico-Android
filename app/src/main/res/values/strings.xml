@@ -314,4 +314,5 @@
     <string name="pending_request">Pending Request</string>
     <string name="connected_site">Connected Site</string>
     <string name="currency">Currency</string>
+    <string name="stake_flow_banner_title">Stake Flow and Earn Rewards</string>
 </resources>

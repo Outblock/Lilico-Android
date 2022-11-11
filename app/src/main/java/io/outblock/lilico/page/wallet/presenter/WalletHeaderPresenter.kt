@@ -11,7 +11,6 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
-import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.walletconnect.getWalletConnectPendingRequests
@@ -22,7 +21,6 @@ import io.outblock.lilico.page.swap.SwapActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.transaction.record.TransactionRecordActivity
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
-import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
@@ -58,8 +56,8 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
-            buyButton.setOnClickListener { SwapDialog.show((findActivity(view) as FragmentActivity).supportFragmentManager) }
             swapButton.setOnClickListener { SwapActivity.launch(view.context) }
+            stackingButton.setOnClickListener { }
 
             hideButton.setOnClickListener {
                 uiScope {
@@ -72,8 +70,6 @@ class WalletHeaderPresenter(
             bindTransactionCount(model.transactionCount)
             bindDomain(model.walletList.username)
             bindPendingRequest()
-
-            buyButton.setVisible(isMainnet())
         }
     }
 

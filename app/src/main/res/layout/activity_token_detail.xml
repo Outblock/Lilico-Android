@@ -195,6 +195,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
+                android:id="@+id/staking_banner"
+                layout="@layout/layout_token_detail_staking_banner"/>
+
+            <include
                 android:id="@+id/activities_wrapper"
                 layout="@layout/layout_token_detail_activities"/>
 

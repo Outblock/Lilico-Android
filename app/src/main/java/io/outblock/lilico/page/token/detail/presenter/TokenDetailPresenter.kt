@@ -11,6 +11,7 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.staking.isStaked
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
@@ -47,7 +48,15 @@ class TokenDetailPresenter(
         if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FUSD) {
             binding.getMoreWrapper.setVisible(false)
             binding.chartWrapper.root.setVisible(false)
-        } else if (isTestnet()) {
+        }
+
+        if (!isStaked() && coin.isFlowCoin()) {
+            binding.stakingBanner.setVisible(true)
+            binding.getMoreWrapper.setVisible(false)
+            binding.stakingBanner.setOnClickListener {}
+        }
+
+        if (isTestnet()) {
             binding.getMoreWrapper.setOnClickListener { openBrowser(activity, "https://testnet-faucet.onflow.org/fund-account") }
         }
     }
