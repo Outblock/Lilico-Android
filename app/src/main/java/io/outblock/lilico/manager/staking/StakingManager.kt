@@ -1,6 +1,9 @@
 package io.outblock.lilico.manager.staking
 
-class StakingManager {
+object StakingManager {
+    private val providers = StakingProviders().apply { refresh() }
+
+    fun providers() = providers.get()
 }
 
 fun isStaked() = true

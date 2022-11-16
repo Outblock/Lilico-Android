@@ -44,6 +44,10 @@ class CacheManager<T>(
 
     fun modifyTime() = file.lastModified()
 
+    fun isExpired(duration: Long): Boolean {
+        return System.currentTimeMillis() - modifyTime() > duration
+    }
+
     companion object {
         private val TAG = CacheManager::class.java.simpleName
     }
