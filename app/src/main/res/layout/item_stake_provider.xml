@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
     app:rippleColor="@color/black_15">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,14 +26,18 @@
 
         <TextView
             android:id="@+id/title_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
             android:fontFamily="@font/inter_semi_bold"
+            android:maxLines="1"
             android:textColor="@color/text"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/desc_view"
+            app:layout_constraintEnd_toStartOf="@id/rate_wrapper"
             app:layout_constraintStart_toEndOf="@id/icon_view"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -40,12 +45,16 @@
 
         <TextView
             android:id="@+id/desc_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/note"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rate_wrapper"
             app:layout_constraintStart_toEndOf="@id/icon_view"
             app:layout_constraintTop_toBottomOf="@id/title_view"
             app:layout_constraintVertical_chainStyle="packed"

@@ -11,11 +11,13 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoin
-import io.outblock.lilico.manager.staking.isStaked
+import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
+import io.outblock.lilico.page.staking.guide.StakeGuideActivity
+import io.outblock.lilico.page.staking.providers.StakingProviderActivity
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
 import io.outblock.lilico.utils.extensions.res2color
@@ -50,10 +52,14 @@ class TokenDetailPresenter(
             binding.chartWrapper.root.setVisible(false)
         }
 
-        if (!isStaked() && coin.isFlowCoin()) {
-            binding.stakingBanner.setVisible(true)
+        if (!StakingManager.isStaked() && coin.isFlowCoin()) {
+            binding.stakingBanner.root.setVisible(true)
             binding.getMoreWrapper.setVisible(false)
-            binding.stakingBanner.setOnClickListener {}
+            binding.stakingBanner.root.setOnClickListener {
+                if (StakingManager.isStaked()) {
+                    StakingProviderActivity.launch(activity)
+                } else StakeGuideActivity.launch(activity)
+            }
         }
 
         if (isTestnet()) {

@@ -22,7 +22,7 @@ class StakingProviderActivity : BaseActivity() {
 
         presenter = StakingProviderPresenter(binding)
         viewModel = ViewModelProvider(this)[StakeProviderViewModel::class.java].apply {
-            data.observe(this@StakingProviderActivity) {}
+            data.observe(this@StakingProviderActivity) { presenter.bind(it) }
             load()
         }
 

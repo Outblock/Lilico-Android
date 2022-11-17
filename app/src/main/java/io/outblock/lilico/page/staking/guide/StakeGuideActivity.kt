@@ -7,13 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.page.staking.providers.StakingProviderActivity
 
 class StakeGuideActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stake_guide)
-        findViewById<View>(R.id.stake_button).setOnClickListener { }
+        findViewById<View>(R.id.stake_button).setOnClickListener {
+            StakingProviderActivity.launch(this)
+        }
         setupToolbar()
     }
 
@@ -23,6 +26,11 @@ class StakeGuideActivity : BaseActivity() {
             else -> super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 
     private fun setupToolbar() {

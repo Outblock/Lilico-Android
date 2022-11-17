@@ -7,6 +7,7 @@ import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.TokenStateCache
 import io.outblock.lilico.manager.nft.NftCollectionStateCache
 import io.outblock.lilico.manager.price.CurrencyCache
+import io.outblock.lilico.manager.staking.StakingCache
 import io.outblock.lilico.manager.staking.StakingProviderCache
 import io.outblock.lilico.network.model.*
 import io.outblock.lilico.page.transaction.record.model.TransactionRecordList
@@ -71,6 +72,10 @@ fun currencyCache(): CacheManager<CurrencyCache> {
 
 fun stakingProviderCache(): CacheManager<StakingProviderCache> {
     return CacheManager("staking_provider_cache".cacheFile(), StakingProviderCache::class.java)
+}
+
+fun stakingCache(): CacheManager<StakingCache> {
+    return CacheManager("staking_info_cache".cacheFile(), StakingCache::class.java)
 }
 
 

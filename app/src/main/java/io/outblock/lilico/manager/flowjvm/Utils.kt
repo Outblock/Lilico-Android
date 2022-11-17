@@ -12,7 +12,6 @@ import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
 import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
 import io.outblock.lilico.network.model.Nft
-import io.outblock.lilico.utils.loge
 import java.util.*
 
 
@@ -22,7 +21,6 @@ internal fun FlowScriptResponse.parseSearchAddress(): String? {
         val json = Gson().fromJson<Map<String, Any>>(String(bytes), object : TypeToken<Map<String, Any>>() {}.type)
         (json["value"] as Map<*, *>)["value"].toString()
     } catch (e: Exception) {
-        loge(e, report = false)
         return null
     }
 }
@@ -33,7 +31,6 @@ internal fun FlowScriptResponse.parseBool(default: Boolean = false): Boolean? {
         val json = Gson().fromJson<Map<String, Any>>(String(bytes), object : TypeToken<Map<String, Any>>() {}.type)
         (json["value"] as? Boolean) ?: default
     } catch (e: Exception) {
-        loge(e, report = false)
         return default
     }
 }
@@ -44,7 +41,6 @@ internal fun FlowScriptResponse.parseBoolList(): List<Boolean>? {
         val result = Gson().fromJson(String(bytes), FlowBoolListResult::class.java)
         return result.value.map { it.value }
     } catch (e: Exception) {
-        loge(e, report = false)
         null
     }
 }
@@ -56,7 +52,6 @@ internal fun FlowScriptResponse?.parseFloat(default: Float = 0f): Float {
         val json = Gson().fromJson<Map<String, String>>(String(bytes), object : TypeToken<Map<String, String>>() {}.type)
         (json["value"]?.toFloatOrNull()) ?: default
     } catch (e: Exception) {
-        loge(e, report = false)
         return default
     }
 }
@@ -68,7 +63,6 @@ fun addressVerify(address: String): Boolean {
     return try {
         FlowApi.get().getAccountAtLatestBlock(FlowAddress(address)) != null
     } catch (e: Exception) {
-        loge(e, report = false)
         false
     }
 }

@@ -5,8 +5,8 @@
     android:id="@+id/staking_banner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     android:visibility="gone"
-    app:layout_constraintTop_toBottomOf="@id/button_wrapper"
     tools:visibility="visible">
 
     <androidx.constraintlayout.widget.ConstraintLayout

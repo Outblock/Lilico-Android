@@ -29,6 +29,10 @@ internal class FlowAddressRegistry {
                 "0xFungibleToken" to if (isTestNet) "0x9a0766d93b6608b7" else "0xf233dcee88fe0abe",
                 "0xNonFungibleToken" to if (isTestNet) "0x631e88ae7f1d7c20" else "0x1d7e57aa55817448",
                 "0xMetadataViews" to if (isTestNet) "0x631e88ae7f1d7c20" else "0x1d7e57aa55817448",
+                "0xSTAKINGCOLLECTIONADDRESS" to if (isTestNet) "0x95e019a17d0e23d7" else "0x8d0e87b65159ae63",
+                "0xLockedTokens" to "0x8d0e87b65159ae63",
+                "0xFlowIDTableStaking" to "0x8624b52f9ddcd04a",
+                "0xFlowStakingCollection" to "0x8d0e87b65159ae63",
             )
         }
     }

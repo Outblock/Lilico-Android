@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityDeveloperModeSettingBinding
+import io.outblock.lilico.manager.app.doNetworkChangeTask
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
-import io.outblock.lilico.manager.app.refreshChainNetwork
+import io.outblock.lilico.manager.app.refreshChainNetworkSync
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeViewModel
 import io.outblock.lilico.page.profile.subpage.developer.model.DeveloperPageModel
 import io.outblock.lilico.utils.*
@@ -70,15 +71,15 @@ class DeveloperModePresenter(
 
     private fun changeNetwork(network: Int) {
         updateChainNetworkPreference(network) {
-            uiScope {
+            ioScope {
                 delay(200)
-                refreshChainNetwork {
-                    uiScope {
-                        delay(200)
-                        viewModel.changeNetwork()
-                        binding.mainnetPreference.setChecked(isMainnet())
-                        binding.testnetPreference.setChecked(isTestnet())
-                    }
+                refreshChainNetworkSync()
+                doNetworkChangeTask()
+                uiScope {
+                    delay(200)
+                    viewModel.changeNetwork()
+                    binding.mainnetPreference.setChecked(isMainnet())
+                    binding.testnetPreference.setChecked(isTestnet())
                 }
             }
         }

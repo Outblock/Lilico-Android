@@ -15,6 +15,7 @@ import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.price.CurrencyManager
+import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.service.MessagingService
@@ -28,25 +29,22 @@ object LaunchManager {
         PageLifecycleObserver.init(application)
         AppLifecycleObserver.observe()
         safeRun { System.loadLibrary("TrustWalletCore") }
-        asyncInit()
-        readPreference()
-        firebaseInitialize(application)
-        initFirebaseConfig()
-        setNightMode()
-        runWorker(application)
-        readCache()
-        runCompatibleScript()
-        WalletConnect.init(application)
+        refreshChainNetwork {
+            FlowApi.refreshConfig()
+            asyncInit()
+            firebaseInitialize(application)
+            initFirebaseConfig()
+            setNightMode()
+            runWorker(application)
+            readCache()
+            runCompatibleScript()
+            WalletConnect.init(application)
+        }
     }
 
     private fun asyncInit() {
         ioScope {
-            FlowApi.refreshConfig()
         }
-    }
-
-    private fun readPreference() {
-        refreshChainNetwork()
     }
 
     private fun readCache() {
@@ -57,6 +55,7 @@ object LaunchManager {
         NftCollectionStateManager.reload()
         CoinRateManager.init()
         CurrencyManager.init()
+        StakingManager.init()
     }
 
     private fun setNightMode() {

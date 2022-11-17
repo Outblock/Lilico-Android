@@ -492,3 +492,60 @@ const val CADENCE_CREATE_STAKE_DELEGATOR_ID = """
         }
     }
 """
+
+
+const val CADENCE_STAKE_FLOW = """
+    import FlowStakingCollection from 0xFlowStakingCollection
+
+    /// Commits new tokens to stake for the specified node or delegator in the staking collection
+    /// The tokens from the locked vault are used first, if it exists
+    /// followed by the tokens from the unlocked vault
+    
+    transaction(nodeID: String, delegatorID: UInt32?, amount: UFix64) {
+        
+        let stakingCollectionRef: &FlowStakingCollection.StakingCollection
+    
+        prepare(account: AuthAccount) {
+            self.stakingCollectionRef = account.borrow<&FlowStakingCollection.StakingCollection>(from: FlowStakingCollection.StakingCollectionStoragePath)
+                ?? panic("Could not borrow ref to StakingCollection")
+        }
+    
+        execute {
+            self.stakingCollectionRef.stakeNewTokens(nodeID: nodeID, delegatorID: delegatorID, amount: amount)
+        }
+    }
+"""
+
+const val CADENCE_QUERY_STAKE_INFO = """
+    import LockedTokens from 0x8d0e87b65159ae63
+    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    import FlowStakingCollection from 0x8d0e87b65159ae63
+    
+    pub fun main(account: Address): [FlowIDTableStaking.DelegatorInfo] {
+    
+        let stakingCollectionRef = getAccount(account)
+            .getCapability<&{FlowStakingCollection.StakingCollectionPublic}>(FlowStakingCollection.StakingCollectionPublicPath)
+            .borrow()
+            ?? panic("cannot borrow reference to acct.StakingCollection")
+    
+        return stakingCollectionRef.getAllDelegatorInfo()
+    }
+"""
+
+const val CADENCE_GET_STAKE_APY_BY_WEEK = """
+    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+
+    pub fun main(): UFix64 {
+        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() * 54.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
+        return apr
+    }
+"""
+
+const val CADENCE_GET_STAKE_APY_BY_YEAR = """
+    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    
+    pub fun main(): UFix64 {
+        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() / 7.0 * 365.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
+        return apr
+    }
+"""
