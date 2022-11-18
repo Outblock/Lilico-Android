@@ -22,7 +22,7 @@ fun viewModelIOScope(viewModel: ViewModel, unit: suspend () -> Unit) = viewModel
 private suspend fun execute(unit: suspend () -> Unit) {
     try {
         unit.invoke()
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         loge(e)
     }
 }

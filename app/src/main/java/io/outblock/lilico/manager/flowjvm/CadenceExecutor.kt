@@ -283,3 +283,16 @@ suspend fun String.transactionByMainWallet(arguments: CadenceArgumentsBuilder.()
         null
     }
 }
+
+suspend fun String.executeTransaction(arguments: CadenceArgumentsBuilder.() -> Unit): String? {
+    val args = CadenceArgumentsBuilder().apply { arguments(this) }
+    return try {
+        sendTransaction {
+            args.build().forEach { arg(it) }
+            script(this@executeTransaction)
+        }
+    } catch (e: Exception) {
+        loge(e)
+        null
+    }
+}
