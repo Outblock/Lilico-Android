@@ -7,6 +7,7 @@ import io.outblock.lilico.manager.account.*
 import io.outblock.lilico.manager.coin.*
 import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.price.CurrencyUpdateListener
+import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
@@ -39,6 +40,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             loadCoinList()
             loadTransactionCount()
             CurrencyManager.fetch()
+            StakingManager.refresh()
         }
     }
 

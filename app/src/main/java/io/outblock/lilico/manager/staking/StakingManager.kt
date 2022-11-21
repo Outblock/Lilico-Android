@@ -4,11 +4,14 @@ import com.google.gson.Gson
 import io.outblock.lilico.cache.stakingCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.*
+import io.outblock.lilico.manager.transaction.TransactionStateWatcher
+import io.outblock.lilico.manager.transaction.isExecuteFinished
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.safeRun
 import kotlinx.coroutines.runBlocking
 import java.math.BigDecimal
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 private const val DEFAULT_APY = 0.093f
 private const val TAG = "StakingManager"
@@ -25,7 +28,6 @@ object StakingManager {
             val cache = stakingCache().read()
             stakingInfo = cache?.info
             apy = cache?.apy ?: apy
-            refresh()
         }
     }
 
@@ -40,19 +42,33 @@ object StakingManager {
         return stakingInfo?.aaa != null
     }
 
-    private fun refresh() {
-        if (stakingInfo?.delegatorId.isNullOrBlank()) {
-            setupStaking()
-            logd(TAG, "setupStaking finish")
-            createStakingDelegatorId()
+    fun refresh() {
+        ioScope {
+            updateApy()
+            if (stakingInfo?.delegatorId.isNullOrBlank()) {
+                prepare()
+            }
+            stakingInfo = queryStakingInfo()
+            stakingInfo?.let { cache() }
         }
-        stakingInfo = queryStakingInfo()
-        stakingInfo?.let { cache() }
+    }
 
+    private fun updateApy() {
         queryStakingApy()?.let {
             apy = it
             cache()
         }
+    }
+
+    private suspend fun prepare() = suspendCoroutine { continuation ->
+        runCatching {
+            runBlocking {
+                setupStaking {
+                    runBlocking { createStakingDelegatorId() }
+                    continuation.resume(true)
+                }
+            }
+        }.getOrElse { continuation.resume(false) }
     }
 
     private fun cache() {
@@ -84,20 +100,37 @@ private fun queryStakingApy(): Float? {
     }.getOrNull()
 }
 
-private fun createStakingDelegatorId() {
-    ioScope {
-        val provider = StakingManager.providers().firstOrNull { it.isLilico() } ?: return@ioScope
-        CADENCE_CREATE_STAKE_DELEGATOR_ID.transactionByMainWallet {
-            arg { string(provider.id) }
-            arg { ufix64Safe(BigDecimal(0.001)) }
+private suspend fun createStakingDelegatorId() = suspendCoroutine { continuation ->
+    runCatching {
+        runBlocking {
+            val provider = StakingManager.providers().firstOrNull { it.isLilico() } ?: return@runBlocking
+            logd(TAG, "createStakingDelegatorId providerId：${provider.id}")
+            val txid = CADENCE_CREATE_STAKE_DELEGATOR_ID.transactionByMainWallet {
+                arg { string(provider.id) }
+                arg { ufix64Safe(BigDecimal(0.000)) }
+            }
+            logd(TAG, "createStakingDelegatorId txid：$txid")
+            TransactionStateWatcher(txid!!).watch { result ->
+                if (result.isExecuteFinished()) {
+                    continuation.resume(true)
+                }
+            }
         }
-    }
+    }.getOrElse { continuation.resume(false) }
 }
 
-private fun setupStaking() {
-    safeRun {
-        runBlocking { CADENCE_SETUP_STAKING.transactionByMainWallet {} }
-    }
+private suspend fun setupStaking(callback: () -> Unit) {
+    logd(TAG, "setupStaking start")
+    runCatching {
+        val txid = CADENCE_SETUP_STAKING.transactionByMainWallet {} ?: return
+        logd(TAG, "setupStaking txid:$txid")
+        TransactionStateWatcher(txid).watch { result ->
+            if (result.isExecuteFinished()) {
+                logd(TAG, "setupStaking finish")
+                callback.invoke()
+            }
+        }
+    }.getOrElse { callback.invoke() }
 }
 
 data class StakingInfo(
