@@ -327,4 +327,9 @@
     <string name="staking_provider">Staking Provider</string>
     <string name="select_provider">Select Provider</string>
     <string name="stake">Stake</string>
+    <string name="stake_amount">Stake Amount</string>
+    <string name="rate">Rate</string>
+    <string name="est_annual_reward">Est. annual reward</string>
+    <string name="flow_available_num">%1$s Flow available</string>
+    <string name="flow_coin_name">Flow</string>
 </resources>

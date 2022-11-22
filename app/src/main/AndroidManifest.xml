@@ -214,6 +214,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".page.staking.amount.StakingAmountActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".page.component.deeplinking.DeepLinkingActivity"
             android:exported="true"
             android:launchMode="singleTop"

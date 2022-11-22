@@ -17,7 +17,6 @@ fun Long.formatBalance(): Float {
 
 fun Float.formatPrice(
     digits: Int = 3,
-    roundingMode: RoundingMode = RoundingMode.DOWN,
     convertCurrency: Boolean = true,
     includeSymbol: Boolean = false,
     includeSymbolSpace: Boolean = false,
@@ -29,11 +28,11 @@ fun Float.formatPrice(
         }
         value *= CurrencyManager.currencyPrice()
     }
-    val format = value.format(digits, roundingMode)
+    val format = value.format(digits)
     return if (includeSymbol) "${selectedCurrency().symbol}${if (includeSymbolSpace) " " else ""}$format" else format
 }
 
-fun Float.format(digits: Int = 3, roundingMode: RoundingMode): String {
+fun Float.format(digits: Int = 3): String {
     return DecimalFormat("0.${"#".repeat(digits)}").apply { setRoundingMode(roundingMode) }.format(this)
 }
 
@@ -41,5 +40,5 @@ fun Float.formatNum(
     digits: Int = 3,
     roundingMode: RoundingMode = RoundingMode.DOWN,
 ): String {
-    return format(digits, roundingMode)
+    return format(digits)
 }

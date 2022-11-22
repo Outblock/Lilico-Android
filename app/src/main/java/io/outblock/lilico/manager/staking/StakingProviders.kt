@@ -1,5 +1,6 @@
 package io.outblock.lilico.manager.staking
 
+import android.os.Parcelable
 import android.text.format.DateUtils
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -7,6 +8,7 @@ import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.cache.stakingProviderCache
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.readTextFromAssets
+import kotlinx.parcelize.Parcelize
 import java.net.URL
 
 internal class StakingProviders {
@@ -54,11 +56,12 @@ internal class StakingProviders {
     }
 }
 
+@Parcelize
 data class StakingProvider(
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("icon")
-    val icon: String,
+    val icon: String?,
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
@@ -66,8 +69,8 @@ data class StakingProvider(
     @SerializedName("type")
     val type: String,
     @SerializedName("website")
-    val website: String
-)
+    val website: String?,
+) : Parcelable
 
 data class StakingProviderCache(
     @SerializedName("data")

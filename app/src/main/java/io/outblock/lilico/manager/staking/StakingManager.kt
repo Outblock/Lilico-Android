@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.staking
 
-import com.google.gson.Gson
 import io.outblock.lilico.cache.stakingCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.*
@@ -14,11 +13,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 private const val DEFAULT_APY = 0.093f
+const val STAKING_DEFAULT_NORMAL_APY = 0.08f
 private const val TAG = "StakingManager"
 
 object StakingManager {
 
-    private var stakingInfo: StakingInfo? = null
+    private var stakingInfo = StakingInfo()
     private var apy = DEFAULT_APY
 
     private val providers = StakingProviders().apply { refresh() }
@@ -26,30 +26,34 @@ object StakingManager {
     fun init() {
         ioScope {
             val cache = stakingCache().read()
-            stakingInfo = cache?.info
+            stakingInfo = cache?.info ?: StakingInfo()
             apy = cache?.apy ?: apy
         }
     }
+
+    fun stakingInfo() = stakingInfo
 
     fun providers() = providers.get()
 
     fun apy() = apy
 
     fun isStaked(): Boolean {
-        if (stakingInfo == null) {
+        if (stakingInfo.delegatorId == null) {
             refresh()
         }
-        return stakingInfo?.aaa != null
+        return stakingCount() > 0.0f
     }
+
+    fun stakingCount() = stakingInfo.tokensCommitted + stakingInfo.tokensStaked
 
     fun refresh() {
         ioScope {
             updateApy()
-            if (stakingInfo?.delegatorId.isNullOrBlank()) {
+            if (stakingInfo.delegatorId == null) {
                 prepare()
             }
-            stakingInfo = queryStakingInfo()
-            stakingInfo?.let { cache() }
+            stakingInfo = queryStakingInfo() ?: StakingInfo()
+            cache()
         }
     }
 
@@ -87,7 +91,7 @@ private fun queryStakingInfo(): StakingInfo? {
         }
         val text = String(response!!.bytes)
         logd(TAG, "queryStakingInfo response:$text")
-        Gson().fromJson(text, StakingInfo::class.java)
+        parseStakingInfoResult(text)
     }.getOrNull()
 }
 
@@ -134,8 +138,14 @@ private suspend fun setupStaking(callback: () -> Unit) {
 }
 
 data class StakingInfo(
-    val aaa: String? = null,
-    val delegatorId: String? = null,
+    val nodeID: Float = 0.0f,
+    val tokensCommitted: Float = 0.0f,
+    val tokensStaked: Float = 0.0f,
+    val tokensUnstaking: Float = 0.0f,
+    val tokensRewarded: Float = 0.0f,
+    val tokensUnstaked: Float = 0.0f,
+    val tokensRequestedToUnstake: Float = 0.0f,
+    val delegatorId: Int? = null,
 )
 
 data class StakingCache(

@@ -9,6 +9,7 @@ import io.outblock.lilico.databinding.ItemStakeProviderBinding
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.manager.staking.isLilico
+import io.outblock.lilico.page.staking.amount.StakingAmountActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.formatNum
 
@@ -28,7 +29,7 @@ class ProviderItemPresenter(
             rateWrapper.setBackgroundResource(if (model.isLilico()) R.drawable.bg_staking_provider_lilico else R.drawable.bg_staking_provider_others)
         }
 
-        view.setOnClickListener { }
+        view.setOnClickListener { StakingAmountActivity.launch(view.context, model) }
     }
 
 }
