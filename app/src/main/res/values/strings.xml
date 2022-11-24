@@ -332,4 +332,11 @@
     <string name="est_annual_reward">Est. annual reward</string>
     <string name="flow_available_num">%1$s Flow available</string>
     <string name="flow_coin_name">Flow</string>
+    <string name="on_lilico_only">On Lilico Only</string>
+    <string name="confirm_your_stake">Confirm Your Stake</string>
+    <string name="staking">Staking</string>
+    <string name="hold_to_stake">Hold to stake</string>
+    <string name="the_stake_is_processing">The stake is processing</string>
+    <string name="staking_not_enabled">Staking is under maintenance on %1$s netwrok, please try again later.</string>
+    <string name="stake_failed">Stake failed</string>
 </resources>

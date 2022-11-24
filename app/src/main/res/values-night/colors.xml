@@ -81,8 +81,11 @@
     <color name="primary48">#76242430</color>
     <color name="primary80">#cc242430</color>
     <color name="background90">#E6121212</color>
+    <color name="background60">#99121212</color>
     <color name="brightest_text">#000000</color>
     <color name="blur">#26ffffff</color>
     <color name="image_bg">@color/neutrals10</color>
+    <color name="stake">#60C293</color>
+    <color name="stake_12">#1c60C293</color>
 </resources>
 

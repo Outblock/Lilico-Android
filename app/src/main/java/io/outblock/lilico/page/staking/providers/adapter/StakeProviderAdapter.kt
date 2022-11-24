@@ -9,16 +9,18 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.manager.staking.StakingProvider
+import io.outblock.lilico.manager.staking.isLilico
 import io.outblock.lilico.page.staking.providers.model.ProviderTitleModel
 import io.outblock.lilico.page.staking.providers.presenter.ProviderItemPresenter
+import io.outblock.lilico.page.staking.providers.presenter.ProviderRecommendItemPresenter
 import io.outblock.lilico.page.staking.providers.presenter.ProviderTitlePresenter
 
 class StakeProviderAdapter : BaseAdapter<Any>(diffCallback) {
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
+        return when (val item = getItem(position)) {
             is ProviderTitleModel -> TYPE_TITLE
-            else -> TYPE_PROVIDER
+            else -> if (item is StakingProvider && item.isLilico()) TYPE_PROVIDER_RECOMMEND else TYPE_PROVIDER
         }
     }
 
@@ -26,6 +28,7 @@ class StakeProviderAdapter : BaseAdapter<Any>(diffCallback) {
         return when (viewType) {
             TYPE_TITLE -> ProviderTitlePresenter(parent.inflate(R.layout.item_stake_provider_title))
             TYPE_PROVIDER -> ProviderItemPresenter(parent.inflate(R.layout.item_stake_provider))
+            TYPE_PROVIDER_RECOMMEND -> ProviderRecommendItemPresenter(parent.inflate(R.layout.item_stake_provider_recommend))
             else -> BaseViewHolder(View(parent.context))
         }
     }
@@ -34,12 +37,14 @@ class StakeProviderAdapter : BaseAdapter<Any>(diffCallback) {
         when (holder) {
             is ProviderTitlePresenter -> holder.bind(getItem(position) as ProviderTitleModel)
             is ProviderItemPresenter -> holder.bind(getItem(position) as StakingProvider)
+            is ProviderRecommendItemPresenter -> holder.bind(getItem(position) as StakingProvider)
         }
     }
 
     companion object {
         private const val TYPE_TITLE = 1
         private const val TYPE_PROVIDER = 2
+        private const val TYPE_PROVIDER_RECOMMEND = 3
     }
 }
 

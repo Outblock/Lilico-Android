@@ -80,7 +80,7 @@ class SendButton : TouchScaleCardView {
         }
     }
 
-    private fun changeState(state: ButtonState) {
+    fun changeState(state: ButtonState) {
         this.state = state
         with(binding) {
             when (state) {
@@ -138,7 +138,7 @@ class SendButton : TouchScaleCardView {
     }
 }
 
-private enum class ButtonState {
+enum class ButtonState {
     DEFAULT,
     VERIFICATION,
     LOADING,

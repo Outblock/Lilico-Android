@@ -17,6 +17,8 @@ import io.outblock.lilico.manager.staking.isLilico
 import io.outblock.lilico.page.profile.subpage.currency.model.findCurrencyFromFlag
 import io.outblock.lilico.page.staking.amount.StakingAmountActivity
 import io.outblock.lilico.page.staking.amount.StakingAmountViewModel
+import io.outblock.lilico.page.staking.amount.dialog.StakingAmountConfirmDialog
+import io.outblock.lilico.page.staking.amount.dialog.StakingAmountConfirmModel
 import io.outblock.lilico.page.staking.amount.model.StakingAmountModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.hideKeyboard
@@ -46,8 +48,17 @@ class StakingAmountPresenter(
             amountPercent50.setOnClickListener { updateAmountByPercent(0.5f) }
             amountPercentMax.setOnClickListener { updateAmountByPercent(1.0f) }
             button.setOnClickListener {
-                button.setProgressVisible(true)
-                viewModel.stake(provider, amount())
+                StakingAmountConfirmDialog.show(
+                    activity, StakingAmountConfirmModel(
+                        amount = amount(),
+                        coinRate = viewModel.coinRate(),
+                        currency = currency,
+                        rate = StakingManager.apy(),
+                        rewardCoin = amount() * StakingManager.apy(),
+                        rewardUsd = (amount() * StakingManager.apy() * viewModel.coinRate()),
+                        provider = provider,
+                    )
+                )
             }
         }
         with(binding.inputView) {
@@ -87,7 +98,7 @@ class StakingAmountPresenter(
         with(binding) {
             priceView.text = (amount() * viewModel.coinRate()).formatPrice(includeSymbol = true)
             rewardCoinView.text = "${(amount() * StakingManager.apy()).formatNum(digits = 2)} " + R.string.flow_coin_name.res2String()
-            rewardPriceView.text = "≈ ${(amount() * StakingManager.apy()).formatPrice(digits = 2, includeSymbol = true)} " + currency.name
+            rewardPriceView.text = "≈ ${(amount() * StakingManager.apy() * viewModel.coinRate()).formatPrice(digits = 2, includeSymbol = true)} "
             availableCheck()
         }
     }
@@ -95,13 +106,13 @@ class StakingAmountPresenter(
     private fun availableCheck() {
         val amount = amount()
         if (amount == 0.0f) {
-            binding.button.setText(R.string.claim)
+            binding.button.setText(R.string.next)
             binding.button.isEnabled = false
         } else if (amount > balance()) {
             binding.button.setText(R.string.insufficient_balance)
             binding.button.isEnabled = false
         } else {
-            binding.button.setText(R.string.claim)
+            binding.button.setText(R.string.next)
             binding.button.isEnabled = true
         }
     }

@@ -182,6 +182,7 @@
     <color name="primary48">#76ffffff</color>
     <color name="primary80">#ccffffff</color>
     <color name="background90">#E6FAFAFA</color>
+    <color name="background60">#99FAFAFA</color>
     <color name="profile_accent">#7678ED</color>
     <color name="bg_icon">#F4F4F7</color>
     <color name="nav_icon">#787878</color>
@@ -193,4 +194,6 @@
     <color name="blur">#26000000</color>
     <color name="image_bg">@color/neutrals8</color>
     <color name="wallet_connect">#3396FF</color>
+    <color name="stake">#60C293</color>
+    <color name="stake_12">#1c60C293</color>
 </resources>

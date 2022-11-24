@@ -603,3 +603,11 @@ const val CADENCE_GET_STAKE_APY_BY_YEAR = """
         return apr
     }
 """
+
+const val CADENCE_CHECK_STAKING_ENABLED = """
+    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+
+    pub fun main():Bool {
+      return FlowIDTableStaking.stakingEnabled()
+    }
+"""
