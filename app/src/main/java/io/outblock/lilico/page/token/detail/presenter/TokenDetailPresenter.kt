@@ -16,8 +16,7 @@ import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
-import io.outblock.lilico.page.staking.guide.StakeGuideActivity
-import io.outblock.lilico.page.staking.providers.StakingProviderActivity
+import io.outblock.lilico.page.staking.openStakingPage
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
 import io.outblock.lilico.utils.extensions.res2color
@@ -55,11 +54,7 @@ class TokenDetailPresenter(
         if (!StakingManager.isStaked() && coin.isFlowCoin()) {
             binding.stakingBanner.root.setVisible(true)
             binding.getMoreWrapper.setVisible(false)
-            binding.stakingBanner.root.setOnClickListener {
-                if (StakingManager.isStaked()) {
-                    StakingProviderActivity.launch(activity)
-                } else StakeGuideActivity.launch(activity)
-            }
+            binding.stakingBanner.root.setOnClickListener { openStakingPage(activity) }
         }
 
         if (isTestnet()) {

@@ -47,9 +47,10 @@ class StakingAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     fun stake(provider: StakingProvider, amount: Float) {
         ioScope {
             try {
+                val node = StakingManager.stakingInfo().nodes.firstOrNull { it.nodeID == provider.id } ?: return@ioScope
                 val txid = CADENCE_STAKE_FLOW.transactionByMainWallet {
                     arg { string(provider.id) }
-                    arg { uint32(StakingManager.stakingInfo().delegatorId ?: 0) }
+                    arg { uint32(node.delegatorId ?: 0) }
                     arg { ufix64Safe(amount) }
                 }
                 val transactionState = TransactionState(

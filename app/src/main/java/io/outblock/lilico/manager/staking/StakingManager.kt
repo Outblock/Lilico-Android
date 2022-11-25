@@ -38,21 +38,22 @@ object StakingManager {
     fun apy() = apy
 
     fun isStaked(): Boolean {
-        if (stakingInfo.delegatorId == null) {
+        if (stakingInfo.nodes.isEmpty()) {
             refresh()
         }
         return stakingCount() > 0.0f
     }
 
-    fun stakingCount() = stakingInfo.tokensCommitted + stakingInfo.tokensStaked
+    fun stakingCount() = stakingInfo.nodes.sumOf { it.tokensCommitted.toDouble() + it.tokensStaked }.toFloat()
 
     fun refresh() {
         ioScope {
             updateApy()
-            if (stakingInfo.delegatorId == null) {
+            stakingInfo = queryStakingInfo() ?: stakingInfo
+            if (stakingInfo.nodes.isEmpty()) {
                 prepare()
             }
-            stakingInfo = queryStakingInfo() ?: StakingInfo()
+            stakingInfo = queryStakingInfo() ?: stakingInfo
             cache()
         }
     }
@@ -138,17 +139,23 @@ private suspend fun setupStaking(callback: () -> Unit) {
 }
 
 data class StakingInfo(
-    val nodeID: Float = 0.0f,
+    val nodes: List<StakingNode> = emptyList(),
+)
+
+data class StakingNode(
+    val delegatorId: Int? = null,
+    val nodeID: String = "",
     val tokensCommitted: Float = 0.0f,
     val tokensStaked: Float = 0.0f,
     val tokensUnstaking: Float = 0.0f,
     val tokensRewarded: Float = 0.0f,
     val tokensUnstaked: Float = 0.0f,
     val tokensRequestedToUnstake: Float = 0.0f,
-    val delegatorId: Int? = null,
 )
 
 data class StakingCache(
     val info: StakingInfo? = null,
     val apy: Float = DEFAULT_APY,
 )
+
+fun StakingNode.stakingCount() = tokensCommitted + tokensStaked

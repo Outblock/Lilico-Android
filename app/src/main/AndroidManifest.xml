@@ -246,6 +246,10 @@
             android:name=".page.staking.guide.StakeGuideActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.staking.list.StakingListActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"

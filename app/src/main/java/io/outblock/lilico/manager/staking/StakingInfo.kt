@@ -11,18 +11,22 @@ fun parseStakingInfoResult(json: String?): StakingInfo? {
     json ?: return null
     val info = Gson().fromJson(json, StakingInfoInner::class.java)
     return StakingInfo(
-        delegatorId = info.getByName("id").toSafeInt(),
-        nodeID = info.getByName("nodeID").toSafeFloat(),
-        tokensCommitted = info.getByName("tokensCommitted").toSafeFloat(),
-        tokensStaked = info.getByName("tokensStaked").toSafeFloat(),
-        tokensUnstaking = info.getByName("tokensUnstaking").toSafeFloat(),
-        tokensRewarded = info.getByName("tokensRewarded").toSafeFloat(),
-        tokensUnstaked = info.getByName("tokensUnstaked").toSafeFloat(),
-        tokensRequestedToUnstake = info.getByName("tokensRequestedToUnstake").toSafeFloat(),
+        nodes = info.value?.map { value ->
+            StakingNode(
+                delegatorId = value.getByName("id").toSafeInt(),
+                nodeID = value.getByName("nodeID").orEmpty(),
+                tokensCommitted = value.getByName("tokensCommitted").toSafeFloat(),
+                tokensStaked = value.getByName("tokensStaked").toSafeFloat(),
+                tokensUnstaking = value.getByName("tokensUnstaking").toSafeFloat(),
+                tokensRewarded = value.getByName("tokensRewarded").toSafeFloat(),
+                tokensUnstaked = value.getByName("tokensUnstaked").toSafeFloat(),
+                tokensRequestedToUnstake = value.getByName("tokensRequestedToUnstake").toSafeFloat(),
+            )
+        }.orEmpty()
     )
 }
 
-private data class StakingInfoInner(
+data class StakingInfoInner(
     @SerializedName("type")
     val type: String?,
     @SerializedName("value")
@@ -32,9 +36,10 @@ private data class StakingInfoInner(
         @SerializedName("type")
         val type: String?,
         @SerializedName("value")
-        val value: Value?
+        val value: Value1?
     ) {
-        data class Value(
+
+        data class Value1(
             @SerializedName("fields")
             val fields: List<Field?>?,
             @SerializedName("id")
@@ -44,9 +49,9 @@ private data class StakingInfoInner(
                 @SerializedName("name")
                 val name: String?,
                 @SerializedName("value")
-                val value: Value?
+                val value: Value2?
             ) {
-                data class Value(
+                data class Value2(
                     @SerializedName("type")
                     val type: String?,
                     @SerializedName("value")
@@ -55,12 +60,6 @@ private data class StakingInfoInner(
             }
         }
     }
-
-    fun value() = value?.firstOrNull()?.value
-
-    fun id() = value()?.id
-
-    fun delegatorId() = getByName("id")
-
-    fun getByName(name: String): String? = value()?.fields?.firstOrNull { it?.name == name }?.value?.value
 }
+
+fun StakingInfoInner.Value?.getByName(name: String): String? = this?.value?.fields?.firstOrNull { it?.name == name }?.value?.value

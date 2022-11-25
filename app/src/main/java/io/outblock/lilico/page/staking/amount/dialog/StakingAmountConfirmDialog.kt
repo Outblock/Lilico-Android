@@ -14,6 +14,7 @@ import io.outblock.lilico.databinding.DialogStakingAmountConfirmBinding
 import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.flowjvm.*
 import io.outblock.lilico.manager.staking.StakingManager
+import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
@@ -59,7 +60,7 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
                 uiScope { safeRun { dismiss() } }
                 return@ioScope
             }
-            val isSuccess = stake()
+            val isSuccess = stake(data.provider)
             safeRun {
                 if (isSuccess) {
                     requireActivity().finish()
@@ -71,11 +72,12 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private suspend fun stake(): Boolean {
+    private suspend fun stake(provider: StakingProvider): Boolean {
         try {
+            val node = StakingManager.stakingInfo().nodes.firstOrNull { it.nodeID == provider.id } ?: return false
             val txid = CADENCE_STAKE_FLOW.transactionByMainWallet {
                 arg { string(data.provider.id) }
-                arg { uint32(StakingManager.stakingInfo().delegatorId ?: 0) }
+                arg { uint32(node.delegatorId ?: 0) }
                 arg { ufix64Safe(data.amount) }
             }
             val transactionState = TransactionState(

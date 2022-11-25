@@ -339,4 +339,8 @@
     <string name="the_stake_is_processing">The stake is processing</string>
     <string name="staking_not_enabled">Staking is under maintenance on %1$s netwrok, please try again later.</string>
     <string name="stake_failed">Stake failed</string>
+    <string name="staking_list">Staking List</string>
+    <string name="stake_new_node">Stake New Node</string>
+    <string name="staking_amount">Staking Amount</string>
+    <string name="rewards">Rewards</string>
 </resources>

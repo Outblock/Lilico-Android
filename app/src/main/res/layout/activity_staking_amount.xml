@@ -312,7 +312,7 @@
         android:textAllCaps="false"
         android:textSize="14sp"
         app:cornerRadius="16dp"
-        android:backgroundTint="@color/stake"
+        android:backgroundTint="@color/stake_button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
