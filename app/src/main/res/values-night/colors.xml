@@ -87,5 +87,6 @@
     <color name="image_bg">@color/neutrals10</color>
     <color name="stake">#60C293</color>
     <color name="stake_12">#1c60C293</color>
+    <color name="deep_bg_0">#00000000</color>
 </resources>
 

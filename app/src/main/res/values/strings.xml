@@ -331,6 +331,7 @@
     <string name="rate">Rate</string>
     <string name="est_annual_reward">Est. annual reward</string>
     <string name="flow_available_num">%1$s Flow available</string>
+    <string name="flow_available">Flow available</string>
     <string name="flow_coin_name">Flow</string>
     <string name="on_lilico_only">On Lilico Only</string>
     <string name="confirm_your_stake">Confirm Your Stake</string>
@@ -343,4 +344,6 @@
     <string name="stake_new_node">Stake New Node</string>
     <string name="staking_amount">Staking Amount</string>
     <string name="rewards">Rewards</string>
+    <string name="staking_detail">Staking Detail</string>
+    <string name="staked_flow">Staked Flow</string>
 </resources>

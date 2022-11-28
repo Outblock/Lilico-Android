@@ -196,4 +196,5 @@
     <color name="wallet_connect">#3396FF</color>
     <color name="stake">#60C293</color>
     <color name="stake_12">#1c60C293</color>
+    <color name="deep_bg_0">#00ffffff</color>
 </resources>
