@@ -15,6 +15,7 @@ import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
+import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
@@ -66,7 +67,7 @@ object TransactionStateManager {
     fun getLastVisibleTransaction(): TransactionState? {
         return stateData.data.toList().firstOrNull {
             (it.state < FlowTransactionStatus.SEALED.num && it.state > FlowTransactionStatus.UNKNOWN.num)
-              || (it.state == FlowTransactionStatus.SEALED.num && abs(it.updateTime - System.currentTimeMillis()) < 5000)
+                    || (it.state == FlowTransactionStatus.SEALED.num && abs(it.updateTime - System.currentTimeMillis()) < 5000)
         }
     }
 
@@ -130,6 +131,9 @@ object TransactionStateManager {
 
             if (state.type == TransactionState.TYPE_CLAIM_DOMAIN && state.isSuccess()) {
                 checkMeowDomainClaimed()
+            }
+            if (state.type == TransactionState.TYPE_STAKE_FLOW && state.isSuccess()) {
+                StakingManager.refresh()
             }
         }
     }
@@ -199,6 +203,8 @@ data class TransactionState(
         const val TYPE_FCL_TRANSACTION = 6
 
         const val TYPE_CLAIM_DOMAIN = 7
+
+        const val TYPE_STAKE_FLOW = 8
     }
 
     fun coinData() = Gson().fromJson(data, TransactionModel::class.java)

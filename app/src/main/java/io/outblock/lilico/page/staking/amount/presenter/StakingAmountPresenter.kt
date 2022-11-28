@@ -10,10 +10,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityStakingAmountBinding
 import io.outblock.lilico.manager.price.CurrencyManager
-import io.outblock.lilico.manager.staking.STAKING_DEFAULT_NORMAL_APY
-import io.outblock.lilico.manager.staking.StakingManager
-import io.outblock.lilico.manager.staking.StakingProvider
-import io.outblock.lilico.manager.staking.isLilico
+import io.outblock.lilico.manager.staking.*
 import io.outblock.lilico.page.profile.subpage.currency.model.findCurrencyFromFlag
 import io.outblock.lilico.page.staking.amount.StakingAmountActivity
 import io.outblock.lilico.page.staking.amount.StakingAmountViewModel
@@ -53,7 +50,7 @@ class StakingAmountPresenter(
                         amount = amount(),
                         coinRate = viewModel.coinRate(),
                         currency = currency,
-                        rate = StakingManager.apy(),
+                        rate = provider.rate(),
                         rewardCoin = amount() * StakingManager.apy(),
                         rewardUsd = (amount() * StakingManager.apy() * viewModel.coinRate()),
                         provider = provider,

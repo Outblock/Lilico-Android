@@ -80,3 +80,5 @@ data class StakingProviderCache(
 fun StakingProvider.isLilico() = name.lowercase() == "lilico"
 
 fun StakingProvider.rate() = if (isLilico()) StakingManager.apy() else STAKING_DEFAULT_NORMAL_APY
+
+fun StakingProvider.delegatorId(): Int? = StakingManager.delegatorIds()[id]

@@ -15,12 +15,15 @@ import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.flowjvm.*
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.staking.StakingProvider
+import io.outblock.lilico.manager.staking.createStakingDelegatorId
+import io.outblock.lilico.manager.staking.delegatorId
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.widgets.ButtonState
+import kotlinx.coroutines.delay
 
 class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
 
@@ -74,17 +77,26 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
 
     private suspend fun stake(provider: StakingProvider): Boolean {
         try {
-            val node = StakingManager.stakingInfo().nodes.firstOrNull { it.nodeID == provider.id } ?: return false
+            var delegatorId = provider.delegatorId()
+            if (delegatorId == null) {
+                createStakingDelegatorId(provider)
+                delay(2000)
+                StakingManager.refreshDelegatorInfo()
+                delegatorId = provider.delegatorId()
+            }
+            if (delegatorId == null) {
+                return false
+            }
             val txid = CADENCE_STAKE_FLOW.transactionByMainWallet {
                 arg { string(data.provider.id) }
-                arg { uint32(node.delegatorId ?: 0) }
+                arg { uint32(delegatorId) }
                 arg { ufix64Safe(data.amount) }
             }
             val transactionState = TransactionState(
                 transactionId = txid!!,
                 time = System.currentTimeMillis(),
                 state = FlowTransactionStatus.PENDING.num,
-                type = TransactionState.TYPE_TRANSACTION_DEFAULT,
+                type = TransactionState.TYPE_STAKE_FLOW,
                 data = ""
             )
             TransactionStateManager.newTransaction(transactionState)
