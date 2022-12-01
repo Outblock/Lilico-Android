@@ -221,3 +221,5 @@ data class StakingCache(
 )
 
 fun StakingNode.stakingCount() = tokensCommitted + tokensStaked
+
+fun StakingNode.isLilico() = StakingManager.providers().firstOrNull { it.isLilico() }?.id == nodeID

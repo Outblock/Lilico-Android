@@ -43,6 +43,8 @@ object CoinRateManager {
         uiScope { this.listeners.add(WeakReference(callback)) }
     }
 
+    fun coinRate(symbol: String) = coinRateMap[symbol]?.price
+
     fun fetchCoinRate(coin: FlowCoin) {
         ioScope {
             if (coin.isUSDStableCoin()) {

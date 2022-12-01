@@ -100,7 +100,14 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             uiScope {
                 val newCoin = coinList.filter { coin -> dataList.firstOrNull { it.coin.symbol == coin.symbol } == null }
                 if (newCoin.isNotEmpty()) {
-                    dataList.addAll(newCoin.map { WalletCoinItemModel(it, it.address(), 0f, 0f, isHideBalance = isHideBalance, currency = currency) })
+                    dataList.addAll(newCoin.map {
+                        WalletCoinItemModel(
+                            it, it.address(), 0f,
+                            0f, isHideBalance = isHideBalance, currency = currency,
+                            isStaked = StakingManager.isStaked(),
+                            stakeAmount = StakingManager.stakingCount(),
+                        )
+                    })
                     logd(TAG, "loadCoinList newCoin:${newCoin.map { it.symbol }}")
                     logd(TAG, "loadCoinList dataList:${dataList.map { it.coin.symbol }}")
                     dataListLiveData.postValue(dataList)
@@ -129,6 +136,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         val oldItem = dataList.firstOrNull { it.coin.symbol == balance.symbol } ?: return
         val item = oldItem.copy(balance = balance.balance)
         dataList[dataList.indexOf(oldItem)] = item
+        checkStakingUpdate()
         dataListLiveData.value = dataList
         updateWalletHeader()
     }
@@ -140,6 +148,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
         val oldItem = dataList.firstOrNull { it.coin.symbol == coin.symbol } ?: return
         val item = oldItem.copy(coinRate = rate)
         dataList[dataList.indexOf(oldItem)] = item
+        checkStakingUpdate()
         dataListLiveData.value = dataList
         updateWalletHeader()
     }
@@ -153,6 +162,14 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
                 transactionCount = getAccountTransactionCountLocal()
             })
         }
+    }
+
+    private fun checkStakingUpdate() {
+        val flow = dataList.firstOrNull { it.coin.isFlowCoin() } ?: return
+        dataList[dataList.indexOf(flow)] = flow.copy(
+            isStaked = StakingManager.isStaked(),
+            stakeAmount = StakingManager.stakingCount()
+        )
     }
 
     companion object {

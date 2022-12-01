@@ -7,6 +7,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemStakeProviderBinding
+import io.outblock.lilico.manager.staking.STAKING_DEFAULT_NORMAL_APY
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.manager.staking.isLilico
@@ -26,7 +27,7 @@ class ProviderItemPresenter(
             Glide.with(iconView).load(model.icon).placeholder(R.drawable.placeholder).into(iconView)
             titleView.text = model.name
             descView.text = model.description
-            rateTitle.text = (if (model.isLilico()) (StakingManager.apy() * 100).formatNum(1) else "8") + "%"
+            rateTitle.text = (if (model.isLilico()) (StakingManager.apy() * 100).formatNum(2) else "$STAKING_DEFAULT_NORMAL_APY") + "%"
             rateDesc.text = R.string.stake.res2String()
         }
 

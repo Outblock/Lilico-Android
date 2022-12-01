@@ -9,4 +9,6 @@ data class WalletCoinItemModel(
     val coinRate: Float,
     val isHideBalance: Boolean = false,
     val currency: String,
+    val isStaked: Boolean = false,
+    val stakeAmount: Float,
 )

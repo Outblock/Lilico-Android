@@ -10,8 +10,12 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
 import io.outblock.lilico.manager.app.isTestnet
+import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.staking.STAKING_DEFAULT_NORMAL_APY
 import io.outblock.lilico.manager.staking.StakingManager
+import io.outblock.lilico.manager.staking.isLilico
+import io.outblock.lilico.manager.staking.stakingCount
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
@@ -57,6 +61,11 @@ class TokenDetailPresenter(
             binding.stakingBanner.root.setOnClickListener { openStakingPage(activity) }
         }
 
+        if (StakingManager.isStaked() && coin.isFlowCoin()) {
+            binding.getMoreWrapper.setVisible(false)
+            setupStakingRewards()
+        }
+
         if (isTestnet()) {
             binding.getMoreWrapper.setOnClickListener { openBrowser(activity, "https://testnet-faucet.onflow.org/fund-account") }
         }
@@ -74,5 +83,28 @@ class TokenDetailPresenter(
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         activity.supportActionBar?.setDisplayShowHomeEnabled(true)
         activity.title = ""
+    }
+
+    private fun setupStakingRewards() {
+        with(binding.stakingRewardWrapper) {
+            val currency = selectedCurrency()
+            val coinRate = CoinRateManager.coinRate(FlowCoin.SYMBOL_FLOW) ?: 0f
+            val stakingCount = StakingManager.stakingCount()
+
+            val dayRewards =
+                StakingManager.stakingInfo().nodes.sumOf { it.stakingCount() * (if (it.isLilico()) StakingManager.apy() else STAKING_DEFAULT_NORMAL_APY).toDouble() }
+                    .toFloat() / 365.0f
+            stakingCountView.text = activity.getString(R.string.flow_num, stakingCount.formatNum(3))
+            dailyView.text = (dayRewards * coinRate).formatPrice(3, includeSymbol = true)
+            dailyCurrencyName.text = currency.name
+            dailyFlowCount.text = activity.getString(R.string.flow_num, dayRewards.formatNum(3))
+
+            val monthRewards = dayRewards * 30
+            monthlyView.text = (monthRewards * coinRate).formatPrice(3, includeSymbol = true)
+            monthlyCurrencyName.text = currency.name
+            monthlyFlowCount.text =
+                activity.getString(R.string.flow_num, monthRewards.formatNum(3))
+            root.setOnClickListener { openStakingPage(activity) }
+        }
     }
 }

@@ -203,6 +203,10 @@
                     android:id="@+id/staking_banner"
                     layout="@layout/layout_token_detail_staking_banner"/>
 
+                <include
+                    android:id="@+id/staking_reward_wrapper"
+                    layout="@layout/layout_token_detail_staking_rewards"/>
+
             </FrameLayout>
 
             <include
