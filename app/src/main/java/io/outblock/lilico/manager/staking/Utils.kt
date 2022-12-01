@@ -1,9 +1,13 @@
 package io.outblock.lilico.manager.staking
 
+import android.text.format.DateUtils
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.utils.extensions.toSafeFloat
 import io.outblock.lilico.utils.extensions.toSafeInt
+
+// 2022-10-27 07:00
+const val STAKE_START_TIME = 1666825200000
 
 fun parseStakingInfoResult(json: String?): StakingInfo? {
     json ?: return null
@@ -22,6 +26,21 @@ fun parseStakingInfoResult(json: String?): StakingInfo? {
             )
         }.orEmpty()
     )
+}
+
+fun stakingEpochStartTime(): Long {
+    val current = System.currentTimeMillis()
+    val gap = 7 * DateUtils.DAY_IN_MILLIS
+    var startTime = STAKE_START_TIME
+    while (startTime + gap < current) {
+        startTime += gap
+    }
+    return startTime
+}
+
+fun stakingEpochEndTime(): Long {
+    val gap = 7 * DateUtils.DAY_IN_MILLIS
+    return stakingEpochStartTime() + gap
 }
 
 fun parseStakingDelegatorInfo(json: String?): Map<String, Int> {

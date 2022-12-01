@@ -1,6 +1,7 @@
 package io.outblock.lilico.manager.staking
 
 import androidx.annotation.WorkerThread
+import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.stakingCache
 import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.*
@@ -23,6 +24,7 @@ object StakingManager {
 
     private var stakingInfo = StakingInfo()
     private var apy = DEFAULT_APY
+    private var apyYear = DEFAULT_APY
 
     private val providers = StakingProviders().apply { refresh() }
 
@@ -33,6 +35,7 @@ object StakingManager {
             val cache = stakingCache().read()
             stakingInfo = cache?.info ?: StakingInfo()
             apy = cache?.apy ?: apy
+            apyYear = cache?.apyYear ?: apyYear
         }
     }
 
@@ -43,6 +46,8 @@ object StakingManager {
     fun delegatorIds() = delegatorIds.toMap()
 
     fun apy() = apy
+
+    fun apyYear() = apyYear
 
     fun isStaked(): Boolean {
         if (stakingInfo.nodes.isEmpty()) {
@@ -76,8 +81,13 @@ object StakingManager {
     }
 
     private fun updateApy() {
-        queryStakingApy()?.let {
+        queryStakingApy(CADENCE_GET_STAKE_APY_BY_WEEK)?.let {
             apy = it
+            cache()
+        }
+
+        queryStakingApy(CADENCE_GET_STAKE_APY_BY_YEAR)?.let {
+            apyYear = it
             cache()
         }
     }
@@ -112,9 +122,9 @@ private fun queryStakingInfo(): StakingInfo? {
     }.getOrNull()
 }
 
-private fun queryStakingApy(): Float? {
+private fun queryStakingApy(cadence: String): Float? {
     return runCatching {
-        val response = CADENCE_GET_STAKE_APY_BY_WEEK.executeCadence {}
+        val response = cadence.executeCadence {}
         val apy = response?.parseFloat()
         logd(TAG, "queryStakingApy apy:$apy")
         if (apy == 0.0f) null else apy
@@ -178,23 +188,36 @@ private fun hasBeenSetup(): Boolean {
 }
 
 data class StakingInfo(
+    @SerializedName("nodes")
     val nodes: List<StakingNode> = emptyList(),
 )
 
 data class StakingNode(
+    @SerializedName("delegatorId")
     val delegatorId: Int? = null,
+    @SerializedName("nodeID")
     val nodeID: String = "",
+    @SerializedName("tokensCommitted")
     val tokensCommitted: Float = 0.0f,
+    @SerializedName("tokensStaked")
     val tokensStaked: Float = 0.0f,
+    @SerializedName("tokensUnstaking")
     val tokensUnstaking: Float = 0.0f,
+    @SerializedName("tokensRewarded")
     val tokensRewarded: Float = 0.0f,
+    @SerializedName("tokensUnstaked")
     val tokensUnstaked: Float = 0.0f,
+    @SerializedName("tokensRequestedToUnstake")
     val tokensRequestedToUnstake: Float = 0.0f,
 )
 
 data class StakingCache(
+    @SerializedName("info")
     val info: StakingInfo? = null,
+    @SerializedName("apy")
     val apy: Float = DEFAULT_APY,
+    @SerializedName("apyYear")
+    val apyYear: Float = DEFAULT_APY,
 )
 
 fun StakingNode.stakingCount() = tokensCommitted + tokensStaked

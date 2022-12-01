@@ -26,6 +26,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingHorizontal="18dp"
             android:paddingTop="28dp"
             android:paddingBottom="100dp">
@@ -34,7 +35,76 @@
                 android:id="@+id/header"
                 layout="@layout/layout_staking_detail_header"/>
 
+            <include
+                android:id="@+id/epoch_wrapper"
+                layout="@layout/layout_staking_detail_epoch"/>
 
+            <include
+                android:id="@+id/reward_wrapper"
+                layout="@layout/layout_staking_detail_rewards"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="@color/deep_bg"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <io.outblock.lilico.widgets.LoadingMaterialButton
+                android:id="@+id/unstake_button"
+                style="@style/Button"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginVertical="12dp"
+                android:layout_marginStart="18dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/background"
+                android:fontFamily="@font/inter_semi_bold"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="@string/unstake"
+                android:textAllCaps="false"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                app:cornerRadius="12dp"
+                app:rippleColor="@color/white_20"/>
+
+            <io.outblock.lilico.widgets.LoadingMaterialButton
+                android:id="@+id/stake_button"
+                style="@style/Button"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginVertical="12dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="18dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/stake_button_color"
+                android:fontFamily="@font/inter_semi_bold"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="@string/stake"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="12dp"
+                app:rippleColor="@color/white_20"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

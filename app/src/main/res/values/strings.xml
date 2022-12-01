@@ -346,4 +346,10 @@
     <string name="rewards">Rewards</string>
     <string name="staking_detail">Staking Detail</string>
     <string name="staked_flow">Staked Flow</string>
+    <string name="epoch_starts">Epoch Starts</string>
+    <string name="epoch_ends">Epoch Ends</string>
+    <string name="daily_reward">Daily Reward</string>
+    <string name="monthly_reward">Monthly Reward</string>
+    <string name="flow_num">%1$s Flow</string>
+    <string name="unstake">Unstake</string>
 </resources>

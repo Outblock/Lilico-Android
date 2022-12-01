@@ -536,7 +536,16 @@ const val CADENCE_GET_STAKE_APY_BY_WEEK = """
     import FlowIDTableStaking from 0x8624b52f9ddcd04a
 
     pub fun main(): UFix64 {
-        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() * 54.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
+        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() * 52.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
+        return apr
+    }
+"""
+
+const val CADENCE_GET_STAKE_APY_BY_YEAR = """
+    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    
+    pub fun main(): UFix64 {
+        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() / 7.0 * 365.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
         return apr
     }
 """
@@ -602,15 +611,6 @@ const val CADENCE_SETUP_STAKING = """
                 collectionRef.addDelegatorObject(<-delegator)
             }
         }
-    }
-"""
-
-const val CADENCE_GET_STAKE_APY_BY_YEAR = """
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
-    
-    pub fun main(): UFix64 {
-        let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() / 7.0 * 365.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
-        return apr
     }
 """
 
