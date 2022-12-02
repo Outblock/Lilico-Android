@@ -27,7 +27,7 @@ class ProviderItemPresenter(
             Glide.with(iconView).load(model.icon).placeholder(R.drawable.placeholder).into(iconView)
             titleView.text = model.name
             descView.text = model.description
-            rateTitle.text = (if (model.isLilico()) (StakingManager.apy() * 100).formatNum(2) else "$STAKING_DEFAULT_NORMAL_APY") + "%"
+            rateTitle.text = (if (model.isLilico()) (StakingManager.apy() * 100).formatNum(2) else "${STAKING_DEFAULT_NORMAL_APY * 100}") + "%"
             rateDesc.text = R.string.stake.res2String()
         }
 
