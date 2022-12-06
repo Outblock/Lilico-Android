@@ -32,7 +32,7 @@ object FlowCoinListManager {
 
     fun coinList() = coinList.toList()
 
-    fun getCoin(symbol: String) = coinList.firstOrNull { it.symbol == symbol }
+    fun getCoin(symbol: String) = coinList.firstOrNull { it.symbol.lowercase() == symbol.lowercase() }
 
     fun getEnabledCoinList() = coinList.toList().filter { TokenStateManager.isTokenAdded(it.address()) }
 }

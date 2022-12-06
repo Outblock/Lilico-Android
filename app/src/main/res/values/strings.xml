@@ -335,11 +335,14 @@
     <string name="flow_coin_name">Flow</string>
     <string name="on_lilico_only">On Lilico Only</string>
     <string name="confirm_your_stake">Confirm Your Stake</string>
+    <string name="confirm_your_unstake">Confirm Your Unstake</string>
     <string name="staking">Staking</string>
     <string name="hold_to_stake">Hold to stake</string>
+    <string name="hold_to_unstake">Hold to unstake</string>
     <string name="the_stake_is_processing">The stake is processing</string>
     <string name="staking_not_enabled">Staking is under maintenance on %1$s netwrok, please try again later.</string>
     <string name="stake_failed">Stake failed</string>
+    <string name="unstake_failed">Unstake failed</string>
     <string name="staking_list">Staking List</string>
     <string name="stake_new_node">Stake New Node</string>
     <string name="staking_amount">Staking Amount</string>
@@ -352,4 +355,6 @@
     <string name="monthly_reward">Monthly Reward</string>
     <string name="flow_num">%1$s Flow</string>
     <string name="unstake">Unstake</string>
+    <string name="unstake_amount">Unstake Amount</string>
+    <string name="staked_flow_num">%1$s Staked Flow</string>
 </resources>

@@ -19,6 +19,7 @@ class StakingAmountActivity : BaseActivity() {
     private lateinit var presenter: StakingAmountPresenter
     private lateinit var viewModel: StakingAmountViewModel
     private val provider by lazy { intent.getParcelableExtra<StakingProvider>(EXTRA_PROVIDER)!! }
+    private val isUnstake by lazy { intent.getBooleanExtra(EXTRA_UNSTAKE, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +28,11 @@ class StakingAmountActivity : BaseActivity() {
         UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
         UltimateBarX.with(this).fitWindow(true).light(!isNightMode(this)).applyNavigationBar()
 
-        presenter = StakingAmountPresenter(binding, provider, this)
+        presenter = StakingAmountPresenter(binding, provider, this, isUnstake)
         viewModel = ViewModelProvider(this)[StakingAmountViewModel::class.java].apply {
             balanceLiveData.observe(this@StakingAmountActivity) { presenter.bind(StakingAmountModel(balance = it)) }
             processingLiveData.observe(this@StakingAmountActivity) { presenter.bind(StakingAmountModel(processingState = it)) }
-            load()
+            load(provider, isUnstake)
         }
     }
 
@@ -45,9 +46,11 @@ class StakingAmountActivity : BaseActivity() {
 
     companion object {
         private const val EXTRA_PROVIDER = "extra_provider"
-        fun launch(context: Context, provider: StakingProvider) {
+        private const val EXTRA_UNSTAKE = "extra_UNSTAKE"
+        fun launch(context: Context, provider: StakingProvider, isUnstake: Boolean = false) {
             context.startActivity(Intent(context, StakingAmountActivity::class.java).apply {
                 putExtra(EXTRA_PROVIDER, provider)
+                putExtra(EXTRA_UNSTAKE, isUnstake)
             })
         }
     }

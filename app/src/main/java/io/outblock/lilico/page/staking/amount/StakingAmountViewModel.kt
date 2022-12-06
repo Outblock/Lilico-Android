@@ -9,6 +9,8 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
+import io.outblock.lilico.manager.staking.StakingManager
+import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.utils.ioScope
 
 class StakingAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
@@ -27,10 +29,15 @@ class StakingAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
 
     fun coinRate() = coinRate
 
-    fun load() {
+    fun load(provider: StakingProvider, isUnstake: Boolean) {
         ioScope {
             val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW) ?: return@ioScope
-            BalanceManager.getBalanceByCoin(coin)
+            if (isUnstake) {
+                val node = StakingManager.stakingNode(provider) ?: return@ioScope
+                balanceLiveData.postValue(node.tokensStaked)
+            } else {
+                BalanceManager.getBalanceByCoin(coin)
+            }
             CoinRateManager.fetchCoinRate(coin)
         }
     }

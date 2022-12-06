@@ -33,6 +33,8 @@ internal class FlowAddressRegistry {
                 "0xLockedTokens" to "0x8d0e87b65159ae63",
                 "0xFlowIDTableStaking" to "0x8624b52f9ddcd04a",
                 "0xFlowStakingCollection" to "0x8d0e87b65159ae63",
+                "0xSwapRouter" to if (isTestNet) "0x2f8af5ed05bbde0d" else "0xa6850776a94e6551",
+                "0xSwapError" to if (isTestNet) "0xddb929038d45d4b3" else "0xb78ef7afa52ff906",
             )
         }
     }

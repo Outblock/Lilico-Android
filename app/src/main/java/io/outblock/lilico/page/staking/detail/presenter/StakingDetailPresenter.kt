@@ -30,7 +30,7 @@ class StakingDetailPresenter(
             root.addStatusBarTopPadding()
             root.addNavigationBarBottomPadding()
             stakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
-            unstakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
+            unstakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider, isUnstake = true) }
         }
         setupToolbar()
     }

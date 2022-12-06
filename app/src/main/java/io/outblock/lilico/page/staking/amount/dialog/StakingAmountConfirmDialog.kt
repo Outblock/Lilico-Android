@@ -22,6 +22,7 @@ import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.widgets.ButtonState
 import kotlinx.coroutines.delay
 
@@ -52,23 +53,25 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
             sendButton.setOnProcessing { sendStake() }
 
             closeButton.setOnClickListener { dismiss() }
+            descWrapper.setVisible(!data.isUnstake)
+            sendButton.updateDefaultText(if (data.isUnstake) R.string.hold_to_unstake.res2String() else R.string.hold_to_stake.res2String())
+            titleView.setText(if (data.isUnstake) R.string.confirm_your_unstake else R.string.confirm_your_stake)
         }
     }
 
     private fun sendStake() {
         ioScope {
-            val isStakingEnable = checkStakingEnabled()
-            if (!isStakingEnable) {
+            if (!checkStakingEnabled()) {
                 toast(msg = getString(R.string.staking_not_enabled, chainNetWorkString()))
                 uiScope { safeRun { dismiss() } }
                 return@ioScope
             }
-            val isSuccess = stake(data.provider)
+            val isSuccess = if(data.isUnstake) unstake(data.provider) else stake(data.provider)
             safeRun {
                 if (isSuccess) {
                     requireActivity().finish()
                 } else {
-                    toast(msgRes = R.string.stake_failed)
+                    toast(msgRes = if(data.isUnstake) R.string.unstake_failed else R.string.stake_failed)
                     uiScope { binding.sendButton.changeState(ButtonState.DEFAULT) }
                 }
             }
@@ -88,6 +91,38 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
                 return false
             }
             val txid = CADENCE_STAKE_FLOW.transactionByMainWallet {
+                arg { string(data.provider.id) }
+                arg { uint32(delegatorId) }
+                arg { ufix64Safe(data.amount) }
+            }
+            val transactionState = TransactionState(
+                transactionId = txid!!,
+                time = System.currentTimeMillis(),
+                state = FlowTransactionStatus.PENDING.num,
+                type = TransactionState.TYPE_STAKE_FLOW,
+                data = ""
+            )
+            TransactionStateManager.newTransaction(transactionState)
+            pushBubbleStack(transactionState)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    private suspend fun unstake(provider: StakingProvider): Boolean {
+        try {
+            var delegatorId = provider.delegatorId()
+            if (delegatorId == null) {
+                createStakingDelegatorId(provider)
+                delay(2000)
+                StakingManager.refreshDelegatorInfo()
+                delegatorId = provider.delegatorId()
+            }
+            if (delegatorId == null) {
+                return false
+            }
+            val txid = CADENCE_UNSTAKE_FLOW.transactionByMainWallet {
                 arg { string(data.provider.id) }
                 arg { uint32(delegatorId) }
                 arg { ufix64Safe(data.amount) }

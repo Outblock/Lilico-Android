@@ -349,9 +349,9 @@ const val CADENCE_CLAIM_INBOX_NFT = """
 // want use how many token to swap other token
 const val CADENCE_SWAP_EXACT_TOKENS_TO_OTHER_TOKENS =
     """import Token1Name from Token1Addr
-    import FungibleToken from 0x9a0766d93b6608b7
-    import SwapRouter from 0x2f8af5ed05bbde0d
-    import SwapError from 0xddb929038d45d4b3
+    import FungibleToken from 0xFungibleToken
+    import SwapRouter from 0xSwapRouter
+    import SwapError from 0xSwapError
     transaction(
         tokenKeyFlatSplitPath: [String],
         amountInSplit: [UFix64],
@@ -410,9 +410,9 @@ const val CADENCE_SWAP_EXACT_TOKENS_TO_OTHER_TOKENS =
 // want swap how many other token
 const val CADENCE_SWAP_TOKENS_FROM_EXACT_TOKENS =
     """import Token1Name from Token1Addr
-    import FungibleToken from 0x9a0766d93b6608b7
-    import SwapRouter from 0x2f8af5ed05bbde0d
-    import SwapError from 0xddb929038d45d4b3
+    import FungibleToken from 0xFungibleToken
+    import SwapRouter from 0xSwapRouter
+    import SwapError from 0xSwapError
     transaction(
         tokenKeyFlatSplitPath: [String],
         amountOutSplit: [UFix64],
@@ -516,10 +516,30 @@ const val CADENCE_STAKE_FLOW = """
     }
 """
 
+const val CADENCE_UNSTAKE_FLOW = """
+    import FlowStakingCollection from 0xFlowStakingCollection
+
+    /// Requests unstaking for the specified node or delegator in the staking collection
+    
+    transaction(nodeID: String, delegatorID: UInt32?, amount: UFix64) {
+        
+        let stakingCollectionRef: &FlowStakingCollection.StakingCollection
+    
+        prepare(account: AuthAccount) {
+            self.stakingCollectionRef = account.borrow<&FlowStakingCollection.StakingCollection>(from: FlowStakingCollection.StakingCollectionStoragePath)
+                ?? panic("Could not borrow ref to StakingCollection")
+        }
+    
+        execute {
+            self.stakingCollectionRef.requestUnstaking(nodeID: nodeID, delegatorID: delegatorID, amount: amount)
+        }
+    }
+"""
+
 const val CADENCE_QUERY_STAKE_INFO = """
-    import LockedTokens from 0x8d0e87b65159ae63
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
-    import FlowStakingCollection from 0x8d0e87b65159ae63
+    import LockedTokens from 0xStakingCollection
+    import FlowIDTableStaking from 0xFlowIDTableStaking
+    import FlowStakingCollection from 0xStakingCollection
     
     pub fun main(account: Address): [FlowIDTableStaking.DelegatorInfo] {
     
@@ -533,7 +553,7 @@ const val CADENCE_QUERY_STAKE_INFO = """
 """
 
 const val CADENCE_GET_STAKE_APY_BY_WEEK = """
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    import FlowIDTableStaking from 0xFlowIDTableStaking
 
     pub fun main(): UFix64 {
         let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() * 52.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
@@ -542,7 +562,7 @@ const val CADENCE_GET_STAKE_APY_BY_WEEK = """
 """
 
 const val CADENCE_GET_STAKE_APY_BY_YEAR = """
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    import FlowIDTableStaking from 0xFlowIDTableStaking
     
     pub fun main(): UFix64 {
         let apr = FlowIDTableStaking.getEpochTokenPayout() / FlowIDTableStaking.getTotalStaked() / 7.0 * 365.0 * (1.0 - FlowIDTableStaking.getRewardCutPercentage())
@@ -551,7 +571,7 @@ const val CADENCE_GET_STAKE_APY_BY_YEAR = """
 """
 
 const val CADENCE_CHECK_IS_STAKING_SETUP = """
-    import FlowStakingCollection from 0x8d0e87b65159ae63
+    import FlowStakingCollection from 0xStakingCollection
 
     /// Determines if an account is set up with a Staking Collection
     
@@ -615,7 +635,7 @@ const val CADENCE_SETUP_STAKING = """
 """
 
 const val CADENCE_CHECK_STAKING_ENABLED = """
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
+    import FlowIDTableStaking from 0xFlowIDTableStaking
 
     pub fun main():Bool {
       return FlowIDTableStaking.stakingEnabled()
@@ -623,9 +643,9 @@ const val CADENCE_CHECK_STAKING_ENABLED = """
 """
 
 const val CADENCE_GET_DELEGATOR_INFO = """
-    import FlowStakingCollection from 0x8d0e87b65159ae63
-    import FlowIDTableStaking from 0x8624b52f9ddcd04a
-    import LockedTokens from 0x8d0e87b65159ae63
+    import FlowStakingCollection from 0xStakingCollection
+    import FlowIDTableStaking from 0xFlowIDTableStaking
+    import LockedTokens from 0xStakingCollection
     
     pub struct DelegateInfo {
         pub let delegatorID: UInt32

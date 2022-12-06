@@ -41,6 +41,8 @@ object StakingManager {
 
     fun stakingInfo() = stakingInfo
 
+    fun stakingNode(provider: StakingProvider) = stakingInfo().nodes.firstOrNull { it.nodeID == provider.id }
+
     fun providers() = providers.get()
 
     fun delegatorIds() = delegatorIds.toMap()

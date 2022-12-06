@@ -18,16 +18,14 @@ import io.outblock.lilico.page.staking.amount.dialog.StakingAmountConfirmDialog
 import io.outblock.lilico.page.staking.amount.dialog.StakingAmountConfirmModel
 import io.outblock.lilico.page.staking.amount.model.StakingAmountModel
 import io.outblock.lilico.utils.*
-import io.outblock.lilico.utils.extensions.hideKeyboard
-import io.outblock.lilico.utils.extensions.res2String
-import io.outblock.lilico.utils.extensions.res2color
-import io.outblock.lilico.utils.extensions.toSafeFloat
+import io.outblock.lilico.utils.extensions.*
 
 @SuppressLint("SetTextI18n")
 class StakingAmountPresenter(
     private val binding: ActivityStakingAmountBinding,
     private val provider: StakingProvider,
     private val activity: StakingAmountActivity,
+    private val isUnstake: Boolean,
 ) : BasePresenter<StakingAmountModel> {
     private val viewModel by lazy { ViewModelProvider(activity)[StakingAmountViewModel::class.java] }
 
@@ -54,9 +52,11 @@ class StakingAmountPresenter(
                         rewardCoin = amount() * StakingManager.apy(),
                         rewardUsd = (amount() * StakingManager.apy() * viewModel.coinRate()),
                         provider = provider,
+                        isUnstake = isUnstake,
                     )
                 )
             }
+            descWrapper.setVisible(!isUnstake)
         }
         with(binding.inputView) {
             doOnTextChanged { _, _, _, _ ->
@@ -88,7 +88,9 @@ class StakingAmountPresenter(
     }
 
     private fun onUpdateBalance(it: Float) {
-        binding.balanceView.text = activity.getString(R.string.flow_available_num, it.formatNum(2))
+        binding.balanceView.text = if (isUnstake) {
+            activity.getString(R.string.staked_flow_num, it.formatNum(3))
+        } else activity.getString(R.string.flow_available_num, it.formatNum(3))
     }
 
     private fun onAmountChange() {
@@ -115,7 +117,7 @@ class StakingAmountPresenter(
     }
 
     private fun updateAmountByPercent(percent: Float) {
-        val text = ((viewModel.balanceLiveData.value ?: 0.0f) * percent).formatNum(2)
+        val text = ((viewModel.balanceLiveData.value ?: 0.0f) * percent).formatNum(3)
         binding.inputView.setText(text)
         binding.inputView.setSelection(text.length)
     }
@@ -129,6 +131,6 @@ class StakingAmountPresenter(
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         activity.supportActionBar?.setDisplayShowHomeEnabled(true)
-        activity.title = R.string.stake_amount.res2String()
+        activity.title = if (isUnstake) R.string.unstake_amount.res2String() else R.string.stake_amount.res2String()
     }
 }

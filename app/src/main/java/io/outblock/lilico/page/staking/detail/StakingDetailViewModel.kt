@@ -14,6 +14,7 @@ import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.staking.detail.model.StakingDetailModel
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 
 class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
@@ -36,24 +37,26 @@ class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW) ?: return@ioScope
             BalanceManager.getBalanceByCoin(coin)
             CoinRateManager.fetchCoinRate(coin)
-
         }
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
         if (coin.symbol == FlowCoin.SYMBOL_FLOW) {
+            logd("xxx","balance:${balance.balance}")
             updateLiveData(data().apply { this.balance = balance.balance })
         }
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
+        logd("xxx","price:${price}")
         updateLiveData(data().apply { this.coinRate = price })
     }
 
-    private fun data() = dataLiveData.value ?: StakingDetailModel()
+    private fun data() = (dataLiveData.value ?: StakingDetailModel()).copy()
 
     private fun updateLiveData(data: StakingDetailModel) {
         uiScope {
+            logd("xxx","updateLiveData:$data")
             dataLiveData.value = data
         }
     }

@@ -14,4 +14,5 @@ class StakingAmountConfirmModel(
     val rewardCoin: Float,
     val rewardUsd: Float,
     val provider: StakingProvider,
+    val isUnstake: Boolean,
 ) : Parcelable

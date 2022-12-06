@@ -68,6 +68,11 @@ class SendButton : TouchScaleCardView {
         return true
     }
 
+    fun updateDefaultText(text: String) {
+        defaultText = text
+        binding.holdToSend.text = defaultText
+    }
+
     fun setOnProcessing(onProcessing: () -> Unit) {
         this.onProcessing = onProcessing
     }
