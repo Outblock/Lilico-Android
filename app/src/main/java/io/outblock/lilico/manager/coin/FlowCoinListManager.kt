@@ -38,7 +38,7 @@ object FlowCoinListManager {
 }
 
 @Parcelize
-class FlowCoin(
+data class FlowCoin(
     @SerializedName("name")
     val name: String,
     @SerializedName("address")
@@ -58,7 +58,7 @@ class FlowCoin(
 ) : Parcelable {
     fun address() = if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty()
 
-    fun isFlowCoin() = symbol.lowercase() == "flow"
+    fun isFlowCoin() = symbol.lowercase() == SYMBOL_FLOW
 
     companion object {
         const val SYMBOL_FLOW = "flow"

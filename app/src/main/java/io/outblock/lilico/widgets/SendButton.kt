@@ -32,6 +32,7 @@ class SendButton : TouchScaleCardView {
     private var onProcessing: (() -> Unit)? = null
 
     private var defaultText: String
+    private var processingText: String
 
     private var state = ButtonState.DEFAULT
 
@@ -40,6 +41,7 @@ class SendButton : TouchScaleCardView {
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
         val array = context.obtainStyledAttributes(attrs, R.styleable.SendButton, defStyleAttr, 0)
         defaultText = array.getString(R.styleable.SendButton_defaultText).orEmpty()
+        processingText = array.getString(R.styleable.SendButton_processingText).orEmpty()
         array.recycle()
         init()
     }
@@ -94,11 +96,13 @@ class SendButton : TouchScaleCardView {
                     progressBar.changeIndeterminate(false)
                     removeCallbacks(progressTask)
                     indicatorProgress = 0f
+                    holdToSend.text = defaultText
                     progressBar.setProgress(0, true)
                 }
                 ButtonState.VERIFICATION -> verification()
                 ButtonState.LOADING -> {
                     setScaleEnable(false)
+                    holdToSend.text = processingText
                     progressBar.changeIndeterminate(true)
                 }
             }

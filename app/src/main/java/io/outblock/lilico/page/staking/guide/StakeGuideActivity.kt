@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.page.staking.providers.StakingProviderActivity
 
 class StakeGuideActivity : BaseActivity() {
@@ -15,7 +16,11 @@ class StakeGuideActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stake_guide)
         findViewById<View>(R.id.stake_button).setOnClickListener {
-            StakingProviderActivity.launch(this)
+            if (StakingManager.hasBeenSetup()) {
+                StakingProviderActivity.launch(this)
+            } else {
+                StakingSetupDialog.show(this)
+            }
         }
         setupToolbar()
     }

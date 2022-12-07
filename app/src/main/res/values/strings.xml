@@ -357,4 +357,15 @@
     <string name="unstake">Unstake</string>
     <string name="unstake_amount">Unstake Amount</string>
     <string name="staked_flow_num">%1$s Staked Flow</string>
+    <string name="unstaking_amount">Unstaking Amount</string>
+    <string name="committed_amount">Committed Amount</string>
+    <string name="unstaked_amount">Unstaked Amount</string>
+    <string name="requested_to_unstake_amount">Requested To Unstake Amount</string>
+    <string name="apr">APR</string>
+    <string name="setup_stake">Setup Stake</string>
+    <string name="staking_collection_upgrade">Staking Collection Upgrade</string>
+    <string name="staking_setup_desc">If you have existing nodes and delegations, they are safe, and will be migrated to your new Staking Collection during the transaction.</string>
+    <string name="hold_to_setup">Hold to setup</string>
+    <string name="setting_up">Setting up</string>
+    <string name="setup_fail">Setup fail</string>
 </resources>

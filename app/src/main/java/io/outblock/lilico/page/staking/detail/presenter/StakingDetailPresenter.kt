@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.staking.detail.presenter
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
@@ -31,6 +32,7 @@ class StakingDetailPresenter(
             root.addNavigationBarBottomPadding()
             stakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
             unstakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider, isUnstake = true) }
+            header.claimButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
         }
         setupToolbar()
     }
@@ -47,6 +49,19 @@ class StakingDetailPresenter(
         setupHeader(model)
         setupEpoch(model)
         setupRewards(model)
+        setupItems(model)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupItems(model: StakingDetailModel) {
+        with(binding.itemsWrapper) {
+            val stakingNode = model.stakingNode
+            unstakedAmountView.text = activity.getString(R.string.flow_num, stakingNode.tokensUnstaked.formatNum(3))
+            unstakingAmountView.text = activity.getString(R.string.flow_num, stakingNode.tokensUnstaking.formatNum(3))
+            committedAmountView.text = activity.getString(R.string.flow_num, stakingNode.tokensCommitted.formatNum(3))
+            requestedToUnstakeAmountView.text = activity.getString(R.string.flow_num, stakingNode.tokensRequestedToUnstake.formatNum(3))
+            aprView.text = (provider.rate() * 100).formatNum(2) + "%"
+        }
     }
 
     private fun setupHeader(model: StakingDetailModel) {

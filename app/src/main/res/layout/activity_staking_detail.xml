@@ -29,7 +29,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="18dp"
             android:paddingTop="28dp"
-            android:paddingBottom="100dp">
+            android:paddingBottom="150dp">
 
             <include
                 android:id="@+id/header"
@@ -42,6 +42,10 @@
             <include
                 android:id="@+id/reward_wrapper"
                 layout="@layout/layout_staking_detail_rewards"/>
+
+            <include
+                android:id="@+id/items_wrapper"
+                layout="@layout/layout_staking_detail_items"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 

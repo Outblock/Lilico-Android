@@ -25,6 +25,7 @@ object StakingManager {
     private var stakingInfo = StakingInfo()
     private var apy = DEFAULT_APY
     private var apyYear = DEFAULT_APY
+    private var isSetup = false
 
     private val providers = StakingProviders().apply { refresh() }
 
@@ -36,6 +37,7 @@ object StakingManager {
             stakingInfo = cache?.info ?: StakingInfo()
             apy = cache?.apy ?: apy
             apyYear = cache?.apyYear ?: apyYear
+            isSetup = cache?.isSetup ?: isSetup
         }
     }
 
@@ -46,6 +48,8 @@ object StakingManager {
     fun providers() = providers.get()
 
     fun delegatorIds() = delegatorIds.toMap()
+
+    fun hasBeenSetup() = isSetup
 
     fun apy() = apy
 
@@ -63,13 +67,21 @@ object StakingManager {
     fun refresh() {
         ioScope {
             updateApy()
-            stakingInfo = queryStakingInfo() ?: stakingInfo
-            if (stakingInfo.nodes.isEmpty()) {
-                prepare()
-            }
+            isSetup = hasBeenSetup()
             stakingInfo = queryStakingInfo() ?: stakingInfo
             refreshDelegatorInfo()
             cache()
+        }
+    }
+
+    suspend fun setup() = suspendCoroutine { continuation ->
+        runBlocking {
+            runCatching {
+                setupStaking {
+                    continuation.resume(true)
+                    refresh()
+                }
+            }.getOrElse { continuation.resume(false) }
         }
     }
 
@@ -94,19 +106,10 @@ object StakingManager {
         }
     }
 
-    private suspend fun prepare() = suspendCoroutine { continuation ->
-        runCatching {
-            runBlocking {
-                setupStaking {
-                    continuation.resume(true)
-                }
-            }
-        }.getOrElse { continuation.resume(false) }
-    }
 
     private fun cache() {
         ioScope {
-            stakingCache().cache(StakingCache(info = stakingInfo, apy = apy))
+            stakingCache().cache(StakingCache(info = stakingInfo, apy = apy, isSetup = isSetup))
         }
     }
 }
@@ -155,6 +158,7 @@ private suspend fun setupStaking(callback: () -> Unit) {
     logd(TAG, "setupStaking start")
     runCatching {
         if (hasBeenSetup()) {
+            callback.invoke()
             return
         }
         val txid = CADENCE_SETUP_STAKING.transactionByMainWallet {} ?: return
@@ -220,6 +224,8 @@ data class StakingCache(
     val apy: Float = DEFAULT_APY,
     @SerializedName("apyYear")
     val apyYear: Float = DEFAULT_APY,
+    @SerializedName("isSetup")
+    val isSetup: Boolean = false,
 )
 
 fun StakingNode.stakingCount() = tokensCommitted + tokensStaked

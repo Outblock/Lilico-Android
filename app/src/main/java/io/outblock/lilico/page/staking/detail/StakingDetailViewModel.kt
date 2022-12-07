@@ -35,28 +35,32 @@ class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             })
 
             val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW) ?: return@ioScope
+
+            logd("xxx", "coin:$coin")
             BalanceManager.getBalanceByCoin(coin)
             CoinRateManager.fetchCoinRate(coin)
         }
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
-        if (coin.symbol == FlowCoin.SYMBOL_FLOW) {
-            logd("xxx","balance:${balance.balance}")
+        if (coin.isFlowCoin()) {
+            logd("xxx", "balance:${balance.balance}")
             updateLiveData(data().apply { this.balance = balance.balance })
         }
     }
 
     override fun onCoinRateUpdate(coin: FlowCoin, price: Float) {
-        logd("xxx","price:${price}")
-        updateLiveData(data().apply { this.coinRate = price })
+        logd("xxx", "price:${price}")
+        if (coin.isFlowCoin()) {
+            updateLiveData(data().apply { this.coinRate = price })
+        }
     }
 
     private fun data() = (dataLiveData.value ?: StakingDetailModel()).copy()
 
     private fun updateLiveData(data: StakingDetailModel) {
         uiScope {
-            logd("xxx","updateLiveData:$data")
+            logd("xxx", "updateLiveData:$data")
             dataLiveData.value = data
         }
     }
