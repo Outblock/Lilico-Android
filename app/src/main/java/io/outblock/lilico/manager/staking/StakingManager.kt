@@ -67,7 +67,7 @@ object StakingManager {
     fun refresh() {
         ioScope {
             updateApy()
-            isSetup = hasBeenSetup()
+            isSetup = checkHasBeenSetup()
             stakingInfo = queryStakingInfo() ?: stakingInfo
             refreshDelegatorInfo()
             cache()
@@ -157,7 +157,7 @@ suspend fun createStakingDelegatorId(provider: StakingProvider) = suspendCorouti
 private suspend fun setupStaking(callback: () -> Unit) {
     logd(TAG, "setupStaking start")
     runCatching {
-        if (hasBeenSetup()) {
+        if (checkHasBeenSetup()) {
             callback.invoke()
             return
         }
@@ -185,7 +185,7 @@ private suspend fun getDelegatorInfo() = suspendCoroutine { continuation ->
 }
 
 @WorkerThread
-private fun hasBeenSetup(): Boolean {
+private fun checkHasBeenSetup(): Boolean {
     return runCatching {
         val address = walletCache().read()?.primaryWalletAddress()!!
         val response = CADENCE_CHECK_IS_STAKING_SETUP.executeCadence { arg { address(address) } }
