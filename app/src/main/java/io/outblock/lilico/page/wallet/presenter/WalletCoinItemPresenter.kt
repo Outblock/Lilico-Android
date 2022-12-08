@@ -45,6 +45,7 @@ class WalletCoinItemPresenter(
         }
         setStakingVisible(true)
         binding.stakingAmount.text = view.context.getString(R.string.flow_num, model.stakeAmount.formatNum(3))
+        binding.stakingAmountPrice.text = (model.stakeAmount * model.coinRate).formatPrice(includeSymbol = true)
     }
 
     private fun setStakingVisible(isVisible: Boolean) {
@@ -53,6 +54,7 @@ class WalletCoinItemPresenter(
             stakingAmount.setVisible(isVisible)
             stakingName.setVisible(isVisible)
             stakingPoint.setVisible(isVisible)
+            stakingAmountPrice.setVisible(isVisible)
         }
     }
 }

@@ -12,6 +12,7 @@ import io.outblock.lilico.manager.config.NftCollectionConfig
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
 import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
 import io.outblock.lilico.network.model.Nft
+import io.outblock.lilico.utils.logd
 import java.util.*
 
 
@@ -135,7 +136,11 @@ fun FlowArgument.toAsArgument(): AsArgument {
 }
 
 fun JsonCadenceBuilder.ufix64Safe(number: Number): UFix64NumberField {
-    return UFix64NumberField("%.8f".format(Locale.US, number))
+    logd("xxx", "number:$number")
+    val value = if (number is Long || number is Int) {
+        number.toFloat()
+    } else number
+    return UFix64NumberField("%.8f".format(Locale.US, value))
 }
 
 private fun Field<*>.toObj(): Any {
