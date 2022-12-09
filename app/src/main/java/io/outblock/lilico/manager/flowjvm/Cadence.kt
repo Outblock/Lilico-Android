@@ -645,7 +645,7 @@ const val CADENCE_CHECK_STAKING_ENABLED = """
 const val CADENCE_GET_DELEGATOR_INFO = """
     import FlowStakingCollection from 0xStakingCollection
     import FlowIDTableStaking from 0xFlowIDTableStaking
-    import LockedTokens from 0xStakingCollection
+    import LockedTokens from 0xLockedTokens
     
     pub struct DelegateInfo {
         pub let delegatorID: UInt32
