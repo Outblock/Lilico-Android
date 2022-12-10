@@ -537,7 +537,7 @@ const val CADENCE_UNSTAKE_FLOW = """
 """
 
 const val CADENCE_QUERY_STAKE_INFO = """
-    import LockedTokens from 0xStakingCollection
+    import LockedTokens from 0xLockedTokens
     import FlowIDTableStaking from 0xFlowIDTableStaking
     import FlowStakingCollection from 0xStakingCollection
     
