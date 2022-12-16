@@ -105,6 +105,7 @@ class TokenDetailPresenter(
             monthlyFlowCount.text =
                 activity.getString(R.string.flow_num, monthRewards.formatNum(3))
             root.setOnClickListener { openStakingPage(activity) }
+            root.setVisible(true)
         }
     }
 }
