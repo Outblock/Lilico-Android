@@ -105,7 +105,7 @@ class NftDetailPresenter(
     }
 
     override fun bind(model: NftDetailModel) {
-        model.nft?.let { bindData(it) }
+        model.nft?.let { safeRun { bindData(it) } }
         if (!nft?.video().isNullOrBlank()) {
             model.onPause?.let { safeRun { videoPlayer.pause() } }
             model.onRestart?.let { safeRun { videoPlayer.play() } }

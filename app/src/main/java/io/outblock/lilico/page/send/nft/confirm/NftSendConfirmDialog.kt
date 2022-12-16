@@ -13,6 +13,7 @@ import io.outblock.lilico.firebase.analytics.reportEvent
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.send.nft.confirm.model.NftSendConfirmDialogModel
 import io.outblock.lilico.page.send.nft.confirm.presenter.NftSendConfirmPresenter
+import io.outblock.lilico.utils.safeRun
 
 class NftSendConfirmDialog : BottomSheetDialogFragment() {
 
@@ -50,8 +51,10 @@ class NftSendConfirmDialog : BottomSheetDialogFragment() {
 
         fun newInstance(nft: NftSendModel): NftSendConfirmDialog {
             return NftSendConfirmDialog().apply {
-                arguments = Bundle().apply {
-                    putParcelable(EXTRA_NFT, nft)
+                safeRun {
+                    arguments = Bundle().apply {
+                        putParcelable(EXTRA_NFT, nft)
+                    }
                 }
             }
         }
