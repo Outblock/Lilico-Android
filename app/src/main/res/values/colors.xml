@@ -197,4 +197,6 @@
     <color name="stake">#60C293</color>
     <color name="stake_12">#1c60C293</color>
     <color name="deep_bg_0">#00ffffff</color>
+
+    <color name="sandbox">#F3EA5F</color>
 </resources>

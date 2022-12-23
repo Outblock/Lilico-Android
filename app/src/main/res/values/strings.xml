@@ -368,4 +368,5 @@
     <string name="hold_to_setup">Hold to setup</string>
     <string name="setting_up">Setting up</string>
     <string name="setup_fail">Setup fail</string>
+    <string name="sandbox">Sandbox</string>
 </resources>
