@@ -45,6 +45,8 @@ private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMA
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
 private val KEY_CURRENCY_FLAG = stringPreferencesKey("KEY_CURRENCY_FLAG")
 
+private val KEY_SANDBOX_ENABLED = booleanPreferencesKey("KEY_SANDBOX_ENABLED")
+
 private val scope = CoroutineScope(Dispatchers.IO)
 
 private val sharedPreferencesTraditional by lazy { Env.getApp().getSharedPreferences(PREFERENCE_TRADITIONAL, Context.MODE_PRIVATE) }
@@ -185,6 +187,14 @@ suspend fun updateCurrencyFlag(flag: String, callback: (() -> Unit)? = null) {
         it[KEY_CURRENCY_FLAG] = flag
         callback?.invoke()
     }
+}
+
+suspend fun isSandboxEnabled(): Boolean {
+    return dataStore.data.map { it[KEY_SANDBOX_ENABLED] ?: false }.first()
+}
+
+suspend fun setSandboxEnabled() {
+    dataStore.edit { it[KEY_SANDBOX_ENABLED] = true }
 }
 
 private fun edit(unit: suspend () -> Unit) {

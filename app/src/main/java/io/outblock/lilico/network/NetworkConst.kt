@@ -13,9 +13,12 @@ import java.util.concurrent.TimeUnit
 
 val API_HOST = if (isDev()) "https://dev.lilico.app" else "https://api.lilico.app"
 
-fun retrofit(disableConverter: Boolean = false): Retrofit {
+fun retrofit(
+    disableConverter: Boolean = false,
+    network: String? = null,
+): Retrofit {
     val client = OkHttpClient.Builder().apply {
-        addInterceptor(HeaderInterceptor())
+        addInterceptor(HeaderInterceptor(network = network))
 
         callTimeout(20, TimeUnit.SECONDS)
         connectTimeout(20, TimeUnit.SECONDS)

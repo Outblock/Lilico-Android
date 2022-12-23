@@ -369,4 +369,5 @@
     <string name="setting_up">Setting up</string>
     <string name="setup_fail">Setup fail</string>
     <string name="restake">ReStake</string>
+    <string name="sandbox">Sandbox</string>
 </resources>
