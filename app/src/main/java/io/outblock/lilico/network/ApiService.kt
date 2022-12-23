@@ -169,8 +169,4 @@ interface ApiService {
     suspend fun currency(
         @Query("to") to: String,
     ): CurrencyResponse
-
-    @POST("/v1/user/address/sandboxnet")
-    suspend fun enableSandboxNet(
-    ): SandboxEnableResponse
 }

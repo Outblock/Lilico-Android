@@ -4,7 +4,7 @@ import android.os.Build
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.R
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
-import io.outblock.lilico.manager.app.chainNetWorkString
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.logd
@@ -22,8 +22,7 @@ private fun deviceName(): String {
 }
 
 class HeaderInterceptor(
-    private val ignoreAuthorization: Boolean = false,
-    private val network: String? = null,
+    private val ignoreAuthorization: Boolean = false
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -37,8 +36,12 @@ class HeaderInterceptor(
         val request = chain.request().newBuilder()
             .addHeader("Authorization", "Bearer $jwt")
             .addHeader("User-Agent", userAgent)
-            .addHeader("Network", network ?: chainNetWorkString())
+            .addHeader("Network", getNetWork())
             .build()
         return chain.proceed(request)
+    }
+
+    private fun getNetWork(): String {
+        return if (isTestnet()) "testnet" else "mainnet"
     }
 }

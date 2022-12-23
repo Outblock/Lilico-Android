@@ -24,21 +24,11 @@ fun chainNetwork() = network
 
 fun isMainnet() = network == NETWORK_MAINNET
 fun isTestnet() = network == NETWORK_TESTNET
-fun isSandboxNet() = network == NETWORK_SANDBOX
-
 
 fun chainNetWorkString(): String {
-    return when {
-        isTestnet() -> "testnet"
-        isSandboxNet() -> "sandbox"
-        else -> "mainnet"
-    }
+    return if (isTestnet()) "testnet" else "mainnet"
 }
 
 fun doNetworkChangeTask() {
     NftCollectionConfig.sync()
 }
-
-const val NETWORK_NAME_MAINNET = "mainnet"
-const val NETWORK_NAME_TESTNET = "testnet"
-const val NETWORK_NAME_SANDBOX = "sandboxnet"
