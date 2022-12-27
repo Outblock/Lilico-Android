@@ -144,7 +144,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnT
             }
 
             val service = retrofit().create(ApiService::class.java)
-            val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return@viewModelIOScope
+            val walletAddress = walletCache().read()?.walletAddress() ?: return@viewModelIOScope
             val resp = service.getTransferRecordByToken(walletAddress, coin.contractId(), limit = 3)
             val data = resp.data?.transactions.orEmpty()
             transferListLiveData.postValue(data)

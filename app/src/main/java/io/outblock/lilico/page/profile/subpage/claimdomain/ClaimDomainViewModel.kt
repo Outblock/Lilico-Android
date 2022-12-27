@@ -51,7 +51,7 @@ class ClaimDomainViewModel : ViewModel() {
 
     private fun buildPayerSignable(prepare: ClaimDomainPrepare): PayerSignable {
         updateSecurityProvider()
-        val walletAddress = walletCache().read()?.primaryWalletAddress().orEmpty().toAddress()
+        val walletAddress = walletCache().read()?.walletAddress().orEmpty().toAddress()
         val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress))
             ?: throw RuntimeException("get wallet account error")
         return flowTransaction {

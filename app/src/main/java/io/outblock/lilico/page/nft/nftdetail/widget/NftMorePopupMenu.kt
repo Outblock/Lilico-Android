@@ -50,7 +50,7 @@ class NftMorePopupMenu(
 
     private fun openNftWebsite() {
         ioScope {
-            val address = walletCache().read()?.primaryWalletAddress().orEmpty()
+            val address = walletCache().read()?.walletAddress().orEmpty()
             uiScope {
                 openBrowser(
                     findActivity(view)!!,

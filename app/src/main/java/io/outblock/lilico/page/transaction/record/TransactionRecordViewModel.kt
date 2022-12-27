@@ -62,7 +62,7 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
         val data = mutableListOf<Any>().apply { addAll(transactions) }
         val count = flowScanAccountTransferCountQuery() + processing.size
         if (count > LIMIT) {
-            data.add(TransactionViewMoreModel(walletCache().read()?.primaryWalletAddress()!!))
+            data.add(TransactionViewMoreModel(walletCache().read()?.walletAddress()!!))
         }
 
         transactionCountLiveData.postValue(count)
@@ -79,7 +79,7 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
         transferCountLiveData.postValue(getAccountTransferCount())
 
         val service = retrofit().create(ApiService::class.java)
-        val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return
+        val walletAddress = walletCache().read()?.walletAddress() ?: return
         val resp = if (isQueryByToken()) {
             service.getTransferRecordByToken(walletAddress, contractId!!, limit = LIMIT)
         } else {
@@ -88,7 +88,7 @@ class TransactionRecordViewModel : ViewModel(), OnTransactionStateChange {
         val transfers = resp.data?.transactions.orEmpty()
         val data = mutableListOf<Any>().apply { addAll(transfers) }
         if ((resp.data?.total ?: 0) > LIMIT) {
-            data.add(TransactionViewMoreModel(walletCache().read()?.primaryWalletAddress()!!))
+            data.add(TransactionViewMoreModel(walletCache().read()?.walletAddress()!!))
         }
 
         transferListLiveData.postValue(data)

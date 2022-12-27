@@ -17,7 +17,7 @@ suspend fun flowScanTokenTransferQuery(coin: FlowCoin): List<TransactionRecord>?
 }
 
 suspend fun flowScanTokenTransferQuery(contractId: String): List<TransactionRecord>? {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return null
+    val address = walletCache().read()?.walletAddress() ?: return null
     val response = request(flowScanTokenTransferScript(address, contractId))
     val data = Gson().fromJson(response, FlowScanTokenTransferModel::class.java)
 
@@ -28,7 +28,7 @@ suspend fun flowScanTokenTransferQuery(contractId: String): List<TransactionReco
 }
 
 suspend fun flowScanAccountTransferQuery(): List<TransactionRecord>? {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return null
+    val address = walletCache().read()?.walletAddress() ?: return null
     val response = request(flowScanAccountTransferScript(address))
     val data = Gson().fromJson(response, FlowScanAccountTransferModel::class.java)
 
@@ -39,7 +39,7 @@ suspend fun flowScanAccountTransferQuery(): List<TransactionRecord>? {
 }
 
 suspend fun flowScanAccountTransferCountQuery(): Int {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return 0
+    val address = walletCache().read()?.walletAddress() ?: return 0
     val response = request(flowScanAccountTransferCountScript(address))
     val data = Gson().fromJson(response, FlowScanAccountTransferCountModel::class.java)
     return data.data?.data?.account?.transactionCount ?: 0

@@ -40,7 +40,7 @@ suspend fun WCRequest.dispatch() {
 }
 
 private fun WCRequest.respondAuthn() {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return
+    val address = walletCache().read()?.walletAddress() ?: return
     val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"), isFromFclSdk())
@@ -72,7 +72,7 @@ private fun WCRequest.respondAuthz() {
 
         FclAuthzDialog.observe { isApprove ->
             ioScope {
-                val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
+                val address = walletCache().read()?.walletAddress() ?: return@ioScope
                 val signature = hdWallet().signData(message.hexToBytes())
                 val keyId = FlowAddress(address).lastBlockAccountKeyId()
 
@@ -86,7 +86,7 @@ private fun WCRequest.respondAuthz() {
 
 
 private fun WCRequest.respondPreAuthz() {
-    val walletAddress = walletCache().read()?.primaryWalletAddress() ?: return
+    val walletAddress = walletCache().read()?.walletAddress() ?: return
     val payerAddress = if (AppConfig.isFreeGas()) AppConfig.payer().address else walletAddress
     val response = PollingResponse(
         status = ResponseStatus.APPROVED,
@@ -117,7 +117,7 @@ private fun WCRequest.respondPreAuthz() {
 
 private fun WCRequest.respondUserSign() {
     val activity = BaseActivity.getCurrentActivity() ?: return
-    val address = walletCache().read()?.primaryWalletAddress() ?: return
+    val address = walletCache().read()?.walletAddress() ?: return
     val param = gson().fromJson<List<SignableMessage>>(params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
     val message = param?.message ?: return
     uiScope {
@@ -172,7 +172,7 @@ private fun WCRequest.respondSignProposer() {
     logd(TAG, "respondSignProposer param:${params}")
     val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
-    val address = walletCache().read()?.primaryWalletAddress() ?: return
+    val address = walletCache().read()?.walletAddress() ?: return
 
     FclAuthzDialog.show(
         activity.supportFragmentManager,

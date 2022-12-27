@@ -20,10 +20,10 @@ class ReceiveViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            val wallet = walletCache().read()?.primaryWallet() ?: return@viewModelIOScope
-            walletLiveData.postValue(ReceiveData(walletName = wallet.name, address = wallet.blockchain.first().address))
+            val wallet = walletCache().read()?.wallet() ?: return@viewModelIOScope
+            walletLiveData.postValue(ReceiveData(walletName = wallet.name, address = wallet.address().orEmpty()))
 
-            val bitmap = wallet.blockchain.first().address.toAddress().toQRBitmap(width = size, height = size) ?: return@viewModelIOScope
+            val bitmap = wallet.address().orEmpty().toAddress().toQRBitmap(width = size, height = size) ?: return@viewModelIOScope
             qrcodeLiveData.postValue(bitmap)
         }
     }

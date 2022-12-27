@@ -115,7 +115,7 @@ object StakingManager {
 }
 
 private fun queryStakingInfo(): StakingInfo? {
-    val address = walletCache().read()?.primaryWalletAddress() ?: return null
+    val address = walletCache().read()?.walletAddress() ?: return null
 
     return runCatching {
         val response = CADENCE_QUERY_STAKE_INFO.executeCadence {
@@ -175,7 +175,7 @@ private suspend fun setupStaking(callback: () -> Unit) {
 private suspend fun getDelegatorInfo() = suspendCoroutine { continuation ->
     logd(TAG, "getDelegatorInfo start")
     runCatching {
-        val address = walletCache().read()?.primaryWalletAddress()!!
+        val address = walletCache().read()?.walletAddress()!!
         val response = CADENCE_GET_DELEGATOR_INFO.executeCadence {
             arg { address(address) }
         }!!
@@ -187,7 +187,7 @@ private suspend fun getDelegatorInfo() = suspendCoroutine { continuation ->
 @WorkerThread
 private fun checkHasBeenSetup(): Boolean {
     return runCatching {
-        val address = walletCache().read()?.primaryWalletAddress()!!
+        val address = walletCache().read()?.walletAddress()!!
         val response = CADENCE_CHECK_IS_STAKING_SETUP.executeCadence { arg { address(address) } }
         response?.parseBool(false) ?: false
     }.getOrElse { false }

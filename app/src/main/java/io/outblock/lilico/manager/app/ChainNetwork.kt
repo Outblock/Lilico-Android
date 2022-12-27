@@ -29,9 +29,9 @@ fun isSandboxNet() = network == NETWORK_SANDBOX
 
 fun chainNetWorkString(): String {
     return when {
-        isTestnet() -> "testnet"
-        isSandboxNet() -> "sandbox"
-        else -> "mainnet"
+        isTestnet() -> NETWORK_NAME_TESTNET
+        isSandboxNet() -> NETWORK_NAME_SANDBOX
+        else -> NETWORK_NAME_MAINNET
     }
 }
 

@@ -37,7 +37,7 @@ object NftFavoriteManager {
             dispatchListener(favorites.apply { add(0, nft) })
             cache().cacheSync(FavoriteCache(favorites))
 
-            val address = walletCache().read()?.primaryWalletAddress() ?: return@ioScope
+            val address = walletCache().read()?.walletAddress() ?: return@ioScope
             val resp = service.addNftFavorite(AddNftFavoriteRequest(address, nft.contractName().orEmpty(), nft.tokenId()))
             if (resp.status == 200) {
                 fetchFromServer()

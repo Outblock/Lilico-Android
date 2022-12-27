@@ -21,6 +21,7 @@ internal object FlowApi {
 
     fun refreshConfig() {
         logd("FlowApi", "refreshConfig start")
+        // TODO sandbox net support
         logd("FlowApi", "chainId:${if (isTestnet()) FlowChainId.TESTNET else FlowChainId.MAINNET}")
         (api as? FlowAccessApiImpl)?.close()
         Flow.configureDefaults(

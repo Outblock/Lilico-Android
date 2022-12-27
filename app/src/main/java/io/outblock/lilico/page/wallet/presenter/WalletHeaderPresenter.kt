@@ -45,7 +45,7 @@ class WalletHeaderPresenter(
             walletName.text = "Wallet"
             uiScope {
                 val isHideBalance = isHideWalletBalance()
-                address.diffSetText(if (isHideBalance) "******************" else model.walletList.primaryWalletAddress()?.toAddress())
+                address.diffSetText(if (isHideBalance) "******************" else model.walletList.walletAddress()?.toAddress())
                 balanceNum.diffSetText(if (isHideBalance) "****" else model.balance.formatPrice(includeSymbol = true))
                 hideButton.setImageResource(if (isHideBalance) R.drawable.ic_eye_off else R.drawable.ic_eye_on)
             }

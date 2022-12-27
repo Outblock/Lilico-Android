@@ -29,7 +29,7 @@ object WalletManager {
                     val resp = apiService.getWalletList()
 
                     // request success & wallet list is empty (wallet not create finish)
-                    if (resp.status == 200 && !resp.data?.primaryWalletAddress().isNullOrBlank()) {
+                    if (resp.status == 200 && !resp.data?.walletAddress().isNullOrBlank()) {
                         walletCache().cache(resp.data!!)
                         delay(300)
                         dispatchListeners(resp.data)

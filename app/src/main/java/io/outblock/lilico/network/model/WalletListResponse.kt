@@ -2,6 +2,7 @@ package io.outblock.lilico.network.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.wallet.toAddress
 import kotlinx.parcelize.Parcelize
 
@@ -26,11 +27,11 @@ data class WalletListData(
     @SerializedName("wallets")
     val wallets: List<WalletData>?
 ) {
-    fun primaryWallet(): WalletData? {
-        return wallets?.firstOrNull { it.walletId == primaryWalletId }
+    fun wallet(): WalletData? {
+        return wallets?.firstOrNull { it.network() == chainNetWorkString() }
     }
 
-    fun primaryWalletAddress(): String? = primaryWallet()?.blockchain?.firstOrNull()?.address?.toAddress()
+    fun walletAddress(): String? = wallet()?.address()?.toAddress()
 }
 
 data class WalletData(
@@ -44,7 +45,11 @@ data class WalletData(
     val name: String,
     @SerializedName("id")
     val walletId: Int
-)
+) {
+    fun address() = blockchain.firstOrNull()?.address
+
+    fun network() = blockchain.firstOrNull()?.chainId
+}
 
 @Parcelize
 data class BlockchainData(
