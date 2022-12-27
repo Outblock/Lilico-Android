@@ -2,6 +2,7 @@ package io.outblock.lilico.page.staking.detail.presenter
 
 import android.annotation.SuppressLint
 import android.text.format.DateUtils
+import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
@@ -10,6 +11,7 @@ import io.outblock.lilico.databinding.ActivityStakingDetailBinding
 import io.outblock.lilico.manager.staking.*
 import io.outblock.lilico.page.staking.amount.StakingAmountActivity
 import io.outblock.lilico.page.staking.detail.StakingDetailActivity
+import io.outblock.lilico.page.staking.detail.StakingDetailViewModel
 import io.outblock.lilico.page.staking.detail.model.StakingDetailModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
@@ -26,13 +28,16 @@ class StakingDetailPresenter(
     private val activity: StakingDetailActivity,
 ) : BasePresenter<StakingDetailModel> {
 
+    private val viewModel by lazy { ViewModelProvider(activity)[StakingDetailViewModel::class.java] }
+
     init {
         with(binding) {
             root.addStatusBarTopPadding()
             root.addNavigationBarBottomPadding()
             stakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
             unstakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider, isUnstake = true) }
-            header.claimButton.setOnClickListener { StakingAmountActivity.launch(activity, provider) }
+            header.claimButton.setOnClickListener { viewModel.claimRewards(provider) }
+            header.restakeButton.setOnClickListener { viewModel.restakeRewards(provider) }
         }
         setupToolbar()
     }
