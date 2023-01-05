@@ -9,6 +9,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityTokenDetailBinding
+import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
@@ -66,8 +67,13 @@ class TokenDetailPresenter(
             setupStakingRewards()
         }
 
-        if (isTestnet()) {
-            binding.getMoreWrapper.setOnClickListener { openBrowser(activity, "https://testnet-faucet.onflow.org/fund-account") }
+        if (!isMainnet()) {
+            binding.getMoreWrapper.setOnClickListener {
+                openBrowser(
+                    activity,
+                    if (isTestnet()) "https://testnet-faucet.onflow.org/fund-account" else "https://sandboxnet-faucet.flow.com/"
+                )
+            }
         }
     }
 

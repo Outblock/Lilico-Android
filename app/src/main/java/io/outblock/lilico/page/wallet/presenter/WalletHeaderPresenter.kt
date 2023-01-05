@@ -90,9 +90,11 @@ class WalletHeaderPresenter(
     private fun bindPendingRequest() {
         ioScope {
             val requests = getWalletConnectPendingRequests()
-            binding.pendingRequestWrapper.setVisible(requests.isNotEmpty())
-            binding.pendingCountView.text = "${requests.size}"
-            binding.pendingRequestWrapper.setOnClickListener { WalletConnectSessionActivity.launch(view.context) }
+            uiScope {
+                binding.pendingRequestWrapper.setVisible(requests.isNotEmpty())
+                binding.pendingCountView.text = "${requests.size}"
+                binding.pendingRequestWrapper.setOnClickListener { WalletConnectSessionActivity.launch(view.context) }
+            }
         }
     }
 

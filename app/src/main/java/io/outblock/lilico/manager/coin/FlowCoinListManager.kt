@@ -6,6 +6,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import io.outblock.lilico.manager.app.isSandboxNet
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
@@ -56,7 +57,11 @@ data class FlowCoin(
     @SerializedName("website")
     val website: String?,
 ) : Parcelable {
-    fun address() = if (isTestnet()) address.testnet.orEmpty() else address.mainnet.orEmpty()
+    fun address() = when {
+        isTestnet() -> address.testnet.orEmpty()
+        isSandboxNet() -> address.sandboxnet.orEmpty()
+        else -> address.mainnet.orEmpty()
+    }
 
     fun isFlowCoin() = symbol.lowercase() == SYMBOL_FLOW
 
@@ -78,6 +83,8 @@ class FlowCoinAddress(
     val mainnet: String?,
     @SerializedName("testnet")
     val testnet: String?,
+    @SerializedName("sandboxnet")
+    val sandboxnet: String?,
 ) : Parcelable
 
 @Parcelize
