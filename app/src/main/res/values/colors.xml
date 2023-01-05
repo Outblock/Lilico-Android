@@ -199,4 +199,5 @@
     <color name="deep_bg_0">#00ffffff</color>
 
     <color name="sandbox">#F3EA5F</color>
+    <color name="testnet">#00EE8A</color>
 </resources>

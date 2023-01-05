@@ -30,6 +30,28 @@
         app:layout_constraintStart_toEndOf="@id/avatar_view"
         app:layout_constraintTop_toTopOf="@id/avatar_view"/>
 
+    <TextView
+        android:id="@+id/network_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_round_corner"
+        android:fontFamily="@font/inter_semi_bold"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="1dp"
+        android:textColor="@color/text"
+        android:textSize="13sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+        app:layout_constraintStart_toEndOf="@id/title_view"
+        app:layout_constraintTop_toTopOf="@id/avatar_view"
+        tools:backgroundTint="@color/success"
+        tools:text="TESTNET"
+        tools:visibility="visible"/>
+
+
     <androidx.constraintlayout.utils.widget.ImageFilterButton
         android:id="@+id/scan_button"
         android:layout_width="24dp"

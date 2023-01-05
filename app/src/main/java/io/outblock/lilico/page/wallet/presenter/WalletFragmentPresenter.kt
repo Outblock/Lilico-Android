@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.wallet.presenter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
@@ -10,16 +11,17 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.firebase.analytics.reportEvent
+import io.outblock.lilico.manager.app.isMainnet
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.page.main.presenter.openDrawerLayout
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.adapter.WalletFragmentAdapter
-import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
 
@@ -45,6 +47,16 @@ class WalletFragmentPresenter(
         }
 
         binding.avatarView.setOnClickListener { openDrawerLayout(fragment.requireContext()) }
+        with(binding.networkView) {
+            setVisible(!isMainnet())
+            if (!isMainnet()) {
+                val color = if (isTestnet()) R.color.testnet.res2color() else R.color.sandbox.res2color()
+                backgroundTintList =
+                    ColorStateList.valueOf(color).withAlpha(50)
+                setTextColor(color)
+                setText(if (isTestnet()) R.string.testnet else R.string.sandbox)
+            }
+        }
         bindAvatar()
     }
 
@@ -54,11 +66,6 @@ class WalletFragmentPresenter(
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
             bindAvatar()
-            it.forEach {
-                if (it is WalletCoinItemModel) {
-                    logd("xxxxxxx", "${it.coin.symbol}: ${it.currency},${it.balance}x${it.coinRate}")
-                }
-            }
         }
     }
 
