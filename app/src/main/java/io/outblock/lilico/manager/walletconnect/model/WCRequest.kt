@@ -1,9 +1,10 @@
 package io.outblock.lilico.manager.walletconnect.model
 
+import com.walletconnect.android.Core
 import com.walletconnect.sign.client.Sign
 
 class WCRequest(
-    val metaData: Sign.Model.AppMetaData?,
+    val metaData: Core.Model.AppMetaData?,
     val requestId: Long,
     val chainId: String?,
     val method: String,
@@ -11,7 +12,7 @@ class WCRequest(
     val topic: String,
 )
 
-fun Sign.Model.PendingRequest.toWcRequest(metaData: Sign.Model.AppMetaData?): WCRequest {
+fun Sign.Model.PendingRequest.toWcRequest(metaData: Core.Model.AppMetaData?): WCRequest {
     return WCRequest(
         metaData = metaData,
         requestId = requestId,

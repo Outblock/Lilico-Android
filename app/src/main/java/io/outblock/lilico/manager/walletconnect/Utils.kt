@@ -32,7 +32,6 @@ fun Sign.Model.SessionProposal.reject() {
     val reject = Sign.Params.Reject(
         proposerPublicKey = proposerPublicKey,
         reason = rejectionReason,
-        code = 406
     )
 
     SignClient.rejectSession(reject) { error -> loge(error.throwable) }
