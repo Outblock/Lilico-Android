@@ -4,6 +4,7 @@ import android.app.Application
 import com.walletconnect.android.Core
 import com.walletconnect.android.CoreClient
 import com.walletconnect.android.relay.ConnectionType
+import com.walletconnect.android.relay.RelayClient
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.utils.ioScope
@@ -66,7 +67,7 @@ private fun setup(application: Application) {
 
     SignClient.setWalletDelegate(WalletConnectDelegate())
 
-//    SignClient.WebSocket.open { error -> logw(TAG, "open error:$error") }
+    RelayClient.connect { error -> logw(TAG, "connect error:$error") }
 }
 
 fun getWalletConnectPendingRequests(): List<Sign.Model.PendingRequest> {
