@@ -25,6 +25,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,LockedOrientationActivity">
         <activity
+            android:enabled="false"
             android:name=".page.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -36,9 +37,24 @@
         </activity>
 
         <activity-alias
-            android:name=".logo1"
+            android:enabled="true"
+            android:name="io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogoDefault"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:targetActivity=".page.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name="io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogo1"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_a"
+            android:label="@string/app_name"
             android:targetActivity=".page.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

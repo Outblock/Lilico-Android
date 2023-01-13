@@ -8,7 +8,7 @@ import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.utils.logd
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+open class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
