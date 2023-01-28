@@ -85,6 +85,8 @@
 
 -keep public enum io.outblock.lilico.page.profile.subpage.currency.model.Currency.** {*;}
 
+-keep public enum io.outblock.lilico.page.profile.subpage.wallet.StorageInfo.** {*;}
+
 -keep public enum io.outblock.lilico.page.profile.subpage.currency.model.Currency$** {
   **[] $VALUES;
   public *;

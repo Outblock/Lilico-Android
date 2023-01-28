@@ -1,5 +1,6 @@
 package io.outblock.lilico.page.profile.subpage.wallet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
+import io.outblock.lilico.cache.storageInfoCache
 import io.outblock.lilico.databinding.ActivityWalletSettingBinding
 import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
@@ -32,6 +34,7 @@ class WalletSettingActivity : BaseActivity() {
         setupToolbar()
         setup()
         checkMeowDomainClaimed()
+        queryStorageInfo()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -42,6 +45,7 @@ class WalletSettingActivity : BaseActivity() {
         return true
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setup() {
         with(binding) {
             privatePreference.setOnClickListener {
@@ -59,6 +63,19 @@ class WalletSettingActivity : BaseActivity() {
             claimButton.setOnClickListener { ClaimDomainActivity.launch(this@WalletSettingActivity) }
 
             uiScope { claimDomainWrapper.setVisible(!isMeowDomainClaimed()) }
+
+            ioScope {
+                val storageInfo = storageInfoCache().read() ?: return@ioScope
+                group3.setVisible(true)
+                val progress = storageInfo.used.toFloat() / storageInfo.capacity
+                storageInfoUsed.text = (progress * 100).formatNum(3) + "%"
+                storageInfoCount.text = getString(
+                    R.string.storage_info_count,
+                    toHumanReadableSIPrefixes(storageInfo.used),
+                    toHumanReadableSIPrefixes(storageInfo.capacity)
+                )
+                storageInfoProgress.progress = (progress * 1000).toInt()
+            }
         }
     }
 

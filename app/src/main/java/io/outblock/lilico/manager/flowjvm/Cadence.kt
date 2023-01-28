@@ -750,3 +750,14 @@ const val CADENCE_RESTAKE_REWARDS = """
         }
     }
 """
+
+const val CADENCE_QUERY_STORAGE_INFO = """
+    pub fun main(addr: Address): {String: UInt64} {
+      let acct = getAccount(addr)
+      let ret: {String: UInt64} = {}
+      ret["capacity"] = acct.storageCapacity
+      ret["used"] = acct.storageUsed
+      ret["available"] = acct.storageCapacity - acct.storageUsed
+      return ret
+    }
+"""

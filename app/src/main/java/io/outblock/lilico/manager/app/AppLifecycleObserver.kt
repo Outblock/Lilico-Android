@@ -4,6 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
+import io.outblock.lilico.page.profile.subpage.wallet.queryStorageInfo
 import io.outblock.lilico.utils.logd
 
 private const val TAG = "AppLifecycleObserver"
@@ -21,6 +22,7 @@ class AppLifecycleObserver : DefaultLifecycleObserver {
     private fun onAppToForeground() {
         logd(TAG, "onAppToForeground")
         checkMeowDomainClaimed()
+        queryStorageInfo()
     }
 
     private fun onAppToBackground() {

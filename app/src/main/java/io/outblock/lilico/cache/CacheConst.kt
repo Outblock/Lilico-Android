@@ -10,6 +10,7 @@ import io.outblock.lilico.manager.price.CurrencyCache
 import io.outblock.lilico.manager.staking.StakingCache
 import io.outblock.lilico.manager.staking.StakingProviderCache
 import io.outblock.lilico.network.model.*
+import io.outblock.lilico.page.profile.subpage.wallet.StorageInfo
 import io.outblock.lilico.page.transaction.record.model.TransactionRecordList
 
 
@@ -76,6 +77,10 @@ fun stakingProviderCache(): CacheManager<StakingProviderCache> {
 
 fun stakingCache(): CacheManager<StakingCache> {
     return CacheManager("staking_info_cache".cacheFile(), StakingCache::class.java)
+}
+
+fun storageInfoCache(): CacheManager<StorageInfo> {
+    return CacheManager("storage_info".cacheFile(), StorageInfo::class.java)
 }
 
 
