@@ -38,6 +38,8 @@ class StakingDetailPresenter(
             unstakeButton.setOnClickListener { StakingAmountActivity.launch(activity, provider, isUnstake = true) }
             header.claimButton.setOnClickListener { viewModel.claimRewards(provider) }
             header.restakeButton.setOnClickListener { viewModel.restakeRewards(provider) }
+            unstakedWrapper.claimButton.setOnClickListener { viewModel.claimUnstaked(provider) }
+            unstakedWrapper.restakeButton.setOnClickListener { viewModel.restakeUnstaked(provider) }
         }
         setupToolbar()
     }
@@ -79,6 +81,8 @@ class StakingDetailPresenter(
 
             rewardsAmountView.text = model.stakingNode.tokensRewarded.formatNum(3)
         }
+
+        binding.unstakedWrapper.unstakedAmountView.text = model.stakingNode.tokensUnstaked.formatNum(3)
     }
 
     private fun setupEpoch(model: StakingDetailModel) {

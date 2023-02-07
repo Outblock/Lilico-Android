@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_round_16dp"
+    android:backgroundTint="@color/background"
+    android:orientation="vertical"
+    android:paddingHorizontal="18dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/unstaked_amount"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/unstaked_amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rewards"
+            tools:text="123.345"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:paddingBottom="3dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/flow_coin_name"
+            android:textColor="@color/neutrals9"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/unstaked_amount_view"
+            app:layout_constraintStart_toEndOf="@id/unstaked_amount_view"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/restake_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/deep_bg"
+            android:elevation="0dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:stateListAnimator="@null"
+            android:text="@string/restake"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/unstaked_amount_view"
+            app:layout_constraintEnd_toStartOf="@id/claim_button"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toTopOf="@id/unstaked_amount_view"
+            app:rippleColor="@color/black_10"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/claim_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/deep_bg"
+            android:elevation="0dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:stateListAnimator="@null"
+            android:text="@string/claim"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/unstaked_amount_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/unstaked_amount_view"
+            app:rippleColor="@color/black_10"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

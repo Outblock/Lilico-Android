@@ -36,6 +36,10 @@
                 layout="@layout/layout_staking_detail_header"/>
 
             <include
+                android:id="@+id/unstaked_wrapper"
+                layout="@layout/layout_staking_detail_unstaked"/>
+
+            <include
                 android:id="@+id/epoch_wrapper"
                 layout="@layout/layout_staking_detail_epoch"/>
 

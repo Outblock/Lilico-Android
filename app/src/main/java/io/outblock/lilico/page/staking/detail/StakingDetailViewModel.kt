@@ -10,10 +10,7 @@ import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.OnCoinRateUpdate
-import io.outblock.lilico.manager.flowjvm.CADENCE_CLAIM_REWARDS
-import io.outblock.lilico.manager.flowjvm.CADENCE_RESTAKE_REWARDS
-import io.outblock.lilico.manager.flowjvm.transactionByMainWallet
-import io.outblock.lilico.manager.flowjvm.ufix64Safe
+import io.outblock.lilico.manager.flowjvm.*
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.staking.StakingProvider
 import io.outblock.lilico.manager.staking.createStakingDelegatorId
@@ -61,7 +58,15 @@ class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         CADENCE_RESTAKE_REWARDS.rewardsAction(provider)
     }
 
-    private fun String.rewardsAction(provider: StakingProvider) {
+    fun claimUnstaked(provider: StakingProvider) {
+        CADENCE_STAKING_UNSATKED_CLAIM.rewardsAction(provider)
+    }
+
+    fun restakeUnstaked(provider: StakingProvider) {
+        CADENCE_STAKING_UNSATKED_RESTAKE.rewardsAction(provider)
+    }
+
+    private fun String.rewardsAction(provider: StakingProvider, isUnStaked: Boolean = false) {
         ioScope {
 
             var delegatorId = provider.delegatorId()
@@ -75,7 +80,9 @@ class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
                 return@ioScope
             }
 
-            val amount = StakingManager.stakingInfo().nodes.first { it.nodeID == provider.id }.tokensRewarded
+            val amount = if (isUnStaked) {
+                StakingManager.stakingInfo().nodes.first { it.nodeID == provider.id }.tokensUnstaked
+            } else StakingManager.stakingInfo().nodes.first { it.nodeID == provider.id }.tokensRewarded
             val txid = transactionByMainWallet {
                 arg { string(provider.id) }
                 arg { uint32(delegatorId) }
