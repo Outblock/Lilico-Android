@@ -43,7 +43,7 @@ class StakingAmountViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
     }
 
     override fun onBalanceUpdate(coin: FlowCoin, balance: Balance) {
-        if (coin.symbol == FlowCoin.SYMBOL_FLOW) {
+        if (coin.isFlowCoin()) {
             balanceLiveData.postValue(balance.balance)
         }
     }

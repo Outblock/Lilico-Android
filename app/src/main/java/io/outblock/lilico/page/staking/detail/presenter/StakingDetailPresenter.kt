@@ -75,8 +75,7 @@ class StakingDetailPresenter(
             amountPriceView.text = (stakingCount * model.coinRate).formatPrice(3, includeSymbol = true)
             amountPriceCurrencyView.text = model.currency.name
             stakeAmountView.text = stakingCount.formatNum(3)
-            availableAmountView.text =
-                (model.balance - StakingManager.stakingInfo().nodes.sumOf { it.stakingCount().toDouble() }).toFloat().formatNum(3)
+            availableAmountView.text = model.balance.formatNum(3)
 
             rewardsAmountView.text = model.stakingNode.tokensRewarded.formatNum(3)
         }

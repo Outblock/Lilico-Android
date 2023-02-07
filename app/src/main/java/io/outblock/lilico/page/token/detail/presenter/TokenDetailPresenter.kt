@@ -51,7 +51,7 @@ class TokenDetailPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
         }
 
-        if (coin.symbol != FlowCoin.SYMBOL_FLOW && coin.symbol != FlowCoin.SYMBOL_FUSD) {
+        if (!coin.isFlowCoin() && coin.symbol != FlowCoin.SYMBOL_FUSD) {
             binding.getMoreWrapper.setVisible(false)
             binding.chartWrapper.root.setVisible(false)
         }

@@ -38,6 +38,11 @@ object BalanceManager {
         fetch(coin)
     }
 
+    fun getBalanceByCoin(coinSymbol: String) {
+        val coin = FlowCoinListManager.getCoin(coinSymbol) ?: return
+        getBalanceByCoin(coin)
+    }
+
     fun addListener(callback: OnBalanceUpdate) {
         if (listeners.firstOrNull { it.get() == callback } != null) {
             return
