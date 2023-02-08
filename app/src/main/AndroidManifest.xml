@@ -247,7 +247,6 @@
             android:name=".page.component.deeplinking.DeepLinkingActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transparent.FullScreen">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
