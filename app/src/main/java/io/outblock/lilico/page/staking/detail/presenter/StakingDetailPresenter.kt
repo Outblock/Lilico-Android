@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.staking.detail.presenter
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.text.format.DateUtils
 import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
@@ -8,6 +9,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityStakingDetailBinding
+import io.outblock.lilico.databinding.LayoutStakingDetailStateBinding
 import io.outblock.lilico.manager.staking.*
 import io.outblock.lilico.page.staking.amount.StakingAmountActivity
 import io.outblock.lilico.page.staking.detail.StakingDetailActivity
@@ -15,6 +17,7 @@ import io.outblock.lilico.page.staking.detail.StakingDetailViewModel
 import io.outblock.lilico.page.staking.detail.model.StakingDetailModel
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 import java.lang.Integer.min
@@ -54,9 +57,32 @@ class StakingDetailPresenter(
 
     override fun bind(model: StakingDetailModel) {
         setupHeader(model)
+        setupState(model)
         setupEpoch(model)
         setupRewards(model)
         setupItems(model)
+    }
+
+    private fun setupState(model: StakingDetailModel) {
+        binding.unstakedWrapper.root.setVisible(model.stakingNode.tokensUnstaked > 0)
+        binding.unstakedWrapper.unstakedAmountView.text = model.stakingNode.tokensUnstaked.formatNum(3)
+
+        fun LayoutStakingDetailStateBinding.setup(
+            titleString: Int,
+            isInProgress: Boolean,
+            amount: Float,
+        ) {
+            title.setText(titleString)
+            amountView.text = amount.formatNum(3)
+            val color = if (isInProgress) R.color.mango1.res2color() else R.color.success2.res2color()
+            clockIcon.imageTintList = ColorStateList.valueOf(color)
+            stateText.setTextColor(color)
+            root.setVisible(amount > 0)
+        }
+
+        binding.commitWrapper.setup(R.string.commit_to_stake, isInProgress = false, model.stakingNode.tokensCommitted)
+        binding.unstakingWrapper.setup(R.string.unstaking, isInProgress = true, model.stakingNode.tokensUnstaking)
+        binding.requestUnstakeWrapper.setup(R.string.request_to_unstake, isInProgress = true, model.stakingNode.tokensRequestedToUnstake)
     }
 
     @SuppressLint("SetTextI18n")
@@ -81,8 +107,6 @@ class StakingDetailPresenter(
 
             rewardsAmountView.text = model.stakingNode.tokensRewarded.formatNum(3)
         }
-
-        binding.unstakedWrapper.unstakedAmountView.text = model.stakingNode.tokensUnstaked.formatNum(3)
     }
 
     private fun setupEpoch(model: StakingDetailModel) {

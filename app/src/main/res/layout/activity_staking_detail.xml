@@ -40,6 +40,18 @@
                 layout="@layout/layout_staking_detail_unstaked"/>
 
             <include
+                android:id="@+id/commit_wrapper"
+                layout="@layout/layout_staking_detail_state"/>
+
+            <include
+                android:id="@+id/unstaking_wrapper"
+                layout="@layout/layout_staking_detail_state"/>
+
+            <include
+                android:id="@+id/request_unstake_wrapper"
+                layout="@layout/layout_staking_detail_state"/>
+
+            <include
                 android:id="@+id/epoch_wrapper"
                 layout="@layout/layout_staking_detail_epoch"/>
 
