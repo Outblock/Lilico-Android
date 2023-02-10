@@ -2,6 +2,7 @@ package io.outblock.lilico.page.browser.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
 import android.webkit.CookieManager
@@ -86,11 +87,14 @@ class LilicoWebView : WebView {
 
     private inner class WebViewClient : android.webkit.WebViewClient() {
 
-        override fun onPageFinished(view: WebView?, url: String?) {
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             view.executeJs(JS_FCL_EXTENSIONS)
             view.executeJs(JS_LISTEN_WINDOW_FCL_MESSAGE)
             view.executeJs(JS_LISTEN_FLOW_WALLET_TRANSACTION)
-            super.onPageFinished(view, url)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            view ?: return
         }
 
         override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
