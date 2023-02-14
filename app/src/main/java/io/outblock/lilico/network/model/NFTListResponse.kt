@@ -71,6 +71,8 @@ data class Nft(
     fun contractName() = collectionContractName
 
     fun tokenId() = id
+
+    fun isNBA() = collectionName.trim().lowercase() == "TopShot".lowercase()
 }
 
 @Parcelize

@@ -211,7 +211,7 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
 
 suspend fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
     logd(TAG, "cadenceTransferNft()")
-    val transactionId = nft.formatCadence(CADENCE_NFT_TRANSFER).transactionByMainWallet {
+    val transactionId = nft.formatCadence(if (nft.isNBA()) CADENCE_NBA_NFT_TRANSFER else CADENCE_NFT_TRANSFER).transactionByMainWallet {
         arg { address(toAddress.toAddress()) }
         arg { uint64(nft.id) }
     }
