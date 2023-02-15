@@ -24,7 +24,11 @@ import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
 import io.outblock.lilico.widgets.webview.fcl.fclAuthzResponse
 import io.outblock.lilico.widgets.webview.fcl.fclSignMessageResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
+import okio.ByteString.Companion.decodeBase64
+import java.io.ByteArrayOutputStream
 import java.lang.reflect.Type
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 private const val TAG = "WalletConnectRequestDispatcher"
 
@@ -170,8 +174,7 @@ private fun WCRequest.respondSignProposer() {
     val activity = BaseActivity.getCurrentActivity() ?: return
 
     logd(TAG, "respondSignProposer param:${params}")
-    val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
-    val signable = json.firstOrNull() ?: return
+    val signable = params.toSignables(gson())
     val address = walletCache().read()?.walletAddress() ?: return
 
     FclAuthzDialog.show(
@@ -217,5 +220,34 @@ private class SignableDeserializer : JsonDeserializer<Signable> {
             }
         }
         return Gson().fromJson(obj, Signable::class.java)
+    }
+}
+
+
+fun gzip(content: String): ByteArray {
+    val bos = ByteArrayOutputStream()
+    GZIPOutputStream(bos).bufferedWriter(Charsets.UTF_8).use { it.write(content) }
+    return bos.toByteArray()
+}
+
+fun ungzip(content: ByteArray): String =
+    GZIPInputStream(content.inputStream()).bufferedReader(Charsets.UTF_8).use { it.readText() }
+
+fun String.toSignables(gson: Gson): Signable? {
+    return try {
+        val typeToken = object : TypeToken<List<Signable>>() {}.type
+        val result: List<Signable> = gson.fromJson(this, typeToken)
+        result.firstOrNull()
+    } catch (e: Exception) {
+        try {
+            val stringListType = object : TypeToken<List<String>>() {}.type
+            val arguments: List<String> = gson.fromJson(this, stringListType)
+            arguments.firstOrNull()?.decodeBase64()?.toByteArray()?.run {
+                val jsonString = ungzip(this)
+                gson.fromJson(jsonString, Signable::class.java)
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 }
