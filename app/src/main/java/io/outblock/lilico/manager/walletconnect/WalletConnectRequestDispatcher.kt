@@ -183,7 +183,7 @@ private fun WCRequest.respondSignProposer() {
             title = metaData?.name,
             logo = metaData?.icons?.firstOrNull(),
             url = metaData?.url,
-            cadence = signable.voucher?.cadence,
+            cadence = signable?.voucher?.cadence,
         )
     )
     FclAuthzDialog.observe { approve ->
@@ -193,7 +193,7 @@ private fun WCRequest.respondSignProposer() {
                 data = PollingData(
                     address = address,
                     keyId = 0,
-                    signature = hdWallet().signData(signable.message!!.hexToBytes())
+                    signature = hdWallet().signData(signable?.message!!.hexToBytes())
                 )
             )
             approve(gson().toJson(response))
