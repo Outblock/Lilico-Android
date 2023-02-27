@@ -17,3 +17,6 @@ fabric.properties
 /generate
 *.aab
 /app/src/main/assets/env
+google-services.json
+*/google-services.json
+*/keystore.jks
