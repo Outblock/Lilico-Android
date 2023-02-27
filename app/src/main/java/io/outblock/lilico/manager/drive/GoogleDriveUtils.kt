@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.firebase.auth.firebaseUid
+import io.outblock.lilico.manager.env.EnvKey
 import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.logd
@@ -28,7 +29,7 @@ const val ACTION_GOOGLE_DRIVE_RESTORE_FINISH = "ACTION_GOOGLE_DRIVE_RESTORE_FINI
 const val EXTRA_SUCCESS = "extra_success"
 const val EXTRA_CONTENT = "extra_content"
 
-private const val AES_KEY = "4047b6b927bcff0c"
+private val AES_KEY by lazy { EnvKey.get("DRIVE_AES_KEY") }
 
 @WorkerThread
 suspend fun uploadMnemonicToGoogleDrive(driveService: Drive, password: String) {

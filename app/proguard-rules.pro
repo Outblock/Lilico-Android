@@ -91,3 +91,5 @@
   **[] $VALUES;
   public *;
 }
+
+-keep class com.translized.translized_ota.** { *; }

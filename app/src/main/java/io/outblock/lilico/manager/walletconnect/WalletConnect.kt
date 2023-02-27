@@ -7,11 +7,14 @@ import com.walletconnect.android.relay.ConnectionType
 import com.walletconnect.android.relay.RelayClient
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
+import io.outblock.lilico.manager.env.EnvKey
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logw
 
 private val TAG = WalletConnect::class.java.simpleName
+
+private val projectId by lazy { EnvKey.get("WALLET_CONNECT_PROJECT_ID") }
 
 class WalletConnect {
 
@@ -55,7 +58,7 @@ private fun setup(application: Application) {
 
     CoreClient.initialize(
         metaData = appMetaData,
-        relayServerUrl = "wss://relay.walletconnect.com?projectId=29b38ec12be4bd19bf03d7ccef29aaa6",
+        relayServerUrl = "wss://relay.walletconnect.com?projectId=${projectId}",
         connectionType = ConnectionType.MANUAL,
         application = application,
     ) {

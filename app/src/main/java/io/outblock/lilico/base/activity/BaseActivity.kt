@@ -8,6 +8,11 @@ import java.lang.ref.WeakReference
 open class BaseActivity : AppCompatActivity() {
     private var firstVisible = true
 
+
+//    override fun attachBaseContext(newBase: Context?) {
+//        super.attachBaseContext(Translized.wrapContext(newBase))
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         currentActivity = WeakReference(this)
         super.onCreate(savedInstanceState)

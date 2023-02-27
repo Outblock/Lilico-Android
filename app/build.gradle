@@ -22,29 +22,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            keyAlias 'outblock'
-            keyPassword 'io.outblock'
-            storeFile file('keystore.jks')
-            storePassword 'io.outblock'
-        }
-    }
-
     buildTypes {
         debug {
             minifyEnabled false
             multiDexEnabled true
             debuggable true
             applicationIdSuffix = ".dev"
-            signingConfig signingConfigs.release
         }
 
         releaseDebug {
             minifyEnabled false
             multiDexEnabled true
             debuggable true
-            signingConfig signingConfigs.release
         }
 
         dev {
@@ -53,7 +42,6 @@ android {
             multiDexEnabled false
             debuggable false
             applicationIdSuffix = ".dev"
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -62,7 +50,6 @@ android {
             shrinkResources true
             multiDexEnabled false
             debuggable false
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -212,6 +199,9 @@ dependencies {
     implementation("com.walletconnect:android-core")
     implementation("com.walletconnect:sign")
     /** FLOW **/
+
+    implementation "io.github.cdimascio:dotenv-kotlin:6.4.1"
+    implementation 'com.github.translized:android-SDK:1.0.2'
 
     /** TEST **/
     testImplementation 'junit:junit:4.+'

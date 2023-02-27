@@ -16,3 +16,4 @@ fabric.properties
 /bundle
 /generate
 *.aab
+/app/src/main/assets/env

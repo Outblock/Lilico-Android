@@ -12,6 +12,7 @@ import io.outblock.lilico.manager.app.refreshChainNetwork
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.env.EnvKey
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.price.CurrencyManager
@@ -36,7 +37,7 @@ object LaunchManager {
             initFirebaseConfig()
             setNightMode()
             runWorker(application)
-            readCache()
+            readCache(application)
             runCompatibleScript()
             WalletConnect.init(application)
         }
@@ -47,7 +48,7 @@ object LaunchManager {
         }
     }
 
-    private fun readCache() {
+    private fun readCache(application: Application) {
         NftCollectionConfig.sync()
         BalanceManager.reload()
         TransactionStateManager.reload()
@@ -56,6 +57,8 @@ object LaunchManager {
         CoinRateManager.init()
         CurrencyManager.init()
         StakingManager.init()
+        EnvKey.init()
+//        Translized.init(application, EnvKey.get("TRANSLIZED_PROJECT_ID"), EnvKey.get("TRANSLIZED_TOKEN"))
     }
 
     private fun setNightMode() {
