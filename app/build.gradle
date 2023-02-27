@@ -9,6 +9,10 @@ plugins {
 //    id 'com.google.ar.sceneform.plugin'
 }
 
+def properties = new Properties()
+def inputStream = project.rootProject.file('local.properties').newDataInputStream()
+properties.load(inputStream)
+
 android {
     compileSdk 31
 
@@ -22,18 +26,29 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias properties.getProperty("keyAlias")
+            keyPassword properties.getProperty("keyPassword")
+            storeFile file(properties.getProperty("storeFile"))
+            storePassword properties.getProperty("storePassword")
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
             multiDexEnabled true
             debuggable true
             applicationIdSuffix = ".dev"
+            signingConfig signingConfigs.release
         }
 
         releaseDebug {
             minifyEnabled false
             multiDexEnabled true
             debuggable true
+            signingConfig signingConfigs.release
         }
 
         dev {
@@ -42,6 +57,7 @@ android {
             multiDexEnabled false
             debuggable false
             applicationIdSuffix = ".dev"
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -50,6 +66,7 @@ android {
             shrinkResources true
             multiDexEnabled false
             debuggable false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
