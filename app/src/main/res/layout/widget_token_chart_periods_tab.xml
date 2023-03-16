@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/d_button"
+        style="@style/ButtonChartPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="1d"
+        android:text="1D"
+        app:layout_constraintEnd_toStartOf="@id/w_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:backgroundTint="@color/outline"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/w_button"
+        style="@style/ButtonChartPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="1w"
+        android:text="1W"
+        app:layout_constraintEnd_toStartOf="@id/m_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/d_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/m_button"
+        style="@style/ButtonChartPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="1m"
+        android:text="1M"
+        app:layout_constraintEnd_toStartOf="@id/y_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/w_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/y_button"
+        style="@style/ButtonChartPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="1y"
+        android:text="1Y"
+        app:layout_constraintEnd_toStartOf="@id/all_button"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/m_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/all_button"
+        style="@style/ButtonChartPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="all"
+        android:text="All"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/y_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

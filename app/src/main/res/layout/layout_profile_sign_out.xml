@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:outlineAmbientShadowColor="@color/border_2"
+    android:outlineSpotShadowColor="@color/border_2"
+    app:cardBackgroundColor="@color/deep_bg"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:rippleColor="@color/black_10"
+    app:strokeColor="@color/salmon_primary"
+    app:strokeWidth="1dp"
+    tools:layout_margin="10dp"
+    tools:targetApi="p">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/avatar_view"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="82dp"
+
+            tools:background="#999"/>
+
+        <TextView
+            android:id="@+id/nickname_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:paddingTop="16dp"
+            android:text="@string/welcome_to_lilico"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/userid_view"
+            app:layout_constraintStart_toEndOf="@id/avatar_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <TextView
+            android:id="@+id/userid_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:paddingBottom="16dp"
+            android:text="@string/profile_sign_tips"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/avatar_view"
+            app:layout_constraintEnd_toStartOf="@id/edit_button"
+            app:layout_constraintStart_toEndOf="@id/avatar_view"
+            app:layout_constraintTop_toBottomOf="@id/nickname_view"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/edit_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_circle_arrow_right_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="82dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.utils.widget.ImageFilterView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="39dp"
+    android:layout_height="39dp"
+    android:scaleType="centerCrop"
+    app:round="39dp"
+    tools:background="#999"/>

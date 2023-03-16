@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/background_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:background="#ddd"
+            tools:ignore="ContentDescription"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_nft_selection_card_gradient"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="104dp"
+        android:layout_height="99dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_nft_empty"
+        app:layout_constraintBottom_toTopOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montsettat"
+        android:gravity="center"
+        android:text="@string/empty_title"
+        android:textColor="@color/neutrals3"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/desc"
+        app:layout_constraintTop_toBottomOf="@id/icon"/>
+
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/nft_empty_desc"
+        android:textColor="@color/neutrals8"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/get_new_button"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/get_new_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/salmon_primary_8"
+        android:fontFamily="@font/inter_semi_bold"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingHorizontal="43dp"
+        android:paddingVertical="10dp"
+        android:stateListAnimator="@null"
+        android:text="@string/explore_new_nfts"
+        android:textAllCaps="false"
+        android:textColor="@color/salmon_primary"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/desc"
+        app:rippleColor="@color/black_20"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

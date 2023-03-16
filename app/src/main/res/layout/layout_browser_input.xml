@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/deep_bg"
+    android:clickable="true"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_round_bottom_16dp"
+        android:backgroundTint="@color/background"
+        app:layout_constraintBottom_toTopOf="@id/input_wrapper"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_browser_recommend_word"/>
+
+    <FrameLayout
+        android:id="@+id/input_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="@dimen/browser_input_vertical_padding"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            layout="@layout/layout_browser_search_box"
+            android:id="@+id/search_box"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

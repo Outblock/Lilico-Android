@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/view_in_ar"
+        android:actionLayout="@layout/menu_ar_action"
+        app:actionLayout="@layout/menu_ar_action"
+        android:title="@string/ar"
+        app:showAsAction="always"/>
+</menu>

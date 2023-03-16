@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.outblock.lilico">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove"/>
+
+    <!-- Sceneform requires OpenGLES 3.0 or later. -->
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="true"/>
+
+    <application
+        android:name=".LilicoApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,LockedOrientationActivity">
+        <activity
+            android:enabled="false"
+            android:name=".page.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppSplash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:enabled="true"
+            android:name="io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogoDefault"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:targetActivity=".page.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name="io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogo1"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_a"
+            android:label="@string/app_name"
+            android:targetActivity=".page.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name=".page.main.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".manager.drive.GoogleDriveAuthActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
+
+        <activity
+            android:name=".page.walletcreate.WalletCreateActivity"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name=".page.walletrestore.WalletRestoreActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".page.nft.nftdetail.NftDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".page.collection.CollectionActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.accountsetting.AccountSettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.security.SecuritySettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.security.pin.SecurityPinActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.security.recovery.SecurityPrivateKeyActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="io.outblock.lilico.page.profile.subpage.backup.BackupSettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.backup.BackupManuallyActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".page.profile.subpage.backup.BackupGoogleDriveActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.avatar.edit.EditAvatarActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.avatar.ViewAvatarActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.nickname.EditNicknameActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.address.AddressBookActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.addressadd.AddressAddActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.send.transaction.TransactionSendActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".page.send.transaction.subpage.amount.SendAmountActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.receive.ReceiveActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.token.addtoken.AddTokenActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.developer.DeveloperModeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.currency.CurrencyListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.theme.ThemeSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".page.token.detail.TokenDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.nft.collectionlist.NftCollectionListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            tools:replace="screenOrientation,theme"/>
+
+        <activity
+            android:name=".page.scan.ScanBarcodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".page.profile.subpage.about.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".page.demo.DemoActivity"/>
+
+        <activity
+            android:name=".page.browser.subpage.filepicker.FilePickerActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
+
+        <activity
+            android:name=".page.security.biometric.BiometricActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen"/>
+
+        <activity
+            android:name=".page.transaction.record.TransactionRecordActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.wallet.WalletSettingActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.guide.GuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.inbox.InboxActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.claimdomain.ClaimDomainActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.walletconnect.session.WalletConnectSessionActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.profile.subpage.walletconnect.sessiondetail.WalletConnectSessionDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.ar.ArActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.swap.SwapActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.staking.amount.StakingAmountActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.component.deeplinking.DeepLinkingActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Transparent.FullScreen">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="link.lilico.app"
+                    android:scheme="http"/>
+                <data
+                    android:host="link.lilico.app"
+                    android:scheme="https"/>
+                <data android:scheme="lilico"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".page.staking.providers.StakingProviderActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".page.staking.guide.StakeGuideActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.staking.list.StakingListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".page.staking.detail.StakingDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/file_provider_authorities"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <!-- Firebase Messaging Start -->
+        <service
+            android:name=".service.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher_foreground"/>
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorSecondary"/>
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required"/>
+    </application>
+
+</manifest>

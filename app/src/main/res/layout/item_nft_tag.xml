@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_nft_tag"
+    android:checkable="false"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="6dp">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/neutrals3"
+        android:textSize="14sp"
+        tools:text="213"/>
+
+    <TextView
+        android:id="@+id/content_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/neutrals3"
+        android:textSize="14sp"
+        tools:text="213"/>
+</LinearLayout>

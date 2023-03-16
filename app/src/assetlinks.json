@@ -1,0 +1,35 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://lilico.app"
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "Lilico Dev",
+      "package_name": "io.outblock.lilico.dev",
+      "sha256_cert_fingerprints": [
+        "95:44:19:B4:8B:D2:14:50:AB:89:24:01:4F:0A:E0:60:55:E3:FF:BD:37:F3:73:56:69:65:6D:E8:44:5F:3D:D6"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "Lilico",
+      "package_name": "io.outblock.lilico",
+      "sha256_cert_fingerprints": [
+        "95:44:19:B4:8B:D2:14:50:AB:89:24:01:4F:0A:E0:60:55:E3:FF:BD:37:F3:73:56:69:65:6D:E8:44:5F:3D:D6"
+      ]
+    }
+  }
+]

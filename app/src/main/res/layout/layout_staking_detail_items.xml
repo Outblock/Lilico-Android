@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_round_16dp"
+    android:backgroundTint="@color/background"
+    android:orientation="vertical"
+    android:padding="18dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/unstaking_amount"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/unstaking_amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            tools:text="1234567"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:alpha="0.06"
+        android:background="@color/neutrals9"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/committed_amount"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/committed_amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            tools:text="1234567"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:alpha="0.06"
+        android:background="@color/neutrals9"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/unstaked_amount"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/unstaked_amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            tools:text="1234567"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:alpha="0.06"
+        android:background="@color/neutrals9"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/requested_to_unstake_amount"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/requested_to_unstake_amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            tools:text="1234567"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:alpha="0.06"
+        android:background="@color/neutrals9"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/apr"
+            android:textColor="@color/text"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/apr_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            tools:text="1234567"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

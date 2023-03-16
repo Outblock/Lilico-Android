@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/bubble_stack_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary80"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            tools:listitem="@layout/item_browser_float_tabs"/>
+    </FrameLayout>
+
+    <io.outblock.lilico.widgets.DraggableLayout
+        android:id="@+id/float_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/bg_round_left_12dp"
+        android:backgroundTint="@color/deep_bg"
+        android:elevation="5dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/icon_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            app:round="60dp"
+            tools:src="@color/salmon_primary"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorSecondary"
+            app:indicatorInset="4dp"
+            app:indicatorSize="51dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hold_to_send"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/bg_icon"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="4dp"
+            tools:progress="80"
+            tools:visibility="visible"/>
+
+    </io.outblock.lilico.widgets.DraggableLayout>
+</FrameLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SegmentControl">
+        <attr name="tab_text_color" format="color|reference"/>
+        <attr name="tab_text_on_color" format="color|reference"/>
+        <attr name="background_color" format="color|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="LikeButton">
+        <attr name="icon_type" format="string"/>
+        <attr name="icon_size" format="dimension|reference"/>
+        <attr name="like_drawable" format="reference"/>
+        <attr name="unlike_drawable" format="reference"/>
+        <attr name="dots_primary_color" format="color|reference"/>
+        <attr name="dots_secondary_color" format="color|reference"/>
+        <attr name="circle_start_color" format="color|reference"/>
+        <attr name="circle_end_color" format="color|reference"/>
+        <attr name="liked" format="boolean"/>
+        <attr name="is_enabled" format="boolean"/>
+        <attr name="anim_scale_factor" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProfilePreference">
+        <attr name="iconEnable" format="boolean"/>
+        <attr name="icon" format="reference"/>
+        <attr name="title" format="string|reference"/>
+        <attr name="subtitle" format="string|reference"/>
+        <attr name="desc" format="string|reference"/>
+        <attr name="descColor" format="color|reference"/>
+        <attr name="isArrowVisible" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProfilePreferenceSwitch">
+        <attr name="isChecked" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="progressWidth" format="dimension"/>
+        <attr name="progressColor" format="color"/>
+        <attr name="progressBgColor" format="color"/>
+        <attr name="progressText" format="string"/>
+        <attr name="progressTextSize" format="dimension"/>
+        <attr name="progressTextColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleLoadingView">
+        <attr name="arcWidth" format="dimension"/>
+        <attr name="loadingColor" format="color"/>
+        <attr name="dotSize" format="integer"/>
+        <attr name="durationTime" format="float"/>
+        <attr name="dotAngle" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="DefaultCloseView">
+        <attr name="normalColor" format="color"/>
+        <attr name="inRangeColor" format="color"/>
+        <attr name="shapeType" format="enum">
+            <enum name="oval" value="0"/>
+            <enum name="rect" value="1"/>
+            <enum name="circle" value="2"/>
+        </attr>
+        <attr name="zoomSize" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="SendButton">
+        <attr name="defaultText" format="string|reference"/>
+        <attr name="processingText" format="string|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="DrawerItem">
+        <attr name="drawer_item_icon" format="reference"/>
+        <attr name="drawer_item_text" format="string|reference"/>
+    </declare-styleable>
+</resources>

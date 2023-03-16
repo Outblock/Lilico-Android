@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/deep_bg">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/stake_flow"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:titleTextColor="@color/text"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_top_radius_16dp"
+        android:backgroundTint="@color/background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="@string/stake_guide_header1"
+            android:textColor="@color/text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_crown"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="@string/stake_guide_header2"
+            android:textColor="@color/text"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="48dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center_vertical"
+            android:text="@string/stake_guide_desc_1"
+            android:textColor="@color/neutrals6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_stake_guide_1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="24dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center_vertical"
+            android:text="@string/stake_guide_desc_2"
+            android:textColor="@color/neutrals6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_stake_guide_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="24dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center_vertical"
+            android:text="@string/stake_guide_desc_3"
+            android:textColor="@color/neutrals6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_stake_guide_3"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="24dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center_vertical"
+            android:text="@string/stake_guide_desc_4"
+            android:textColor="@color/neutrals6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_stake_guide_4"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stake_button"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="#865CFF"
+            android:text="@string/lets_staking"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

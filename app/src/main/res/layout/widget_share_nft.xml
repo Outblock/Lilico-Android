@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    tools:background="#FCCECB">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_gradient_white_80_40"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- user info -->
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/user_info_background"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_share_nft_header"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/avatar_view"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="18dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/user_info_background"
+        app:layout_constraintStart_toStartOf="@id/user_info_background"
+        app:layout_constraintTop_toTopOf="@id/user_info_background"
+        app:round="24dp"
+        tools:background="#ccc"/>
+
+    <TextView
+        android:id="@+id/nickname_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/user_info_background"
+        app:layout_constraintStart_toEndOf="@id/avatar_view"
+        app:layout_constraintTop_toTopOf="@id/user_info_background"
+        tools:text="From Zyanz"/>
+
+    <TextView
+        android:id="@+id/username_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:alpha="0.48"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/user_info_background"
+        app:layout_constraintEnd_toEndOf="@id/user_info_background"
+        app:layout_constraintTop_toTopOf="@id/user_info_background"
+        tools:text="\@Zyanz"/>
+
+    <!-- nft card -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/nft_card_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="18dp"
+        app:layout_constraintTop_toBottomOf="@id/user_info_background">
+
+        <View
+            android:id="@+id/nft_card_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.48"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/white"
+            android:paddingBottom="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="16dp"/>
+
+        <TextView
+            android:id="@+id/nft_name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/montsettat"
+            android:textColor="@color/text"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/nft_card_background"
+            app:layout_constraintTop_toTopOf="@id/nft_card_background"
+            tools:text="Claude Monet #109"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/nft_collection_icon_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="@id/nft_name_view"
+            app:layout_constraintTop_toBottomOf="@id/nft_name_view"
+            app:round="20dp"
+            tools:background="#ccc"/>
+
+        <TextView
+            android:id="@+id/nft_collection_name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:textColor="@color/neutrals4"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/nft_collection_icon_view"
+            app:layout_constraintStart_toEndOf="@id/nft_collection_icon_view"
+            app:layout_constraintTop_toTopOf="@id/nft_collection_icon_view"
+            tools:text="Claude Monet #109"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/nft_cover_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="22dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="@id/nft_name_view"
+            app:layout_constraintTop_toBottomOf="@id/nft_collection_icon_view"
+            app:round="12dp"
+            tools:background="#ccc"/>
+
+        <View
+            android:id="@+id/nft_card_divider"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            app:layout_constraintTop_toBottomOf="@id/nft_cover_view"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/app_card_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
+        app:layout_constraintTop_toBottomOf="@id/nft_card_wrapper">
+
+        <View
+            android:id="@+id/app_card_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.48"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="16dp"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/app_icon_view"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@mipmap/ic_launcher"
+            app:round="4dp"/>
+
+        <TextView
+            android:id="@+id/share_with"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montsettat"
+            android:text="@string/shared_via"
+            android:textAllCaps="true"
+            android:textColor="@color/note"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_icon_view"
+            tools:ignore="SmallSp"/>
+
+        <TextView
+            android:id="@+id/app_name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="18dp"
+            android:drawablePadding="3dp"
+            android:fontFamily="@font/montsettat"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/note"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_line_short"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/share_with"
+            tools:ignore="SmallSp"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/qrcode_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/app_name_view"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/app_icon_view"
+            app:round="4dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            app:layout_constraintTop_toBottomOf="@id/app_name_view"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/card_divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="36dp"
+        android:background="@drawable/ic_share_card_divider_line"
+        app:layout_constraintBottom_toTopOf="@id/app_card_wrapper"
+        app:layout_constraintTop_toBottomOf="@id/nft_card_wrapper"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        app:layout_constraintTop_toBottomOf="@id/app_card_wrapper"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

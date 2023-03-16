@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/deep_bg"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:rippleColor="@color/black_15">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_staking_provider">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/icon_view"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="100dp"
+            tools:background="#aaa"/>
+
+        <TextView
+            android:id="@+id/title_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter_semi_bold"
+            android:maxLines="1"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/desc_view"
+            app:layout_constraintEnd_toStartOf="@id/rate_wrapper"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Lilico"/>
+
+        <TextView
+            android:id="@+id/desc_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/note"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rate_wrapper"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toBottomOf="@id/title_view"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Lilico"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/rate_wrapper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="3dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_round_12dp"
+            android:backgroundTint="@color/deep_bg"
+            app:layout_constraintDimensionRatio="92:48"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:id="@+id/rate_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="12.89%"/>
+
+            <TextView
+                android:id="@+id/rate_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/note"
+                android:textSize="12sp"
+                tools:ignore="SmallSp"
+                tools:text="Stake"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

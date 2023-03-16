@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_wallet_restore_guide"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_padding">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/drive_restore"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montsettat"
+                android:text="@string/restore_wallet"
+                android:textColor="@color/text"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/intro_text_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/restore_wallet_tip"
+                android:textColor="@color/text_light"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/title_1"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <io.outblock.lilico.widgets.LoadingMaterialButton
+        android:id="@+id/drive_restore"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/restore_with_google_drive"
+        app:layout_constraintBottom_toTopOf="@id/mnemonic_restore"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mnemonic_restore"
+        style="@style/Button.Outline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="@dimen/wallet_create_button_margin"
+        android:text="@string/restore_with_recovery_phrase"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

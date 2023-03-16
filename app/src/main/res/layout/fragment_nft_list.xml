@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/background_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/background_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_nft_selection_card_gradient"/>
+    </FrameLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/header_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <FrameLayout
+                        android:id="@+id/top_selection_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="78dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="#ddd"
+                        tools:layout_height="100dp"
+                        tools:visibility="visible">
+
+                        <include layout="@layout/item_nft_top_selection_header"/>
+                    </FrameLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+
+                    <FrameLayout
+                        android:id="@+id/collection_title_wrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/nft_list_divider_size"
+                        app:layout_constraintTop_toBottomOf="@id/top_selection_header"
+                        app:layout_goneMarginTop="78dp"
+                        tools:visibility="visible">
+
+                        <include
+                            android:id="@+id/collection_title"
+                            layout="@layout/item_nft_list_collection_title"/>
+                    </FrameLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/collection_tabs_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:paddingVertical="12dp"
+                android:visibility="gone"
+                app:layout_scrollFlags="scroll|snap"
+                tools:visibility="visible">
+
+                <io.outblock.lilico.widgets.FocusRecyclerView
+                    android:id="@+id/collection_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/nft_list_divider_size"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_nft_list_collection_tab"
+                    tools:orientation="horizontal"/>
+            </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nft_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_top_radius_16dp"
+            android:backgroundTint="@color/front_color"
+            android:clipToPadding="false"
+            android:paddingTop="16dp"
+            android:paddingBottom="100dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:visibility="visible"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/collection_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/front_color"
+            android:clipToPadding="false"
+            android:minHeight="600dp"
+            android:paddingHorizontal="@dimen/nft_list_divider_size"
+            android:paddingBottom="100dp"
+            android:visibility="gone"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:visibility="visible"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
+

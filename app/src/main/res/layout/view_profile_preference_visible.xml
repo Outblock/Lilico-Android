@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/visible_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/visible_icon_view"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:background="@color/violet4"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="33dp"/>
+
+        <TextView
+            android:id="@+id/visible_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/visible"
+            android:textColor="@color/note"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/visible_icon_view"/>
+
+        <ImageView
+            android:id="@+id/visible_check_state_view"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_check_round_fill"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/visible_icon_view"
+            app:layout_constraintEnd_toEndOf="@id/visible_icon_view"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/invisible_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/invisible_icon_view"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:background="@color/bg_icon"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:round="33dp"/>
+
+        <TextView
+            android:id="@+id/invisible_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/inter"
+            android:text="@string/invisible"
+            android:textColor="@color/note"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/invisible_icon_view"/>
+
+        <ImageView
+            android:id="@+id/invisible_check_state_view"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_check_round_fill"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/invisible_icon_view"
+            app:layout_constraintEnd_toEndOf="@id/invisible_icon_view"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

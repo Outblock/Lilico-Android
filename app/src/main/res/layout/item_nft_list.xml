@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:paddingHorizontal="8dp"
+    android:paddingTop="@dimen/nft_list_divider_size"
+    android:paddingBottom="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cover_view_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/cover_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@color/image_bg"
+            tools:ignore="ContentDescription"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/name_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/montsettat"
+        android:maxLines="1"
+        android:textColor="@color/text"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/cover_view_wrapper"
+        tools:text="The Truth of Nature"/>
+
+    <TextView
+        android:id="@+id/price_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/note"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/name_view"
+        tools:text="1,289.20 Flow"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

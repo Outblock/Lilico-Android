@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_wallet_create_mnemonic"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/send_to"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:titleTextColor="@color/text"/>
+
+    <FrameLayout
+        android:id="@+id/contact_card_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_round_16dp"
+        android:backgroundTint="@color/bg_icon"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <include
+            android:id="@+id/contact_card"
+            layout="@layout/item_address_book_person"/>
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:background="?attr/actionBarItemBackground"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintEnd_toEndOf="@id/contact_card_wrapper"
+        app:layout_constraintTop_toTopOf="@id/contact_card_wrapper"
+        app:tint="@color/nav_icon"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/transfer_amount_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="@string/transfer_amount"
+        android:textColor="@color/text"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_card_wrapper"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/error_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/bg_round_bottom_12dp"
+        android:backgroundTint="@color/warning5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="13dp"
+        android:paddingTop="23dp"
+        android:paddingBottom="13dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/amount_wrapper"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_username_error"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/insufficient_balance"
+            android:textColor="@color/note"
+            android:textSize="12sp"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/amount_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_border_round_16dp_solid"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/transfer_amount_title">
+
+        <EditText
+            android:id="@+id/transfer_amount_input"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/transparent"
+            android:backgroundTint="@color/background"
+            android:digits="01234567890."
+            android:fontFamily="@font/inter_medium"
+            android:hint="@string/enter_amount"
+            android:imeOptions="actionNext"
+            android:importantForAutofill="no"
+            android:inputType="number|numberDecimal"
+            android:paddingStart="58dp"
+            android:paddingEnd="30dp"
+            android:textColor="@color/text"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="LabelFor"
+            tools:text="123456"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/coin_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/transfer_amount_input"
+            app:layout_constraintStart_toStartOf="@id/transfer_amount_input"
+            app:layout_constraintTop_toTopOf="@id/transfer_amount_input">
+
+            <ImageView
+                android:id="@+id/coin_icon_view"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_coin_flow"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@+id/coin_more_arrow_view"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                app:tint="@color/neutrals3"
+                tools:ignore="ContentDescription"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/max_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/bg_icon"
+            android:fontFamily="@font/inter_medium"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:letterSpacing="0"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:stateListAnimator="@null"
+            android:text="@string/max"
+            android:textAllCaps="false"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:cornerRadius="16dp"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/transfer_amount_input"
+            app:rippleColor="@color/black_20"
+            tools:ignore="SmallSp"/>
+
+        <LinearLayout
+            android:id="@+id/convert_amount_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/max_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/max_button">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center"
+                android:text="≈"
+                android:textColor="@color/note"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"/>
+
+            <ImageView
+                android:id="@+id/convert_amount_icon_view"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginHorizontal="3dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_coin_usd"
+                tools:ignore="ContentDescription"
+                tools:tint="@color/note"/>
+
+            <TextView
+                android:id="@+id/convert_amount_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center_vertical"
+                android:textColor="@color/note"
+                android:textSize="16dp"
+                tools:ignore="SpUsage"
+                tools:text="0.00"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/swap_button"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_swap_amount"
+            app:layout_constraintBottom_toBottomOf="@id/convert_amount_wrapper"
+            app:layout_constraintStart_toEndOf="@id/convert_amount_wrapper"
+            app:layout_constraintTop_toTopOf="@id/convert_amount_wrapper"
+            tools:ignore="ContentDescription"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/balance_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="@string/amount_balance"
+        android:textColor="@color/note"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/error_wrapper"/>
+
+    <ImageView
+        android:id="@+id/balance_icon_view"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/ic_coin_flow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balance_title"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/balance_amount_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/text"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/balance_icon_view"
+        app:layout_constraintStart_toEndOf="@id/balance_icon_view"
+        app:layout_constraintTop_toTopOf="@id/balance_icon_view"
+        tools:text="1580.88 Flow"/>
+
+    <TextView
+        android:id="@+id/balance_amount_convert_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:textColor="@color/note"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/balance_icon_view"
+        app:layout_constraintStart_toEndOf="@id/balance_amount_view"
+        app:layout_constraintTop_toTopOf="@id/balance_icon_view"
+        tools:text=" ≈ $ 293844.23"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel_button"
+        style="@style/Button.Outline"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="@dimen/wallet_create_button_margin"
+        android:text="@string/cancel"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/next_button"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_button"
+        style="@style/Button"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="@dimen/wallet_create_button_margin"
+        android:enabled="false"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancel_button"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#191919">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        android:theme="@style/LightToolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/transparent"/>
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="120dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_profile_temp"/>
+
+    <io.outblock.lilico.widgets.AvatarCropMask
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/image_view"
+        app:layout_constraintTop_toTopOf="@id/image_view"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/avatar_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="18dp"
+        app:layout_constraintStart_toStartOf="@id/image_view"
+        app:layout_constraintTop_toBottomOf="@id/image_view"
+        tools:itemCount="1"/>
+
+    <TextView
+        android:id="@+id/nft_name_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/avatar_list"
+        tools:text="Name of the nFT"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/done_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:backgroundTint="@color/gray_33"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nft_name_view"
+        app:rippleColor="@color/white_30"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

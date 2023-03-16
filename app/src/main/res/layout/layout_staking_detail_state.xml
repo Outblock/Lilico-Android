@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_round_16dp"
+    android:backgroundTint="@color/background"
+    android:orientation="vertical"
+    android:paddingHorizontal="18dp"
+    android:paddingTop="18dp"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:paddingBottom="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/request_to_unstake"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/clock_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_clock"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"/>
+
+        <TextView
+            android:id="@+id/state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="@color/text"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/clock_icon"
+            app:layout_constraintStart_toEndOf="@id/clock_icon"
+            app:layout_constraintTop_toTopOf="@id/clock_icon"
+            tools:text="Committed"
+            tools:textColor="@color/success"/>
+
+        <TextView
+            android:id="@+id/desc_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:alpha="0.36"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="end"
+            android:text="@string/will_be_processed_at_the_next_epoch"
+            android:textColor="@color/text"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/clock_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/state_text"
+            app:layout_constraintTop_toTopOf="@id/clock_icon"/>
+
+        <TextView
+            android:id="@+id/amount_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toStartOf="@id/flow_name"
+            app:layout_constraintTop_toTopOf="@id/title"
+            tools:text="123.345"/>
+
+        <TextView
+            android:id="@+id/flow_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/inter_medium"
+            android:paddingBottom="3dp"
+            android:text="@string/flow_coin_name"
+            android:textColor="@color/neutrals9"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/amount_view"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
