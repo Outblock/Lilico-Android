@@ -14,6 +14,7 @@ import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.toSafeFloat
 import io.outblock.lilico.utils.findActivity
 import io.outblock.lilico.utils.formatNum
+import org.joda.time.format.ISODateTimeFormat
 import java.math.RoundingMode
 
 class TransferRecordItemPresenter(
@@ -39,7 +40,9 @@ class TransferRecordItemPresenter(
 
     @SuppressLint("SetTextI18n")
     private fun ItemTransferRecordBinding.bindTime(transfer: TransferRecord) {
-        timeView.text = org.joda.time.format.ISODateTimeFormat.dateTimeParser().parseDateTime(transfer.time!!).toString("MMM dd")
+        if (transfer.time.isNullOrBlank()) {
+            timeView.text = ""
+        } else timeView.text = ISODateTimeFormat.dateTimeParser().parseDateTime(transfer.time).toString("MMM dd")
     }
 
     private fun ItemTransferRecordBinding.bindStatus(transfer: TransferRecord) {

@@ -27,7 +27,7 @@ enum class Currency(
 }
 
 fun findCurrencyFromFlag(flag: String): Currency {
-    return Currency.values().first { it.flag == flag }
+    return Currency.values().firstOrNull { it.flag == flag } ?: Currency.USD
 }
 
 fun selectedCurrency(): Currency {
