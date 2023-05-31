@@ -86,7 +86,7 @@ data class NftCollection(
     @SerializedName("logo")
     val logo: String,
     @SerializedName("secure_cadence_compatible")
-    val secureCadenceCompatible: CadenceCompatible,
+    val secureCadenceCompatible: CadenceCompatible?,
     @SerializedName("marketplace")
     val marketplace: String,
     @SerializedName("name")
