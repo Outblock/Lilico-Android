@@ -89,7 +89,10 @@ class NftDetailPresenter(
             }
             collectButton.setLikeDrawableTint(R.color.colorSecondary.res2color())
             shareButton.setOnClickListener { showShareNft() }
-            sendButton.setOnClickListener { NftSendAddressDialog.newInstance(nft!!.uniqueId()).show(activity.supportFragmentManager, "") }
+            sendButton.setOnClickListener {
+                val uniqueId = nft?.uniqueId() ?: return@setOnClickListener
+                NftSendAddressDialog.newInstance(uniqueId).show(activity.supportFragmentManager, "")
+            }
         }
     }
 

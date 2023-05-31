@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.utils.extensions.indexOfAll
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.safeRun
 import wallet.core.jni.Mnemonic
 import kotlin.math.max
 
@@ -26,12 +27,14 @@ class WalletRestoreMnemonicViewModel : ViewModel() {
             return
         }
 
-        val list = Mnemonic.suggest(prefix).split(" ")
+        safeRun {
+            val list = Mnemonic.suggest(prefix).split(" ")
 
-        if (list.size == 1 && list.first() == prefix) {
-            mnemonicSuggestListLiveData.postValue(emptyList())
-        } else {
-            mnemonicSuggestListLiveData.postValue(list)
+            if (list.size == 1 && list.first() == prefix) {
+                mnemonicSuggestListLiveData.postValue(emptyList())
+            } else {
+                mnemonicSuggestListLiveData.postValue(list)
+            }
         }
     }
 

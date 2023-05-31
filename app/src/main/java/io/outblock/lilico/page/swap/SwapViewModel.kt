@@ -48,12 +48,13 @@ class SwapViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
         private set
 
     init {
-        val coin = FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW)!!
-        fromCoinLiveData.value = coin
-        BalanceManager.addListener(this)
-        CoinRateManager.addListener(this)
-        BalanceManager.getBalanceByCoin(coin)
-        CoinRateManager.fetchCoinRate(coin)
+        FlowCoinListManager.getCoin(FlowCoin.SYMBOL_FLOW)?.let { coin ->
+            fromCoinLiveData.value = coin
+            BalanceManager.addListener(this)
+            CoinRateManager.addListener(this)
+            BalanceManager.getBalanceByCoin(coin)
+            CoinRateManager.fetchCoinRate(coin)
+        }
     }
 
     fun fromCoinBalance() = if (fromCoin() == null) 0.0f else balanceMap[fromCoin()!!.symbol]?.balance ?: 0.0f
