@@ -262,16 +262,19 @@
                     app:layout_constraintTop_toBottomOf="@id/from_avatar_view"
                     tools:text="John"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/from_address_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
+                    app:autoSizeMinTextSize="8dp"
                     android:textColor="@color/note"
+                    app:autoSizeTextType="uniform"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@id/from_avatar_view"
-                    app:layout_constraintStart_toStartOf="@id/from_avatar_view"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="@id/center_guideline"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/from_name_view"
                     tools:text="(0x198263dfe21847)"/>
 
@@ -319,16 +322,19 @@
                     app:layout_constraintTop_toBottomOf="@id/to_avatar_view"
                     tools:text="Tom"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/to_address_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
                     android:textColor="@color/note"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@id/to_avatar_view"
-                    app:layout_constraintStart_toStartOf="@id/to_avatar_view"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="8dp"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/center_guideline"
                     app:layout_constraintTop_toBottomOf="@id/to_name_view"
                     tools:text="(0x198263dfe21847)"/>
 
