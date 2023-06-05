@@ -4,6 +4,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
+import io.outblock.lilico.firebase.messaging.uploadPushToken
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
@@ -12,11 +13,17 @@ import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.network.model.AccountKey
 import io.outblock.lilico.network.model.RegisterRequest
 import io.outblock.lilico.utils.clearCacheDir
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.setMeowDomainClaimed
+import io.outblock.lilico.utils.setRegistered
 import io.outblock.lilico.utils.updateAccountTransactionCountLocal
+import io.outblock.lilico.wallet.Wallet
+import io.outblock.lilico.wallet.createWalletFromServer
 import io.outblock.lilico.wallet.getPublicKey
 import kotlinx.coroutines.delay
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 private const val TAG = "UserRegisterUtils"
@@ -26,6 +33,25 @@ suspend fun registerOutblockUser(
     callback: (isSuccess: Boolean) -> Unit,
 ) {
     registerOutblockUserInternal(username, callback)
+}
+
+// register one step, create user & create wallet
+suspend fun registerOutblock(
+    username: String,
+) = suspendCoroutine<Boolean> { continuation ->
+    ioScope {
+        registerOutblockUserInternal(username) { isSuccess ->
+            if (isSuccess) {
+                uploadPushToken()
+                createWalletFromServer()
+                Wallet.store().store()
+                setRegistered()
+                continuation.resume(true)
+            } else {
+                continuation.resume(false)
+            }
+        }
+    }
 }
 
 suspend fun clearUserCache() {
