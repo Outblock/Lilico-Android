@@ -113,14 +113,18 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text"
         tools:visibility="visible"/>
 
-    <com.google.android.material.button.MaterialButton
+
+    <io.outblock.lilico.widgets.LoadingMaterialButton
         android:id="@+id/next_button"
         style="@style/Button"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="24dp"
         android:enabled="false"
-        android:text="@string/next"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        android:text="@string/create_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

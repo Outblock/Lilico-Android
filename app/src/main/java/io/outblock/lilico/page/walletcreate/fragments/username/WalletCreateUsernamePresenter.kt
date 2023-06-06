@@ -46,6 +46,7 @@ class WalletCreateUsernamePresenter(
         }
         binding.nextButton.setOnClickListener {
             updateUsername(binding.editText.text.toString())
+            binding.nextButton.setProgressVisible(true)
             viewModel.createUser(binding.editText.text.toString())
         }
         observeKeyboardVisible()
@@ -88,6 +89,8 @@ class WalletCreateUsernamePresenter(
     private fun onCreateUserCallback(isSuccess: Boolean) {
         if (isSuccess) {
             MainActivity.launch(binding.root.context)
+        } else {
+            binding.nextButton.setProgressVisible(false)
         }
     }
 
