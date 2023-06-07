@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
-import io.outblock.lilico.page.dialog.common.BackupTipsDialog
 import io.outblock.lilico.page.guide.GuideActivity
 import io.outblock.lilico.page.main.model.MainContentModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
@@ -53,8 +52,6 @@ class MainActivity : BaseActivity() {
         if (!isGuidePageShown()) {
             GuideActivity.launch(this)
         }
-
-        BackupTipsDialog.show(supportFragmentManager)
     }
 
     override fun onBackPressed() {

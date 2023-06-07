@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.databinding.DialogBackupTipsBinding
+import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_WARNING
+import io.outblock.lilico.page.walletcreate.WalletCreateActivity
 
 class BackupTipsDialog : BottomSheetDialogFragment() {
 
@@ -22,7 +24,10 @@ class BackupTipsDialog : BottomSheetDialogFragment() {
 
         binding.closeButton.setOnClickListener { dismiss() }
         binding.skipButton.setOnClickListener { dismiss() }
-        binding.startButton.setOnClickListener { }
+        binding.startButton.setOnClickListener {
+            WalletCreateActivity.launch(requireContext(), WALLET_CREATE_STEP_WARNING)
+            dismiss()
+        }
     }
 
     companion object {

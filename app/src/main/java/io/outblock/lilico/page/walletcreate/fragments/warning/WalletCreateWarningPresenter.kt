@@ -30,11 +30,7 @@ class WalletCreateWarningPresenter(
             warningCheck2.setOnCheckedChangeListener { _, _ -> onCheckChanged() }
             warningCheck3.setOnCheckedChangeListener { _, _ -> onCheckChanged() }
             nextButton.setOnClickListener {
-                if (!isRequesting) {
-                    isRequesting = true
-                    updateButtonState()
-                    viewModel.register()
-                }
+                pageViewModel.nextStep()
             }
             title1.text = SpannableString(R.string.things_you.res2String()).apply {
                 val protection = R.string.know.res2String()
