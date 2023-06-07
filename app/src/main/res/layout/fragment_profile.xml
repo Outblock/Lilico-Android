@@ -36,6 +36,10 @@
             layout="@layout/layout_profile_action"/>
 
         <include
+            android:id="@+id/group0"
+            layout="@layout/layout_profile_group_0"/>
+
+        <include
             android:id="@+id/group1"
             layout="@layout/layout_profile_group_1"/>
 

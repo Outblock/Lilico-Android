@@ -379,4 +379,5 @@
     <string name="backup_desc">Backup Recovery Phrase is important in protect your prize property.</string>
     <string name="not_now">Not Now</string>
     <string name="create_account">Create Account</string>
+    <string name="suggest_to_backup">Suggest to Backup</string>
 </resources>

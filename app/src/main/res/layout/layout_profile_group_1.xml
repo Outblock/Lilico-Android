@@ -15,19 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <io.outblock.lilico.page.profile.widget.ProfilePreferenceState
-            android:id="@+id/backup_preference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_settings_backup"
-            app:title="@string/backup"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/background"/>
-
         <io.outblock.lilico.page.profile.widget.ProfilePreference
             android:id="@+id/security_preference"
             android:layout_width="match_parent"
