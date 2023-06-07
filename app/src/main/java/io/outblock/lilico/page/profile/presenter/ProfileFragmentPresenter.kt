@@ -29,10 +29,17 @@ import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
-import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.getCurrencyFlag
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isBackupGoogleDrive
+import io.outblock.lilico.utils.isMeowDomainClaimed
+import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.isRegistered
+import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.uiScope
 
 class ProfileFragmentPresenter(
     private val fragment: ProfileFragment,
@@ -53,7 +60,7 @@ class ProfileFragmentPresenter(
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
         binding.actionGroup.walletButton.setOnClickListener { WalletSettingActivity.launch(context) }
         binding.actionGroup.inboxButton.setOnClickListener { InboxActivity.launch(context) }
-        binding.group1.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
+        binding.group0.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
@@ -92,7 +99,7 @@ class ProfileFragmentPresenter(
             val isBackupGoogleDrive = isBackupGoogleDrive()
             val isSignIn = isRegistered()
             uiScope {
-                with(binding.group1.backupPreference) {
+                with(binding.group0.backupPreference) {
                     setStateVisible(isBackupGoogleDrive)
                     setDesc(R.string.manually.res2String())
                 }

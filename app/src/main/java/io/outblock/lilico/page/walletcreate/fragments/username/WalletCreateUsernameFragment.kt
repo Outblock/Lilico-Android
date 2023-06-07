@@ -26,6 +26,7 @@ class WalletCreateUsernameFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[WalletCreateUsernameViewModel::class.java].apply {
             usernameStateLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletCreateUsernameModel(state = it)) }
+            createUserLiveData.observe(viewLifecycleOwner) { presenter.bind(WalletCreateUsernameModel(createUserSuccess = it)) }
         }
     }
 

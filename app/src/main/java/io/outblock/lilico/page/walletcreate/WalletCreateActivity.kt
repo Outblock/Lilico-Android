@@ -16,6 +16,8 @@ class WalletCreateActivity : BaseActivity() {
     private lateinit var contentPresenter: WalletCreateContentPresenter
     private lateinit var viewModel: WalletCreateViewModel
 
+    private val step by lazy { intent.getIntExtra(STEP, WALLET_CREATE_STEP_LEGAL) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateWalletBinding.inflate(layoutInflater)
@@ -24,7 +26,11 @@ class WalletCreateActivity : BaseActivity() {
         contentPresenter = WalletCreateContentPresenter(this, binding)
 
         viewModel = ViewModelProvider(this)[WalletCreateViewModel::class.java].apply {
-            onStepChangeLiveData.observe(this@WalletCreateActivity, { contentPresenter.bind(WalletCreateContentModel(changeStep = it)) })
+            onStepChangeLiveData.observe(this@WalletCreateActivity) {
+                contentPresenter.bind(WalletCreateContentModel(changeStep = it))
+            }
+
+            changeStep(step)
         }
 
         setupToolbar()
@@ -45,6 +51,7 @@ class WalletCreateActivity : BaseActivity() {
                 }
                 finish()
             }
+
             else -> super.onOptionsItemSelected(item)
         }
         return true
@@ -58,8 +65,12 @@ class WalletCreateActivity : BaseActivity() {
     }
 
     companion object {
-        fun launch(context: Context) {
-            context.startActivity(Intent(context, WalletCreateActivity::class.java))
+        private const val STEP = "extra_step"
+
+        fun launch(context: Context, step: Int = WALLET_CREATE_STEP_LEGAL) {
+            context.startActivity(Intent(context, WalletCreateActivity::class.java).apply {
+                putExtra(STEP, step)
+            })
         }
     }
 }

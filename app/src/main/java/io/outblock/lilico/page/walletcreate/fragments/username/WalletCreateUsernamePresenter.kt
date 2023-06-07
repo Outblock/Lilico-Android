@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentWalletCreateUsernameBinding
+import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.walletcreate.WalletCreateViewModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
@@ -45,13 +46,15 @@ class WalletCreateUsernamePresenter(
         }
         binding.nextButton.setOnClickListener {
             updateUsername(binding.editText.text.toString())
-            pageViewModel.nextStep()
+            binding.nextButton.setProgressVisible(true)
+            viewModel.createUser(binding.editText.text.toString())
         }
         observeKeyboardVisible()
     }
 
     override fun bind(model: WalletCreateUsernameModel) {
         model.state?.let { updateState(it) }
+        model.createUserSuccess?.let { onCreateUserCallback(it) }
     }
 
     fun unbind() {
@@ -80,6 +83,14 @@ class WalletCreateUsernamePresenter(
                 stateIcon.setImageResource(R.drawable.ic_username_error)
             }
             stateText.text = state.second
+        }
+    }
+
+    private fun onCreateUserCallback(isSuccess: Boolean) {
+        if (isSuccess) {
+            MainActivity.launch(binding.root.context)
+        } else {
+            binding.nextButton.setProgressVisible(false)
         }
     }
 

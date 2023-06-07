@@ -6,15 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.R
 import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.registerOutblock
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.usernameVerify
 import io.outblock.lilico.utils.viewModelIOScope
+import java.util.Locale
 
 class WalletCreateUsernameViewModel : ViewModel() {
 
     val usernameStateLiveData = MutableLiveData<Pair<Boolean, String>>()
+    val createUserLiveData = MutableLiveData<Boolean>()
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -32,6 +35,13 @@ class WalletCreateUsernameViewModel : ViewModel() {
 
         handler.removeCallbacks(usernameCheckTask)
         handler.postDelayed(usernameCheckTask, 500)
+    }
+
+    fun createUser(username: String) {
+        viewModelIOScope(this) {
+            val isSuccess = registerOutblock(username.lowercase(Locale.getDefault()))
+            createUserLiveData.postValue(isSuccess)
+        }
     }
 
     private fun verifyUsernameRemote() {

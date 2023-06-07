@@ -10,13 +10,17 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarHeight
 import io.outblock.lilico.base.fragment.BaseFragment
 import io.outblock.lilico.databinding.FragmentWalletBinding
+import io.outblock.lilico.page.dialog.common.BackupTipsDialog
 import io.outblock.lilico.page.scan.dispatchScanResult
 import io.outblock.lilico.page.wallet.model.WalletFragmentModel
 import io.outblock.lilico.page.wallet.presenter.WalletFragmentPresenter
 import io.outblock.lilico.page.wallet.presenter.WalletHeaderPlaceholderPresenter
 import io.outblock.lilico.page.wallet.presenter.WalletHeaderPresenter
+import io.outblock.lilico.utils.isBackupGoogleDrive
+import io.outblock.lilico.utils.isBackupManually
 import io.outblock.lilico.utils.launch
 import io.outblock.lilico.utils.registerBarcodeLauncher
+import io.outblock.lilico.utils.uiScope
 
 class WalletFragment : BaseFragment() {
 
@@ -52,6 +56,12 @@ class WalletFragment : BaseFragment() {
             headerLiveData.observe(viewLifecycleOwner) { headerModel ->
                 headerPresenter.bind(headerModel)
                 headerPlaceholderPresenter.bind(headerModel == null)
+            }
+        }
+
+        uiScope {
+            if (!isBackupGoogleDrive() && !isBackupManually()) {
+                BackupTipsDialog.show(childFragmentManager)
             }
         }
     }
