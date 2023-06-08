@@ -22,6 +22,7 @@ import io.outblock.lilico.page.swap.SwapActivity
 import io.outblock.lilico.page.token.addtoken.AddTokenActivity
 import io.outblock.lilico.page.transaction.record.TransactionRecordActivity
 import io.outblock.lilico.page.wallet.WalletFragmentViewModel
+import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
@@ -35,6 +36,8 @@ class WalletHeaderPresenter(
     private val binding by lazy { LayoutWalletHeaderBinding.bind(view) }
 
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[WalletFragmentViewModel::class.java] }
+
+    private val activity by lazy { findActivity(view) as? FragmentActivity }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: WalletHeaderModel?) {
@@ -59,6 +62,7 @@ class WalletHeaderPresenter(
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
             swapButton.setOnClickListener { SwapActivity.launch(view.context) }
             stackingButton.setOnClickListener { openStakingPage(view.context) }
+            buyButton.setOnClickListener { activity?.let { SwapDialog.show(it.supportFragmentManager) } }
 
             hideButton.setOnClickListener {
                 uiScope {
