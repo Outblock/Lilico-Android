@@ -2,7 +2,7 @@ package io.outblock.lilico.page.dialog.processing.send
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
@@ -34,8 +34,8 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
 
     fun load() {
         viewModelIOScope(this) {
-            userInfoCache().read()?.let { userInfo ->
-                WalletManager.wallet()?.walletAddress()?.let {
+            AccountManager.userInfo()?.let { userInfo ->
+                WalletManager.wallet()?.wallets?.first()?.blockchain?.first()?.address?.let {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }

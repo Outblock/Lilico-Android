@@ -12,7 +12,7 @@ import com.nftco.flow.sdk.SignatureAlgorithm
 import com.nftco.flow.sdk.cadence.TYPE_STRING
 import com.nftco.flow.sdk.crypto.Crypto
 import com.nftco.flow.sdk.flowTransaction
-import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
@@ -41,7 +41,7 @@ class ClaimDomainViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            userInfoCache().read()?.username?.let { usernameLiveData.postValue(it) }
+            AccountManager.userInfo()?.username?.let { usernameLiveData.postValue(it) }
         }
     }
 
@@ -63,7 +63,7 @@ class ClaimDomainViewModel : ViewModel() {
 
     private fun buildPayerSignable(prepare: ClaimDomainPrepare): PayerSignable {
         updateSecurityProvider()
-        val walletAddress = WalletManager.selectedWalletAddress().orEmpty().toAddress()
+        val walletAddress = WalletManager.selectedWalletAddress().toAddress()
         val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress))
             ?: throw RuntimeException("get wallet account error")
         return flowTransaction {

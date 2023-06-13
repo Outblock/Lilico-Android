@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.FragmentWalletBinding
 import io.outblock.lilico.firebase.analytics.reportEvent
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.page.main.presenter.openDrawerLayout
@@ -71,7 +71,7 @@ class WalletFragmentPresenter(
 
     private fun bindAvatar() {
         ioScope {
-            val userInfo = userInfoCache().read() ?: return@ioScope
+            val userInfo = AccountManager.userInfo() ?: return@ioScope
             uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
         }
     }

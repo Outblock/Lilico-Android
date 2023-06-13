@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.nftco.flow.sdk.FlowTransactionStatus
-import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
@@ -39,7 +39,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
 
     fun load() {
         viewModelIOScope(this) {
-            userInfoCache().read()?.let { userInfo ->
+            AccountManager.userInfo()?.let { userInfo ->
                 WalletManager.wallet()?.wallets?.first()?.blockchain?.first()?.address?.let {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }

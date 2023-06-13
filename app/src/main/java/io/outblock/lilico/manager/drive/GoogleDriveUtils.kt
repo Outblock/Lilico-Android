@@ -7,11 +7,10 @@ import com.google.api.services.drive.Drive
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.BuildConfig
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.firebase.auth.firebaseUid
+import io.outblock.lilico.manager.account.username
 import io.outblock.lilico.manager.env.EnvKey
 import io.outblock.lilico.utils.Env
-import io.outblock.lilico.utils.getUsername
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.secret.aesDecrypt
@@ -79,7 +78,7 @@ fun deleteMnemonicFromGoogleDrive(driveService: Drive) {
         val driveServiceHelper = DriveServerHelper(driveService)
         val data = existingData(driveService).toMutableList()
         if (data.isNotEmpty()) {
-            val username = userInfoCache().read()?.username
+            val username = username()
             data.removeIf { it.username == username }
 
             driveServiceHelper.writeStringToFile(FILE_NAME, "\"${aesEncrypt(AES_KEY, message = Gson().toJson(data))}\"")
@@ -122,7 +121,7 @@ private fun existingData(driveService: Drive): List<DriveItem> {
 }
 
 private suspend fun addData(data: MutableList<DriveItem>, password: String) {
-    val username = userInfoCache().read()?.username.orEmpty().ifBlank { getUsername() }
+    val username = username()
 
     if (username.isBlank()) {
         throw RuntimeException("username is empty")

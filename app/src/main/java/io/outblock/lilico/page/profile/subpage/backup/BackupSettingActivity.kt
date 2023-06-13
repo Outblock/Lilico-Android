@@ -11,11 +11,22 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.ActivityBackupSettingBinding
-import io.outblock.lilico.manager.drive.*
+import io.outblock.lilico.manager.account.AccountManager
+import io.outblock.lilico.manager.drive.ACTION_GOOGLE_DRIVE_DELETE_FINISH
+import io.outblock.lilico.manager.drive.ACTION_GOOGLE_DRIVE_RESTORE_FINISH
+import io.outblock.lilico.manager.drive.DriveItem
+import io.outblock.lilico.manager.drive.EXTRA_CONTENT
+import io.outblock.lilico.manager.drive.EXTRA_SUCCESS
+import io.outblock.lilico.manager.drive.GoogleDriveAuthActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isBackupGoogleDrive
+import io.outblock.lilico.utils.isBackupManually
+import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.setBackupGoogleDrive
+import io.outblock.lilico.utils.setBackupManually
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.ProgressDialog
 import kotlinx.coroutines.delay
 
@@ -35,7 +46,7 @@ class BackupSettingActivity : BaseActivity() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val data = intent?.getParcelableArrayListExtra<DriveItem>(EXTRA_CONTENT) ?: return
                 ioScope {
-                    setBackupGoogleDrive(data.firstOrNull { it.username.lowercase() == userInfoCache().read()?.username?.lowercase() } != null)
+                    setBackupGoogleDrive(data.firstOrNull { it.username.lowercase() == AccountManager.userInfo()?.username?.lowercase() } != null)
                     delay(100)
                     uiScope {
                         binding.drivePreference.setChecked(isBackupGoogleDrive())

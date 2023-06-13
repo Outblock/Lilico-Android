@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatDelegate
 import io.outblock.lilico.firebase.config.initFirebaseConfig
 import io.outblock.lilico.firebase.firebaseInitialize
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.app.AppLifecycleObserver
 import io.outblock.lilico.manager.app.PageLifecycleObserver
@@ -35,6 +36,7 @@ object LaunchManager {
         PageLifecycleObserver.init(application)
         AppLifecycleObserver.observe()
         safeRun { System.loadLibrary("TrustWalletCore") }
+        ioScope { AccountManager.init() }
         refreshChainNetwork {
             FlowApi.refreshConfig()
             asyncInit()

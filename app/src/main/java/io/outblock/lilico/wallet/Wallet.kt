@@ -7,14 +7,20 @@ import com.google.gson.reflect.TypeToken
 import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.DATA_PATH
+import io.outblock.lilico.utils.getWalletStoreNameAesKey
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.logw
+import io.outblock.lilico.utils.readWalletPassword
+import io.outblock.lilico.utils.saveWalletStoreNameAesKey
 import io.outblock.lilico.utils.secret.aesDecrypt
 import io.outblock.lilico.utils.secret.aesEncrypt
+import io.outblock.lilico.utils.storeWalletPassword
 import wallet.core.jni.CoinType
 import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
 import java.io.File
-import java.util.*
+import java.util.UUID
 
 private val TAG = WalletStore::class.java.simpleName
 
@@ -61,6 +67,8 @@ class WalletStore internal constructor() {
     fun mnemonic(): String = keyStore.decryptMnemonic(password)
 
     fun wallet(): HDWallet = keyStore.wallet(password)
+
+    fun isTemp() = keyStore.name() == TEMP_STORE
 
     private fun generateKeyStore(): StoredKey {
         val uid = uid()

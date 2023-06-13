@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
 import io.outblock.lilico.manager.account.OnWalletDataUpdate
 import io.outblock.lilico.manager.account.WalletFetcher
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
@@ -74,7 +74,7 @@ class DrawerLayoutPresenter(
             val address = WalletManager.selectedWalletAddress()
             drawer.setDrawerLockMode(if (address.isBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
 
-            val userInfo = userInfoCache().read() ?: return@ioScope
+            val userInfo = AccountManager.userInfo() ?: return@ioScope
             val nftCount = NftCache(address).grid().read()?.count ?: 0
             val createTime = ISODateTimeFormat.dateTimeParser().parseDateTime(userInfo.created).toString("yyyy")
             uiScope {

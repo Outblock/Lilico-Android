@@ -38,10 +38,11 @@ suspend fun registerOutblockUser(
 // register one step, create user & create wallet
 suspend fun registerOutblock(
     username: String,
-) = suspendCoroutine<Boolean> { continuation ->
+) = suspendCoroutine { continuation ->
     ioScope {
         registerOutblockUserInternal(username) { isSuccess ->
             if (isSuccess) {
+                // TODO save new account
                 uploadPushToken()
                 createWalletFromServer()
                 Wallet.store().store()
