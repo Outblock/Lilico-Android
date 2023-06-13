@@ -412,4 +412,7 @@
     <string name="root_detection_alert">Root Detection Alert</string>
 
     <string name="notification_channel">Push Notification</string>
+    <string name="accounts">Accounts</string>
+    <string name="create_a_new_account">Create a New Account</string>
+    <string name="add_an_existing_account">Add an Existing Account</string>
 </resources>

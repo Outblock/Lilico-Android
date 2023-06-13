@@ -18,6 +18,7 @@ import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.WalletListData
+import io.outblock.lilico.page.dialog.accounts.AccountSwitchDialog
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
 import io.outblock.lilico.page.main.refreshWalletList
@@ -53,6 +54,7 @@ class DrawerLayoutPresenter(
             scanItem.setOnClickListener { launchClick { barcodeLauncher.launch() } }
             importWalletItem.setOnClickListener { }
             createWalletItem.setOnClickListener { }
+            accountSwitchButton.setOnClickListener { AccountSwitchDialog.show(activity.supportFragmentManager) }
         }
         bindData()
         binding.refreshWalletList()
