@@ -415,4 +415,5 @@
     <string name="accounts">Accounts</string>
     <string name="create_a_new_account">Create a New Account</string>
     <string name="add_an_existing_account">Add an Existing Account</string>
+    <string name="resume_login_error">Encountered a problem, please restart the app</string>
 </resources>

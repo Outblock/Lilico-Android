@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.model.WalletListData
+import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.utils.Env
+import io.outblock.lilico.utils.clearCacheDir
+import io.outblock.lilico.utils.uiScope
 
 object AccountManager {
     private val accounts = mutableListOf<Account>()
@@ -15,6 +19,7 @@ object AccountManager {
     fun add(account: Account) {
         accounts.removeAll { it.userInfo.username == account.userInfo.username }
         accounts.add(account)
+        accounts.forEach { it.isActive = it == account }
         accountsCache().cache(Accounts().apply { addAll(accounts) })
     }
 
@@ -26,6 +31,15 @@ object AccountManager {
         get()?.userInfo = userInfo
         accountsCache().cache(Accounts().apply { addAll(accounts) })
     }
+
+    fun list() = accounts.toList()
+
+    fun switch(account: Account) {
+        // TODO
+        accounts.forEach { it.isActive = it == account }
+        clearCacheDir()
+        uiScope { MainActivity.relaunch(Env.getApp(), true) }
+    }
 }
 
 fun username() = AccountManager.get()!!.userInfo.username
@@ -34,7 +48,7 @@ data class Account(
     @SerializedName("username")
     var userInfo: UserInfoData,
     @SerializedName("isActive")
-    val isActive: Boolean = false,
+    var isActive: Boolean = false,
     @SerializedName("wallet")
     val wallet: WalletListData? = null,
 )

@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.databinding.DialogAccountSwitchBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.page.dialog.accounts.adapter.AccountListAdapter
-import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_USERNAME
+import io.outblock.lilico.page.walletcreate.WalletCreateActivity
 
 class AccountSwitchDialog : BottomSheetDialogFragment() {
 
@@ -26,20 +29,16 @@ class AccountSwitchDialog : BottomSheetDialogFragment() {
 
         binding.newButton.setOnClickListener { dismiss() }
         binding.createButton.setOnClickListener {
+            WalletCreateActivity.launch(requireContext(), step = WALLET_CREATE_STEP_USERNAME)
             dismiss()
         }
 
         with(binding.recyclerView) {
             adapter = this@AccountSwitchDialog.adapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
-        loadAccounts()
-    }
-
-    private fun loadAccounts() {
-        ioScope {
-
-        }
+        adapter.setNewDiffData(AccountManager.list())
     }
 
     companion object {

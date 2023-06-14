@@ -49,6 +49,17 @@ class WalletStore internal constructor() {
         keyStore = keyStore.changeMnemonic(mnemonic, password)
     }
 
+    fun reset(mnemonic: String) {
+        password = password()
+        keyStore = generateKeyStore().changeMnemonic(mnemonic, password)
+        store()
+    }
+
+    fun resume() {
+        password = password()
+        keyStore = generateKeyStore()
+    }
+
     fun store() = apply {
         if (uid().isNullOrBlank()) {
             logw(TAG, "user not sign in, can't store")
