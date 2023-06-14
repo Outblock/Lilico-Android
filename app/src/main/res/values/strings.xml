@@ -380,4 +380,8 @@
     <string name="not_now">Not Now</string>
     <string name="create_account">Create Account</string>
     <string name="suggest_to_backup">Suggest to Backup</string>
+    <string name="link_account">Link Account</string>
+    <string name="link_account_desc">We would like to link your NBATopShot account to your Lilico account</string>
+    <string name="hold_to_link">Hold to Link</string>
+    <string name="work_in_progress">Work in Progress</string>
 </resources>

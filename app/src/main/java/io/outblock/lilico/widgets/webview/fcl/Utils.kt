@@ -1,9 +1,12 @@
 package io.outblock.lilico.widgets.webview.fcl
 
+import android.webkit.WebView
 import com.nftco.flow.sdk.DomainTag
 import com.nftco.flow.sdk.hexToBytes
 import io.outblock.lilico.wallet.removeAddressPrefix
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 import org.tdf.rlp.RLP
 import org.tdf.rlp.RLPCodec
 
@@ -37,3 +40,13 @@ private class AccountProof(
     @RLP(1) val address: ByteArray,
     @RLP(2) val nonce: ByteArray,
 )
+
+fun FclAuthzResponse.toFclDialogModel(webView: WebView): FclDialogModel {
+    return FclDialogModel(
+        signMessage = body.message,
+        cadence = body.cadence,
+        url = webView.url,
+        title = webView.title,
+        logo = config?.app?.icon
+    )
+}

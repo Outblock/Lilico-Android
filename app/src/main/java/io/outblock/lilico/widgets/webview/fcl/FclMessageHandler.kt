@@ -10,11 +10,27 @@ import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
 import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeHttpFunction
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.page.dialog.linkaccount.LINK_ACCOUNT_TAG
+import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.logv
+import io.outblock.lilico.utils.safeRun
+import io.outblock.lilico.utils.toast
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
-import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthzDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
-import io.outblock.lilico.widgets.webview.fcl.model.*
+import io.outblock.lilico.widgets.webview.fcl.dialog.authz.FclAuthzDialog
+import io.outblock.lilico.widgets.webview.fcl.model.AuthzTransaction
+import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
+import io.outblock.lilico.widgets.webview.fcl.model.FclResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclService
+import io.outblock.lilico.widgets.webview.fcl.model.FclSignMessageResponse
+import io.outblock.lilico.widgets.webview.fcl.model.FclSimpleResponse
+import io.outblock.lilico.widgets.webview.fcl.model.toAuthzTransaction
 import java.lang.reflect.Type
 
 private val TAG = FclMessageHandler::class.java.simpleName
@@ -53,7 +69,7 @@ class FclMessageHandler(
         }
 
         this.message = message
-        logd(TAG, "message:$message")
+        logv(TAG, "message:$message")
 
         val basicJson = message.fromJson<Map<String, Any>>(object : TypeToken<Map<String, Any>>() {}.type) ?: return
 
@@ -152,7 +168,7 @@ class FclMessageHandler(
     private fun signAuthz(fcl: FclAuthzResponse) {
         FclAuthzDialog.show(
             activity().supportFragmentManager,
-            FclDialogModel(cadence = fcl.body.cadence, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+            fcl.toFclDialogModel(webView),
         )
         FclAuthzDialog.observe { approve ->
             if (approve) {
@@ -167,7 +183,7 @@ class FclMessageHandler(
     private fun signPayload(fcl: FclAuthzResponse) {
         FclAuthzDialog.show(
             activity().supportFragmentManager,
-            FclDialogModel(cadence = fcl.body.cadence, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+            fcl.toFclDialogModel(webView),
         )
         FclAuthzDialog.observe { approve ->
             readyToSignEnvelope = approve
@@ -251,4 +267,8 @@ private fun FclAuthzResponse.Body.Roles.isSignAuthz(): Boolean {
 
 private fun FclAuthzResponse.Body.Roles.isSignPayload(): Boolean {
     return !payer && authorizer && proposer
+}
+
+fun FclAuthzResponse.isLinkAccount(): Boolean {
+    return body.cadence.trim().startsWith(LINK_ACCOUNT_TAG)
 }
