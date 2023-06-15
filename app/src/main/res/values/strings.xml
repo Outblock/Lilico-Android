@@ -381,7 +381,13 @@
     <string name="create_account">Create Account</string>
     <string name="suggest_to_backup">Suggest to Backup</string>
     <string name="link_account">Link Account</string>
-    <string name="link_account_desc">We would like to link your NBATopShot account to your Lilico account</string>
+    <string name="link_account_desc">We would like to link your %1$s account to your Lilico account</string>
     <string name="hold_to_link">Hold to Link</string>
     <string name="work_in_progress">Work in Progress</string>
+    <string name="account_linking">Account Linking</string>
+    <string name="link_fail">Link Failure</string>
+    <string name="successful">Successful</string>
+    <string name="link_account_success_desc">Now you can find your child account under side menu</string>
+    <string name="try_it_again">Try it again</string>
+
 </resources>
