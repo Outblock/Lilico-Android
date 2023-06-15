@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/deep_bg"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    tools:layout_margin="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/icon_view"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/neutrals11"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundPercent="1"/>
+
+        <TextView
+            android:id="@+id/name_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/pin_button"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Wallet name"/>
+
+        <TextView
+            android:id="@+id/address_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="12dp"
+            android:textColor="@color/text_sub"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/pin_button"
+            app:layout_constraintStart_toEndOf="@id/icon_view"
+            app:layout_constraintTop_toBottomOf="@id/name_view"
+            tools:text="Wallet name"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/pin_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/actionBarItemBackground"
+            android:padding="9dp"
+            android:src="@drawable/ic_pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

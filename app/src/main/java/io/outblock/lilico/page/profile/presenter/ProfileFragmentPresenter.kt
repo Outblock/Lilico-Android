@@ -26,7 +26,7 @@ import io.outblock.lilico.page.profile.subpage.currency.CurrencyListActivity
 import io.outblock.lilico.page.profile.subpage.currency.model.findCurrencyFromFlag
 import io.outblock.lilico.page.profile.subpage.developer.DeveloperModeActivity
 import io.outblock.lilico.page.profile.subpage.theme.ThemeSettingActivity
-import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
+import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccountsActivity
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.extensions.isVisible
@@ -58,7 +58,7 @@ class ProfileFragmentPresenter(
             ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)
         }
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
-        binding.actionGroup.walletButton.setOnClickListener { WalletSettingActivity.launch(context) }
+        binding.actionGroup.walletButton.setOnClickListener { ChildAccountsActivity.launch(context) }
         binding.actionGroup.inboxButton.setOnClickListener { InboxActivity.launch(context) }
         binding.group0.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
         binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }

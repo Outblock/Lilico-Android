@@ -249,6 +249,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".page.profile.subpage.wallet.childaccount.ChildAccountsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".page.component.deeplinking.DeepLinkingActivity"
             android:exported="true"
             android:launchMode="singleTop"

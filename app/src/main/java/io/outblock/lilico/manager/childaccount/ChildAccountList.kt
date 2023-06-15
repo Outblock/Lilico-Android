@@ -10,7 +10,6 @@ import io.outblock.lilico.manager.flowjvm.executeCadence
 import io.outblock.lilico.manager.flowjvm.parseAddressList
 import io.outblock.lilico.utils.ioScope
 
-private const val CACHE_FILE_NAME = "child_account_list"
 
 object ChildAccountList {
     private val accountList = mutableListOf<ChildAccount>()
@@ -33,6 +32,19 @@ object ChildAccountList {
         }
     }
 
+    fun get() = accountList.toList()
+
+    fun togglePin(account: ChildAccount) {
+        val localAccount = accountList.toList().firstOrNull { it.address == account.address } ?: return
+        if (localAccount.pinTime > 0) {
+            localAccount.pinTime = 0
+        } else {
+            localAccount.pinTime = System.currentTimeMillis()
+        }
+
+        cache().cache(ChildAccountCache().apply { addAll(accountList) })
+    }
+
     private fun queryAccountList(): List<String> {
         val result = CADENCE_QUERY_CHILD_ACCOUNT_LIST.executeCadence { arg { address(wallet().orEmpty()) } }
         return result.parseAddressList()
@@ -45,7 +57,7 @@ object ChildAccountList {
 
     private fun cache(): CacheManager<ChildAccountCache> {
         return CacheManager(
-            "${walletCache().read()?.walletAddress()}.$CACHE_FILE_NAME".cacheFile(),
+            "${walletCache().read()?.walletAddress()}.child_account_list".cacheFile(),
             ChildAccountCache::class.java,
         )
     }

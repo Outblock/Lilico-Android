@@ -389,5 +389,8 @@
     <string name="successful">Successful</string>
     <string name="link_account_success_desc">Now you can find your child account under side menu</string>
     <string name="try_it_again">Try it again</string>
+    <string name="linked_account">Linked Account</string>
+
+    <string name="default_child_account_name">Child Account</string>
 
 </resources>
