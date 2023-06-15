@@ -76,10 +76,10 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
             }.show(fragmentManager, "")
         }
 
-        fun dismiss() {
+        fun dismiss(forceDismiss: Boolean = false) {
             val dialog = instance ?: return
             // link account close by he self
-            if (!dialog.isLinkAccount()) {
+            if (!dialog.isLinkAccount() || forceDismiss) {
                 dialog.dismiss()
             }
         }

@@ -85,6 +85,16 @@ internal class FlowAddressRegistry {
                     NETWORK_TESTNET -> "0xddb929038d45d4b3"
                     else -> "0xb78ef7afa52ff906"
                 },
+                "0xMetadataViews" to when (network) {
+                    NETWORK_TESTNET -> "0x631e88ae7f1d7c20"
+                    // TODO
+                    else -> "0x631e88ae7f1d7c20"
+                },
+                "0xHybridCustody" to when (network) {
+                    NETWORK_TESTNET -> "0x96b15ff6dfde11fe"
+                    // TODO
+                    else -> "0x631e88ae7f1d7c20"
+                }
             )
         }
     }
