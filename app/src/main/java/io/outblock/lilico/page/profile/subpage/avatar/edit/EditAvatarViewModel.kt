@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.nftListCache
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.firebase.storage.uploadAvatarToFirebase
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.retrofit
@@ -73,6 +73,6 @@ class EditAvatarViewModel : ViewModel() {
     }
 
     private fun getNftAddress(): String? {
-        return walletCache().read()?.walletAddress()
+        return WalletManager.wallet()?.walletAddress()
     }
 }

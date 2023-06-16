@@ -6,20 +6,12 @@ import io.outblock.lilico.cache.CACHE_WALLET
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
 import io.outblock.lilico.manager.app.chainNetWorkString
-import io.outblock.lilico.manager.app.doNetworkChangeTask
-import io.outblock.lilico.manager.app.networkId
-import io.outblock.lilico.manager.app.refreshChainNetworkSync
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.network.model.WalletListData
-import io.outblock.lilico.page.main.MainActivity
-import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.getSelectedWalletAddress
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.uiScope
-import io.outblock.lilico.utils.updateChainNetworkPreference
 import io.outblock.lilico.utils.updateSelectedWalletAddress
-import kotlinx.coroutines.delay
 
 object WalletManager {
 
@@ -56,8 +48,9 @@ object WalletManager {
         childAccountMap.values.forEach { it.refresh() }
     }
 
-    fun selectedWalletAddress(address: String) {
-        if (selectedWalletAddress == address) return
+    // @return network
+    fun selectedWalletAddress(address: String): String {
+        if (selectedWalletAddress == address) return chainNetWorkString()
 
         selectedWalletAddress = address
         updateSelectedWalletAddress(address)
@@ -72,18 +65,7 @@ object WalletManager {
             data?.network()
         } else walletData.network()
 
-        val network = networkStr ?: chainNetWorkString()
-        if (network != chainNetWorkString()) {
-            updateChainNetworkPreference(networkId(network))
-            ioScope {
-                delay(200)
-                refreshChainNetworkSync()
-                doNetworkChangeTask()
-                uiScope {
-                    MainActivity.relaunch(Env.getApp())
-                }
-            }
-        }
+        return networkStr ?: chainNetWorkString()
     }
 
     fun selectedWalletAddress(): String {

@@ -3,9 +3,9 @@ package io.outblock.lilico.widgets.webview.fcl
 import android.webkit.WebView
 import com.nftco.flow.sdk.FlowAddress
 import com.nftco.flow.sdk.hexToBytes
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logv
 import io.outblock.lilico.utils.uiScope
@@ -36,14 +36,14 @@ fun WebView?.postAuthnViewReadyResponse(fcl: FclAuthnResponse, address: String) 
 
 fun WebView?.postPreAuthzResponse() {
     ioScope {
-        val address = walletCache().read()?.walletAddress() ?: return@ioScope
+        val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
         postMessage(fclPreAuthzResponse(address))
     }
 }
 
 fun WebView?.postAuthzPayloadSignResponse(fcl: FclAuthzResponse) {
     ioScope {
-        val address = walletCache().read()?.walletAddress() ?: return@ioScope
+        val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
         val signature = hdWallet().signData(fcl.body.message.hexToBytes())
         val keyId = FlowAddress(address).lastBlockAccountKeyId()
         fclAuthzResponse(address, signature, keyId).also { postMessage(it) }
@@ -58,7 +58,7 @@ fun WebView?.postAuthzEnvelopeSignResponse(sign: SignPayerResponse.EnvelopeSigs)
 
 fun WebView?.postSignMessageResponse(fcl: FclSignMessageResponse) {
     ioScope {
-        val address = walletCache().read()?.walletAddress() ?: return@ioScope
+        val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
         fclSignMessageResponse(fcl.body?.message, address).also { postMessage(it) }
     }
 }

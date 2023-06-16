@@ -19,6 +19,10 @@ import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
 import io.outblock.lilico.manager.app.NETWORK_NAME_MAINNET
 import io.outblock.lilico.manager.app.NETWORK_NAME_SANDBOX
 import io.outblock.lilico.manager.app.NETWORK_NAME_TESTNET
+import io.outblock.lilico.manager.app.chainNetWorkString
+import io.outblock.lilico.manager.app.doNetworkChangeTask
+import io.outblock.lilico.manager.app.networkId
+import io.outblock.lilico.manager.app.refreshChainNetworkSync
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.model.WalletData
@@ -30,6 +34,8 @@ import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.utils.updateChainNetworkPreference
+import kotlinx.coroutines.delay
 
 
 enum class HomeTab(val index: Int) {
@@ -163,7 +169,22 @@ private fun View.setupWalletItem(data: WalletItemData?, network: String? = null)
     }
 
     setOnClickListener {
-        WalletManager.selectedWalletAddress(data.address)
-        MainActivity.relaunch(Env.getApp())
+        val newNetwork = WalletManager.selectedWalletAddress(data.address)
+        if (newNetwork != chainNetWorkString()) {
+            // network change
+            if (network != chainNetWorkString()) {
+                updateChainNetworkPreference(networkId(newNetwork))
+                ioScope {
+                    delay(200)
+                    refreshChainNetworkSync()
+                    doNetworkChangeTask()
+                    uiScope {
+                        MainActivity.relaunch(Env.getApp())
+                    }
+                }
+            }
+        } else {
+            MainActivity.relaunch(Env.getApp())
+        }
     }
 }

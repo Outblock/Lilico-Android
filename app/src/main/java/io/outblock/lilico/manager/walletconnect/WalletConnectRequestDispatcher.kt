@@ -13,13 +13,13 @@ import com.nftco.flow.sdk.hexToBytes
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.app.AppLifecycleObserver
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.flowjvm.lastBlockAccountKeyId
 import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
 import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
 import io.outblock.lilico.manager.flowjvm.transaction.Signable
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.manager.walletconnect.model.Identity
 import io.outblock.lilico.manager.walletconnect.model.PollingData
 import io.outblock.lilico.manager.walletconnect.model.PollingResponse
@@ -67,7 +67,7 @@ suspend fun WCRequest.dispatch() {
 }
 
 private fun WCRequest.respondAuthn() {
-    val address = walletCache().read()?.walletAddress() ?: return
+    val address = WalletManager.wallet()?.walletAddress() ?: return
     val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"), isFromFclSdk())
@@ -99,7 +99,7 @@ private suspend fun WCRequest.respondAuthz() {
 
         FclAuthzDialog.observe { isApprove ->
             ioScope {
-                val address = walletCache().read()?.walletAddress() ?: return@ioScope
+                val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
                 val signature = hdWallet().signData(message.hexToBytes())
                 val keyId = FlowAddress(address).lastBlockAccountKeyId()
 
@@ -113,7 +113,7 @@ private suspend fun WCRequest.respondAuthz() {
 
 
 private fun WCRequest.respondPreAuthz() {
-    val walletAddress = walletCache().read()?.walletAddress() ?: return
+    val walletAddress = WalletManager.wallet()?.walletAddress() ?: return
     val payerAddress = if (AppConfig.isFreeGas()) AppConfig.payer().address else walletAddress
     val response = PollingResponse(
         status = ResponseStatus.APPROVED,
@@ -144,7 +144,7 @@ private fun WCRequest.respondPreAuthz() {
 
 private suspend fun WCRequest.respondUserSign() {
     val activity = topActivity() ?: return
-    val address = walletCache().read()?.walletAddress() ?: return
+    val address = WalletManager.wallet()?.walletAddress() ?: return
     val param = gson().fromJson<List<SignableMessage>>(params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
     val message = param?.message ?: return
     uiScope {
@@ -198,7 +198,7 @@ private suspend fun WCRequest.respondSignProposer() {
 
     logd(TAG, "respondSignProposer param:${params}")
     val signable = params.toSignables(gson())
-    val address = walletCache().read()?.walletAddress() ?: return
+    val address = WalletManager.wallet()?.walletAddress() ?: return
 
     FclAuthzDialog.show(
         activity.supportFragmentManager,

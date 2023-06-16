@@ -3,7 +3,6 @@ package io.outblock.lilico.page.token.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.transferRecordCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.Balance
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.OnBalanceUpdate
@@ -13,6 +12,7 @@ import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.flowscan.contractId
 import io.outblock.lilico.network.model.CryptowatchSummaryData
@@ -144,7 +144,7 @@ class TokenDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate, OnT
             }
 
             val service = retrofit().create(ApiService::class.java)
-            val walletAddress = walletCache().read()?.walletAddress() ?: return@viewModelIOScope
+            val walletAddress = WalletManager.wallet()?.walletAddress() ?: return@viewModelIOScope
             val resp = service.getTransferRecordByToken(walletAddress, coin.contractId(), limit = 3)
             val data = resp.data?.transactions.orEmpty()
             transferListLiveData.postValue(data)

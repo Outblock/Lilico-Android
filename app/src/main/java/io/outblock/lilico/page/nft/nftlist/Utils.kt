@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import io.outblock.lilico.cache.NftSelections
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftlist.model.*
 import java.net.URLEncoder
@@ -97,7 +97,7 @@ fun nftWalletAddress(): String {
 //    if (BuildConfig.DEBUG) {
 //        return "0x95601dba5c2506eb"
 //    }
-    return walletCache().read()?.walletAddress().orEmpty()
+    return WalletManager.wallet()?.walletAddress().orEmpty()
 }
 
 fun Nft.isDomain() = media?.firstOrNull { it.uri.contains("flowns.org") && it.uri.contains(".meow") } != null

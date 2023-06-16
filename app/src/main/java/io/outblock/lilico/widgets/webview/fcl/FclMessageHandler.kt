@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
 import io.outblock.lilico.manager.flowjvm.transaction.SignPayerResponse
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.functions.FUNCTION_SIGN_AS_PAYER
 import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.page.dialog.linkaccount.LINK_ACCOUNT_TAG
@@ -44,7 +44,7 @@ class FclMessageHandler(
 ) {
     private fun activity() = findActivity(webView) as FragmentActivity
 
-    private fun wallet() = walletCache().read()?.walletAddress()
+    private fun wallet() = WalletManager.wallet()?.walletAddress()
 
     private var message: String = ""
 

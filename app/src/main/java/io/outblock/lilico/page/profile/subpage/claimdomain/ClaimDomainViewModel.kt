@@ -3,16 +3,28 @@ package io.outblock.lilico.page.profile.subpage.claimdomain
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
-import com.nftco.flow.sdk.*
+import com.nftco.flow.sdk.FlowAddress
+import com.nftco.flow.sdk.FlowArgument
+import com.nftco.flow.sdk.FlowTransaction
+import com.nftco.flow.sdk.FlowTransactionStatus
+import com.nftco.flow.sdk.HashAlgorithm
+import com.nftco.flow.sdk.SignatureAlgorithm
 import com.nftco.flow.sdk.cadence.TYPE_STRING
 import com.nftco.flow.sdk.crypto.Crypto
+import com.nftco.flow.sdk.flowTransaction
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.flowjvm.FlowApi
-import io.outblock.lilico.manager.flowjvm.transaction.*
+import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
+import io.outblock.lilico.manager.flowjvm.transaction.PayerSignable
+import io.outblock.lilico.manager.flowjvm.transaction.ProposalKey
+import io.outblock.lilico.manager.flowjvm.transaction.Singature
+import io.outblock.lilico.manager.flowjvm.transaction.Voucher
+import io.outblock.lilico.manager.flowjvm.transaction.encodeTransactionPayload
+import io.outblock.lilico.manager.flowjvm.transaction.updateSecurityProvider
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.ClaimDomainPrepare
 import io.outblock.lilico.network.retrofit
@@ -51,7 +63,7 @@ class ClaimDomainViewModel : ViewModel() {
 
     private fun buildPayerSignable(prepare: ClaimDomainPrepare): PayerSignable {
         updateSecurityProvider()
-        val walletAddress = walletCache().read()?.walletAddress().orEmpty().toAddress()
+        val walletAddress = WalletManager.wallet()?.walletAddress().orEmpty().toAddress()
         val account = FlowApi.get().getAccountAtLatestBlock(FlowAddress(walletAddress))
             ?: throw RuntimeException("get wallet account error")
         return flowTransaction {

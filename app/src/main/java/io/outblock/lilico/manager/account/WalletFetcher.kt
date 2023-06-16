@@ -1,6 +1,5 @@
 package io.outblock.lilico.manager.account
 
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.WalletListData
@@ -23,7 +22,7 @@ object WalletFetcher {
     suspend fun fetch(useCache: Boolean = true) {
         ioScope {
             if (useCache) {
-                walletCache().read()?.let { dispatchListeners(it) }
+                WalletManager.wallet()?.let { dispatchListeners(it) }
             }
             while (true) {
                 runCatching {

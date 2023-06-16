@@ -1,7 +1,7 @@
 package io.outblock.lilico.page.profile.subpage.claimdomain
 
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.address.FlowDomainServer
 import io.outblock.lilico.page.address.queryAddressBookFromBlockchain
 import io.outblock.lilico.utils.ioScope
@@ -21,7 +21,7 @@ fun observeMeowDomainClaimedStateChange(listener: MeowDomainClaimedStateChangeLi
 fun checkMeowDomainClaimed() {
     ioScope {
         val username = userInfoCache().read()?.username ?: return@ioScope
-        val walletAddress = walletCache().read()?.walletAddress() ?: return@ioScope
+        val walletAddress = WalletManager.wallet()?.walletAddress() ?: return@ioScope
         val contact = queryAddressBookFromBlockchain(username, FlowDomainServer.MEOW) ?: return@ioScope
         setMeowDomainClaimed(contact.address == walletAddress)
         dispatchListeners(contact.address == walletAddress)

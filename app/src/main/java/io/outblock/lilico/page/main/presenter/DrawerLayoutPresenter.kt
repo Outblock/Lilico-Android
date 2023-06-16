@@ -10,8 +10,8 @@ import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
 import io.outblock.lilico.page.main.refreshWalletList
@@ -60,7 +60,7 @@ class DrawerLayoutPresenter(
 
     private fun bindData() {
         ioScope {
-            val address = walletCache().read()?.walletAddress()
+            val address = WalletManager.wallet()?.walletAddress()
             drawer.setDrawerLockMode(if (address.isNullOrBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
             address ?: return@ioScope
 

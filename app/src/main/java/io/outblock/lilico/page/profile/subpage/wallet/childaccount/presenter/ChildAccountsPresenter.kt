@@ -3,9 +3,9 @@ package io.outblock.lilico.page.profile.subpage.wallet.childaccount.presenter
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.ActivityChildAccountsBinding
 import io.outblock.lilico.manager.childaccount.ChildAccount
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
 import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccountsActivity
 import io.outblock.lilico.page.profile.subpage.wallet.childaccount.adapter.ChildAccountListAdapter
@@ -35,7 +35,7 @@ class ChildAccountsPresenter(
             iconView.setImageResource(R.drawable.ic_coin_flow)
             nameView.setText(R.string.wallet)
             ioScope {
-                val address = walletCache().read()?.walletAddress() ?: return@ioScope
+                val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
                 uiScope { addressView.text = address }
             }
 

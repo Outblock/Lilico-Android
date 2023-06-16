@@ -2,7 +2,6 @@ package io.outblock.lilico.page.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.account.Balance
 import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.account.OnBalanceUpdate
@@ -18,6 +17,7 @@ import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.price.CurrencyUpdateListener
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
@@ -101,7 +101,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     private suspend fun loadWallet() {
-        if (!walletCache().isCacheExist()) {
+        if (WalletManager.wallet() == null) {
             headerLiveData.postValue(null)
         }
         WalletFetcher.fetch()

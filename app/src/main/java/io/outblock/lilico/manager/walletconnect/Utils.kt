@@ -5,7 +5,7 @@ import com.nftco.flow.sdk.bytesToHex
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.manager.walletconnect.model.WCRequest
 import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.logd
@@ -14,7 +14,7 @@ import io.outblock.lilico.utils.loge
 private const val TAG = "WalletConnectUtils"
 
 fun Sign.Model.SessionProposal.approveSession() {
-    val walletAddress = walletCache().read()?.walletAddress() ?: return
+    val walletAddress = WalletManager.wallet()?.walletAddress() ?: return
 
     val namespaces = requiredNamespaces.map { item ->
         val caip2Namespace = item.key

@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.DialogSendNftAddressBinding
 import io.outblock.lilico.firebase.analytics.reportEvent
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookFragment
 import io.outblock.lilico.page.address.AddressBookViewModel
@@ -67,7 +67,7 @@ class NftSendAddressDialog : BottomSheetDialogFragment() {
     private fun onAddressSelected(contact: AddressBookContact?) {
         contact ?: return
         ioScope {
-            val wallet = walletCache().read() ?: return@ioScope
+            val wallet = WalletManager.wallet() ?: return@ioScope
             val nft = this@NftSendAddressDialog.nft ?: return@ioScope
             uiScope {
                 val activity = requireActivity()

@@ -3,7 +3,7 @@ package io.outblock.lilico.page.nft.nftlist.utils
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.*
 import io.outblock.lilico.network.retrofit
@@ -37,7 +37,7 @@ object NftFavoriteManager {
             dispatchListener(favorites.apply { add(0, nft) })
             cache().cacheSync(FavoriteCache(favorites))
 
-            val address = walletCache().read()?.walletAddress() ?: return@ioScope
+            val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
             val resp = service.addNftFavorite(AddNftFavoriteRequest(address, nft.contractName().orEmpty(), nft.tokenId()))
             if (resp.status == 200) {
                 fetchFromServer()

@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.DialogSwapCoinListBinding
 import io.outblock.lilico.manager.app.isTestnet
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.functions.FUNCTION_MOON_PAY_SIGN
 import io.outblock.lilico.network.functions.executeHttpFunction
 import io.outblock.lilico.utils.extensions.openInSystemBrowser
@@ -74,7 +74,7 @@ internal class SwapViewModel : ViewModel() {
 
     fun load() {
         viewModelIOScope(this) {
-            address = walletCache().read()?.walletAddress()!!
+            address = WalletManager.wallet()?.walletAddress()!!
             val response = executeHttpFunction(FUNCTION_MOON_PAY_SIGN, """{"url":"${buildMoonPayUrl()}"}""")
             logd(TAG, "moon pay response:$response")
             moonPayUrl = Gson().fromJson(response, MoonPaySignResponse::class.java).data?.url
