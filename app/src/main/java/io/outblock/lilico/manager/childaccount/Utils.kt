@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 import com.nftco.flow.sdk.FlowScriptResponse
+import io.outblock.lilico.R
+import io.outblock.lilico.utils.extensions.res2String
 
 class DataClasses {
     data class Root(
@@ -82,11 +84,9 @@ fun FlowScriptResponse.parseAccountMetas(): List<ChildAccount> {
             }
         }
 
-        // 在此处，变量address，name和icon应该已经被正确地赋值
-        println("address: $address, name: $name, icon: $icon")
         ChildAccount(
             address = address,
-            name = name.orEmpty(),
+            name = name ?: R.string.default_child_account_name.res2String(),
             icon = icon.orEmpty(),
         )
     }

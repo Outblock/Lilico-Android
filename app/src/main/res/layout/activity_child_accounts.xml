@@ -47,7 +47,7 @@
                         android:layout_height="36dp"
                         android:scaleType="centerCrop"
                         android:layout_marginStart="18dp"
-                        android:background="@color/neutrals11"
+                        tools:background="@color/neutrals11"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

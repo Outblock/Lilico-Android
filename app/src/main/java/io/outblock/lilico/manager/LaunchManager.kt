@@ -9,7 +9,6 @@ import io.outblock.lilico.manager.account.BalanceManager
 import io.outblock.lilico.manager.app.AppLifecycleObserver
 import io.outblock.lilico.manager.app.PageLifecycleObserver
 import io.outblock.lilico.manager.app.refreshChainNetwork
-import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.config.NftCollectionConfig
@@ -19,6 +18,7 @@ import io.outblock.lilico.manager.nft.NftCollectionStateManager
 import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.service.MessagingService
 import io.outblock.lilico.utils.getThemeMode
@@ -54,7 +54,7 @@ object LaunchManager {
     }
 
     private fun readCache(application: Application) {
-        ChildAccountList.init()
+        WalletManager.init()
         NftCollectionConfig.sync()
         BalanceManager.reload()
         TransactionStateManager.reload()

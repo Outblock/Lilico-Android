@@ -7,10 +7,10 @@ import android.widget.FrameLayout
 import io.outblock.lilico.R
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.DialogLinkAccountBinding
-import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.extensions.setVisible
@@ -81,7 +81,7 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
             defaultLayout.setVisible(false)
             successLayout.setVisible(true)
             successStartButton.setOnClickListener { FclAuthzDialog.dismiss(true) }
-            ChildAccountList.refresh()
+            WalletManager.refreshChildAccount()
         }
     }
 

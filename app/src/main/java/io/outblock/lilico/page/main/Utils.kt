@@ -1,6 +1,11 @@
 package io.outblock.lilico.page.main
 
-import android.R
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable
 import com.airbnb.lottie.LottieProperty
@@ -8,8 +13,21 @@ import com.airbnb.lottie.SimpleColorFilter
 import com.airbnb.lottie.model.KeyPath
 import com.airbnb.lottie.value.LottieValueCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.outblock.lilico.R
+import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.app.NETWORK_NAME_MAINNET
+import io.outblock.lilico.manager.app.NETWORK_NAME_SANDBOX
+import io.outblock.lilico.manager.app.NETWORK_NAME_TESTNET
+import io.outblock.lilico.manager.wallet.WalletManager
+import io.outblock.lilico.network.model.UserInfoData
+import io.outblock.lilico.network.model.WalletData
 import io.outblock.lilico.utils.extensions.colorStateList
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.uiScope
 
 
 enum class HomeTab(val index: Int) {
@@ -38,7 +56,7 @@ private val menuColor by lazy {
 }
 
 fun BottomNavigationView.activeColor(index: Int): Int {
-    return menuColor[index].colorStateList(context)?.getColorForState(intArrayOf(R.attr.state_checked), 0)!!
+    return menuColor[index].colorStateList(context)?.getColorForState(intArrayOf(android.R.attr.state_checked), 0)!!
 }
 
 fun BottomNavigationView.setLottieDrawable(index: Int, isSelected: Boolean, playAnimation: Boolean = false) {
@@ -52,4 +70,89 @@ fun BottomNavigationView.setLottieDrawable(index: Int, isSelected: Boolean, play
         )
         if (playAnimation) playAnimation()
     }
+}
+
+fun LayoutMainDrawerLayoutBinding.refreshWalletList() {
+    ioScope {
+        val userInfo = userInfoCache().read() ?: return@ioScope
+        uiScope {
+            walletListWrapper.removeAllViews()
+
+            val wallets = WalletManager.wallet()?.wallets ?: return@uiScope
+            val list = mutableListOf<WalletData?>().apply {
+                add(wallets.firstOrNull { it.network() == NETWORK_NAME_MAINNET })
+                add(wallets.firstOrNull { it.network() == NETWORK_NAME_TESTNET })
+                add(wallets.firstOrNull { it.network() == NETWORK_NAME_SANDBOX })
+            }.filterNotNull()
+
+            if (list.isEmpty()) {
+                return@uiScope
+            }
+
+            list.forEach { wallet ->
+                val itemView = LayoutInflater.from(root.context).inflate(R.layout.item_wallet_list, walletListWrapper, false)
+                (itemView as ViewGroup).setupWallet(wallet, userInfo)
+                walletListWrapper.addView(itemView)
+            }
+        }
+    }
+}
+
+private fun ViewGroup.setupWallet(wallet: WalletData, userInfo: UserInfoData) {
+    setupWalletItem(wallet.address()?.walletData(userInfo))
+    val wrapper = findViewById<ViewGroup>(R.id.wallet_wrapper)
+    WalletManager.childAccountList(wallet.address())?.get()?.forEach { childAccount ->
+        val childView = LayoutInflater.from(context).inflate(R.layout.item_wallet_list_child_account, this, false)
+        childAccount.address.walletData(userInfo)?.let { data ->
+            childView.setupWalletItem(data)
+            wrapper.addView(childView)
+        }
+    }
+}
+
+private fun String.walletData(userInfo: UserInfoData): WalletItemData? {
+    val wallet = WalletManager.wallet()?.wallets?.firstOrNull { it.address() == this }
+    return if (wallet == null) {
+        // child account
+        val childAccount = WalletManager.childAccount(this) ?: return null
+        WalletItemData(
+            address = childAccount.address,
+            name = childAccount.name,
+            icon = childAccount.icon,
+            isSelected = WalletManager.selectedWalletAddress() == this
+        )
+    } else {
+        WalletItemData(
+            address = wallet.address().orEmpty(),
+            name = userInfo.username,
+            icon = userInfo.avatar,
+            isSelected = WalletManager.selectedWalletAddress() == this
+        )
+    }
+}
+
+private class WalletItemData(
+    val address: String,
+    val name: String,
+    val icon: String,
+    val isSelected: Boolean,
+)
+
+@SuppressLint("SetTextI18n")
+private fun View.setupWalletItem(data: WalletItemData?) {
+    data ?: return
+    val itemView = findViewById<View>(R.id.wallet_item)
+    val iconView = findViewById<ImageView>(R.id.wallet_icon_view)
+    val nameView = findViewById<TextView>(R.id.wallet_name_view)
+    val addressView = findViewById<TextView>(R.id.wallet_address_view)
+    val selectedView = findViewById<ImageView>(R.id.wallet_selected_view)
+
+
+    iconView.loadAvatar(data.icon)
+    nameView.text = "@${data.name}"
+    addressView.text = data.address
+    selectedView.setVisible(data.isSelected)
+    itemView.setBackgroundResource(if (data.isSelected) R.drawable.bg_wallet_item_selected else R.color.transparent)
+
+    setOnClickListener { }
 }

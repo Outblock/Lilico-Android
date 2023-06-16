@@ -3,7 +3,6 @@ package io.outblock.lilico.manager.app
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.profile.subpage.wallet.queryStorageInfo
 import io.outblock.lilico.utils.logd
@@ -25,7 +24,6 @@ class AppLifecycleObserver : DefaultLifecycleObserver {
         isForeground = true
         checkMeowDomainClaimed()
         queryStorageInfo()
-        ChildAccountList.refresh()
     }
 
     private fun onAppToBackground() {
