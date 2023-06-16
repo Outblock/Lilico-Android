@@ -103,8 +103,9 @@ class MainActivity : BaseActivity() {
             if (clearTop) {
                 launch(context)
             }
-            INSTANCE?.finish()
-            INSTANCE?.overridePendingTransition(0, 0)
+            val instance = INSTANCE ?: (if (getCurrentActivity() is MainActivity) getCurrentActivity() else null)
+            instance?.finish()
+            instance?.overridePendingTransition(0, 0)
             launch(context)
             (context as? Activity)?.overridePendingTransition(0, 0)
         }

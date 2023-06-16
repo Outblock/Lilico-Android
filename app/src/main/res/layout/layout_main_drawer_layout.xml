@@ -72,7 +72,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
-        app:cardBackgroundColor="@color/neutrals12"
+        app:cardBackgroundColor="@color/deep_bg"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/create_wallet_item"
@@ -81,8 +81,11 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_16dp"
+            android:backgroundTint="@color/neutrals12"
             app:layout_constraintBottom_toTopOf="@id/create_wallet_item"
-            app:layout_constraintTop_toBottomOf="@id/scan_item">
+            app:layout_constraintTop_toBottomOf="@id/scan_item"
+            tools:layout_height="100dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/wallet_list_wrapper"

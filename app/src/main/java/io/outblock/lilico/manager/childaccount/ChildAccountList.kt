@@ -3,12 +3,14 @@ package io.outblock.lilico.manager.childaccount
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
-import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_LIST
 import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_META
 import io.outblock.lilico.manager.flowjvm.executeCadence
-import io.outblock.lilico.manager.flowjvm.parseAddressList
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import java.lang.ref.WeakReference
 
+
+private val TAG = ChildAccountList::class.java.simpleName
 
 class ChildAccountList(
     val address: String,
@@ -41,13 +43,16 @@ class ChildAccountList(
             accountList.clear()
             accountList.addAll(accounts)
             cache().cache(ChildAccountCache().apply { addAll(accountList) })
+            dispatchAccountUpdateListener(address, accountList.toList())
+
+            logd(TAG, "refresh: $address, ${accountList.size}")
         }
     }
 
-    private fun queryAccountList(): List<String> {
-        val result = CADENCE_QUERY_CHILD_ACCOUNT_LIST.executeCadence { arg { address(address) } }
-        return result.parseAddressList()
-    }
+//    private fun queryAccountList(): List<String> {
+//        val result = CADENCE_QUERY_CHILD_ACCOUNT_LIST.executeCadence { arg { address(address) } }
+//        return result.parseAddressList()
+//    }
 
     private fun queryAccountMeta(address: String): List<ChildAccount>? {
         val result = CADENCE_QUERY_CHILD_ACCOUNT_META.executeCadence { arg { address(address) } }
@@ -60,7 +65,25 @@ class ChildAccountList(
             ChildAccountCache::class.java,
         )
     }
+
+    companion object {
+        private val accountUpdateListener = mutableListOf<WeakReference<ChildAccountUpdateListenerCallback>>()
+
+        fun addAccountUpdateListener(listener: ChildAccountUpdateListenerCallback) {
+            accountUpdateListener.add(WeakReference(listener))
+        }
+
+        fun dispatchAccountUpdateListener(parentAddress: String, accounts: List<ChildAccount>) {
+            accountUpdateListener.forEach { it.get()?.onChildAccountUpdate(parentAddress, accounts) }
+            accountUpdateListener.removeAll { it.get() == null }
+        }
+    }
 }
+
+interface ChildAccountUpdateListenerCallback {
+    fun onChildAccountUpdate(parentAddress: String, accounts: List<ChildAccount>)
+}
+
 
 data class ChildAccount(
     @SerializedName("address")

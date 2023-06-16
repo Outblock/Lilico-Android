@@ -11,6 +11,9 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.childaccount.ChildAccount
+import io.outblock.lilico.manager.childaccount.ChildAccountList
+import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
@@ -29,7 +32,7 @@ import org.joda.time.format.ISODateTimeFormat
 class DrawerLayoutPresenter(
     private val drawer: DrawerLayout,
     private val binding: LayoutMainDrawerLayoutBinding,
-) : BasePresenter<MainDrawerLayoutModel> {
+) : BasePresenter<MainDrawerLayoutModel>, ChildAccountUpdateListenerCallback {
 
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
 
@@ -51,6 +54,8 @@ class DrawerLayoutPresenter(
         bindData()
         binding.refreshWalletList()
         barcodeLauncher = activity.registerBarcodeLauncher { result -> dispatchScanResult(activity, result.orEmpty()) }
+
+        ChildAccountList.addAccountUpdateListener(this)
     }
 
     override fun bind(model: MainDrawerLayoutModel) {
@@ -87,6 +92,10 @@ class DrawerLayoutPresenter(
             super.onDrawerOpened(drawerView)
             bindData()
         }
+    }
+
+    override fun onChildAccountUpdate(parentAddress: String, accounts: List<ChildAccount>) {
+        binding.refreshWalletList()
     }
 }
 
