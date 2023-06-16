@@ -22,6 +22,8 @@ import io.outblock.lilico.manager.app.NETWORK_NAME_TESTNET
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.model.WalletData
+import io.outblock.lilico.utils.Env
+import io.outblock.lilico.utils.extensions.capitalizeV2
 import io.outblock.lilico.utils.extensions.colorStateList
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
@@ -99,7 +101,7 @@ fun LayoutMainDrawerLayoutBinding.refreshWalletList() {
 }
 
 private fun ViewGroup.setupWallet(wallet: WalletData, userInfo: UserInfoData) {
-    setupWalletItem(wallet.address()?.walletData(userInfo))
+    setupWalletItem(wallet.address()?.walletData(userInfo), wallet.network())
     val wrapper = findViewById<ViewGroup>(R.id.wallet_wrapper)
     WalletManager.childAccountList(wallet.address())?.get()?.forEach { childAccount ->
         val childView = LayoutInflater.from(context).inflate(R.layout.item_wallet_list_child_account, this, false)
@@ -139,7 +141,7 @@ private class WalletItemData(
 )
 
 @SuppressLint("SetTextI18n")
-private fun View.setupWalletItem(data: WalletItemData?) {
+private fun View.setupWalletItem(data: WalletItemData?, network: String? = null) {
     data ?: return
     val itemView = findViewById<View>(R.id.wallet_item)
     val iconView = findViewById<ImageView>(R.id.wallet_icon_view)
@@ -147,12 +149,21 @@ private fun View.setupWalletItem(data: WalletItemData?) {
     val addressView = findViewById<TextView>(R.id.wallet_address_view)
     val selectedView = findViewById<ImageView>(R.id.wallet_selected_view)
 
-
     iconView.loadAvatar(data.icon)
     nameView.text = "@${data.name}"
     addressView.text = data.address
     selectedView.setVisible(data.isSelected)
     itemView.setBackgroundResource(if (data.isSelected) R.drawable.bg_wallet_item_selected else R.color.transparent)
 
-    setOnClickListener { }
+    if (network != null) {
+        findViewById<TextView>(R.id.wallet_network_view)?.apply {
+            text = network.capitalizeV2()
+            setVisible(true)
+        }
+    }
+
+    setOnClickListener {
+        WalletManager.selectedWalletAddress(data.address)
+        MainActivity.relaunch(Env.getApp())
+    }
 }

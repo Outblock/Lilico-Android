@@ -1,7 +1,15 @@
 package io.outblock.lilico.manager.app
 
 import io.outblock.lilico.manager.config.NftCollectionConfig
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.NETWORK_MAINNET
+import io.outblock.lilico.utils.NETWORK_SANDBOX
+import io.outblock.lilico.utils.NETWORK_TESTNET
+import io.outblock.lilico.utils.cpuScope
+import io.outblock.lilico.utils.getChainNetworkPreference
+import io.outblock.lilico.utils.isDev
+import io.outblock.lilico.utils.isDeveloperModeEnable
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.uiScope
 
 private var network = if (isDev()) NETWORK_TESTNET else NETWORK_TESTNET
 private var isDeveloperMode = false
@@ -32,6 +40,14 @@ fun chainNetWorkString(): String {
         isTestnet() -> NETWORK_NAME_TESTNET
         isSandboxNet() -> NETWORK_NAME_SANDBOX
         else -> NETWORK_NAME_MAINNET
+    }
+}
+
+fun networkId(network: String): Int {
+    return when (network) {
+        NETWORK_NAME_TESTNET -> NETWORK_TESTNET
+        NETWORK_NAME_SANDBOX -> NETWORK_SANDBOX
+        else -> NETWORK_MAINNET
     }
 }
 

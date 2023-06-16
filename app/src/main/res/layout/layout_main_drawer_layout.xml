@@ -10,7 +10,6 @@
     android:clickable="true"
     android:paddingHorizontal="12dp"
     android:paddingVertical="28dp"
-    tools:background="@color/neutrals10"
     tools:layout_width="300dp">
 
     <View
@@ -68,20 +67,30 @@
         app:drawer_item_text="@string/scan_qr_code"
         app:layout_constraintTop_toBottomOf="@id/header_bg"/>
 
-    <androidx.core.widget.NestedScrollView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/neutrals12"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/create_wallet_item"
         app:layout_constraintTop_toBottomOf="@id/scan_item">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/wallet_list_wrapper"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-    </androidx.core.widget.NestedScrollView>
+            app:layout_constraintBottom_toTopOf="@id/create_wallet_item"
+            app:layout_constraintTop_toBottomOf="@id/scan_item">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/wallet_list_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
     <io.outblock.lilico.page.main.widget.DrawerItem
         android:id="@+id/create_wallet_item"

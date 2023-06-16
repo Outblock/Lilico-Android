@@ -11,7 +11,7 @@ import io.outblock.lilico.utils.ioScope
 
 
 class ChildAccountList(
-    private val address: String,
+    val address: String,
 ) {
     private val accountList = mutableListOf<ChildAccount>()
 
