@@ -7,12 +7,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.manager.walletconnect.getWalletConnectPendingRequests
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
@@ -28,6 +30,7 @@ import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.wallet.toAddress
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class WalletHeaderPresenter(
     private val view: View,
@@ -45,10 +48,13 @@ class WalletHeaderPresenter(
         model ?: return
 
         with(binding) {
-            walletName.text = "Wallet"
+            walletName.text = if (WalletManager.isChildAccountSelected()) {
+                WalletManager.childAccount(WalletManager.selectedWalletAddress())?.name ?: R.string.default_child_account_name.res2String()
+            } else R.string.wallet.res2String()
+
             uiScope {
                 val isHideBalance = isHideWalletBalance()
-                address.diffSetText(if (isHideBalance) "******************" else model.walletList.walletAddress()?.toAddress())
+                address.diffSetText(if (isHideBalance) "******************" else WalletManager.selectedWalletAddress().toAddress())
                 balanceNum.diffSetText(if (isHideBalance) "****" else model.balance.formatPrice(includeSymbol = true))
                 hideButton.setImageResource(if (isHideBalance) R.drawable.ic_eye_off else R.drawable.ic_eye_on)
             }
@@ -69,6 +75,17 @@ class WalletHeaderPresenter(
                     setHideWalletBalance(!isHideWalletBalance())
                     bind(model)
                     viewModel.onBalanceHideStateUpdate()
+                }
+            }
+
+            childAccountIconView.setVisible(WalletManager.isChildAccountSelected())
+            if (WalletManager.isChildAccountSelected()) {
+                val childAccount = WalletManager.childAccount(WalletManager.selectedWalletAddress())
+                if (childAccount?.icon.isNullOrBlank()) {
+                    childAccountIconView.setVisible(false)
+                } else {
+                    Glide.with(childAccountIconView)
+                        .load(childAccount?.icon).transform(BlurTransformation(3, 5)).into(childAccountIconView)
                 }
             }
 

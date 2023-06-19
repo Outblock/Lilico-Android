@@ -30,6 +30,9 @@ object WalletManager {
 
     fun wallet() = wallet
 
+    fun isChildAccountSelected() =
+        if (wallet?.wallets.isNullOrEmpty()) false else wallet?.wallets?.firstOrNull { it.address() == selectedWalletAddress } == null
+
     fun childAccountList(walletAddress: String? = null): ChildAccountList? {
         val address = (walletAddress ?: wallet?.walletAddress()) ?: return null
         return childAccountMap[address]
