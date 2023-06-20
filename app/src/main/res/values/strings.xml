@@ -386,11 +386,18 @@
     <string name="work_in_progress">Work in Progress</string>
     <string name="account_linking">Account Linking</string>
     <string name="link_fail">Link Failure</string>
+    <string name="unlink_fail">Unlink fail</string>
     <string name="successful">Successful</string>
     <string name="link_account_success_desc">Now you can find your child account under side menu</string>
     <string name="try_it_again">Try it again</string>
     <string name="linked_account">Linked Account</string>
 
     <string name="default_child_account_name">Child Account</string>
+    <string name="description">Description</string>
+    <string name="unlink_wallet">Unlink Wallet</string>
+    <string name="unlink_confirmation">Unlink Confirmation</string>
+    <string name="unlink_account">Unlink Account</string>
+    <string name="unlink_account_desc">Unlink your account, the main wallet will not have any access to this account anymore.</string>
+    <string name="hold_to_unlink">Hold to unlink</string>
 
 </resources>

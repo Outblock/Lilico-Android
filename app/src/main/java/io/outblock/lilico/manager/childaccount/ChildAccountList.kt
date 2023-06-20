@@ -1,5 +1,6 @@
 package io.outblock.lilico.manager.childaccount
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
@@ -7,6 +8,7 @@ import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_META
 import io.outblock.lilico.manager.flowjvm.executeCadence
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
+import kotlinx.parcelize.Parcelize
 import java.lang.ref.WeakReference
 
 
@@ -85,6 +87,7 @@ interface ChildAccountUpdateListenerCallback {
 }
 
 
+@Parcelize
 data class ChildAccount(
     @SerializedName("address")
     val address: String,
@@ -94,6 +97,8 @@ data class ChildAccount(
     val icon: String,
     @SerializedName("pinTime")
     var pinTime: Long = 0,
-)
+    @SerializedName("description")
+    val description: String? = null,
+) : Parcelable
 
 private class ChildAccountCache : ArrayList<ChildAccount>()

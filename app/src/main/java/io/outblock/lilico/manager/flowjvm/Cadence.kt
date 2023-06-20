@@ -899,3 +899,15 @@ const val CADENCE_QUERY_CHILD_ACCOUNT_LIST = """
         return manager.getAddresses()
     }
 """
+
+const val CADENCE_UNLINK_CHILD_ACCOUNT = """
+    import HybridCustody from 0xHybridCustody
+
+    transaction(child: Address) {
+        prepare (acct: AuthAccount) {
+            let manager = acct.borrow<&HybridCustody.Manager>(from: HybridCustody.ManagerStoragePath)
+                ?? panic("manager not found")
+            manager.removeChild(addr: child)
+        }
+    }
+"""

@@ -60,18 +60,17 @@ fun FlowScriptResponse.parseAccountMetas(): List<ChildAccount> {
         val address = valueItem.key.value
         var name: String? = null
         var icon: String? = null
+        var description: String? = null
 
         valueItem.value.value?.value?.fields?.forEach { fieldItem ->
             when (fieldItem.name) {
                 "name" -> {
-                    // 这里需要检查value是否是一个JsonPrimitive（对应一个String）
                     if (fieldItem.value.value.isJsonPrimitive) {
                         name = fieldItem.value.value.asString
                     }
                 }
 
                 "thumbnail" -> {
-                    // 这里需要检查value是否是一个JsonObject（对应一个嵌套的对象）
                     if (fieldItem.value.value.isJsonObject) {
                         val thumbnailFields = Gson().fromJson(fieldItem.value.value, DataClasses.FieldContainer::class.java)
                         thumbnailFields.fields?.firstOrNull { it.name == "url" }?.value?.value?.let {
@@ -81,6 +80,12 @@ fun FlowScriptResponse.parseAccountMetas(): List<ChildAccount> {
                         }
                     }
                 }
+
+                "description" -> {
+                    if (fieldItem.value.value.isJsonPrimitive) {
+                        description = fieldItem.value.value.asString
+                    }
+                }
             }
         }
 
@@ -88,6 +93,7 @@ fun FlowScriptResponse.parseAccountMetas(): List<ChildAccount> {
             address = address,
             name = name ?: R.string.default_child_account_name.res2String(),
             icon = icon.orEmpty(),
+            description = description,
         )
     }
 }

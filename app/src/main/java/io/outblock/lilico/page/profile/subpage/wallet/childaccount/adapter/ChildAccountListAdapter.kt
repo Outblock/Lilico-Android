@@ -15,6 +15,7 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemChildAccountListBinding
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccountsViewModel
+import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.ChildAccountDetailActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.findActivity
@@ -42,7 +43,7 @@ private class AccountViewHolder(
 
     init {
         view.setOnClickListener {
-
+            model?.let { ChildAccountDetailActivity.launch(view.context, it) }
         }
 
         binding.pinButton.setOnClickListener { model?.let { viewModel.togglePinAccount(it) } }
