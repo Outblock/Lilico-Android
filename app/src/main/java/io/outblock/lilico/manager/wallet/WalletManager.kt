@@ -52,7 +52,7 @@ object WalletManager {
     }
 
     // @return network
-    fun selectedWalletAddress(address: String): String {
+    fun selectWalletAddress(address: String): String {
         if (selectedWalletAddress == address) return chainNetWorkString()
 
         selectedWalletAddress = address

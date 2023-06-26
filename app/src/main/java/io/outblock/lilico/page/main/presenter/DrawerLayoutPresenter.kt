@@ -65,7 +65,7 @@ class DrawerLayoutPresenter(
 
     private fun bindData() {
         ioScope {
-            val address = WalletManager.wallet()?.walletAddress()
+            val address = WalletManager.selectedWalletAddress()
             drawer.setDrawerLockMode(if (address.isNullOrBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
             address ?: return@ioScope
 

@@ -44,7 +44,7 @@ class FclMessageHandler(
 ) {
     private fun activity() = findActivity(webView) as FragmentActivity
 
-    private fun wallet() = WalletManager.wallet()?.walletAddress()
+    private fun wallet() = WalletManager.selectedWalletAddress()
 
     private var message: String = ""
 

@@ -47,7 +47,7 @@ class ChildAccountUnlinkDialog : BottomSheetDialogFragment() {
 
             ioScope {
                 val userInfo = userInfoCache().read() ?: return@ioScope
-                val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
+                val address = WalletManager.selectedWalletAddress() ?: return@ioScope
 
                 uiScope {
                     walletIcon.loadAvatar(userInfo.avatar)

@@ -169,7 +169,7 @@ private fun View.setupWalletItem(data: WalletItemData?, network: String? = null)
     }
 
     setOnClickListener {
-        val newNetwork = WalletManager.selectedWalletAddress(data.address)
+        val newNetwork = WalletManager.selectWalletAddress(data.address)
         if (newNetwork != chainNetWorkString()) {
             // network change
             if (network != chainNetWorkString()) {

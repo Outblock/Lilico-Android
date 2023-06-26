@@ -31,7 +31,7 @@ class WalletResetConfirmDialog : BottomSheetDialogFragment() {
                 dismiss()
             }
             ioScope {
-                val address = WalletManager.wallet()?.walletAddress()
+                val address = WalletManager.selectedWalletAddress()
                 uiScope { addressTextView.text = "($address)" }
             }
         }

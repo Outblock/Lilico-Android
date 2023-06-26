@@ -66,6 +66,8 @@ class AddressBookPersonPresenter(
         }
 
         view.setOnClickListener {
+
+
             ViewModelProvider(findActivity(view) as FragmentActivity)[SelectSendAddressViewModel::class.java]
                 .onAddressSelectedLiveData.postValue(data)
             when {

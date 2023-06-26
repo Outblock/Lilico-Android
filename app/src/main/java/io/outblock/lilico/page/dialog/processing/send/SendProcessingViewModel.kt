@@ -35,7 +35,7 @@ class SendProcessingViewModel : ViewModel(), OnTransactionStateChange, OnCoinRat
     fun load() {
         viewModelIOScope(this) {
             userInfoCache().read()?.let { userInfo ->
-                WalletManager.wallet()?.wallets?.first()?.blockchain?.first()?.address?.let {
+                WalletManager.wallet()?.walletAddress()?.let {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }

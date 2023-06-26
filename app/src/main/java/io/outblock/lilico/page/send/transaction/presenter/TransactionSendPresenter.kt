@@ -15,6 +15,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutSendAddressSelectBinding
 import io.outblock.lilico.manager.flowjvm.addressVerify
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.AddressBookViewModel
 import io.outblock.lilico.page.address.isAddressBookAutoSearch
@@ -127,6 +128,9 @@ class TransactionSendPresenter(
     }
 
     private fun onAddressSelected(address: AddressBookContact) {
+        if (WalletManager.isChildAccountSelected()) {
+            return
+        }
         SendAmountActivity.launch(activity, address, coinSymbol)
     }
 

@@ -14,7 +14,7 @@ import io.outblock.lilico.utils.loge
 private const val TAG = "WalletConnectUtils"
 
 fun Sign.Model.SessionProposal.approveSession() {
-    val walletAddress = WalletManager.wallet()?.walletAddress() ?: return
+    val walletAddress = WalletManager.selectedWalletAddress() ?: return
 
     val namespaces = requiredNamespaces.map { item ->
         val caip2Namespace = item.key

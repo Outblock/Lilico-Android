@@ -21,7 +21,7 @@ fun observeMeowDomainClaimedStateChange(listener: MeowDomainClaimedStateChangeLi
 fun checkMeowDomainClaimed() {
     ioScope {
         val username = userInfoCache().read()?.username ?: return@ioScope
-        val walletAddress = WalletManager.wallet()?.walletAddress() ?: return@ioScope
+        val walletAddress = WalletManager.selectedWalletAddress() ?: return@ioScope
         val contact = queryAddressBookFromBlockchain(username, FlowDomainServer.MEOW) ?: return@ioScope
         setMeowDomainClaimed(contact.address == walletAddress)
         dispatchListeners(contact.address == walletAddress)

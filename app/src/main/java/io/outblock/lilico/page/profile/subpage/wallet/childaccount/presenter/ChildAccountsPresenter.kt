@@ -35,7 +35,7 @@ class ChildAccountsPresenter(
             iconView.setImageResource(R.drawable.ic_coin_flow)
             nameView.setText(R.string.wallet)
             ioScope {
-                val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
+                val address = WalletManager.selectedWalletAddress() ?: return@ioScope
                 uiScope { addressView.text = address }
             }
 

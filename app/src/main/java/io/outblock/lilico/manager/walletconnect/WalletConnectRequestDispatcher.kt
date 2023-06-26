@@ -67,7 +67,7 @@ suspend fun WCRequest.dispatch() {
 }
 
 private fun WCRequest.respondAuthn() {
-    val address = WalletManager.wallet()?.walletAddress() ?: return
+    val address = WalletManager.selectedWalletAddress() ?: return
     val json = gson().fromJson<List<Signable>>(params, object : TypeToken<List<Signable>>() {}.type)
     val signable = json.firstOrNull() ?: return
     val services = walletConnectAuthnServiceResponse(address, signable.data?.get("nonce"), signable.data?.get("appIdentifier"), isFromFclSdk())
@@ -99,7 +99,7 @@ private suspend fun WCRequest.respondAuthz() {
 
         FclAuthzDialog.observe { isApprove ->
             ioScope {
-                val address = WalletManager.wallet()?.walletAddress() ?: return@ioScope
+                val address = WalletManager.selectedWalletAddress() ?: return@ioScope
                 val signature = hdWallet().signData(message.hexToBytes())
                 val keyId = FlowAddress(address).lastBlockAccountKeyId()
 
@@ -113,7 +113,7 @@ private suspend fun WCRequest.respondAuthz() {
 
 
 private fun WCRequest.respondPreAuthz() {
-    val walletAddress = WalletManager.wallet()?.walletAddress() ?: return
+    val walletAddress = WalletManager.selectedWalletAddress() ?: return
     val payerAddress = if (AppConfig.isFreeGas()) AppConfig.payer().address else walletAddress
     val response = PollingResponse(
         status = ResponseStatus.APPROVED,
@@ -144,7 +144,7 @@ private fun WCRequest.respondPreAuthz() {
 
 private suspend fun WCRequest.respondUserSign() {
     val activity = topActivity() ?: return
-    val address = WalletManager.wallet()?.walletAddress() ?: return
+    val address = WalletManager.selectedWalletAddress() ?: return
     val param = gson().fromJson<List<SignableMessage>>(params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
     val message = param?.message ?: return
     uiScope {
@@ -198,7 +198,7 @@ private suspend fun WCRequest.respondSignProposer() {
 
     logd(TAG, "respondSignProposer param:${params}")
     val signable = params.toSignables(gson())
-    val address = WalletManager.wallet()?.walletAddress() ?: return
+    val address = WalletManager.selectedWalletAddress() ?: return
 
     FclAuthzDialog.show(
         activity.supportFragmentManager,
