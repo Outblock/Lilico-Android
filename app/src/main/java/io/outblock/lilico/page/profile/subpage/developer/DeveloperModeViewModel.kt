@@ -2,8 +2,8 @@ package io.outblock.lilico.page.profile.subpage.developer
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.FlowApi
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.loge
@@ -17,7 +17,7 @@ class DeveloperModeViewModel : ViewModel() {
     fun changeNetwork() {
         viewModelIOScope(this) {
             FlowApi.refreshConfig()
-            val cacheExist = walletCache().read() != null && !walletCache().read()?.walletAddress().isNullOrBlank()
+            val cacheExist = WalletManager.wallet() != null && !WalletManager.wallet()?.walletAddress().isNullOrBlank()
             if (!cacheExist) {
                 progressVisibleLiveData.postValue(true)
                 try {
@@ -26,7 +26,7 @@ class DeveloperModeViewModel : ViewModel() {
 
                     // request success & wallet list is empty (wallet not create finish)
                     if (!resp.data!!.wallets.isNullOrEmpty()) {
-                        walletCache().cache(resp.data)
+                        WalletManager.update(resp.data)
                         resultLiveData.postValue(true)
                     }
                 } catch (e: Exception) {

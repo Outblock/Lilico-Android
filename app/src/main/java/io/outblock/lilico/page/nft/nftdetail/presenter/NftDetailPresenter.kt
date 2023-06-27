@@ -25,6 +25,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityNftDetailBinding
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftdetail.model.NftDetailModel
@@ -93,6 +94,7 @@ class NftDetailPresenter(
                 val uniqueId = nft?.uniqueId() ?: return@setOnClickListener
                 NftSendAddressDialog.newInstance(uniqueId).show(activity.supportFragmentManager, "")
             }
+            sendButton.isEnabled = !WalletManager.isChildAccountSelected()
         }
     }
 

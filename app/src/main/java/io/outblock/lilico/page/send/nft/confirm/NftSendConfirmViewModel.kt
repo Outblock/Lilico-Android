@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.cadenceTransferNft
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.send.nft.NftSendModel
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
@@ -29,7 +29,7 @@ class NftSendConfirmViewModel : ViewModel() {
     fun load() {
         viewModelIOScope(this) {
             userInfoCache().read()?.let { userInfo ->
-                walletCache().read()?.wallets?.first()?.blockchain?.first()?.address?.let {
+                WalletManager.wallet()?.wallets?.first()?.blockchain?.first()?.address?.let {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }

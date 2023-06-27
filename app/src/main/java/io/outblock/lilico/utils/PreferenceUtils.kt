@@ -5,7 +5,12 @@ import android.graphics.Point
 import android.view.Gravity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.page.profile.subpage.currency.model.Currency
@@ -44,6 +49,8 @@ private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
 private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAIMED")
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
 private val KEY_CURRENCY_FLAG = stringPreferencesKey("KEY_CURRENCY_FLAG")
+
+private const val KEY_SELECTED_WALLET_ADDRESS = "KEY_SELECTED_WALLET_ADDRESS"
 
 private val KEY_SANDBOX_ENABLED = booleanPreferencesKey("KEY_SANDBOX_ENABLED")
 
@@ -195,6 +202,14 @@ suspend fun isSandboxEnabled(): Boolean {
 
 suspend fun setSandboxEnabled() {
     dataStore.edit { it[KEY_SANDBOX_ENABLED] = true }
+}
+
+fun getSelectedWalletAddress(): String? {
+    return sharedPreferencesTraditional.getString(KEY_SELECTED_WALLET_ADDRESS, null)
+}
+
+fun updateSelectedWalletAddress(address: String) {
+    sharedPreferencesTraditional.edit().putString(KEY_SELECTED_WALLET_ADDRESS, address).apply()
 }
 
 private fun edit(unit: suspend () -> Unit) {

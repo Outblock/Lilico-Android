@@ -33,6 +33,12 @@
                 android:src="@drawable/ic_wallet_card_circle"
                 tools:ignore="ContentDescription"/>
 
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/child_account_icon_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
             <TextView
                 android:id="@+id/wallet_name"
                 android:layout_width="wrap_content"

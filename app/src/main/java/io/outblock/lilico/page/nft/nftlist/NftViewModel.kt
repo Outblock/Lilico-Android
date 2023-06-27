@@ -3,14 +3,26 @@ package io.outblock.lilico.page.nft.nftlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.manager.account.OnWalletDataUpdate
-import io.outblock.lilico.manager.account.WalletManager
+import io.outblock.lilico.manager.account.WalletFetcher
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.network.model.NftCollectionWrapper
 import io.outblock.lilico.network.model.WalletListData
-import io.outblock.lilico.page.nft.nftlist.model.*
-import io.outblock.lilico.page.nft.nftlist.utils.*
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
+import io.outblock.lilico.page.nft.nftlist.model.CollectionTitleModel
+import io.outblock.lilico.page.nft.nftlist.model.NFTCountTitleModel
+import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
+import io.outblock.lilico.page.nft.nftlist.model.NftLoadMoreModel
+import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteManager
+import io.outblock.lilico.page.nft.nftlist.utils.NftGridRequester
+import io.outblock.lilico.page.nft.nftlist.utils.NftList
+import io.outblock.lilico.page.nft.nftlist.utils.NftListRequester
+import io.outblock.lilico.page.nft.nftlist.utils.OnNftFavoriteChangeListener
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isNftCollectionExpanded
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.updateNftCollectionExpanded
+import io.outblock.lilico.utils.viewModelIOScope
 
 private val TAG = NftViewModel::class.java.simpleName
 
@@ -95,7 +107,7 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
             // wallet not loaded yet
             if (nftWalletAddress().isEmpty()) {
                 logd(TAG, "wallet not loaded yet")
-                WalletManager.addListener(this)
+                WalletFetcher.addListener(this)
             }
         }
     }

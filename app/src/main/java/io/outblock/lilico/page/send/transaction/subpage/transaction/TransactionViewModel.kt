@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.coin.CoinRateManager
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.FlowCoinListManager
@@ -13,6 +12,7 @@ import io.outblock.lilico.manager.coin.OnCoinRateUpdate
 import io.outblock.lilico.manager.flowjvm.cadenceTransferToken
 import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.send.transaction.subpage.amount.model.TransactionModel
 import io.outblock.lilico.page.window.bubble.tools.pushBubbleStack
@@ -40,7 +40,7 @@ class TransactionViewModel : ViewModel(), OnCoinRateUpdate {
     fun load() {
         viewModelIOScope(this) {
             userInfoCache().read()?.let { userInfo ->
-                walletCache().read()?.wallets?.first()?.blockchain?.first()?.address?.let {
+                WalletManager.wallet()?.wallets?.first()?.blockchain?.first()?.address?.let {
                     userInfoLiveData.postValue(userInfo.apply { address = it })
                 }
             }

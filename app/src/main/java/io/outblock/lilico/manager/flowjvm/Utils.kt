@@ -3,17 +3,23 @@ package io.outblock.lilico.manager.flowjvm
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nftco.flow.sdk.*
+import com.nftco.flow.sdk.Flow
+import com.nftco.flow.sdk.FlowAccount
+import com.nftco.flow.sdk.FlowAddress
+import com.nftco.flow.sdk.FlowArgument
+import com.nftco.flow.sdk.FlowArgumentsBuilder
+import com.nftco.flow.sdk.FlowScriptResponse
 import com.nftco.flow.sdk.cadence.Field
 import com.nftco.flow.sdk.cadence.JsonCadenceBuilder
 import com.nftco.flow.sdk.cadence.UFix64NumberField
 import io.outblock.lilico.manager.config.NftCollection
 import io.outblock.lilico.manager.config.NftCollectionConfig
+import io.outblock.lilico.manager.flowjvm.model.FlowAddressListResult
 import io.outblock.lilico.manager.flowjvm.model.FlowBoolListResult
 import io.outblock.lilico.manager.flowjvm.transaction.AsArgument
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.utils.logd
-import java.util.*
+import java.util.Locale
 
 
 internal fun FlowScriptResponse.parseSearchAddress(): String? {
@@ -54,6 +60,17 @@ internal fun FlowScriptResponse?.parseFloat(default: Float = 0f): Float {
         (json["value"]?.toFloatOrNull()) ?: default
     } catch (e: Exception) {
         return default
+    }
+}
+
+internal fun FlowScriptResponse?.parseAddressList(): List<String> {
+    // {"value":[{"value":"0x4eaaf4f4c84dce5e","type":"Address"},{"value":"0x74dacdce5216865f","type":"Address"},{"value":"0xe424ebca3e307ef8","type":"Address"},{"value":"0x0207b0b4a27a1801","type":"Address"},{"value":"0x3da47812164a24a8","type":"Address"},{"value":"0x97e2e1f9d68910b6","type":"Address"}],"type":"Array"}
+    this ?: return emptyList()
+    return try {
+        val result = Gson().fromJson(String(bytes), FlowAddressListResult::class.java)
+        return result.value.map { it.value }
+    } catch (e: Exception) {
+        return emptyList()
     }
 }
 

@@ -863,3 +863,51 @@ const val CADENCE_QUERY_STORAGE_INFO = """
       return ret
     }
 """
+
+const val CADENCE_QUERY_CHILD_ACCOUNT_META = """
+    import HybridCustody from 0xHybridCustody
+    import MetadataViews from 0xMetadataViews
+    
+    pub fun getChildMetaData(child: Address): AnyStruct {
+        let acct = getAuthAccount(child)
+        let c = acct.borrow<&HybridCustody.ChildAccount>(from: HybridCustody.ChildStoragePath)
+                ?? panic("child account not found")
+        
+        let d = c.resolveView(Type<MetadataViews.Display>())
+        return d
+    }
+    
+    pub fun main(parent: Address): {Address: AnyStruct} {
+        let acct = getAuthAccount(parent)
+        let manager = acct.borrow<&HybridCustody.Manager>(from: HybridCustody.ManagerStoragePath)
+            ?? panic("manager not found")
+        var data: {Address: AnyStruct} = {}
+        for address in manager.getAddresses() {
+            data.insert(key: address, getChildMetaData(child: address))
+        }
+        return data
+    }
+"""
+
+const val CADENCE_QUERY_CHILD_ACCOUNT_LIST = """
+    import HybridCustody from 0xHybridCustody
+
+    pub fun main(parent: Address): [Address] {
+        let acct = getAuthAccount(parent)
+        let manager = acct.borrow<&HybridCustody.Manager>(from: HybridCustody.ManagerStoragePath)
+            ?? panic("manager not found")
+        return manager.getAddresses()
+    }
+"""
+
+const val CADENCE_UNLINK_CHILD_ACCOUNT = """
+    import HybridCustody from 0xHybridCustody
+
+    transaction(child: Address) {
+        prepare (acct: AuthAccount) {
+            let manager = acct.borrow<&HybridCustody.Manager>(from: HybridCustody.ManagerStoragePath)
+                ?? panic("manager not found")
+            manager.removeChild(addr: child)
+        }
+    }
+"""

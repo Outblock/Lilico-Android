@@ -1,6 +1,6 @@
 package io.outblock.lilico.manager.account
 
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.network.retrofit
@@ -12,8 +12,8 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.CopyOnWriteArrayList
 
 
-object WalletManager {
-    private val TAG = WalletManager::class.java.simpleName
+object WalletFetcher {
+    private val TAG = WalletFetcher::class.java.simpleName
 
     private val listeners = CopyOnWriteArrayList<WeakReference<OnWalletDataUpdate>>()
 
@@ -22,7 +22,7 @@ object WalletManager {
     suspend fun fetch(useCache: Boolean = true) {
         ioScope {
             if (useCache) {
-                walletCache().read()?.let { dispatchListeners(it) }
+                WalletManager.wallet()?.let { dispatchListeners(it) }
             }
             while (true) {
                 runCatching {
@@ -30,7 +30,7 @@ object WalletManager {
 
                     // request success & wallet list is empty (wallet not create finish)
                     if (resp.status == 200 && !resp.data?.walletAddress().isNullOrBlank()) {
-                        walletCache().cache(resp.data!!)
+                        WalletManager.update(resp.data!!)
                         delay(300)
                         dispatchListeners(resp.data)
                         return@ioScope

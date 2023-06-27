@@ -2,19 +2,35 @@ package io.outblock.lilico.page.wallet
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.walletCache
-import io.outblock.lilico.manager.account.*
-import io.outblock.lilico.manager.coin.*
+import io.outblock.lilico.manager.account.Balance
+import io.outblock.lilico.manager.account.BalanceManager
+import io.outblock.lilico.manager.account.OnBalanceUpdate
+import io.outblock.lilico.manager.account.OnWalletDataUpdate
+import io.outblock.lilico.manager.account.WalletFetcher
+import io.outblock.lilico.manager.coin.CoinRateManager
+import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.coin.FlowCoinListManager
+import io.outblock.lilico.manager.coin.OnCoinRateUpdate
+import io.outblock.lilico.manager.coin.TokenStateChangeListener
+import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.price.CurrencyManager
 import io.outblock.lilico.manager.price.CurrencyUpdateListener
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.transaction.TransactionStateManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.getAccountTransactionCountLocal
+import io.outblock.lilico.utils.getCurrencyFlag
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isHideWalletBalance
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.utils.updateAccountTransactionCountLocal
+import io.outblock.lilico.utils.viewModelIOScope
 import java.util.concurrent.CopyOnWriteArrayList
 
 class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate, OnCoinRateUpdate, TokenStateChangeListener, CurrencyUpdateListener {
@@ -26,7 +42,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     private val dataList = CopyOnWriteArrayList<WalletCoinItemModel>()
 
     init {
-        WalletManager.addListener(this)
+        WalletFetcher.addListener(this)
         TokenStateManager.addListener(this)
         CoinRateManager.addListener(this)
         BalanceManager.addListener(this)
@@ -85,10 +101,10 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
     }
 
     private suspend fun loadWallet() {
-        if (!walletCache().isCacheExist()) {
+        if (WalletManager.wallet() == null) {
             headerLiveData.postValue(null)
         }
-        WalletManager.fetch()
+        WalletFetcher.fetch()
     }
 
     private fun loadCoinList() {

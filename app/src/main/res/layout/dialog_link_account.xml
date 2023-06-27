@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_top_radius_16dp"
+    android:backgroundTint="@color/background"
+    android:paddingBottom="@dimen/wallet_create_button_margin">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:paddingVertical="18dp"
+        android:paddingStart="26dp"
+        android:paddingEnd="0dp"
+        android:text="@string/link_account"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:id="@+id/close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="22dp"
+        android:background="?attr/actionBarItemBackground"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_close_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/title_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_view"
+        app:tint="@color/neutrals8"/>
+
+    <TextView
+        android:id="@+id/desc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:gravity="center"
+        android:text="@string/link_account_desc"
+        android:textColor="@color/text_sub"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/title_view"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/default_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/desc_view">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/dapp_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/neutrals11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundPercent="1"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/point1"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="12dp"
+            android:background="#2AE245"
+            app:layout_constraintBottom_toBottomOf="@id/dapp_icon"
+            app:layout_constraintStart_toEndOf="@id/dapp_icon"
+            app:layout_constraintTop_toTopOf="@id/dapp_icon"
+            app:roundPercent="1"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/wallet_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="50dp"
+            android:background="@color/neutrals11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/dapp_icon"
+            app:roundPercent="1"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/point2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="#2AE245"
+            app:layout_constraintBottom_toBottomOf="@id/dapp_icon"
+            app:layout_constraintEnd_toStartOf="@id/wallet_icon"
+            app:layout_constraintTop_toTopOf="@id/dapp_icon"
+            app:roundPercent="1"/>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@drawable/bg_link_account_line"
+            app:layout_constraintBottom_toBottomOf="@id/point1"
+            app:layout_constraintEnd_toStartOf="@id/point2"
+            app:layout_constraintStart_toEndOf="@id/point1"
+            app:layout_constraintTop_toTopOf="@id/point1"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_close_error"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/error_x_icon"
+            app:layout_constraintBottom_toBottomOf="@id/line"
+            app:layout_constraintEnd_toEndOf="@id/line"
+            app:layout_constraintStart_toStartOf="@id/line"
+            app:layout_constraintTop_toTopOf="@id/line"/>
+
+        <TextView
+            android:id="@+id/dapp_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/text_sub"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/dapp_icon"
+            app:layout_constraintStart_toStartOf="@id/dapp_icon"
+            app:layout_constraintTop_toBottomOf="@id/dapp_icon"
+            tools:text="NBATopShot"/>
+
+        <TextView
+            android:id="@+id/wallet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/text_sub"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/wallet_icon"
+            app:layout_constraintStart_toStartOf="@id/wallet_icon"
+            app:layout_constraintTop_toBottomOf="@id/wallet_icon"
+            tools:text="NBATopShot"/>
+
+        <io.outblock.lilico.widgets.SendButton
+            android:id="@+id/start_button"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="90dp"
+            app:cardBackgroundColor="@color/button_color"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp"
+            app:defaultText="@string/hold_to_link"
+            app:layout_constraintTop_toBottomOf="@id/dapp_name"
+            app:processingText="@string/work_in_progress"
+            app:rippleColor="@color/primary10"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/try_again_button"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="90dp"
+            android:text="@string/try_it_again"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:visibility="gone"
+            android:textColor="@color/brightest_text"
+            app:cornerRadius="12dp"
+            android:backgroundTint="@color/button_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dapp_name"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/success_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/desc_view">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/success_placeholder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/img_link_account_success"
+            app:layout_constraintDimensionRatio="624:492"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.6"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/success_start_button"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="28dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/success_placeholder"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

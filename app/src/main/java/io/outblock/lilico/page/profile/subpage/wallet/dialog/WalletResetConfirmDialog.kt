@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.DialogResetWalletConfirmBinding
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.walletrestore.WalletRestoreActivity
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
@@ -31,7 +31,7 @@ class WalletResetConfirmDialog : BottomSheetDialogFragment() {
                 dismiss()
             }
             ioScope {
-                val address = walletCache().read()?.walletAddress()
+                val address = WalletManager.selectedWalletAddress()
                 uiScope { addressTextView.text = "($address)" }
             }
         }

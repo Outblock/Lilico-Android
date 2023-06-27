@@ -4,15 +4,19 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.walletCache
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.nft.nftdetail.NftDetailViewModel
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.video
 import io.outblock.lilico.page.nft.nftlist.websiteUrl
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.downloadToGallery
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.popupMenu
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.popup.PopupListView
 
 class NftMorePopupMenu(
@@ -50,7 +54,7 @@ class NftMorePopupMenu(
 
     private fun openNftWebsite() {
         ioScope {
-            val address = walletCache().read()?.walletAddress().orEmpty()
+            val address = WalletManager.selectedWalletAddress().orEmpty()
             uiScope {
                 openBrowser(
                     findActivity(view)!!,

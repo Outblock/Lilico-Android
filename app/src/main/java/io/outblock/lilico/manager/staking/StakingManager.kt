@@ -3,10 +3,10 @@ package io.outblock.lilico.manager.staking
 import androidx.annotation.WorkerThread
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.stakingCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.manager.flowjvm.*
 import io.outblock.lilico.manager.transaction.TransactionStateWatcher
 import io.outblock.lilico.manager.transaction.isExecuteFinished
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.logv
@@ -115,7 +115,7 @@ object StakingManager {
 }
 
 private fun queryStakingInfo(): StakingInfo? {
-    val address = walletCache().read()?.walletAddress() ?: return null
+    val address = WalletManager.selectedWalletAddress() ?: return null
 
     return runCatching {
         val response = CADENCE_QUERY_STAKE_INFO.executeCadence {
@@ -175,7 +175,7 @@ private suspend fun setupStaking(callback: () -> Unit) {
 private suspend fun getDelegatorInfo() = suspendCoroutine { continuation ->
     logd(TAG, "getDelegatorInfo start")
     runCatching {
-        val address = walletCache().read()?.walletAddress()!!
+        val address = WalletManager.selectedWalletAddress()!!
         val response = CADENCE_GET_DELEGATOR_INFO.executeCadence {
             arg { address(address) }
         }!!
@@ -187,7 +187,7 @@ private suspend fun getDelegatorInfo() = suspendCoroutine { continuation ->
 @WorkerThread
 private fun checkHasBeenSetup(): Boolean {
     return runCatching {
-        val address = walletCache().read()?.walletAddress()!!
+        val address = WalletManager.selectedWalletAddress()!!
         val response = CADENCE_CHECK_IS_STAKING_SETUP.executeCadence { arg { address(address) } }
         response?.parseBool(false) ?: false
     }.getOrElse { false }

@@ -17,6 +17,7 @@ import io.outblock.lilico.manager.staking.STAKING_DEFAULT_NORMAL_APY
 import io.outblock.lilico.manager.staking.StakingManager
 import io.outblock.lilico.manager.staking.isLilico
 import io.outblock.lilico.manager.staking.stakingCount
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
 import io.outblock.lilico.page.receive.ReceiveActivity
@@ -49,6 +50,7 @@ class TokenDetailPresenter(
             getMoreWrapper.setOnClickListener { }
             sendButton.setOnClickListener { TransactionSendActivity.launch(activity, coinSymbol = coin.symbol) }
             receiveButton.setOnClickListener { ReceiveActivity.launch(activity) }
+            sendButton.isEnabled = !WalletManager.isChildAccountSelected()
         }
 
         if (!coin.isFlowCoin() && coin.symbol != FlowCoin.SYMBOL_FUSD) {

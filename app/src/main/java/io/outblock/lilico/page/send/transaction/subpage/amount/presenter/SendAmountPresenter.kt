@@ -14,10 +14,10 @@ import com.zackratos.ultimatebarx.ultimatebarx.addNavigationBarBottomPadding
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.ActivitySendAmountBinding
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.price.CurrencyManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.AddressBookContact
 import io.outblock.lilico.page.address.model.AddressBookPersonModel
 import io.outblock.lilico.page.address.presenter.AddressBookPersonPresenter
@@ -139,7 +139,7 @@ class SendAmountPresenter(
 
     private fun showSendDialog() {
         ioScope {
-            val wallet = walletCache().read() ?: return@ioScope
+            val wallet = WalletManager.wallet() ?: return@ioScope
             val inputAmount = binding.transferAmountInput.text.ifBlank { "0" }.toString().toSafeFloat()
             val rate = (balance()?.coinRate ?: 0f) * CurrencyManager.currencyPrice()
             val amount = if (viewModel.currentCoin() == selectedCurrency().flag) inputAmount / rate else inputAmount

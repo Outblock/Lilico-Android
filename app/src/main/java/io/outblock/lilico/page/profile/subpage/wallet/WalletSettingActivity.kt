@@ -66,15 +66,17 @@ class WalletSettingActivity : BaseActivity() {
 
             ioScope {
                 val storageInfo = storageInfoCache().read() ?: return@ioScope
-                group3.setVisible(true)
-                val progress = storageInfo.used.toFloat() / storageInfo.capacity
-                storageInfoUsed.text = (progress * 100).formatNum(3) + "%"
-                storageInfoCount.text = getString(
-                    R.string.storage_info_count,
-                    toHumanReadableSIPrefixes(storageInfo.used),
-                    toHumanReadableSIPrefixes(storageInfo.capacity)
-                )
-                storageInfoProgress.progress = (progress * 1000).toInt()
+                uiScope {
+                    group3.setVisible(true)
+                    val progress = storageInfo.used.toFloat() / storageInfo.capacity
+                    storageInfoUsed.text = (progress * 100).formatNum(3) + "%"
+                    storageInfoCount.text = getString(
+                        R.string.storage_info_count,
+                        toHumanReadableSIPrefixes(storageInfo.used),
+                        toHumanReadableSIPrefixes(storageInfo.capacity)
+                    )
+                    storageInfoProgress.progress = (progress * 1000).toInt()
+                }
             }
         }
     }

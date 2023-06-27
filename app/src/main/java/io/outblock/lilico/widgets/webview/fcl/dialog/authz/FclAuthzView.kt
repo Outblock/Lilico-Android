@@ -1,16 +1,13 @@
-package io.outblock.lilico.widgets.webview.fcl.dialog
+package io.outblock.lilico.widgets.webview.fcl.dialog.authz
 
-import android.content.DialogInterface
-import android.os.Bundle
+import android.content.Context
+import android.util.AttributeSet
 import android.util.Base64
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
+import android.widget.FrameLayout
 import androidx.transition.AutoTransition
 import androidx.transition.Scene
 import androidx.transition.TransitionManager
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.outblock.lilico.R
 import io.outblock.lilico.databinding.DialogFclAuthzBinding
 import io.outblock.lilico.manager.app.chainNetWorkString
@@ -27,37 +24,34 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
 
+class FclAuthzView : FrameLayout {
 
-class FclAuthzDialog : BottomSheetDialogFragment() {
+    private val binding: DialogFclAuthzBinding
 
-    private val data by lazy { arguments?.getParcelable<FclDialogModel>(EXTRA_DATA) }
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
+            : super(context, attrs, defStyleAttr)
 
-    private lateinit var binding: DialogFclAuthzBinding
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        instance = this
-        binding = DialogFclAuthzBinding.inflate(inflater)
-        return binding.root
+    init {
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_fcl_authz, this, false)
+        addView(view)
+        binding = DialogFclAuthzBinding.bind(view)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (data == null) {
-            dismiss()
-            return
-        }
-        val data = data ?: return
+    fun setup(data: FclDialogModel, approveCallback: ((isApprove: Boolean) -> Unit)) {
         with(binding) {
             iconView.loadFavicon(data.logo ?: data.url?.toFavIcon())
             nameView.text = data.title
             uiScope { feeNumber.text = if (isGasFree()) "0" else "0.001" }
             scriptTextView.text = data.cadence?.trimIndent()
-            actionButton.setOnProcessing { approveCallback?.invoke(true) }
+            actionButton.setOnProcessing { approveCallback.invoke(true) }
             scriptHeaderWrapper.setOnClickListener { toggleScriptVisible() }
         }
 
         ioScope {
             val response = securityCadenceCheck(data.cadence?.trimIndent().orEmpty()) ?: return@ioScope
-            if (isShowing()) {
+            if (FclAuthzDialog.isShowing()) {
                 uiScope {
                     val template = response.data?.template?.data
                     val titleMap = template?.messages?.title?.i18n
@@ -66,7 +60,7 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
                     binding.securityCheckDesc.text = descMap?.get(descMap.keys.first())
 
                     val auditor = response.data?.auditors?.firstOrNull()
-                    binding.auditorsTitle.text = requireContext().getString(R.string.auditors_by, auditor?.name.orEmpty())
+                    binding.auditorsTitle.text = context.getString(R.string.auditors_by, auditor?.name.orEmpty())
 
                     TransitionManager.go(Scene(binding.rootView), AutoTransition().apply { duration = 150 })
                     changeDialogBounds()
@@ -76,16 +70,6 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
                 }
             }
         }
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        approveCallback?.invoke(false)
-    }
-
-    override fun onDestroy() {
-        instance = null
-        approveCallback = null
-        super.onDestroy()
     }
 
     private fun toggleScriptVisible() {
@@ -103,38 +87,6 @@ class FclAuthzDialog : BottomSheetDialogFragment() {
 //        TransitionManager.go(Scene(binding.root.parent as ViewGroup), TransitionSet().apply {
 //            addTransition(ChangeBounds().apply { duration = 150 })
 //        })
-    }
-
-    companion object {
-        private const val EXTRA_DATA = "data"
-
-        private var approveCallback: ((isApprove: Boolean) -> Unit)? = null
-
-        private var instance: FclAuthzDialog? = null
-
-        fun observe(callback: (isApprove: Boolean) -> Unit) {
-            this.approveCallback = callback
-        }
-
-        fun isShowing() = (instance?.dialog?.isShowing ?: false) && !(instance?.isRemoving ?: true)
-
-        fun show(
-            fragmentManager: FragmentManager,
-            data: FclDialogModel,
-        ) {
-            if (instance != null) {
-                return
-            }
-            FclAuthzDialog().apply {
-                arguments = Bundle().apply {
-                    putParcelable(EXTRA_DATA, data)
-                }
-            }.show(fragmentManager, "")
-        }
-
-        fun dismiss() {
-            instance?.dismiss()
-        }
     }
 }
 

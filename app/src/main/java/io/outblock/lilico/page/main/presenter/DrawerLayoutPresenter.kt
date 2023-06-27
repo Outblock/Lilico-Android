@@ -10,20 +10,29 @@ import com.journeyapps.barcodescanner.ScanOptions
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
-import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.childaccount.ChildAccount
+import io.outblock.lilico.manager.childaccount.ChildAccountList
+import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
+import io.outblock.lilico.page.main.refreshWalletList
 import io.outblock.lilico.page.nft.nftlist.utils.NftCache
-import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
 import io.outblock.lilico.page.scan.dispatchScanResult
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.ScreenUtils
+import io.outblock.lilico.utils.findActivity
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.launch
+import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.registerBarcodeLauncher
+import io.outblock.lilico.utils.uiScope
 import org.joda.time.format.ISODateTimeFormat
 
 class DrawerLayoutPresenter(
     private val drawer: DrawerLayout,
     private val binding: LayoutMainDrawerLayoutBinding,
-) : BasePresenter<MainDrawerLayoutModel> {
+) : BasePresenter<MainDrawerLayoutModel>, ChildAccountUpdateListenerCallback {
 
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
 
@@ -41,11 +50,12 @@ class DrawerLayoutPresenter(
             scanItem.setOnClickListener { launchClick { barcodeLauncher.launch() } }
             importWalletItem.setOnClickListener { }
             createWalletItem.setOnClickListener { }
-            walletItem.setOnClickListener { launchClick { WalletSettingActivity.launch(binding.root.context) } }
         }
         bindData()
-
+        binding.refreshWalletList()
         barcodeLauncher = activity.registerBarcodeLauncher { result -> dispatchScanResult(activity, result.orEmpty()) }
+
+        ChildAccountList.addAccountUpdateListener(this)
     }
 
     override fun bind(model: MainDrawerLayoutModel) {
@@ -55,7 +65,7 @@ class DrawerLayoutPresenter(
 
     private fun bindData() {
         ioScope {
-            val address = walletCache().read()?.walletAddress()
+            val address = WalletManager.selectedWalletAddress()
             drawer.setDrawerLockMode(if (address.isNullOrBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
             address ?: return@ioScope
 
@@ -64,7 +74,6 @@ class DrawerLayoutPresenter(
             val createTime = ISODateTimeFormat.dateTimeParser().parseDateTime(userInfo.created).toString("yyyy")
             uiScope {
                 with(binding) {
-                    walletAddressView.text = address
                     avatarView.loadAvatar(userInfo.avatar)
                     nickNameView.text = userInfo.nickname
                     descView.text = activity.getString(R.string.drawer_desc, createTime, nftCount)
@@ -83,6 +92,10 @@ class DrawerLayoutPresenter(
             super.onDrawerOpened(drawerView)
             bindData()
         }
+    }
+
+    override fun onChildAccountUpdate(parentAddress: String, accounts: List<ChildAccount>) {
+        binding.refreshWalletList()
     }
 }
 
