@@ -13,6 +13,8 @@ import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
 import io.outblock.lilico.manager.account.OnWalletDataUpdate
 import io.outblock.lilico.manager.account.WalletFetcher
 import io.outblock.lilico.manager.account.AccountManager
+import io.outblock.lilico.manager.account.OnWalletDataUpdate
+import io.outblock.lilico.manager.account.WalletFetcher
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
