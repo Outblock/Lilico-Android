@@ -399,5 +399,8 @@
     <string name="unlink_account">Unlink Account</string>
     <string name="unlink_account_desc">Unlink your account, the main wallet will not have any access to this account anymore.</string>
     <string name="hold_to_unlink">Hold to unlink</string>
+    <string name="this_app_would_like_to">This App would like to</string>
+    <string name="link_account_tips_1">Delegate account to your lilico wallet</string>
+    <string name="link_account_tips_2">Lilico wallet will manage linked account</string>
 
 </resources>

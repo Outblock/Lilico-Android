@@ -149,6 +149,16 @@
                 app:layout_constraintStart_toEndOf="@id/point1"
                 app:layout_constraintTop_toTopOf="@id/point1"/>
 
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="36dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_unlink_mid"
+                android:background="@color/deep_bg"
+                app:layout_constraintBottom_toBottomOf="@id/line"
+                app:layout_constraintEnd_toEndOf="@id/line"
+                app:layout_constraintStart_toStartOf="@id/line"
+                app:layout_constraintTop_toTopOf="@id/line"/>
+
             <TextView
                 android:id="@+id/dapp_name"
                 android:layout_width="wrap_content"

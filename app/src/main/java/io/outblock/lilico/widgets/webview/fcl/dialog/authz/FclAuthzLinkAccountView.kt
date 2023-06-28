@@ -8,11 +8,11 @@ import io.outblock.lilico.R
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.DialogLinkAccountBinding
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
-import io.outblock.lilico.manager.transaction.TransactionState
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
+import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loadAvatar
@@ -42,15 +42,14 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
 
         binding.root.requestFocus()
         binding.startButton.setOnProcessing {
-            binding.titleView.setText(R.string.account_linking)
+            showLinkingUI()
             approveCallback.invoke(true)
         }
         showDefaultUI()
     }
 
     override fun onTransactionStateChange() {
-        val transactionState = TransactionStateManager.getTransactionStateList()
-            .firstOrNull { it.type == TransactionState.TYPE_FCL_TRANSACTION } ?: return
+        val transactionState = TransactionStateManager.getTransactionStateList().lastOrNull() ?: return
         if (transactionState.isProcessing()) {
             // ignore
         } else if (transactionState.isFailed()) {
@@ -68,6 +67,7 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
             startButton.setVisible(false)
             tryAgainButton.setVisible(true)
             errorXIcon.setVisible(true)
+            linkTipsWrapper.setVisible(false)
             point1.setVisible(false)
             point2.setVisible(false)
             tryAgainButton.setOnClickListener { FclAuthzDialog.dismiss(true) }
@@ -79,6 +79,7 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
             descView.setText(R.string.link_account_success_desc)
             titleView.setText(R.string.successful)
             defaultLayout.setVisible(false)
+            linkTipsWrapper.setVisible(false)
             successLayout.setVisible(true)
             successStartButton.setOnClickListener { FclAuthzDialog.dismiss(true) }
             WalletManager.refreshChildAccount()
@@ -88,15 +89,35 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
     private fun showDefaultUI() {
         with(binding) {
             descView.text = context.getString(R.string.link_account_desc, data.title.orEmpty())
-            titleView.setText(R.string.account_linking)
+            titleView.setText(R.string.link_account)
             line.setBackgroundResource(R.drawable.bg_link_account_line)
             defaultLayout.setVisible()
             startButton.setVisible()
             point1.setVisible()
             point2.setVisible()
+            linkTipsWrapper.setVisible()
             successLayout.setVisible(false)
             tryAgainButton.setVisible(false)
             errorXIcon.setVisible(false)
+            with(startButton.layoutParams as MarginLayoutParams) {
+                topMargin = 18.dp2px().toInt()
+                startButton.layoutParams = this
+            }
+        }
+    }
+
+    private fun showLinkingUI() {
+        showDefaultUI()
+        with(binding) {
+            titleView.setText(R.string.account_linking)
+            descView.setVisible(false)
+            point1.setVisible(false, invisible = true)
+            point2.setVisible(false, invisible = true)
+            linkTipsWrapper.setVisible(false)
+            with(startButton.layoutParams as MarginLayoutParams) {
+                topMargin = 70.dp2px().toInt()
+                startButton.layoutParams = this
+            }
         }
     }
 }
