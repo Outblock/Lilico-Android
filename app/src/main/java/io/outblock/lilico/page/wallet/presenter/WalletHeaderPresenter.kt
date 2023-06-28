@@ -1,13 +1,18 @@
 package io.outblock.lilico.page.wallet.presenter
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.transition.TransitionManager
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
@@ -28,6 +33,7 @@ import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.extensions.res2String
+import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.wallet.toAddress
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -83,16 +89,7 @@ class WalletHeaderPresenter(
                 }
             }
 
-            childAccountIconView.setVisible(WalletManager.isChildAccountSelected())
-            if (WalletManager.isChildAccountSelected()) {
-                val childAccount = WalletManager.childAccount(WalletManager.selectedWalletAddress())
-                if (childAccount?.icon.isNullOrBlank()) {
-                    childAccountIconView.setVisible(false)
-                } else {
-                    Glide.with(childAccountIconView)
-                        .load(childAccount?.icon).transform(BlurTransformation(3, 5)).into(childAccountIconView)
-                }
-            }
+            setupChildAccountCover()
 
             bindTransactionCount(model.transactionCount)
             bindDomain(model.walletList.username)
@@ -134,6 +131,35 @@ class WalletHeaderPresenter(
         uiScope {
             binding.domainWrapper.setVisible(isMeowDomainClaimed())
             binding.domainView.text = "$username.meow"
+        }
+    }
+
+    private fun LayoutWalletHeaderBinding.setupChildAccountCover() {
+        val isChildAccountSelected = WalletManager.isChildAccountSelected()
+        childAccountIconView.setVisible(isChildAccountSelected)
+        childAccountMaskView.setVisible(isChildAccountSelected)
+        if (isChildAccountSelected) {
+            val childAccount = WalletManager.childAccount(WalletManager.selectedWalletAddress())
+            if (childAccount?.icon.isNullOrBlank()) {
+                childAccountIconView.setVisible(false)
+                childAccountMaskView.setVisible(false)
+            } else {
+                Glide.with(binding.childAccountIconView)
+                    .asBitmap()
+                    .load(childAccount?.icon)
+                    .into(object : SimpleTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            ioScope {
+                                val color = Palette.from(resource).generate().getDominantColor(R.color.text_sub.res2color())
+                                uiScope {
+                                    Glide.with(childAccountIconView)
+                                        .load(resource).transform(BlurTransformation(2, 3)).into(childAccountIconView)
+                                    childAccountMaskView.backgroundTintList = ColorStateList.valueOf(color)
+                                }
+                            }
+                        }
+                    })
+            }
         }
     }
 }

@@ -39,6 +39,14 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>
 
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/child_account_mask_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@drawable/bg_child_account_mask"
+                android:scaleType="centerCrop"/>
+
             <TextView
                 android:id="@+id/wallet_name"
                 android:layout_width="wrap_content"
