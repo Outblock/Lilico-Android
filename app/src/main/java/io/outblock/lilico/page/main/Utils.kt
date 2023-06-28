@@ -32,6 +32,7 @@ import io.outblock.lilico.utils.extensions.colorStateList
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isDeveloperModeEnable
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.utils.updateChainNetworkPreference
@@ -47,19 +48,19 @@ enum class HomeTab(val index: Int) {
 
 private val lottieMenu by lazy {
     listOf(
-        io.outblock.lilico.R.raw.lottie_coinhover,
-        io.outblock.lilico.R.raw.lottie_grid,
-        io.outblock.lilico.R.raw.lottie_category,
-        io.outblock.lilico.R.raw.lottie_avatar,
+        R.raw.lottie_coinhover,
+        R.raw.lottie_grid,
+        R.raw.lottie_category,
+        R.raw.lottie_avatar,
     )
 }
 
 private val menuColor by lazy {
     listOf(
-        io.outblock.lilico.R.color.bottom_navigation_color_wallet,
-        io.outblock.lilico.R.color.bottom_navigation_color_nft,
-        io.outblock.lilico.R.color.bottom_navigation_color_explore,
-        io.outblock.lilico.R.color.bottom_navigation_color_profile,
+        R.color.bottom_navigation_color_wallet,
+        R.color.bottom_navigation_color_nft,
+        R.color.bottom_navigation_color_explore,
+        R.color.bottom_navigation_color_profile,
     )
 }
 
@@ -89,8 +90,10 @@ fun LayoutMainDrawerLayoutBinding.refreshWalletList() {
             val wallets = WalletManager.wallet()?.wallets ?: return@uiScope
             val list = mutableListOf<WalletData?>().apply {
                 add(wallets.firstOrNull { it.network() == NETWORK_NAME_MAINNET })
-                add(wallets.firstOrNull { it.network() == NETWORK_NAME_TESTNET })
-                add(wallets.firstOrNull { it.network() == NETWORK_NAME_SANDBOX })
+                if (isDeveloperModeEnable()) {
+                    add(wallets.firstOrNull { it.network() == NETWORK_NAME_TESTNET })
+                    add(wallets.firstOrNull { it.network() == NETWORK_NAME_SANDBOX })
+                }
             }.filterNotNull()
 
             if (list.isEmpty()) {

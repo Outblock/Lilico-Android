@@ -11,10 +11,13 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.account.OnWalletDataUpdate
+import io.outblock.lilico.manager.account.WalletFetcher
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.childaccount.ChildAccountList
 import io.outblock.lilico.manager.childaccount.ChildAccountUpdateListenerCallback
 import io.outblock.lilico.manager.wallet.WalletManager
+import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.main.MainActivityViewModel
 import io.outblock.lilico.page.main.model.MainDrawerLayoutModel
 import io.outblock.lilico.page.main.refreshWalletList
@@ -32,7 +35,7 @@ import org.joda.time.format.ISODateTimeFormat
 class DrawerLayoutPresenter(
     private val drawer: DrawerLayout,
     private val binding: LayoutMainDrawerLayoutBinding,
-) : BasePresenter<MainDrawerLayoutModel>, ChildAccountUpdateListenerCallback {
+) : BasePresenter<MainDrawerLayoutModel>, ChildAccountUpdateListenerCallback, OnWalletDataUpdate {
 
     private lateinit var barcodeLauncher: ActivityResultLauncher<ScanOptions>
 
@@ -56,6 +59,7 @@ class DrawerLayoutPresenter(
         barcodeLauncher = activity.registerBarcodeLauncher { result -> dispatchScanResult(activity, result.orEmpty()) }
 
         ChildAccountList.addAccountUpdateListener(this)
+        WalletFetcher.addListener(this)
     }
 
     override fun bind(model: MainDrawerLayoutModel) {
@@ -66,8 +70,7 @@ class DrawerLayoutPresenter(
     private fun bindData() {
         ioScope {
             val address = WalletManager.selectedWalletAddress()
-            drawer.setDrawerLockMode(if (address.isNullOrBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
-            address ?: return@ioScope
+            drawer.setDrawerLockMode(if (address.isBlank()) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
 
             val userInfo = userInfoCache().read() ?: return@ioScope
             val nftCount = NftCache(address).grid().read()?.count ?: 0
@@ -95,6 +98,10 @@ class DrawerLayoutPresenter(
     }
 
     override fun onChildAccountUpdate(parentAddress: String, accounts: List<ChildAccount>) {
+        binding.refreshWalletList()
+    }
+
+    override fun onWalletDataUpdate(wallet: WalletListData) {
         binding.refreshWalletList()
     }
 }
