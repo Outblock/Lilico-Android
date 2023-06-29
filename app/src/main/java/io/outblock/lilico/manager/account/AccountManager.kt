@@ -23,17 +23,17 @@ object AccountManager {
         accountsCache().cache(Accounts().apply { addAll(accounts) })
     }
 
-    fun get() = accounts.firstOrNull { it.isActive }
+    fun get() = accounts.toList().firstOrNull { it.isActive }
 
     fun userInfo() = get()?.userInfo
 
     fun updateUserInfo(userInfo: UserInfoData) {
-        get()?.userInfo = userInfo
+        list().firstOrNull { it.userInfo.username == userInfo.username }?.userInfo = userInfo
         accountsCache().cache(Accounts().apply { addAll(accounts) })
     }
 
     fun updateWalletInfo(wallet: WalletListData) {
-        get()?.wallet = wallet
+        list().firstOrNull { it.userInfo.username == wallet.username }?.wallet = wallet
         accountsCache().cache(Accounts().apply { addAll(accounts) })
     }
 
@@ -41,7 +41,10 @@ object AccountManager {
 
     fun switch(account: Account) {
         uiScope {
-            accounts.forEach { it.isActive = it == account }
+            accounts.forEach {
+                it.isActive = it.userInfo.username == account.userInfo.username
+            }
+            accountsCache().cache(Accounts().apply { addAll(accounts) })
             clearUserCache()
             uiScope { MainActivity.relaunch(Env.getApp(), true) }
         }
