@@ -2,6 +2,7 @@ package io.outblock.lilico.page.profile.subpage.developer
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.flowjvm.FlowApi
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
@@ -26,7 +27,7 @@ class DeveloperModeViewModel : ViewModel() {
 
                     // request success & wallet list is empty (wallet not create finish)
                     if (!resp.data!!.wallets.isNullOrEmpty()) {
-                        WalletManager.update(resp.data)
+                        AccountManager.updateWalletInfo(resp.data)
                         resultLiveData.postValue(true)
                     }
                 } catch (e: Exception) {

@@ -30,7 +30,7 @@ object WalletFetcher {
 
                     // request success & wallet list is empty (wallet not create finish)
                     if (resp.status == 200 && !resp.data?.walletAddress().isNullOrBlank()) {
-                        WalletManager.update(resp.data!!)
+                        AccountManager.updateWalletInfo(resp.data!!)
                         delay(300)
                         dispatchListeners(resp.data)
                         return@ioScope

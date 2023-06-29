@@ -101,6 +101,20 @@ class WalletStore internal constructor() {
     private fun getUidFromStoreName() = aesDecrypt(key = storeNameAesKey(), message = storeName())
 }
 
+object WalletStoreAnonymous {
+    private var wallet = HDWallet(128, "")
+
+    fun new() {
+        wallet = HDWallet(128, "")
+    }
+
+    fun wallet() = wallet
+
+    fun delete() {
+        wallet = HDWallet(128, "")
+    }
+}
+
 private fun StoredKey.changeName(name: String, password: ByteArray): StoredKey {
     return StoredKey.importHDWallet(decryptMnemonic(password), name, password, CoinType.FLOW)
 }
