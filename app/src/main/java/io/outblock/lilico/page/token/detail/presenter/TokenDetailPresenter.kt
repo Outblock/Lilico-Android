@@ -58,13 +58,13 @@ class TokenDetailPresenter(
             binding.chartWrapper.root.setVisible(false)
         }
 
-        if (!StakingManager.isStaked() && coin.isFlowCoin()) {
+        if (!StakingManager.isStaked() && coin.isFlowCoin() && !isTestnet()) {
             binding.stakingBanner.root.setVisible(true)
             binding.getMoreWrapper.setVisible(false)
             binding.stakingBanner.root.setOnClickListener { openStakingPage(activity) }
         }
 
-        if (StakingManager.isStaked() && coin.isFlowCoin()) {
+        if (StakingManager.isStaked() && coin.isFlowCoin() && !isTestnet()) {
             binding.getMoreWrapper.setVisible(false)
             setupStakingRewards()
         }

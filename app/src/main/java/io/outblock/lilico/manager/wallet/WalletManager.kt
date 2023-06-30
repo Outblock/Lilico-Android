@@ -51,6 +51,10 @@ object WalletManager {
         childAccountMap.values.forEach { it.refresh() }
     }
 
+    fun changeNetwork() {
+        wallet?.walletAddress()?.let { selectWalletAddress(it) }
+    }
+
     // @return network
     fun selectWalletAddress(address: String): String {
         if (selectedWalletAddress == address) return chainNetWorkString()
