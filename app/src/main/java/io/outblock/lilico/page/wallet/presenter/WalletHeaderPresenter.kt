@@ -17,6 +17,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
+import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
 import io.outblock.lilico.manager.wallet.WalletManager
@@ -47,6 +48,10 @@ class WalletHeaderPresenter(
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[WalletFragmentViewModel::class.java] }
 
     private val activity by lazy { findActivity(view) as? FragmentActivity }
+
+    init {
+        binding.stackingButton.setVisible(isMainnet())
+    }
 
     @SuppressLint("SetTextI18n")
     override fun bind(model: WalletHeaderModel?) {

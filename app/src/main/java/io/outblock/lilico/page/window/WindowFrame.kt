@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.outblock.lilico.R
+import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.manager.drive.GoogleDriveAuthActivity
 import io.outblock.lilico.page.browser.releaseBrowser
 import io.outblock.lilico.page.browser.subpage.filepicker.FilePickerActivity
@@ -64,14 +65,24 @@ class WindowFrame {
             releaseBrowser()
             releaseBubble()
             FloatWindow.dismiss(WINDOW_TAG)
+            windowFrame = null
         }
 
         fun browserContainer(): ViewGroup? {
+            tryAttach()
             return windowFrame?.findViewById(R.id.browser_container)
         }
 
         fun bubbleContainer(): ViewGroup? {
+            tryAttach()
             return windowFrame?.findViewById(R.id.bubble_container)
+        }
+
+        private fun tryAttach() {
+            if (!FloatWindow.isShowing(WINDOW_TAG)) {
+                val activity = BaseActivity.getCurrentActivity() ?: return
+                attach(activity)
+            }
         }
 
         @SuppressLint("InflateParams")

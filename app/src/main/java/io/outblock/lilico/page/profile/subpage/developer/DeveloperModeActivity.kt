@@ -10,11 +10,14 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityDeveloperModeSettingBinding
 import io.outblock.lilico.manager.app.chainNetwork
+import io.outblock.lilico.manager.wallet.WalletManager
+import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.page.profile.subpage.developer.model.DeveloperPageModel
 import io.outblock.lilico.page.profile.subpage.developer.presenter.DeveloperModePresenter
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.uiScope
 
 class DeveloperModeActivity : BaseActivity() {
     private lateinit var binding: ActivityDeveloperModeSettingBinding
@@ -55,7 +58,11 @@ class DeveloperModeActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         if (initNetWork != chainNetwork()) {
-            MainActivity.relaunch(this)
+            uiScope {
+                WalletManager.changeNetwork()
+                clearUserCache()
+                MainActivity.relaunch(this)
+            }
         }
     }
 

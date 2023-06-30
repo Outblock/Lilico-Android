@@ -61,7 +61,6 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
 
     private fun showFailedUI() {
         with(binding) {
-            descView.text = ""
             titleView.setText(R.string.link_fail)
             line.setBackgroundResource(R.drawable.bg_link_account_error_line)
             startButton.setVisible(false)
@@ -76,6 +75,7 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
 
     private fun showSuccessUI() {
         with(binding) {
+            descView.setVisible(true)
             descView.setText(R.string.link_account_success_desc)
             titleView.setText(R.string.successful)
             defaultLayout.setVisible(false)
@@ -88,7 +88,7 @@ class FclAuthzLinkAccountView : FrameLayout, OnTransactionStateChange {
 
     private fun showDefaultUI() {
         with(binding) {
-            descView.text = context.getString(R.string.link_account_desc, data.title.orEmpty())
+            descView.setVisible(false)
             titleView.setText(R.string.link_account)
             line.setBackgroundResource(R.drawable.bg_link_account_line)
             defaultLayout.setVisible()

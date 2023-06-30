@@ -72,15 +72,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-//        uiScope {
-//            delay(2000)
-//            changeAppIcon(this, "io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogoDefault")
-////            changeAppIcon(this, "io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogo1")
-//        }
-    }
-
     override fun onDestroy() {
         INSTANCE = null
         WindowFrame.release()

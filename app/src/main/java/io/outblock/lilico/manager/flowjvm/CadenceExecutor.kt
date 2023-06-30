@@ -108,7 +108,7 @@ fun cadenceCheckTokenListEnabled(coins: List<FlowCoin>): List<Boolean>? {
         .replace("<TokenImports>", tokenImports)
         .replace("<TokenCall>", tokenCalls)
 
-
+    logd(TAG, "cadenceCheckTokenListEnabled() address:$walletAddress")
     val result = cadence.executeCadence {
         arg { address(walletAddress) }
     }
