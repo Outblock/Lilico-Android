@@ -79,8 +79,6 @@ class WalletStore internal constructor() {
 
     fun wallet(): HDWallet = keyStore.wallet(password)
 
-    fun isTemp() = keyStore.name() == TEMP_STORE
-
     private fun generateKeyStore(): StoredKey {
         val uid = uid()
         return if (uid.isNullOrBlank() || !File(storePath()).exists()) {

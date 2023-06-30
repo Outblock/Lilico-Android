@@ -45,7 +45,7 @@ object WalletManager {
     }
 
     fun changeNetwork() {
-        wallet?.walletAddress()?.let { selectWalletAddress(it) }
+        wallet()?.walletAddress()?.let { selectWalletAddress(it) }
     }
 
     // @return network
