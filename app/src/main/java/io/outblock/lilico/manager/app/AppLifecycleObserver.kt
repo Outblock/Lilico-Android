@@ -3,9 +3,13 @@ package io.outblock.lilico.manager.app
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.walletconnect.android.Core
+import com.walletconnect.android.relay.RelayClient
 import io.outblock.lilico.page.profile.subpage.claimdomain.checkMeowDomainClaimed
 import io.outblock.lilico.page.profile.subpage.wallet.queryStorageInfo
 import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.logw
+import io.outblock.lilico.utils.safeRun
 
 private const val TAG = "AppLifecycleObserver"
 
@@ -24,6 +28,11 @@ class AppLifecycleObserver : DefaultLifecycleObserver {
         isForeground = true
         checkMeowDomainClaimed()
         queryStorageInfo()
+        safeRun {
+            RelayClient.connect { error: Core.Model.Error ->
+                logw(TAG, "RelayClient connect error: $error")
+            }
+        }
     }
 
     private fun onAppToBackground() {

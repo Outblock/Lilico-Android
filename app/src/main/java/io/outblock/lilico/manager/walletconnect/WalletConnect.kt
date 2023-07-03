@@ -4,6 +4,7 @@ import android.app.Application
 import com.walletconnect.android.Core
 import com.walletconnect.android.CoreClient
 import com.walletconnect.android.relay.ConnectionType
+import com.walletconnect.android.relay.RelayClient
 import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.manager.env.EnvKey
@@ -58,12 +59,20 @@ private fun setup(application: Application) {
     CoreClient.initialize(
         metaData = appMetaData,
         relayServerUrl = "wss://relay.walletconnect.com?projectId=${projectId}",
-        connectionType = ConnectionType.AUTOMATIC,
+        connectionType = ConnectionType.MANUAL,
         application = application,
     ) {
         logw(TAG, "WalletConnect init error: $it")
     }
-    SignClient.initialize(Sign.Params.Init(core = CoreClient)) {
+
+    SignClient.initialize(
+        Sign.Params.Init(core = CoreClient),
+        onSuccess = {
+            RelayClient.connect { error: Core.Model.Error ->
+                logw(TAG, "RelayClient connect error: $error")
+            }
+        }
+    ) {
         logw(TAG, "SignClient init error: $it")
     }
 
