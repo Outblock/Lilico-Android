@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleCentered="true"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:titleTextColor="@color/text"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/list_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/bg_icon"
+        android:orientation="vertical"
+        android:padding="18dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/things_you_need_to_know"
+            android:textAllCaps="true"
+            android:textColor="@color/text_sub"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning1"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning2"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning3"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
