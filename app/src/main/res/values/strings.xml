@@ -402,5 +402,12 @@
     <string name="this_app_would_like_to">This App would like to</string>
     <string name="link_account_tips_1">Delegate account to your lilico wallet</string>
     <string name="link_account_tips_2">Lilico wallet will manage linked account</string>
+    <string name="root_detected">Root Detected</string>
+    <string name="root_detected_desc">Your keychain is exposing in threats.\nPlease make sure it’s your movement and improve the safety of your account.</string>
+    <string name="things_you_need_to_know">Things you need to know</string>
+    <string name="root_detect_warning1">Your keychain is exposing in threats.</string>
+    <string name="root_detect_warning2">Your keychain will exposing in threats.</string>
+    <string name="root_detect_warning3">Your keychain will exposing in threats.</string>
+    <string name="i_understand">I understand</string>
 
 </resources>

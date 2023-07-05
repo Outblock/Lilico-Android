@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_top_radius_16dp"
+    android:backgroundTint="@color/deep_bg"
+    android:paddingBottom="@dimen/wallet_create_button_margin">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:paddingVertical="18dp"
+        android:paddingStart="26dp"
+        android:paddingEnd="0dp"
+        android:text="@string/root_detected"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:id="@+id/close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="22dp"
+        android:background="?attr/actionBarItemBackground"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_close_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/title_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_view"
+        app:tint="@color/neutrals8"/>
+
+    <TextView
+        android:id="@+id/desc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:gravity="center"
+        android:text="@string/root_detected_desc"
+        android:textColor="@color/text_sub"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/title_view"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/list_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_round_12dp"
+        android:backgroundTint="@color/bg_icon"
+        android:orientation="vertical"
+        android:padding="18dp"
+        app:layout_constraintTop_toBottomOf="@id/desc_view">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="@string/things_you_need_to_know"
+            android:textAllCaps="true"
+            android:textColor="@color/text_sub"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning1"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning2"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="center_vertical"
+            android:text="@string/root_detect_warning3"
+            android:textColor="@color/text"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_warning_triangle"
+            app:drawableTint="@color/warning2"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="18dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/i_understand"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_wrapper"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
