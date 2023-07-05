@@ -49,6 +49,7 @@ private const val KEY_IS_GUIDE_PAGE_SHOWN = "KEY_IS_GUIDE_PAGE_SHOWN"
 private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMAIN_CLAIMED")
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
 private val KEY_CURRENCY_FLAG = stringPreferencesKey("KEY_CURRENCY_FLAG")
+private val KEY_IS_ROOT_DETECTED_DIALOG_SHOWN = booleanPreferencesKey("KEY_IS_ROOT_DETECTED_DIALOG_SHOWN")
 
 private const val KEY_SELECTED_WALLET_ADDRESS = "KEY_SELECTED_WALLET_ADDRESS"
 
@@ -202,6 +203,14 @@ suspend fun isSandboxEnabled(): Boolean {
 
 suspend fun setSandboxEnabled() {
     dataStore.edit { it[KEY_SANDBOX_ENABLED] = true }
+}
+
+suspend fun isRootDetectedDialogShown(): Boolean {
+    return dataStore.data.map { it[KEY_IS_ROOT_DETECTED_DIALOG_SHOWN] ?: false }.first()
+}
+
+suspend fun setRootDetectedDialogShown() {
+    dataStore.edit { it[KEY_IS_ROOT_DETECTED_DIALOG_SHOWN] = true }
 }
 
 fun getSelectedWalletAddress(): String? {

@@ -31,6 +31,13 @@
                 tools:visibility="gone"/>
         </FrameLayout>
 
+        <io.outblock.lilico.page.common.RootDetectedBanner
+            android:id="@+id/root_detect_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <include
             android:id="@+id/action_group"
             layout="@layout/layout_profile_action"/>
