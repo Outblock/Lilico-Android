@@ -5,9 +5,16 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.ktx.messaging
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
-import io.outblock.lilico.network.retrofit
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.network.retrofitWithHost
+import io.outblock.lilico.utils.getPushToken
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isDev
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.logw
+import io.outblock.lilico.utils.updatePushToken
 
 private const val TAG = "FirebaseMessaging"
 
@@ -19,6 +26,8 @@ fun getFirebaseMessagingToken() {
         }
         val token = task.result
         logd(TAG, "token:$token")
+        updatePushToken(token)
+        uploadPushToken()
     }
 }
 
@@ -48,8 +57,15 @@ fun uploadPushToken() {
         if (token.isEmpty() || isAnonymousSignIn()) {
             return@ioScope
         }
-        val service = retrofit().create(ApiService::class.java)
-        val resp = service.uploadPushToken(mapOf("push_token" to getPushToken()))
+        val retrofit = retrofitWithHost(if (isDev()) "https://scanner.lilico.app" else "scanner.lilico.app", ignoreAuthorization = false)
+        val service = retrofit.create(ApiService::class.java)
+        val params = mapOf(
+            "token" to getPushToken(),
+            "address" to WalletManager.selectedWalletAddress(),
+        )
+        logd(TAG, "uploadPushToken => params:$params")
+
+        val resp = service.uploadPushToken(params)
 
         if (resp.status == 200) {
             updatePushToken("")

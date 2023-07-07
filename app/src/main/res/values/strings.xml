@@ -411,4 +411,5 @@
     <string name="i_understand">I understand</string>
     <string name="root_detection_alert">Root Detection Alert</string>
 
+    <string name="notification_channel">Push Notification</string>
 </resources>

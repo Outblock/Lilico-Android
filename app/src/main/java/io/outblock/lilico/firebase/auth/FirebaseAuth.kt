@@ -3,6 +3,7 @@ package io.outblock.lilico.firebase.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import io.outblock.lilico.firebase.messaging.getFirebaseMessagingToken
 import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
@@ -29,6 +30,7 @@ fun firebaseCustomLogin(token: String, onComplete: FirebaseAuthCallback) {
         ioScope {
             clearUserCache()
             uiScope { onComplete.invoke(task.isSuccessful, task.exception) }
+            getFirebaseMessagingToken()
         }
     }
 }
