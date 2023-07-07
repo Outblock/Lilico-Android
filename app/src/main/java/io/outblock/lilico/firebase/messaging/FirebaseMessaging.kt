@@ -4,7 +4,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.ktx.messaging
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
@@ -55,7 +54,6 @@ fun parseFirebaseMessaging(message: RemoteMessage) {
 fun uploadPushToken() {
     ioScope {
         val token = getPushToken()
-        val userId = userInfoCache().read()?.username ?: return@ioScope
         if (token.isEmpty() || isAnonymousSignIn()) {
             return@ioScope
         }
@@ -63,7 +61,6 @@ fun uploadPushToken() {
         val service = retrofit.create(ApiService::class.java)
         val params = mapOf(
             "token" to getPushToken(),
-            "id" to userId,
             "address" to WalletManager.selectedWalletAddress(),
         )
         logd(TAG, "uploadPushToken => params:$params")
