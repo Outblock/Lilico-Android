@@ -11,6 +11,7 @@ import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.walletconnect.WalletConnect
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.page.address.AddressBookActivity
+import io.outblock.lilico.page.dialog.accounts.AccountSwitchDialog
 import io.outblock.lilico.page.inbox.InboxActivity
 import io.outblock.lilico.page.main.HomeTab
 import io.outblock.lilico.page.main.MainActivityViewModel
@@ -53,6 +54,9 @@ class ProfileFragmentPresenter(
         binding.root.addStatusBarTopPadding()
         binding.userInfo.editButton.setOnClickListener {
             userInfo?.let { AccountSettingActivity.launch(fragment.requireContext(), it) }
+        }
+        binding.userInfo.nicknameView.setOnClickListener {
+            AccountSwitchDialog.show(fragment.childFragmentManager)
         }
         binding.notLoggedIn.root.setOnClickListener {
             ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)

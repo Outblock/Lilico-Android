@@ -419,4 +419,5 @@
     <string name="new_feature">New Feature</string>
     <string name="new_feature_desc">We have made the following data/feature updates and xx experience and bug fixes in xxx features to improve your following use .</string>
     <string name="enjoy_your_experience">Enjoy Your Experience</string>
+    <string name="profile_switch_tip">Tap the profile name to switch profiles.</string>
 </resources>
