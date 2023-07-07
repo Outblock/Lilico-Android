@@ -8,15 +8,19 @@ import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.ActivityAccountSettingBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.UpdateProfilePreferenceRequest
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.profile.subpage.avatar.ViewAvatarActivity
 import io.outblock.lilico.page.profile.subpage.nickname.EditNicknameActivity
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.loge
+import io.outblock.lilico.utils.toast
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.ProgressDialog
 
 class AccountSettingActivity : BaseActivity() {
@@ -36,7 +40,7 @@ class AccountSettingActivity : BaseActivity() {
     override fun onRestart() {
         super.onRestart()
         ioScope {
-            userInfoCache().read()?.let { uiScope { setup(it) } }
+            AccountManager.userInfo()?.let { uiScope { setup(it) } }
         }
     }
 
@@ -75,11 +79,11 @@ class AccountSettingActivity : BaseActivity() {
                 val response = retrofit().create(ApiService::class.java)
                     .updateProfilePreference(UpdateProfilePreferenceRequest(isPrivate = if (toVisible) 2 else 1))
                 if (response.status == 200) {
-                    userInfoCache().read()?.copy(isPrivate = if (toVisible) 2 else 1)?.let { userInfoCache().cache(it) }
+                    AccountManager.userInfo()?.copy(isPrivate = if (toVisible) 2 else 1)?.let { AccountManager.updateUserInfo(it) }
 
                     val service = retrofit().create(ApiService::class.java)
                     val data = service.userInfo().data
-                    userInfoCache().cache(data)
+                    AccountManager.updateUserInfo(data)
                     uiScope { binding.visiblePreference.updateState(toVisible) }
                 }
             } catch (e: Exception) {

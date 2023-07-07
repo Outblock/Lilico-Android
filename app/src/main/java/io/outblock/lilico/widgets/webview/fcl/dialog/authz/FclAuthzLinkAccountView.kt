@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.DialogLinkAccountBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.transaction.OnTransactionStateChange
 import io.outblock.lilico.manager.transaction.TransactionStateManager
 import io.outblock.lilico.manager.wallet.WalletManager
@@ -126,7 +126,7 @@ private fun DialogLinkAccountBinding.setup(fcl: FclDialogModel) {
     dappIcon.loadFavicon(fcl.logo ?: fcl.url?.toFavIcon())
     dappName.text = fcl.title
     ioScope {
-        val userinfo = userInfoCache().read()
+        val userinfo = AccountManager.userInfo()
         uiScope {
             walletIcon.loadAvatar(userinfo?.avatar.orEmpty())
             walletName.text = userinfo?.nickname

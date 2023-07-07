@@ -65,7 +65,7 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
                         firebaseLogin(resp.data?.customToken!!) { isSuccess ->
                             if (isSuccess) {
                                 setRegistered()
-                                Wallet.store().updateMnemonic(mnemonic).store()
+                                Wallet.store().reset(mnemonic)
                                 callback.invoke(true, null)
                             } else {
                                 callback.invoke(false, ERROR_FIREBASE_SIGN_IN)
@@ -84,7 +84,7 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
 }
 
 @WorkerThread
-private suspend fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) -> Unit) {
+suspend fun firebaseLogin(customToken: String, callback: (isSuccess: Boolean) -> Unit) {
     logd(TAG, "start delete user")
     val isSuccess = if (isAnonymousSignIn()) {
         deleteAnonymousUser()

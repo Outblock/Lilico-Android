@@ -3,17 +3,22 @@ package io.outblock.lilico.page.nft.nftdetail
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.drawToBitmap
-import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.network.model.Nft
 import io.outblock.lilico.page.nft.nftdetail.widget.NftShareView
-import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.CACHE_PATH
+import io.outblock.lilico.utils.ScreenUtils
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
+import io.outblock.lilico.utils.saveToFile
+import io.outblock.lilico.utils.uiScope
 import kotlinx.coroutines.delay
 import java.io.File
 
 
 fun shareNft(wrapper: ViewGroup, nft: Nft, onReady: (file: File) -> Unit) {
     ioScope {
-        val userInfo = userInfoCache().read() ?: return@ioScope
+        val userInfo = AccountManager.userInfo() ?: return@ioScope
         uiScope {
             val view = NftShareView(wrapper.context, userInfo, nft)
             wrapper.removeAllViews()

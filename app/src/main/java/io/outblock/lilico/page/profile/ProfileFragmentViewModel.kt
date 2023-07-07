@@ -2,7 +2,7 @@ package io.outblock.lilico.page.profile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.OtherHostService
@@ -27,14 +27,14 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     private suspend fun requestUserInfo() {
-        userInfoCache().read()?.let { profileLiveData.postValue(it) }
+        AccountManager.userInfo()?.let { profileLiveData.postValue(it) }
 
         try {
             val service = retrofit().create(ApiService::class.java)
             val data = service.userInfo().data
             if (data != profileLiveData.value) {
                 profileLiveData.postValue(data)
-                userInfoCache().cache(data)
+                AccountManager.updateUserInfo(data)
             }
         } catch (e: Exception) {
             loge(e)

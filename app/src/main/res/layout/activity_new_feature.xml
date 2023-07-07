@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="18dp">
+
+    <TextView
+        android:id="@+id/title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:text="@string/new_feature"
+        android:textColor="@color/text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/desc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:text="@string/new_feature_desc"
+        android:textColor="@color/text_sub"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_view"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="36dp"
+        android:alpha="0.08"
+        android:background="@color/button"
+        app:layout_constraintTop_toBottomOf="@id/desc_view"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/icon_1"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="36dp"
+        android:background="@color/neutrals9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:round="16dp"/>
+
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="bug fixed UPDATe"
+        android:textAllCaps="true"
+        android:textColor="@color/text"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_1"
+        app:layout_constraintTop_toTopOf="@id/icon_1"
+        tools:ignore="HardcodedText"/>
+
+    <TextView
+        android:id="@+id/desc_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="New feature descriptions, we would like to introduce you our new sed do eiussed."
+        android:textAllCaps="true"
+        android:textColor="@color/text_sub"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_1"
+        app:layout_constraintTop_toBottomOf="@id/title_1"
+        tools:ignore="HardcodedText"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/icon_2"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/neutrals9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon_1"
+        app:round="16dp"/>
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="bug fixed UPDATe"
+        android:textAllCaps="true"
+        android:textColor="@color/text"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_2"
+        app:layout_constraintTop_toTopOf="@id/icon_2"
+        tools:ignore="HardcodedText"/>
+
+    <TextView
+        android:id="@+id/desc_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="New feature descriptions, we would like to introduce you our new sed do eiussed."
+        android:textAllCaps="true"
+        android:textColor="@color/text_sub"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_2"
+        app:layout_constraintTop_toBottomOf="@id/title_2"
+        tools:ignore="HardcodedText"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="40dp"
+        android:text="@string/enjoy_your_experience"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

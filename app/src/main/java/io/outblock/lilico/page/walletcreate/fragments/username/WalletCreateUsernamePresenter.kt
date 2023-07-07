@@ -15,7 +15,6 @@ import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2pix
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.listeners.SimpleTextWatcher
-import io.outblock.lilico.utils.updateUsername
 
 class WalletCreateUsernamePresenter(
     private val fragment: Fragment,
@@ -45,7 +44,6 @@ class WalletCreateUsernamePresenter(
             post { layoutParams.height = height }
         }
         binding.nextButton.setOnClickListener {
-            updateUsername(binding.editText.text.toString())
             binding.nextButton.setProgressVisible(true)
             viewModel.createUser(binding.editText.text.toString())
         }

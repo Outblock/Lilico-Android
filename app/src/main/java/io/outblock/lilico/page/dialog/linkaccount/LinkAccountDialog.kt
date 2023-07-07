@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.DialogLinkAccountBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
 import io.outblock.lilico.utils.ioScope
@@ -86,7 +86,7 @@ private fun DialogLinkAccountBinding.setup(fcl: FclDialogModel) {
     dappIcon.loadFavicon(fcl.logo ?: fcl.url?.toFavIcon())
     dappName.text = fcl.title
     ioScope {
-        val userinfo = userInfoCache().read()
+        val userinfo = AccountManager.userInfo()
         uiScope {
             walletIcon.loadAvatar(userinfo?.avatar.orEmpty())
             walletName.text = userinfo?.nickname

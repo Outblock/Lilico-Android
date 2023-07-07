@@ -5,6 +5,7 @@ import com.google.firebase.ktx.Firebase
 import io.outblock.lilico.cache.CACHE_WALLET
 import io.outblock.lilico.cache.CacheManager
 import io.outblock.lilico.cache.cacheFile
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.childaccount.ChildAccountList
@@ -15,8 +16,6 @@ import io.outblock.lilico.utils.updateSelectedWalletAddress
 
 object WalletManager {
 
-    private var wallet: WalletListData? = null
-
     private var childAccountMap = mapOf<String, ChildAccountList>()
 
     private var selectedWalletAddress: String = ""
@@ -24,17 +23,16 @@ object WalletManager {
     fun init() {
         ioScope {
             selectedWalletAddress = getSelectedWalletAddress().orEmpty()
-            wallet = cache().read()?.apply { refreshChildAccount(this) }
         }
     }
 
-    fun wallet() = wallet
+    fun wallet() = AccountManager.get()?.wallet
 
     fun isChildAccountSelected() =
-        if (wallet?.wallets.isNullOrEmpty()) false else wallet?.wallets?.firstOrNull { it.address() == selectedWalletAddress } == null
+        if (wallet()?.wallets.isNullOrEmpty()) false else wallet()?.wallets?.firstOrNull { it.address() == selectedWalletAddress } == null
 
     fun childAccountList(walletAddress: String? = null): ChildAccountList? {
-        val address = (walletAddress ?: wallet?.walletAddress()) ?: return null
+        val address = (walletAddress ?: wallet()?.walletAddress()) ?: return null
         return childAccountMap[address]
     }
 
@@ -42,17 +40,12 @@ object WalletManager {
         return childAccountMap.toMap().values.flatMap { it.get() }.firstOrNull { it.address == childAddress }
     }
 
-    fun update(wallet: WalletListData) {
-        this.wallet = wallet.apply { refreshChildAccount(this) }
-        cache().cache(wallet)
-    }
-
     fun refreshChildAccount() {
         childAccountMap.values.forEach { it.refresh() }
     }
 
     fun changeNetwork() {
-        wallet?.walletAddress()?.let { selectWalletAddress(it) }
+        wallet()?.walletAddress()?.let { selectWalletAddress(it) }
     }
 
     // @return network
@@ -62,12 +55,12 @@ object WalletManager {
         selectedWalletAddress = address
         updateSelectedWalletAddress(address)
 
-        val walletData = wallet?.wallets?.firstOrNull { it.address() == address }
+        val walletData = wallet()?.wallets?.firstOrNull { it.address() == address }
         val networkStr = if (walletData == null) {
             val walletAddress = childAccountMap.values
                 .firstOrNull { child -> child.get().any { it.address == address } }?.address
 
-            val data = wallet?.wallets?.firstOrNull { it.address() == walletAddress }
+            val data = wallet()?.wallets?.firstOrNull { it.address() == walletAddress }
 
             data?.network()
         } else walletData.network()
@@ -82,7 +75,7 @@ object WalletManager {
             return pref.orEmpty()
         }
 
-        return wallet?.walletAddress().orEmpty().apply {
+        return wallet()?.walletAddress().orEmpty().apply {
             if (isNotBlank()) {
                 selectedWalletAddress = this
                 updateSelectedWalletAddress(this)

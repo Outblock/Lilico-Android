@@ -1,39 +1,59 @@
-package io.outblock.lilico.wallet
+package io.outblock.lilico.manager.account
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nftco.flow.sdk.bytesToHex
 import com.nftco.flow.sdk.hexToBytes
+import io.outblock.lilico.cache.userInfoCache
+import io.outblock.lilico.cache.walletCache
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.utils.DATA_PATH
 import io.outblock.lilico.utils.getWalletStoreNameAesKey
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
-import io.outblock.lilico.utils.logw
 import io.outblock.lilico.utils.readWalletPassword
 import io.outblock.lilico.utils.saveWalletStoreNameAesKey
 import io.outblock.lilico.utils.secret.aesDecrypt
 import io.outblock.lilico.utils.secret.aesEncrypt
-import io.outblock.lilico.utils.storeWalletPassword
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
+import io.outblock.lilico.wallet.WalletStore
 import wallet.core.jni.StoredKey
 import java.io.File
 import java.util.UUID
 
-private val TAG = WalletStore::class.java.simpleName
+// from single account to multi account
+fun accountMigrateV1(callback: (() -> Unit)? = null) {
+    ioScope {
+        if (!isAccountV1DataExist()) {
+            callback?.invoke()
+            return@ioScope
+        }
 
-private const val TEMP_STORE = "temp"
-
-object Wallet {
-
-    private val store by lazy { WalletStore() }
-
-    fun store() = store
+        migrateV1()
+    }
 }
 
-class WalletStore internal constructor() {
+fun migrateV1() {
+    logd("xxx", "migrate start")
+    val account = Account(
+        userInfo = userInfoCache().read()!!,
+        isActive = true,
+        wallet = walletCache().read()
+    )
+    AccountManager.add(account)
+    userInfoCache().clear()
+    val mnemonic = WalletStoreMigrate().mnemonic()
+
+    logd("xxx", "migrate end username:${account.userInfo.username}")
+}
+
+suspend fun isAccountV1DataExist() = userInfoCache().isCacheExist()
+
+
+private val TAG = WalletStore::class.java.simpleName
+private const val TEMP_STORE = "temp"
+
+private class WalletStoreMigrate {
 
     private var keyStore: StoredKey
     private var password: ByteArray
@@ -43,41 +63,7 @@ class WalletStore internal constructor() {
         keyStore = generateKeyStore()
     }
 
-    fun updateMnemonic(mnemonic: String) = apply {
-        logd(TAG, "updateMnemonic")
-        password = password()
-        keyStore = keyStore.changeMnemonic(mnemonic, password)
-    }
-
-    fun reset(mnemonic: String) {
-        password = password()
-        keyStore = generateKeyStore().changeMnemonic(mnemonic, password)
-        store()
-    }
-
-    fun resume() {
-        password = password()
-        keyStore = generateKeyStore()
-    }
-
-    fun store() = apply {
-        if (uid().isNullOrBlank()) {
-            logw(TAG, "user not sign in, can't store")
-            return@apply
-        }
-        logd(TAG, "store")
-
-        if (keyStore.name() != storeName()) {
-            keyStore = keyStore.changeName(storeName(), password)
-        }
-
-        saveCurrentUserPassword(password.bytesToHex())
-        keyStore.store(storePath())
-    }
-
     fun mnemonic(): String = keyStore.decryptMnemonic(password)
-
-    fun wallet(): HDWallet = keyStore.wallet(password)
 
     private fun generateKeyStore(): StoredKey {
         val uid = uid()
@@ -99,38 +85,9 @@ class WalletStore internal constructor() {
     private fun getUidFromStoreName() = aesDecrypt(key = storeNameAesKey(), message = storeName())
 }
 
-object WalletStoreAnonymous {
-    private var wallet = HDWallet(128, "")
-
-    fun new() {
-        wallet = HDWallet(128, "")
-    }
-
-    fun wallet() = wallet
-
-    fun delete() {
-        wallet = HDWallet(128, "")
-    }
-}
-
-private fun StoredKey.changeName(name: String, password: ByteArray): StoredKey {
-    return StoredKey.importHDWallet(decryptMnemonic(password), name, password, CoinType.FLOW)
-}
-
-private fun StoredKey.changeMnemonic(mnemonic: String, password: ByteArray): StoredKey {
-    return StoredKey.importHDWallet(mnemonic, name(), password, CoinType.FLOW)
-}
-
 private fun readCurrentUserPassword(): String? {
     val uid = uid() ?: return null
     return passwordMap()[uid]
-}
-
-private fun saveCurrentUserPassword(password: String) {
-    val uid = uid() ?: return
-    val passwordMap = passwordMap()
-    passwordMap[uid] = password
-    storeWalletPassword(Gson().toJson(passwordMap))
 }
 
 private fun passwordMap(): HashMap<String, String> {

@@ -23,6 +23,7 @@ object BalanceManager {
 
     fun reload() {
         ioScope {
+            balanceList.clear()
             balanceList.addAll(cache.read()?.data ?: emptyList())
             refresh()
         }

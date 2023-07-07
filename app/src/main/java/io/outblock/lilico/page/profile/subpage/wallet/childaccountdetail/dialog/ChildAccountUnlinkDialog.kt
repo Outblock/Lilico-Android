@@ -10,8 +10,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.nftco.flow.sdk.FlowTransactionStatus
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.DialogUnlinkChildAccountBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.flowjvm.CADENCE_UNLINK_CHILD_ACCOUNT
 import io.outblock.lilico.manager.flowjvm.transactionByMainWallet
@@ -46,7 +46,7 @@ class ChildAccountUnlinkDialog : BottomSheetDialogFragment() {
             dappAddress.text = account.address
 
             ioScope {
-                val userInfo = userInfoCache().read() ?: return@ioScope
+                val userInfo = AccountManager.userInfo() ?: return@ioScope
                 val address = WalletManager.selectedWalletAddress() ?: return@ioScope
 
                 uiScope {

@@ -14,8 +14,8 @@ import com.airbnb.lottie.model.KeyPath
 import com.airbnb.lottie.value.LottieValueCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.outblock.lilico.R
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.app.NETWORK_NAME_MAINNET
 import io.outblock.lilico.manager.app.NETWORK_NAME_SANDBOX
 import io.outblock.lilico.manager.app.NETWORK_NAME_TESTNET
@@ -83,7 +83,7 @@ fun BottomNavigationView.setLottieDrawable(index: Int, isSelected: Boolean, play
 
 fun LayoutMainDrawerLayoutBinding.refreshWalletList() {
     ioScope {
-        val userInfo = userInfoCache().read() ?: return@ioScope
+        val userInfo = AccountManager.userInfo() ?: return@ioScope
         uiScope {
             walletListWrapper.removeAllViews()
 

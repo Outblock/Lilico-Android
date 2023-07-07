@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.outblock.lilico.cache.nftListCache
-import io.outblock.lilico.cache.userInfoCache
 import io.outblock.lilico.firebase.storage.uploadAvatarToFirebase
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.model.UserInfoData
@@ -55,12 +55,12 @@ class EditAvatarViewModel : ViewModel() {
                         if (avatarUrl.isNullOrEmpty()) {
                             uploadResultLiveData.postValue(false)
                         }
-                        val userInfo = userInfoCache().read()!!
+                        val userInfo = AccountManager.userInfo()!!
                         val service = retrofit().create(ApiService::class.java)
                         val resp = service.updateProfile(mapOf("nickname" to userInfo.nickname, "avatar" to avatarUrl!!))
                         if (resp.status == 200) {
                             userInfo.avatar = avatarUrl
-                            userInfoCache().cache(userInfo)
+                            AccountManager.updateUserInfo(userInfo)
                             delay(200)
                         }
                         uploadResultLiveData.postValue(resp.status == 200)

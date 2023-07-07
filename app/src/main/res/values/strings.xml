@@ -412,4 +412,11 @@
     <string name="root_detection_alert">Root Detection Alert</string>
 
     <string name="notification_channel">Push Notification</string>
+    <string name="accounts">Accounts</string>
+    <string name="create_a_new_account">Create a New Account</string>
+    <string name="add_an_existing_account">Add an Existing Account</string>
+    <string name="resume_login_error">Encountered a problem, please restart the app</string>
+    <string name="new_feature">New Feature</string>
+    <string name="new_feature_desc">We have made the following data/feature updates and xx experience and bug fixes in xxx features to improve your following use .</string>
+    <string name="enjoy_your_experience">Enjoy Your Experience</string>
 </resources>

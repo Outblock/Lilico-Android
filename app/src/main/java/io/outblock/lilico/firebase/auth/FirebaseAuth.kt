@@ -68,7 +68,7 @@ suspend fun deleteAnonymousUser() = suspendCoroutine<Boolean> { continuation ->
     }
 }
 
-private suspend fun signInAnonymously() = suspendCoroutine<Boolean> { continuation ->
+suspend fun signInAnonymously() = suspendCoroutine<Boolean> { continuation ->
     Firebase.auth.signInAnonymously().addOnCompleteListener { signInTask ->
         continuation.resume(signInTask.isSuccessful)
     }
