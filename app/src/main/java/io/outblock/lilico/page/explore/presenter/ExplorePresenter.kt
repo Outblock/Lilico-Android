@@ -11,6 +11,7 @@ import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.explore.ExploreFragment
 import io.outblock.lilico.page.explore.adapter.ExploreBookmarkAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreDAppAdapter
+import io.outblock.lilico.page.explore.adapter.ExploreDAppTagsAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.BookmarkListDialog
@@ -18,7 +19,11 @@ import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
 import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClaimedStateChange
-import io.outblock.lilico.utils.extensions.*
+import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.location
+import io.outblock.lilico.utils.extensions.scrollToPositionForce
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isMeowDomainClaimed
 import io.outblock.lilico.utils.uiScope
@@ -34,6 +39,7 @@ class ExplorePresenter(
     private val recentAdapter by lazy { ExploreRecentAdapter(true) }
     private val bookmarkAdapter by lazy { ExploreBookmarkAdapter() }
     private val dappAdapter by lazy { ExploreDAppAdapter() }
+    private val dappTagAdapter by lazy { ExploreDAppTagsAdapter() }
 
     private val activity by lazy { fragment.requireActivity() }
 
@@ -62,6 +68,12 @@ class ExplorePresenter(
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 12.dp2px().toInt(), LinearLayoutManager.VERTICAL))
             adapter = dappAdapter
+        }
+
+        with(binding.dappTabs) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 4.dp2px().toInt(), LinearLayoutManager.HORIZONTAL))
+            adapter = dappTagAdapter
         }
 
         with(binding) {
@@ -96,6 +108,10 @@ class ExplorePresenter(
         model.dAppList?.let {
             dappAdapter.setNewDiffData(it)
             binding.dappWrapper.setVisible(it.isNotEmpty())
+        }
+
+        model.dAppTagList?.let {
+            dappTagAdapter.setNewDiffData(it)
         }
     }
 

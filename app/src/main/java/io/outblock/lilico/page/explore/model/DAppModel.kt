@@ -17,3 +17,10 @@ data class DAppModel(
     @SerializedName("url")
     val url: String?,
 )
+
+data class DAppTagModel(
+    @SerializedName("category")
+    val category: String,
+    @SerializedName("category")
+    val isSelected: Boolean = false,
+)

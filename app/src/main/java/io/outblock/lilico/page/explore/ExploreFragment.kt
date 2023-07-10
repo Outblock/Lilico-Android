@@ -47,6 +47,7 @@ class ExploreFragment : Fragment() {
             recentLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(recentList = it)) }
             bookmarkLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(bookmarkList = it)) }
             dAppsLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(dAppList = it)) }
+            dAppTagsLiveData.observe(viewLifecycleOwner) { presenter.bind(ExploreModel(dAppTagList = it)) }
             load()
         }
     }
