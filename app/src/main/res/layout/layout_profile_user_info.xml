@@ -5,13 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <io.outblock.lilico.page.profile.widget.ProfileSwitchTipsBanner
+        android:id="@+id/profile_switch_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/avatar_view"
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_switch_tips"
         app:round="82dp"
         tools:background="#999"/>
 
@@ -27,7 +33,10 @@
         app:layout_constraintStart_toEndOf="@id/avatar_view"
         app:layout_constraintTop_toTopOf="@id/avatar_view"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="nickzyan"/>
+        tools:text="nickzyan"
+        android:drawablePadding="8dp"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_down_18"
+        app:drawableTint="@color/navy3"/>
 
     <TextView
         android:id="@+id/userid_view"

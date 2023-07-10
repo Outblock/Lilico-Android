@@ -50,6 +50,7 @@ private val KEY_IS_MEOW_DOMAIN_CLAIMED = booleanPreferencesKey("KEY_IS_MEOW_DOMA
 private val KEY_INBOX_READ_LIST = stringPreferencesKey("KEY_INBOX_READ_LIST")
 private val KEY_CURRENCY_FLAG = stringPreferencesKey("KEY_CURRENCY_FLAG")
 private val KEY_IS_ROOT_DETECTED_DIALOG_SHOWN = booleanPreferencesKey("KEY_IS_ROOT_DETECTED_DIALOG_SHOWN")
+private val KEY_IS_PROFILE_SWITCH_TIPS_SHOWN = booleanPreferencesKey("KEY_IS_PROFILE_SWITCH_TIPS_SHOWN")
 
 private const val KEY_SELECTED_WALLET_ADDRESS = "KEY_SELECTED_WALLET_ADDRESS"
 
@@ -211,6 +212,14 @@ suspend fun isRootDetectedDialogShown(): Boolean {
 
 suspend fun setRootDetectedDialogShown() {
     dataStore.edit { it[KEY_IS_ROOT_DETECTED_DIALOG_SHOWN] = true }
+}
+
+suspend fun isProfileSwitchTipsShown(): Boolean {
+    return dataStore.data.map { it[KEY_IS_PROFILE_SWITCH_TIPS_SHOWN] ?: false }.first()
+}
+
+suspend fun setProfileSwitchTipsShown() {
+    dataStore.edit { it[KEY_IS_PROFILE_SWITCH_TIPS_SHOWN] = true }
 }
 
 fun getSelectedWalletAddress(): String? {

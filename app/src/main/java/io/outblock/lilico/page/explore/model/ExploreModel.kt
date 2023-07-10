@@ -7,4 +7,5 @@ class ExploreModel(
     val recentList: List<WebviewRecord>? = null,
     val bookmarkList: List<Bookmark>? = null,
     val dAppList: List<DAppModel>? = null,
+    val dAppTagList: List<DAppTagModel>? = null,
 )
