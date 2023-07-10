@@ -15,6 +15,7 @@ import io.outblock.lilico.page.explore.adapter.ExploreDAppTagsAdapter
 import io.outblock.lilico.page.explore.adapter.ExploreRecentAdapter
 import io.outblock.lilico.page.explore.model.ExploreModel
 import io.outblock.lilico.page.explore.subpage.BookmarkListDialog
+import io.outblock.lilico.page.explore.subpage.DAppListDialog
 import io.outblock.lilico.page.explore.subpage.RecentHistoryDialog
 import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
@@ -79,6 +80,7 @@ class ExplorePresenter(
         with(binding) {
             recentMoreButton.setOnClickListener { RecentHistoryDialog.show(activity.supportFragmentManager) }
             bookmarkMoreButton.setOnClickListener { BookmarkListDialog.show(activity.supportFragmentManager) }
+            dappMoreButton.setOnClickListener { DAppListDialog.show(activity.supportFragmentManager) }
             searchBox.root.setOnClickListener {
                 uiScope {
                     searchBoxWrapper.setVisible(false, invisible = true)

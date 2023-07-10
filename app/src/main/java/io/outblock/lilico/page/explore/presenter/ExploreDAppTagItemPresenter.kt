@@ -17,8 +17,6 @@ class ExploreDAppTagItemPresenter(
 ) : BaseViewHolder(view), BasePresenter<DAppTagModel> {
     private val binding by lazy { ItemDappCategoryBinding.bind(view) }
 
-    private val activity = findActivity(view)
-
     private val viewModel by lazy { ViewModelProvider(findActivity(view) as FragmentActivity)[ExploreViewModel::class.java] }
 
     override fun bind(model: DAppTagModel) {
