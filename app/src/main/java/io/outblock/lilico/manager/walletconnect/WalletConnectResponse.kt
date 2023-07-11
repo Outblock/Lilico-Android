@@ -47,6 +47,7 @@ fun walletConnectAuthnServiceResponse(
     }
     ],
     "addr": "${address.toAddress()}",
+    "address": "${address.toAddress()}",
     "fType": "AuthnResponse"
   }
 }

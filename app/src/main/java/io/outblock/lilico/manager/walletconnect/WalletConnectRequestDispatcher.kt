@@ -77,7 +77,9 @@ private fun WCRequest.respondAuthn() {
     )
     logd(TAG, "respondAuthn:\n${services}")
 
-    SignClient.respond(response) { error -> loge(error.throwable) }
+    SignClient.respond(response, onSuccess = { success ->
+        logd(TAG, "success:${success}")
+    }) { error -> loge(error.throwable) }
     redirectToSourceApp()
 }
 
