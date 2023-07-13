@@ -13,6 +13,7 @@ object AccountManager {
     private val accounts = mutableListOf<Account>()
 
     fun init() {
+        accounts.clear()
         accountsCache().read()?.let { accounts.addAll(it) }
     }
 

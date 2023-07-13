@@ -8,12 +8,16 @@ import io.outblock.lilico.firebase.auth.deleteAnonymousUser
 import io.outblock.lilico.firebase.auth.firebaseCustomLogin
 import io.outblock.lilico.firebase.auth.getFirebaseJwt
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
+import io.outblock.lilico.manager.account.Account
+import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.network.ApiService
+import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.setRegistered
+import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.wallet.Wallet
 import io.outblock.lilico.wallet.getPublicKey
 import io.outblock.lilico.wallet.sign
@@ -66,7 +70,12 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
                             if (isSuccess) {
                                 setRegistered()
                                 Wallet.store().reset(mnemonic)
-                                callback.invoke(true, null)
+                                ioScope {
+                                    clearUserCache()
+                                    AccountManager.init()
+                                    AccountManager.add(Account(userInfo = service.userInfo().data))
+                                    uiScope { callback.invoke(true, null) }
+                                }
                             } else {
                                 callback.invoke(false, ERROR_FIREBASE_SIGN_IN)
                             }

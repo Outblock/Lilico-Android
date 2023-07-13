@@ -67,9 +67,9 @@ fun uploadPushToken() {
 
         val resp = service.uploadPushToken(params)
 
+        logd(TAG, resp)
         if (resp.status == 200) {
             updatePushToken("")
         }
-        logd(TAG, resp)
     }
 }
