@@ -300,6 +300,10 @@
             android:name=".page.others.AccountMigrateActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.profile.subpage.wallet.childaccountedit.ChildAccountEditActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"

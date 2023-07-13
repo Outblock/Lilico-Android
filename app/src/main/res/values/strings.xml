@@ -422,4 +422,5 @@
     <string name="profile_switch_tip">Tap the profile name to switch profiles.</string>
 
     <string name="all">All</string>
+    <string name="avatar">Avatar</string>
 </resources>

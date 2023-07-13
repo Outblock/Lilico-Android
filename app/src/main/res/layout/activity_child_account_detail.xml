@@ -12,6 +12,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/child_account_detail"
         app:titleCentered="true"
         app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@color/text"/>
@@ -33,11 +34,11 @@
                 android:id="@+id/logo_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:roundPercent="1"
-                android:scaleType="centerCrop"
                 tools:background="#999"/>
 
             <TextView
