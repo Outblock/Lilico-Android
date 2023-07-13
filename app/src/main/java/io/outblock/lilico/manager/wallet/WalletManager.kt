@@ -26,6 +26,10 @@ object WalletManager {
         }
     }
 
+    fun walletUpdate() {
+        wallet()?.let { refreshChildAccount(it) }
+    }
+
     fun wallet() = AccountManager.get()?.wallet
 
     fun isChildAccountSelected() =

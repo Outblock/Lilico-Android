@@ -2,6 +2,7 @@ package io.outblock.lilico.manager.account
 
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.model.WalletListData
@@ -15,6 +16,7 @@ object AccountManager {
     fun init() {
         accounts.clear()
         accountsCache().read()?.let { accounts.addAll(it) }
+        WalletManager.walletUpdate()
     }
 
     fun add(account: Account) {
@@ -36,6 +38,7 @@ object AccountManager {
     fun updateWalletInfo(wallet: WalletListData) {
         list().firstOrNull { it.userInfo.username == wallet.username }?.wallet = wallet
         accountsCache().cache(Accounts().apply { addAll(accounts) })
+        WalletManager.walletUpdate()
     }
 
     fun list() = accounts.toList()
