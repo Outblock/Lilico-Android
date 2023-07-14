@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:id="@+id/avatar_container"
             android:paddingVertical="16dp">
 
             <TextView

@@ -28,7 +28,7 @@ fun Uri?.toFile(path: String): File? {
     if (this == null) return null
     val file = File(path)
     return try {
-        Env.getApp().contentResolver.openInputStream(this)?.toFile(file)
+        Env.getApp().contentResolver.openInputStream(this)?.use { it.toFile(file) }
         file
     } catch (e: Exception) {
         loge(e)
