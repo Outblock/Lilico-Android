@@ -10,7 +10,15 @@
     <entry>
         <key>dapp</key>
         <value>
-            [{"name":"Flowns","url":"https://flowns.org","testnet_url":"https://testnet.flowns.org","description":"Flow-based Domain Name Service where every domain is an NFT","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/flowns/logo.png","category":"Domain"},{"name":"Find","url":"https://find.xyz/","testnet_url":"https://test.find.xyz/","description":"A place to find people and things on the Flow Blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/find/logo.png","category":"Domain"},{"name":"FLOAT","url":"https://www.ecdao.org/","testnet_url":"https://testnet.floats.city/","description":"A Flow-enabled proof of attendance platform built by Emerald DAO","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/float/logo.png","category":"Domain"},{"name":"Increment","url":"https://swap.increment.fi/swap","testnet_url":"https://demo.increment.fi/swap","description":"Decentralized money market and one-stop DeFi suites to boost yield &amp; liquidity opportunities on the Flow blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/increment/logo.jpeg","category":"Domain"}]
+            [{"name":"Flowns","url":"https://flowns.org","testnet_url":"https://testnet.flowns.org","description":"Flow-based Domain Name Service
+            where every domain is an
+            NFT","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/flowns/logo.png","category":"Domain"},{"name":"Find","url":"https://find.xyz/","testnet_url":"https://test.find.xyz/","description":"A
+            place to find people and things on the Flow
+            Blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/find/logo.png","category":"Domain"},{"name":"FLOAT","url":"https://www.ecdao.org/","testnet_url":"https://testnet.floats.city/","description":"A
+            Flow-enabled proof of attendance platform built by Emerald
+            DAO","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/float/logo.png","category":"Domain"},{"name":"Increment","url":"https://swap.increment.fi/swap","testnet_url":"https://demo.increment.fi/swap","description":"Decentralized
+            money market and one-stop DeFi suites to boost yield &amp; liquidity opportunities on the Flow
+            blockchain","logo":"https://raw.githubusercontent.com/Outblock/Assets/main/dapp/increment/logo.jpeg","category":"Domain"}]
         </value>
     </entry>
 
@@ -18,6 +26,13 @@
         <key>free_gas_config</key>
         <value>
             {"features":{"free_gas":true,"wallet_connect":false},"payer":{"mainnet":{"address":"0x319e67f2ef9d937f","keyId":0},"testnet":{"address":"0xcb1cf3196916f9e2","keyId":0}}}
+        </value>
+    </entry>
+
+    <entry>
+        <key>contract_address</key>
+        <value>
+            {"mainnet":{"0xDomains":"0x233eb012d34b0070","0xFind":"0x097bafa4e0b48eef","0xFlowFees":"0xf919ee77447b7497","0xFlowIDTableStaking":"0x8624b52f9ddcd04a","0xFlowns":"0x233eb012d34b0070","0xFlowTableStaking":"0x8624b52f9ddcd04a","0xFlowToken":"0x1654653399040a61","0xFungibleToken":"0xf233dcee88fe0abe","0xHybridCustody":"0x8624b52f9ddcd04a","0xLockedTokens":"0x8d0e87b65159ae63","0xMetadataViews":"0x1d7e57aa55817448","0xNonFungibleToken":"0x1d7e57aa55817448","0xStakingCollection":"0x8d0e87b65159ae63","0xStakingProxy":"0x62430cf28c26d095","0xSwapError":"0xb78ef7afa52ff906","0xSwapRouter":"0xa6850776a94e6551"},"testnet":{"0xDomains":"0xb05b2abb42335e88","0xFind":"0xa16ab1d0abde3625","0xFlowFees":"0x912d5440f7e3769e","0xFlowIDTableStaking":"0x9eca2b38b18b5dfe","0xFlowns":"0xb05b2abb42335e88","0xFlowTableStaking":"0x9eca2b38b18b5dfe","0xFlowToken":"0x7e60df042a9c0868","0xFungibleToken":"0x9a0766d93b6608b7","0xHybridCustody":"0x294e44e1ec6993c6","0xLockedTokens":"0x95e019a17d0e23d7","0xMetadataViews":"0x631e88ae7f1d7c20","0xNonFungibleToken":"0x631e88ae7f1d7c20","0xStakingCollection":"0x95e019a17d0e23d7","0xStakingProxy":"0x7aad92e5a0715d21","0xSwapError":"0xddb929038d45d4b3","0xSwapRouter":"0x2f8af5ed05bbde0d"},"sandboxnet":{"0xDomains":"0x8998b29311d1f3da","0xFlowFees":"0xe92c2039bbe9da96","0xFlowns":"0x8998b29311d1f3da","0xFlowTableStaking":"0xf4527793ee68aede","0xFlowToken":"0x0661ab7d6696a460","0xFungibleToken":"0xe20612a0776ca4bf","0xLockedTokens":"0xf4527793ee68aede","0xNonFungibleToken":"0x83ade3a54eb3870c"}}
         </value>
     </entry>
 </defaultsMap>

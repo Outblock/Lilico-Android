@@ -5,6 +5,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.manager.app.isTestnet
+import io.outblock.lilico.utils.NETWORK_SANDBOX
+import io.outblock.lilico.utils.NETWORK_TESTNET
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isFreeGasPreferenceEnable
 import io.outblock.lilico.utils.safeRun
@@ -14,6 +16,7 @@ suspend fun isGasFree() = AppConfig.isFreeGas() && isFreeGasPreferenceEnable()
 object AppConfig {
 
     private var config: Config? = null
+    private var flowAddressRegistry: FlowAddressRegistry? = null
 
     fun isFreeGas() = config().features.freeGas
 
@@ -21,8 +24,19 @@ object AppConfig {
 
     fun walletConnectEnable() = config().features.walletConnect
 
+    fun addressRegistry(network: Int): Map<String, String> {
+        return when (network) {
+            NETWORK_TESTNET -> flowAddressRegistry().testnet
+            NETWORK_SANDBOX -> flowAddressRegistry().sandboxnet
+            else -> flowAddressRegistry().mainnet
+        }
+    }
+
     fun sync() {
-        ioScope { reloadConfig() }
+        ioScope {
+            reloadConfig()
+            reloadFlowAddressRegistry()
+        }
     }
 
     private fun reloadConfig(): Config {
@@ -33,7 +47,17 @@ object AppConfig {
         return config!!
     }
 
+    private fun reloadFlowAddressRegistry(): FlowAddressRegistry {
+        val text = Firebase.remoteConfig.getString("contract_address")
+        safeRun {
+            flowAddressRegistry = Gson().fromJson(text, FlowAddressRegistry::class.java)
+        }
+        return flowAddressRegistry!!
+    }
+
     private fun config() = config ?: reloadConfig()
+
+    private fun flowAddressRegistry() = flowAddressRegistry ?: reloadFlowAddressRegistry()
 }
 
 private data class Config(
@@ -63,4 +87,13 @@ data class PayerNet(
     val address: String,
     @SerializedName("keyId")
     val keyId: Int
+)
+
+private data class FlowAddressRegistry(
+    @SerializedName("mainnet")
+    val mainnet: Map<String, String>,
+    @SerializedName("testnet")
+    val testnet: Map<String, String>,
+    @SerializedName("sandboxnet")
+    val sandboxnet: Map<String, String>,
 )
