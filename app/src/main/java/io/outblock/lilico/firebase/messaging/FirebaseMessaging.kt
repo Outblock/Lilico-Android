@@ -17,7 +17,7 @@ import io.outblock.lilico.firebase.auth.isAnonymousSignIn
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofitWithHost
-import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.common.NotificationDispatchActivity
 import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.getPushToken
@@ -89,7 +89,7 @@ fun uploadPushToken() {
 
 private fun sendNotification(message: RemoteMessage) {
     val requestCode = 0
-    val intent = Intent(Env.getApp(), MainActivity::class.java)
+    val intent = Intent(Env.getApp(), NotificationDispatchActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     intent.putExtra("data", Gson().toJson(message.data))
     val pendingIntent = PendingIntent.getActivity(
