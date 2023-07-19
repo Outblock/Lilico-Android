@@ -56,16 +56,16 @@ object LaunchManager {
     }
 
     private fun readCache(application: Application) {
-        WalletManager.init()
-        NftCollectionConfig.sync()
-        BalanceManager.reload()
-        TransactionStateManager.reload()
-        TokenStateManager.reload()
-        NftCollectionStateManager.reload()
-        CoinRateManager.init()
-        CurrencyManager.init()
-        StakingManager.init()
-        EnvKey.init()
+        safeRun { EnvKey.init() }
+        safeRun { WalletManager.init() }
+        safeRun { NftCollectionConfig.sync() }
+        safeRun { BalanceManager.reload() }
+        safeRun { TransactionStateManager.reload() }
+        safeRun { TokenStateManager.reload() }
+        safeRun { NftCollectionStateManager.reload() }
+        safeRun { CoinRateManager.init() }
+        safeRun { CurrencyManager.init() }
+        safeRun { StakingManager.init() }
 //        Translized.init(application, EnvKey.get("TRANSLIZED_PROJECT_ID"), EnvKey.get("TRANSLIZED_TOKEN"))
     }
 
