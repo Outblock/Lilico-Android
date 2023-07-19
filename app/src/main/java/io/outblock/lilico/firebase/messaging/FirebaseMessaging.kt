@@ -14,6 +14,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import io.outblock.lilico.R
 import io.outblock.lilico.firebase.auth.isAnonymousSignIn
+import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofitWithHost
@@ -22,7 +23,6 @@ import io.outblock.lilico.utils.Env
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.getPushToken
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.isDev
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logw
@@ -70,7 +70,8 @@ fun uploadPushToken() {
         if (token.isEmpty() || isAnonymousSignIn()) {
             return@ioScope
         }
-        val retrofit = retrofitWithHost(if (isDev()) "https://scanner.lilico.app" else "scanner.lilico.app", ignoreAuthorization = false)
+        val retrofit =
+            retrofitWithHost(if (isMainnet()) "https://scanner.lilico.app" else "https://dev-scanner.lilico.app", ignoreAuthorization = false)
         val service = retrofit.create(ApiService::class.java)
         val params = mapOf(
             "token" to getPushToken(),
