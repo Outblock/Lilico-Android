@@ -45,6 +45,7 @@ class ChildAccountEditActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[ChildAccountEditViewModel::class.java].apply {
             progressDialogVisibleLiveData.observe(this@ChildAccountEditActivity) { presenter.bind(ChildAccountEditModel(showProgressDialog = it)) }
+            transactionFinishLiveData.observe(this@ChildAccountEditActivity) { finish() }
             bindAccount(account!!)
         }
 
