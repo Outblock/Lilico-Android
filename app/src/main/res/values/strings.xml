@@ -392,7 +392,7 @@
     <string name="try_it_again">Try it again</string>
     <string name="linked_account">Linked Account</string>
 
-    <string name="default_child_account_name">Child Account</string>
+    <string name="default_child_account_name">Linked Account</string>
     <string name="description">Description</string>
     <string name="unlink_wallet">Unlink Wallet</string>
     <string name="unlink_confirmation">Unlink Confirmation</string>

@@ -92,7 +92,7 @@ fun FlowScriptResponse.parseAccountMetas(): List<ChildAccount> {
         ChildAccount(
             address = address,
             name = name ?: R.string.default_child_account_name.res2String(),
-            icon = icon.orEmpty(),
+            icon = icon.orEmpty().ifBlank { "https://lilico.app/placeholder.png" },
             description = description,
         )
     }
