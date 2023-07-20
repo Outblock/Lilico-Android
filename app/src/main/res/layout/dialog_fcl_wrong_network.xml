@@ -94,52 +94,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:text="@string/fcl_connect_permission_title"
-            android:textAllCaps="true"
-            android:textColor="@color/neutrals5"
-            android:textSize="14sp"/>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:src="@drawable/ic_check_round"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:text="@string/fcl_permission_read_balance"
-                android:textColor="@color/text"
-                android:textSize="14sp"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:src="@drawable/ic_check_round"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:text="@string/fcl_permission_transaction"
-                android:textColor="@color/text"
-                android:textSize="14sp"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:textColor="@color/warning1"
+            android:text="Network error"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

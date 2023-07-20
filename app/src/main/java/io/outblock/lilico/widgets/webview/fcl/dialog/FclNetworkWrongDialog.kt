@@ -18,6 +18,7 @@ import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.browser.loadFavicon
 import io.outblock.lilico.page.browser.toFavIcon
+import io.outblock.lilico.page.main.MainActivity
 import io.outblock.lilico.utils.extensions.urlHost
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.loge
@@ -52,7 +53,6 @@ class FclNetworkWrongDialog : BottomSheetDialogFragment() {
             }
             approveButton.setOnClickListener {
                 changeNetwork(networkId(data.network!!.lowercase()))
-                dismiss()
             }
         }
     }
@@ -90,7 +90,10 @@ class FclNetworkWrongDialog : BottomSheetDialogFragment() {
                 }
                 uiScope { progressDialog.dismiss() }
             }
-            uiScope { dismiss() }
+            uiScope {
+                MainActivity.relaunch(requireContext(), clearTop = true)
+                dismiss()
+            }
         }
     }
 
