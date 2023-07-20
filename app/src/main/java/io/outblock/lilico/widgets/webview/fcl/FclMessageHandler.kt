@@ -22,6 +22,7 @@ import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclAuthnDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.authz.FclAuthzDialog
+import io.outblock.lilico.widgets.webview.fcl.dialog.checkAndShowNetworkWrongDialog
 import io.outblock.lilico.widgets.webview.fcl.model.AuthzTransaction
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthnResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclAuthzResponse
@@ -113,10 +114,10 @@ class FclMessageHandler(
         fclResponse = fcl
         val approve = FclAuthnDialog().show(
             activity().supportFragmentManager,
-            FclDialogModel(title = webView.title, url = webView.url, logo = fcl.config?.app?.icon)
+            FclDialogModel(title = webView.title, url = webView.url, logo = fcl.config?.app?.icon, network = fcl.config?.client?.network)
         )
         if (approve) {
-            wallet()?.let { webView.postAuthnViewReadyResponse(fcl, it) }
+            wallet().let { webView.postAuthnViewReadyResponse(fcl, it) }
         }
         finishService()
     }
@@ -153,9 +154,21 @@ class FclMessageHandler(
 
         logd(TAG, "dispatchSignMessage:${fcl.uniqueId()}")
 
+        val data = FclDialogModel(
+            signMessage = fcl.body?.message,
+            url = webView.url,
+            title = webView.title,
+            logo = fcl.config?.app?.icon,
+            network = fcl.config?.client?.network
+        )
+        if (checkAndShowNetworkWrongDialog(activity().supportFragmentManager, data)) {
+            finishService()
+            return
+        }
+
         FclSignMessageDialog.show(
             activity().supportFragmentManager,
-            FclDialogModel(signMessage = fcl.body?.message, url = webView.url, title = webView.title, logo = fcl.config?.app?.icon)
+            data
         )
         FclSignMessageDialog.observe { approve ->
             if (approve) {
@@ -166,9 +179,16 @@ class FclMessageHandler(
     }
 
     private fun signAuthz(fcl: FclAuthzResponse) {
+        val data = fcl.toFclDialogModel(webView)
+
+        if (checkAndShowNetworkWrongDialog(activity().supportFragmentManager, data)) {
+            finishService()
+            return
+        }
+
         FclAuthzDialog.show(
             activity().supportFragmentManager,
-            fcl.toFclDialogModel(webView),
+            data,
         )
         FclAuthzDialog.observe { approve ->
             if (approve) {
@@ -181,9 +201,14 @@ class FclMessageHandler(
     }
 
     private fun signPayload(fcl: FclAuthzResponse) {
+        val data = fcl.toFclDialogModel(webView)
+        if (checkAndShowNetworkWrongDialog(activity().supportFragmentManager, data)) {
+            finishService()
+            return
+        }
         FclAuthzDialog.show(
             activity().supportFragmentManager,
-            fcl.toFclDialogModel(webView),
+            data,
         )
         FclAuthzDialog.observe { approve ->
             readyToSignEnvelope = approve

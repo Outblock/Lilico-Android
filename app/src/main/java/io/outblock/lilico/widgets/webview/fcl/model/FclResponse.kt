@@ -30,6 +30,8 @@ data class FclResponseConfig(
         val fclVersion: String?,
         @SerializedName("hostname")
         val hostname: String?,
+        @SerializedName("network")
+        val network: String?,
     ) {
         data class Extension(
             @SerializedName("endpoint")

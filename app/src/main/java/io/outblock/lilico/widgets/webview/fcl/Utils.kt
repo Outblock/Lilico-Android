@@ -47,6 +47,7 @@ fun FclAuthzResponse.toFclDialogModel(webView: WebView): FclDialogModel {
         cadence = body.cadence,
         url = webView.url,
         title = webView.title,
-        logo = config?.app?.icon
+        logo = config?.app?.icon,
+        network = config?.client?.network,
     )
 }

@@ -41,6 +41,7 @@ import io.outblock.lilico.wallet.hdWallet
 import io.outblock.lilico.wallet.signData
 import io.outblock.lilico.widgets.webview.fcl.dialog.FclSignMessageDialog
 import io.outblock.lilico.widgets.webview.fcl.dialog.authz.FclAuthzDialog
+import io.outblock.lilico.widgets.webview.fcl.dialog.checkAndShowNetworkWrongDialog
 import io.outblock.lilico.widgets.webview.fcl.fclAuthzResponse
 import io.outblock.lilico.widgets.webview.fcl.fclSignMessageResponse
 import io.outblock.lilico.widgets.webview.fcl.model.FclDialogModel
@@ -89,14 +90,20 @@ private suspend fun WCRequest.respondAuthz() {
     val signable = json.firstOrNull() ?: return
     val message = signable.message ?: return
     uiScope {
+        val data = FclDialogModel(
+            title = metaData?.name,
+            logo = metaData?.icons?.firstOrNull(),
+            url = metaData?.url,
+            cadence = signable.cadence,
+        )
+        if (checkAndShowNetworkWrongDialog(activity.supportFragmentManager, data)) {
+            reject()
+            return@uiScope
+        }
+
         FclAuthzDialog.show(
             activity.supportFragmentManager,
-            FclDialogModel(
-                title = metaData?.name,
-                logo = metaData?.icons?.firstOrNull(),
-                url = metaData?.url,
-                cadence = signable.cadence,
-            )
+            data
         )
 
         FclAuthzDialog.observe { isApprove ->
@@ -150,14 +157,21 @@ private suspend fun WCRequest.respondUserSign() {
     val param = gson().fromJson<List<SignableMessage>>(params, object : TypeToken<List<SignableMessage>>() {}.type)?.firstOrNull()
     val message = param?.message ?: return
     uiScope {
+        val data = FclDialogModel(
+            title = metaData?.name,
+            logo = metaData?.icons?.firstOrNull(),
+            url = metaData?.url,
+            signMessage = message,
+        )
+
+        if (checkAndShowNetworkWrongDialog(activity.supportFragmentManager, data)) {
+            reject()
+            return@uiScope
+        }
+
         FclSignMessageDialog.show(
             activity.supportFragmentManager,
-            FclDialogModel(
-                title = metaData?.name,
-                logo = metaData?.icons?.firstOrNull(),
-                url = metaData?.url,
-                signMessage = message,
-            )
+            data
         )
 
         FclSignMessageDialog.observe { isApprove ->
@@ -202,14 +216,21 @@ private suspend fun WCRequest.respondSignProposer() {
     val signable = params.toSignables(gson())
     val address = WalletManager.selectedWalletAddress() ?: return
 
+    val data = FclDialogModel(
+        title = metaData?.name,
+        logo = metaData?.icons?.firstOrNull(),
+        url = metaData?.url,
+        cadence = signable?.voucher?.cadence,
+    )
+
+    if (checkAndShowNetworkWrongDialog(activity.supportFragmentManager, data)) {
+        reject()
+        return
+    }
+
     FclAuthzDialog.show(
         activity.supportFragmentManager,
-        FclDialogModel(
-            title = metaData?.name,
-            logo = metaData?.icons?.firstOrNull(),
-            url = metaData?.url,
-            cadence = signable?.voucher?.cadence,
-        )
+        data
     )
     FclAuthzDialog.observe { approve ->
         if (approve) {

@@ -10,4 +10,5 @@ data class FclDialogModel(
     val url: String? = null,
     val cadence: String? = null,
     val signMessage: String? = null,
+    val network: String? = null,
 ) : Parcelable

@@ -53,7 +53,12 @@ class FclAuthnDialog : BottomSheetDialogFragment() {
     suspend fun show(
         fragmentManager: FragmentManager,
         data: FclDialogModel,
-    ) = suspendCoroutine<Boolean> { result ->
+    ) = suspendCoroutine { result ->
+        if (checkAndShowNetworkWrongDialog(fragmentManager, data)) {
+            result.resume(false)
+            return@suspendCoroutine
+        }
+
         this.result = result
         this.data = data
         show(fragmentManager, "")
