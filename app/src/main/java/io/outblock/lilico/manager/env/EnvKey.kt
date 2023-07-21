@@ -2,6 +2,7 @@ package io.outblock.lilico.manager.env
 
 import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
+import io.outblock.lilico.utils.logd
 
 object EnvKey {
 
@@ -14,7 +15,13 @@ object EnvKey {
             ignoreIfMalformed = true
             ignoreIfMissing = true
         }
+        logd("xxx", "dotEnv:$dotEnv")
     }
 
-    fun get(key: String): String = dotEnv[key]
+    fun get(key: String): String {
+        if (!::dotEnv.isInitialized) {
+            init()
+        }
+        return dotEnv[key]
+    }
 }

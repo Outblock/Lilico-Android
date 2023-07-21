@@ -36,17 +36,20 @@ object LaunchManager {
         PageLifecycleObserver.init(application)
         AppLifecycleObserver.observe()
         safeRun { System.loadLibrary("TrustWalletCore") }
-        ioScope { AccountManager.init() }
+        ioScope {
+            safeRun { EnvKey.init() }
+            safeRun { AccountManager.init() }
+        }
         refreshChainNetwork {
-            FlowApi.refreshConfig()
-            asyncInit()
-            firebaseInitialize(application)
-            initFirebaseConfig()
-            setNightMode()
-            runWorker(application)
-            readCache(application)
-            runCompatibleScript()
-            WalletConnect.init(application)
+            safeRun { FlowApi.refreshConfig() }
+            safeRun { asyncInit() }
+            safeRun { firebaseInitialize(application) }
+            safeRun { initFirebaseConfig() }
+            safeRun { setNightMode() }
+            safeRun { runWorker(application) }
+            safeRun { readCache(application) }
+            safeRun { runCompatibleScript() }
+            safeRun { WalletConnect.init(application) }
         }
     }
 
@@ -56,7 +59,6 @@ object LaunchManager {
     }
 
     private fun readCache(application: Application) {
-        safeRun { EnvKey.init() }
         safeRun { WalletManager.init() }
         safeRun { NftCollectionConfig.sync() }
         safeRun { BalanceManager.reload() }
