@@ -424,4 +424,7 @@
     <string name="all">All</string>
     <string name="avatar">Avatar</string>
     <string name="edit_fail">Edit fail</string>
+    <string name="network_error_dialog_title">Allow this site to switch the network?</string>
+    <string name="network_error_dialog_desc">This action will change your current network from the %1$s to the %2$s.</string>
+    <string name="switch_network">Switch Network</string>
 </resources>

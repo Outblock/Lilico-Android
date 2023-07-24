@@ -43,6 +43,14 @@ fun chainNetWorkString(): String {
     }
 }
 
+fun chainNetWorkString(network: Int): String {
+    return when (network) {
+        NETWORK_TESTNET -> NETWORK_NAME_TESTNET
+        NETWORK_SANDBOX -> NETWORK_NAME_SANDBOX
+        else -> NETWORK_NAME_MAINNET
+    }
+}
+
 fun networkId(network: String): Int {
     return when (network) {
         NETWORK_NAME_TESTNET -> NETWORK_TESTNET
