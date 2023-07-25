@@ -40,17 +40,17 @@
         android:layout_marginTop="36dp"
         android:alpha="0.08"
         android:background="@color/button"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/desc_view"/>
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/icon_1"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="36dp"
-        android:background="@color/neutrals9"
+        android:src="@drawable/ic_feature_notification"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line"
-        app:round="16dp"/>
+        app:layout_constraintTop_toBottomOf="@id/line"/>
 
     <TextView
         android:id="@+id/title_1"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:fontFamily="@font/inter_medium"
-        android:text="bug fixed UPDATe"
+        android:text="@string/new_feature_title_1"
         android:textAllCaps="true"
         android:textColor="@color/text"
         android:textSize="13sp"
@@ -72,7 +72,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="New feature descriptions, we would like to introduce you our new sed do eiussed."
+        android:text="@string/new_feature_desc_1"
         android:textAllCaps="true"
         android:textColor="@color/text_sub"
         android:textSize="13sp"
@@ -83,13 +83,12 @@
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/icon_2"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="24dp"
-        android:background="@color/neutrals9"
+        android:src="@drawable/ic_feature_switch_account"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/icon_1"
-        app:round="16dp"/>
+        app:layout_constraintTop_toBottomOf="@id/desc_1"/>
 
     <TextView
         android:id="@+id/title_2"
@@ -97,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:fontFamily="@font/inter_medium"
-        android:text="bug fixed UPDATe"
+        android:text="@string/switch_account"
         android:textAllCaps="true"
         android:textColor="@color/text"
         android:textSize="13sp"
@@ -111,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:text="New feature descriptions, we would like to introduce you our new sed do eiussed."
+        android:text="@string/new_feature_desc2"
         android:textAllCaps="true"
         android:textColor="@color/text_sub"
         android:textSize="13sp"
@@ -125,7 +124,7 @@
         style="@style/Button"
         android:layout_width="match_parent"
         android:layout_marginBottom="40dp"
-        android:text="@string/enjoy_your_experience"
+        android:text="@string/get_started"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

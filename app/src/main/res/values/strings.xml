@@ -417,7 +417,7 @@
     <string name="add_an_existing_account">Add an Existing Account</string>
     <string name="resume_login_error">Encountered a problem, please restart the app</string>
     <string name="new_feature">New Feature</string>
-    <string name="new_feature_desc">We have made the following data/feature updates and xx experience and bug fixes in xxx features to improve your following use .</string>
+    <string name="new_feature_desc">We have made the following updates to improve your experiences.</string>
     <string name="enjoy_your_experience">Enjoy Your Experience</string>
     <string name="profile_switch_tip">Tap the profile name to switch profiles.</string>
 
@@ -427,4 +427,8 @@
     <string name="network_error_dialog_title">Allow this site to switch the network?</string>
     <string name="network_error_dialog_desc">This action will change your current network from the %1$s to the %2$s.</string>
     <string name="switch_network">Switch Network</string>
+    <string name="new_feature_title_1">Notification of Digital Assets</string>
+    <string name="new_feature_desc_1">Lilico will notify you when your digital assets has moved.</string>
+    <string name="new_feature_desc2">Now you can add multiple accounts in your lilico app, by switching account from the side menu or profile.</string>
+    <string name="get_started">Get Started</string>
 </resources>
