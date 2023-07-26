@@ -34,6 +34,7 @@ import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.getCurrencyFlag
+import io.outblock.lilico.utils.getNotificationSettingIntent
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isBackupGoogleDrive
 import io.outblock.lilico.utils.isMeowDomainClaimed
@@ -69,6 +70,7 @@ class ProfileFragmentPresenter(
         binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
+        binding.group2.notificationPreference.setOnClickListener { context.startActivity(getNotificationSettingIntent(context)) }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
         binding.group5.walletConnectPreference.setOnClickListener { WalletConnectSessionActivity.launch(context) }
         updatePreferenceState()

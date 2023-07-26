@@ -431,4 +431,8 @@
     <string name="new_feature_desc_1">Lilico will notify you when your digital assets has moved.</string>
     <string name="new_feature_desc2">Now you can add multiple accounts in your lilico app, by switching account from the side menu or profile.</string>
     <string name="get_started">Get Started</string>
+    <string name="notification_request_title">Turn On Push Notifications</string>
+    <string name="notification_request_desc">Get notified when your transfers, swaps, and approvals complete.</string>
+    <string name="turn_on_notifications">Turn On Notifications</string>
+    <string name="maybe_later">Maybe Later</string>
 </resources>

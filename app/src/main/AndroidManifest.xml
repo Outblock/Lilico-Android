@@ -313,6 +313,10 @@
             android:name=".page.common.WebViewActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".page.others.NotificationPermissionActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider_authorities"

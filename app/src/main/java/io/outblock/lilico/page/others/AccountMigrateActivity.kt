@@ -8,6 +8,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.manager.account.accountMigrateV1
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.utils.isNotificationPermissionGrand
 
 class AccountMigrateActivity : NewFeatureActivity() {
 
@@ -32,7 +33,11 @@ open class NewFeatureActivity : BaseActivity() {
 
     override fun finish() {
         super.finish()
-        MainActivity.launch(this)
+        if (!isNotificationPermissionGrand(this)) {
+            NotificationPermissionActivity.launch(this)
+        } else {
+            MainActivity.launch(this)
+        }
     }
 
     @Deprecated("Deprecated in Java")

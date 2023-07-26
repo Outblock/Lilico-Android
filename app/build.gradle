@@ -226,6 +226,8 @@ dependencies {
 
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
+    implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+
     /** TEST **/
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

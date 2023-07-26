@@ -45,12 +45,12 @@
             android:background="@color/background"
             android:visibility="gone"/>
 
-        <io.outblock.lilico.page.profile.widget.ProfilePreferenceSwitch
+        <io.outblock.lilico.page.profile.widget.ProfilePreference
             android:id="@+id/notification_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             app:icon="@drawable/ic_settings_notification"
-            app:title="Notification"/>
+            app:title="Notification"
+            app:desc=""/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>
