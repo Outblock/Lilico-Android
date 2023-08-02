@@ -374,17 +374,12 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <io.outblock.lilico.widgets.SendButton
+    <io.outblock.lilico.widgets.TransactionButton
         android:id="@+id/send_button"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="18dp"
-        android:layout_marginTop="60dp"
-        app:cardBackgroundColor="@color/button_color"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="3dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         app:defaultText="@string/hold_to_send"
         app:layout_constraintTop_toBottomOf="@id/content_wrapper"
-        app:processingText="@string/transition_is_processing"
-        app:rippleColor="@color/primary10"/>
+        app:processingText="@string/transition_is_processing"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

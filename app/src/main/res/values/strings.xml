@@ -435,4 +435,5 @@
     <string name="notification_request_desc">Get notified when your transfers, swaps, and approvals complete.</string>
     <string name="turn_on_notifications">Turn On Notifications</string>
     <string name="maybe_later">Maybe Later</string>
+    <string name="transaction_pending_tips">Almost there, the last transaction is pending.</string>
 </resources>

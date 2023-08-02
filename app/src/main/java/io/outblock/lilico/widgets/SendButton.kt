@@ -55,7 +55,7 @@ class SendButton : TouchScaleCardView {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (state != ButtonState.DEFAULT) {
+        if (state != ButtonState.DEFAULT || !isEnabled) {
             return super.onTouchEvent(event)
         }
         when (event.action) {
@@ -73,6 +73,10 @@ class SendButton : TouchScaleCardView {
     fun updateDefaultText(text: String) {
         defaultText = text
         binding.holdToSend.text = defaultText
+    }
+
+    fun updateProcessingText(text: String) {
+        processingText = text
     }
 
     fun setOnProcessing(onProcessing: () -> Unit) {

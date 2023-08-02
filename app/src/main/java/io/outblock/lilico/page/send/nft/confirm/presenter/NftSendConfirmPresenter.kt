@@ -27,7 +27,7 @@ class NftSendConfirmPresenter(
     private val contact by lazy { viewModel.nft.target }
 
     init {
-        binding.sendButton.setOnProcessing { viewModel.send() }
+        binding.sendButton.button().setOnProcessing { viewModel.send() }
         binding.nftWrapper.setVisible()
         binding.titleView.setText(R.string.send_nft)
     }

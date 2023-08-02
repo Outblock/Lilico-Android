@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/pending_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="31dp"
+        android:layout_marginBottom="-10dp"
+        android:background="@drawable/bg_round_8dp"
+        android:backgroundTint="@color/salmon5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="13dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/button"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/salmon_primary"/>
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="@string/transaction_pending_tips"
+            android:textColor="@color/salmon_primary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/progress_bar"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <io.outblock.lilico.widgets.SendButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginHorizontal="18dp"
+        app:cardBackgroundColor="@color/button_color"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="3dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:rippleColor="@color/primary10"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
