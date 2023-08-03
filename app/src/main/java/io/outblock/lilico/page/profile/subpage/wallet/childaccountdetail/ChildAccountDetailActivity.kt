@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
@@ -22,6 +23,7 @@ class ChildAccountDetailActivity : BaseActivity() {
     private val account by lazy { intent.getParcelableExtra<ChildAccount>(EXTRA_DATA) }
     private lateinit var binding: ActivityChildAccountDetailBinding
     private lateinit var presenter: ChildAccountDetailPresenter
+    private lateinit var viewModel: ChildAccountDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,11 @@ class ChildAccountDetailActivity : BaseActivity() {
 
         presenter = ChildAccountDetailPresenter(binding, this)
         account?.let { presenter.bind(ChildAccountDetailModel(account = account)) }
+
+        viewModel = ViewModelProvider(this)[ChildAccountDetailViewModel::class.java].apply {
+            nftCollectionsLiveData.observe(this@ChildAccountDetailActivity) {}
+            queryCollection(account!!)
+        }
 
         setupToolbar()
     }
