@@ -2,7 +2,10 @@ package io.outblock.lilico.page.component.deeplinking
 
 import android.net.Uri
 import io.outblock.lilico.manager.walletconnect.WalletConnect
+import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.net.URLDecoder
 
 private const val TAG = "DeepLinkingDispatch"
@@ -13,7 +16,7 @@ fun dispatchDeepLinking(uri: Uri) {
         return
     }
 
-    if (dispatchWalletConnect(uri)) return
+    ioScope { dispatchWalletConnect(uri) }
 }
 
 // https://lilico.app/?uri=wc%3A83ba9cb3adf9da4b573ae0c499d49be91995aa3e38b5d9a41649adfaf986040c%402%3Frelay-protocol%3Diridium%26symKey%3D618e22482db56c3dda38b52f7bfca9515cc307f413694c1d6d91931bbe00ae90
@@ -24,6 +27,15 @@ private fun dispatchWalletConnect(uri: Uri): Boolean {
         logd(TAG, "dispatchWalletConnect: $data")
         assert(data.startsWith("wc:"))
 
-        WalletConnect.get().pair(data)
+        if (!WalletConnect.isInitialized()) {
+            runBlocking {
+                while (!WalletConnect.isInitialized()) {
+                    delay(200)
+                }
+                WalletConnect.get().pair(data)
+            }
+        } else {
+            WalletConnect.get().pair(data)
+        }
     }.getOrNull() != null
 }

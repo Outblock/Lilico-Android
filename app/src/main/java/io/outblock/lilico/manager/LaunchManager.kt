@@ -41,6 +41,7 @@ object LaunchManager {
             safeRun { AccountManager.init() }
         }
         refreshChainNetwork {
+            safeRun { WalletConnect.init(application) }
             safeRun { FlowApi.refreshConfig() }
             safeRun { asyncInit() }
             safeRun { firebaseInitialize(application) }
@@ -49,7 +50,6 @@ object LaunchManager {
             safeRun { runWorker(application) }
             safeRun { readCache(application) }
             safeRun { runCompatibleScript() }
-            safeRun { WalletConnect.init(application) }
         }
     }
 

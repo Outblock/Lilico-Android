@@ -9,18 +9,54 @@ import com.walletconnect.sign.client.Sign
 import com.walletconnect.sign.client.SignClient
 import io.outblock.lilico.manager.env.EnvKey
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.loge
 import io.outblock.lilico.utils.logw
+import io.outblock.lilico.utils.safeRun
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private val TAG = WalletConnect::class.java.simpleName
 
 private val projectId by lazy { EnvKey.get("WALLET_CONNECT_PROJECT_ID") }
 
+@OptIn(DelicateCoroutinesApi::class)
 class WalletConnect {
 
+    init {
+        GlobalScope.launch {
+            RelayClient.isConnectionAvailable.collect { isConnected ->
+                logd(TAG, "RelayClient connect change:$isConnected")
+                if (!isConnected) {
+                    safeRun {
+                        RelayClient.connect { error: Core.Model.Error -> logw(TAG, "RelayClient connect error: $error") }
+                    }
+                }
+            }
+        }
+    }
+
     fun pair(uri: String) {
-        val pairingParams = Core.Params.Pair(uri)
-        CoreClient.Pairing.pair(pairingParams) { error -> loge(error.throwable) }
+        logd(TAG, "RelayClient isConnectionAvailable :${RelayClient.isConnectionAvailable.value}")
+        if (!RelayClient.isConnectionAvailable.value) {
+            var job: kotlinx.coroutines.Job? = null
+            job = ioScope {
+                RelayClient.isConnectionAvailable.collect { isConnected ->
+                    if (isConnected) {
+                        delay(1000)
+                        logd(TAG, "Pair on connected")
+                        val pairingParams = Core.Params.Pair(uri)
+                        CoreClient.Pairing.pair(pairingParams) { error -> loge(error.throwable) }
+                        job?.cancel()
+                    }
+                }
+            }
+        } else {
+            val pairingParams = Core.Params.Pair(uri)
+            CoreClient.Pairing.pair(pairingParams) { error -> loge(error.throwable) }
+        }
     }
 
     fun sessionCount(): Int = sessions().size
@@ -34,7 +70,7 @@ class WalletConnect {
     }
 
     companion object {
-        private lateinit var instance: WalletConnect
+        private var instance: WalletConnect? = null
 
         fun init(application: Application) {
             ioScope {
@@ -43,7 +79,9 @@ class WalletConnect {
             }
         }
 
-        fun get() = instance
+        fun isInitialized() = instance != null
+
+        fun get() = instance!!
     }
 }
 
