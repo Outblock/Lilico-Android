@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lilico</string>
+    <string name="app_name">Flow Core</string>
     <string name="next">Next</string>
     <string name="username">Username</string>
     <string name="username_too_short">Too short</string>
