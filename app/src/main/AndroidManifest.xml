@@ -58,7 +58,7 @@
             android:name="io.outblock.lilico.page.profile.subpage.logo.pages.LilicoLogo1"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_a"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:targetActivity=".page.splash.SplashActivity">
             <intent-filter>
