@@ -90,6 +90,7 @@
     <string name="grid">Grid</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="purchase_price">Purchase Price</string>
+    <string name="coins">Coins</string>
     <string name="collections">Collections</string>
     <string name="collections_count">%1$d Collections</string>
     <string name="collectibles_count">%1$d Collectibles</string>

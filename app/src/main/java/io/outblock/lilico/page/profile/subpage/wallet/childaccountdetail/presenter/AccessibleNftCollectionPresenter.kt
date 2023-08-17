@@ -17,7 +17,10 @@ class AccessibleNftCollectionPresenter(
 
     override fun bind(model: CollectionData) {
         with(binding) {
-            view.setOnClickListener { }
+            view.setOnClickListener {
+                // todo jump to NFTCollectionDetail model.path
+                // '/storage/MomentCollection'.split('/').last
+            }
             iconView.loadAvatar(model.display.squareImage)
             titleView.text = model.display.name
             collectionCountView.text = view.context.getString(R.string.collections_count, model.idList.size)

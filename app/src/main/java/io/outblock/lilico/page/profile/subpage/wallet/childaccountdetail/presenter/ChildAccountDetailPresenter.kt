@@ -34,7 +34,11 @@ class ChildAccountDetailPresenter(
 
     override fun bind(model: ChildAccountDetailModel) {
         model.account?.let { updateAccount(it) }
-        model.nftCollections?.let { accessibleAdapter.setNewDiffData(it) }
+        if (binding.tvTabCollection.isEnabled) {
+            model.nftCollections?.let { accessibleAdapter.setNewDiffData(it) }
+        } else {
+
+        }
     }
 
     private fun updateAccount(account: ChildAccount) {
