@@ -12,6 +12,7 @@ import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.page.dialog.accounts.adapter.AccountListAdapter
 import io.outblock.lilico.page.walletcreate.WALLET_CREATE_STEP_USERNAME
 import io.outblock.lilico.page.walletcreate.WalletCreateActivity
+import io.outblock.lilico.page.walletrestore.WalletRestoreActivity
 
 class AccountSwitchDialog : BottomSheetDialogFragment() {
 
@@ -19,7 +20,11 @@ class AccountSwitchDialog : BottomSheetDialogFragment() {
 
     private val adapter by lazy { AccountListAdapter() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogAccountSwitchBinding.inflate(inflater)
         return binding.root
     }
@@ -27,7 +32,10 @@ class AccountSwitchDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.root.requestFocus()
 
-        binding.newButton.setOnClickListener { dismiss() }
+        binding.newButton.setOnClickListener {
+            WalletRestoreActivity.launch(requireContext())
+            dismiss()
+        }
         binding.createButton.setOnClickListener {
             WalletCreateActivity.launch(requireContext(), step = WALLET_CREATE_STEP_USERNAME)
             dismiss()
@@ -35,7 +43,8 @@ class AccountSwitchDialog : BottomSheetDialogFragment() {
 
         with(binding.recyclerView) {
             adapter = this@AccountSwitchDialog.adapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
         adapter.setNewDiffData(AccountManager.list())
