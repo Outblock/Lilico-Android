@@ -32,11 +32,11 @@ class AccountSwitchDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.root.requestFocus()
 
-        binding.newButton.setOnClickListener {
+        binding.tvImportAccount.setOnClickListener {
             WalletRestoreActivity.launch(requireContext())
             dismiss()
         }
-        binding.createButton.setOnClickListener {
+        binding.tvNewAccount.setOnClickListener {
             WalletCreateActivity.launch(requireContext(), step = WALLET_CREATE_STEP_USERNAME)
             dismiss()
         }

@@ -36,30 +36,47 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/title_view"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/create_button"
-        style="@style/Button"
+    <View
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="27dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/create_a_new_account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="36dp"
+        android:background="@color/neutrals2"
         app:layout_constraintTop_toBottomOf="@id/recycler_view"/>
 
     <TextView
-        android:id="@+id/new_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_new_account"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/inter"
-        android:gravity="center"
+        android:layout_marginTop="73dp"
+        android:layout_marginStart="27dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:gravity="start"
         android:paddingVertical="6dp"
-        android:text="@string/add_an_existing_account"
-        android:textColor="@color/text_sub"
+        android:text="@string/add_new_account"
+        android:textColor="@color/text"
+        android:drawablePadding="12dp"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_button"/>
+        app:layout_constraintTop_toBottomOf="@id/recycler_view"
+        app:drawableStartCompat="@drawable/ic_account_add"/>
+
+    <TextView
+        android:id="@+id/tv_import_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="27dp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:gravity="start"
+        android:paddingVertical="6dp"
+        android:text="@string/import_existing_account"
+        android:textColor="@color/text"
+        android:drawablePadding="12dp"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_account"
+        app:drawableStartCompat="@drawable/ic_account_import"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

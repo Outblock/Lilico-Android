@@ -413,8 +413,8 @@
 
     <string name="notification_channel_name">Push Notification</string>
     <string name="accounts">Accounts</string>
-    <string name="create_a_new_account">Create a New Account</string>
-    <string name="add_an_existing_account">Add an Existing Account</string>
+    <string name="add_new_account">Add a New Account</string>
+    <string name="import_existing_account">Import an Existing Account</string>
     <string name="resume_login_error">Encountered a problem, please restart the app</string>
     <string name="new_feature">New Feature</string>
     <string name="new_feature_desc">We have made the following updates to improve your experiences.</string>
