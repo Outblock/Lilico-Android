@@ -123,6 +123,7 @@
     <color name="background">#FAFAFA</color>
     <color name="front_color">#FFFFFF</color>
     <color name="mango_nft">#FFD500</color>
+    <color name="mango_nft_16">#29FFD500</color>
     <color name="mango1">#E0BF16</color>
     <color name="mango3">#FADD4B</color>
     <color name="mango4">#FAE57D</color>
