@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:desc="@string/sync"
-                app:descColor="@color/warning3"
+                app:descColor="@color/colorSecondaryVariant"
                 app:icon="@drawable/ic_google_drive"
                 app:title="Google Drive"/>
 
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:desc="@string/sync"
-                app:descColor="@color/warning3"
+                app:descColor="@color/colorSecondaryVariant"
                 app:icon="@drawable/ic_profile_backup_manually"
                 app:title="@string/manually"/>
         </androidx.appcompat.widget.LinearLayoutCompat>

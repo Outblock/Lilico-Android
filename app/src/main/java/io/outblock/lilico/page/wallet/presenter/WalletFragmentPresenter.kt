@@ -52,7 +52,7 @@ class WalletFragmentPresenter(
             if (!isMainnet()) {
                 val color = if (isTestnet()) R.color.testnet.res2color() else R.color.sandbox.res2color()
                 backgroundTintList =
-                    ColorStateList.valueOf(color).withAlpha(50)
+                    ColorStateList.valueOf(color).withAlpha(16)
                 setTextColor(color)
                 setText(if (isTestnet()) R.string.testnet else R.string.sandbox)
             }

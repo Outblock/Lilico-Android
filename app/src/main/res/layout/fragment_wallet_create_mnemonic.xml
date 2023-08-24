@@ -73,7 +73,8 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_copy_1"/>
+                android:backgroundTint="@color/colorSecondaryVariant"
+                android:src="@drawable/ic_phrase_copy"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/inter_semi_bold"
                 android:text="@string/copy_str"
-                android:textColor="@color/salmon_primary"
+                android:textColor="@color/colorSecondaryVariant"
                 android:textSize="15sp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryVariant">#ffffff</color>
-    <color name="colorSecondary">#FF7340</color>
-    <color name="colorSecondaryVariant">#FF7340</color>
+    <color name="colorSecondary">#32E355</color>
+    <color name="colorSecondaryVariant">#00B881</color>
     <color name="text_sub">#565A69</color>
     <color name="text_light">#8f8f93</color>
 
@@ -199,6 +199,16 @@
     <color name="stake_12">#1c60C293</color>
     <color name="deep_bg_0">#00ffffff</color>
 
-    <color name="sandbox">#F3EA5F</color>
-    <color name="testnet">#00EE8A</color>
+    <color name="mainnet">#32E355</color>
+    <color name="sandbox">#CCAF21</color>
+    <color name="testnet">#FF8A00</color>
+    <color name="profile_tip_background">#2900B881</color>
+    <color name="colorSecondaryVariant_50">#8000B881</color>
+    <color name="colorSecondary_25">#4032E355</color>
+    <color name="colorSecondary_35">#5932E355</color>
+    <color name="colorSecondary_50">#8032E355</color>
+    <color name="colorSecondary_65">#a632E355</color>
+    <color name="colorSecondary_80">#CC32E355</color>
+    <color name="colorSecondary_95">#F232E355</color>
+    <color name="swap_token_selected">#363636</color>
 </resources>

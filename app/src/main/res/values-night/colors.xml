@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#242430</color>
     <color name="colorPrimaryVariant">@color/deep_bg</color>
-    <color name="colorSecondary">#FF6E4F</color>
-    <color name="colorSecondaryVariant">#FED100</color>
+    <color name="colorSecondary">#32E355</color>
+    <color name="colorSecondaryVariant">#00b881</color>
 
     <color name="text_sub">#D2D2D2</color>
 

@@ -51,7 +51,7 @@
     </style>
 
     <style name="CheckBox">
-        <item name="android:buttonTint">@color/colorSecondary</item>
+        <item name="android:buttonTint">@color/colorSecondaryVariant</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -158,6 +158,15 @@
 
     <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+    </style>
+
+    <style name="FrozenSwitch">
+        <!--开启时的颜色-->
+        <item name="colorControlActivated">@color/colorSecondaryVariant</item>
+<!--        关闭时的颜色-->
+<!--        <item name="colorSwitchThumbNormal">#383434</item>-->
+<!--        关闭时的轨迹颜色-->
+<!--        <item name="android:colorForeground">#ecd502</item>-->
     </style>
 
     <style name="AppSplash" parent="Theme.SplashScreen">

@@ -1,6 +1,7 @@
 package io.outblock.lilico.page.main
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -167,6 +168,14 @@ private fun View.setupWalletItem(data: WalletItemData?, network: String? = null)
     if (network != null) {
         findViewById<TextView>(R.id.wallet_network_view)?.apply {
             text = network.capitalizeV2()
+            val color = when(network) {
+                "mainnet" -> R.color.mainnet
+                "testnet" -> R.color.testnet
+                "sandbox" -> R.color.sandbox
+                else -> R.color.text
+            }
+            setTextColor(color.res2color())
+            backgroundTintList = ColorStateList.valueOf(color.res2color()).withAlpha(16)
             setVisible(true)
         }
     }
