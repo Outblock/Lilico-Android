@@ -137,6 +137,7 @@ class WalletHeaderPresenter(
         uiScope {
             binding.domainWrapper.setVisible(isMeowDomainClaimed())
             binding.domainView.text = "$username.meow"
+//          todo hide domain info for rebranding
             binding.domainWrapper.gone()
         }
     }
