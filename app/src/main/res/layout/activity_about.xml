@@ -124,7 +124,8 @@
                     app:iconSize="28dp"
                     app:iconTint="@color/transparent"
                     app:iconTintMode="add"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/email_button"
@@ -143,7 +144,8 @@
                     app:iconSize="28dp"
                     app:iconTint="@color/transparent"
                     app:iconTintMode="add"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText"
+                    android:visibility="gone"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
 
