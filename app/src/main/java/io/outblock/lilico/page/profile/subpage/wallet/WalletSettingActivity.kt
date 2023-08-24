@@ -18,6 +18,7 @@ import io.outblock.lilico.page.security.recovery.SecurityPrivateKeyActivity
 import io.outblock.lilico.page.security.recovery.SecurityRecoveryActivity
 import io.outblock.lilico.page.security.securityOpen
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 
@@ -62,7 +63,11 @@ class WalletSettingActivity : BaseActivity() {
 
             claimButton.setOnClickListener { ClaimDomainActivity.launch(this@WalletSettingActivity) }
 
-            uiScope { claimDomainWrapper.setVisible(!isMeowDomainClaimed()) }
+            uiScope {
+                claimDomainWrapper.gone()
+//                todo hide domain entrance for rebranding
+//                claimDomainWrapper.setVisible(!isMeowDomainClaimed())
+            }
 
             ioScope {
                 val storageInfo = storageInfoCache().read() ?: return@ioScope
