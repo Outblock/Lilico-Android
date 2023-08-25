@@ -57,7 +57,7 @@ class WalletFragmentPresenter(
                 setText(if (isTestnet()) R.string.testnet else R.string.sandbox)
             }
         }
-        bindAvatar()
+        bindUserInfo()
     }
 
     override fun bind(model: WalletFragmentModel) {
@@ -65,14 +65,18 @@ class WalletFragmentPresenter(
             reportEvent("wallet_coin_list_loaded", mapOf("count" to it.size.toString()))
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
-            bindAvatar()
+            bindUserInfo()
         }
     }
 
-    private fun bindAvatar() {
+    private fun bindUserInfo() {
         ioScope {
             val userInfo = AccountManager.userInfo() ?: return@ioScope
-            uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
+            uiScope {
+                binding.titleView.text = userInfo.nickname
+                binding.avatarView.loadAvatar(userInfo.avatar)
+            }
         }
     }
+
 }

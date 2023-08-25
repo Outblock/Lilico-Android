@@ -26,8 +26,8 @@ class AboutActivity : BaseActivity() {
 
         with(binding) {
             versionView.text = getString(R.string.about_version, BuildConfig.VERSION_NAME)
-            discordButton.setOnClickListener { "https://discord.gg/2jUaEQ8MQk".openInSystemBrowser(this@AboutActivity, ignoreInAppBrowser = true) }
-            twitterButton.setOnClickListener { "https://twitter.com/lilico_app".openInSystemBrowser(this@AboutActivity, ignoreInAppBrowser = true) }
+            discordButton.setOnClickListener { "https://discord.com/invite/J6fFnh2xx6".openInSystemBrowser(this@AboutActivity, ignoreInAppBrowser = true) }
+            twitterButton.setOnClickListener { "https://twitter.com/flow_blockchain".openInSystemBrowser(this@AboutActivity, ignoreInAppBrowser = true) }
             emailButton.setOnClickListener { sendEmail(this@AboutActivity, email = "hi@lilico.app") }
             madeByView.movementMethod = LinkMovementMethod.getInstance()
         }

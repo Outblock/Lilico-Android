@@ -304,7 +304,7 @@
                     app:layout_constraintEnd_toEndOf="@id/to_avatar_view"
                     app:layout_constraintStart_toStartOf="@id/to_avatar_view"
                     app:layout_constraintTop_toTopOf="@id/to_avatar_view"
-                    tools:text="A"
+                    tools:text="0x"
                     tools:visibility="visible"/>
 
                 <TextView

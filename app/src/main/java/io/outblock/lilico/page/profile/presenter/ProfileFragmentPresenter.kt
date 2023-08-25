@@ -60,19 +60,35 @@ class ProfileFragmentPresenter(
             AccountSwitchDialog.show(fragment.childFragmentManager)
         }
         binding.notLoggedIn.root.setOnClickListener {
-            ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)
+            ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(
+                HomeTab.WALLET
+            )
         }
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
         binding.actionGroup.walletButton.setOnClickListener { ChildAccountsActivity.launch(context) }
         binding.actionGroup.inboxButton.setOnClickListener { InboxActivity.launch(context) }
         binding.group0.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
-        binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
-        binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
+        binding.group1.securityPreference.setOnClickListener {
+            SecuritySettingActivity.launch(
+                context
+            )
+        }
         binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
         binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
-        binding.group2.notificationPreference.setOnClickListener { context.startActivity(getNotificationSettingIntent(context)) }
+        binding.group2.notificationPreference.setOnClickListener {
+            context.startActivity(
+                getNotificationSettingIntent(context)
+            )
+        }
+        binding.group3.developerModePreference.setOnClickListener {
+            DeveloperModeActivity.launch(context)
+        }
         binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
-        binding.group5.walletConnectPreference.setOnClickListener { WalletConnectSessionActivity.launch(context) }
+        binding.group5.walletConnectPreference.setOnClickListener {
+            WalletConnectSessionActivity.launch(
+                context
+            )
+        }
         updatePreferenceState()
         updateClaimDomainState()
         observeMeowDomainClaimedStateChange(this)
@@ -117,7 +133,8 @@ class ProfileFragmentPresenter(
                     group5.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group2.currencyPreference.setDesc(findCurrencyFromFlag(getCurrencyFlag()).name)
-                    group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
+                    group3.developerModePreference.setDesc((if (isTestnet()) R.string.testnet
+                    else R.string.mainnet).res2String())
                 }
                 updateWalletConnectSessionCount()
             }

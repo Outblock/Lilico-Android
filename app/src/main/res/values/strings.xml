@@ -150,6 +150,7 @@
     <string name="send_search_hint">Username, address(0x), Find or Flowns</string>
     <string name="recent">Recent</string>
     <string name="my_accounts">My Accounts</string>
+    <string name="my_wallet">My Wallet</string>
     <string name="transfer_amount">Transfer Amount</string>
     <string name="max">Max</string>
     <string name="amount_balance">Amount balance</string>
@@ -222,7 +223,7 @@
     <string name="favourite">Favourite</string>
     <string name="cancel_favourite">Cancel Favourite</string>
     <string name="contact_us">Contact us</string>
-    <string name="made_by_outblock">Made by <a href="https://outblock.io/">Outblock</a></string>
+    <string name="made_by_outblock">Made by <a href="https://flow.com/">Flow</a></string>
     <string name="outblock">Outblock</string>
     <string name="about_version">Version %1$s</string>
     <string name="connecting_to">Connecting to</string>

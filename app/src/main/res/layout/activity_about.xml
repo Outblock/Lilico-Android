@@ -124,8 +124,7 @@
                     app:iconSize="28dp"
                     app:iconTint="@color/transparent"
                     app:iconTintMode="add"
-                    tools:ignore="HardcodedText"
-                    android:visibility="gone"/>
+                    tools:ignore="HardcodedText"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/email_button"
