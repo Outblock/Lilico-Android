@@ -324,10 +324,11 @@
     <string name="stake_guide_header1">Earn Rewards When You</string>
     <string name="stake_guide_header2">Stake Your Flow</string>
     <string name="lets_staking">Let\'s Staking</string>
-    <string name="stake_guide_desc_1">Earn up to <font color='#865CFF'><strong>13%</strong></font> per year.</string>
-    <string name="stake_guide_desc_2">When you stake <font color='#865CFF'><strong>Flow</strong></font> you receive <font color='#865CFF'><strong>Flow</strong></font>. You can <font color='#865CFF'><strong>trade</strong></font> this liquid asset at any time.</string>
-    <string name="stake_guide_desc_3">You start earning <font color='#865CFF'><strong>right away</strong></font>.</string>
-    <string name="stake_guide_desc_4">Rewards are automatically credited to your deposit <font color='#865CFF'><strong>every few days</strong></font>.</string>
+    <string name="stake_guide_desc_1">Earn up to <font color='#60C293'><strong>13%</strong></font>
+        per year.</string>
+    <string name="stake_guide_desc_2">When you stake <font color='#60C293'><strong>Flow</strong></font> you receive <font color='#60C293'><strong>Flow</strong></font>. You can <font color='#60C293'><strong>trade</strong></font> this liquid asset at any time.</string>
+    <string name="stake_guide_desc_3">You start earning <font color='#60C293'><strong>right away</strong></font>.</string>
+    <string name="stake_guide_desc_4">Rewards are automatically credited to your deposit <font color='#60C293'><strong>every few days</strong></font>.</string>
     <string name="recommend">Recommend</string>
     <string name="staking_provider">Staking Provider</string>
     <string name="select_provider">Select Provider</string>

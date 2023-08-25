@@ -24,7 +24,7 @@ class ProviderItemPresenter(
     @SuppressLint("SetTextI18n")
     override fun bind(model: StakingProvider) {
         with(binding) {
-            Glide.with(iconView).load(model.icon).placeholder(R.drawable.placeholder).into(iconView)
+            Glide.with(iconView).load(model.icon).placeholder(R.drawable.ic_placeholder).into(iconView)
             titleView.text = model.name
             descView.text = model.description
             rateTitle.text = (if (model.isLilico()) (StakingManager.apy() * 100).formatNum(2) else "${STAKING_DEFAULT_NORMAL_APY * 100}") + "%"

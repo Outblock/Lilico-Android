@@ -154,7 +154,7 @@ fun ImageView.loadFavicon(url: String?) {
     val glideUrl = GlideUrl(url, LazyHeaders.Builder().apply {
         addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36")
     }.build())
-    Glide.with(this).load(glideUrl).placeholder(R.drawable.placeholder_logo).into(this)
+    Glide.with(this).load(glideUrl).placeholder(R.drawable.ic_placeholder).into(this)
 }
 
 // https://www.google.com/s2/favicons?domain=${domain}&sz=${size}

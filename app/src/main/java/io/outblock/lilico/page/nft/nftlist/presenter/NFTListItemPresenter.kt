@@ -35,7 +35,8 @@ class NFTListItemPresenter(
         val nft = model.nft
         val config = NftCollectionConfig.get(nft.collectionAddress)
         with(binding) {
-            Glide.with(coverView).load(nft.cover()).transform(RoundedCorners(10.dp2px().toInt())).placeholder(R.drawable.placeholder).into(coverView)
+            Glide.with(coverView).load(nft.cover()).transform(RoundedCorners(10.dp2px().toInt()))
+                .placeholder(R.drawable.ic_placeholder).into(coverView)
             nameView.text = config?.name ?: nft.contractName()
             priceView.text = "#${nft.id}"
 

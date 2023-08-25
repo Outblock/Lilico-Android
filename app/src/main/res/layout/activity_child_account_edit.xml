@@ -69,7 +69,7 @@
                 android:id="@+id/avatar_view"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/placeholder"
+                android:background="@drawable/ic_placeholder"
                 android:scaleType="centerCrop"
                 app:roundPercent="1"/>
 
