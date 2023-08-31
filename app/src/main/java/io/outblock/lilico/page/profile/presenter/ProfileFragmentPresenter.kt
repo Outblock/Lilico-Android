@@ -41,6 +41,7 @@ import io.outblock.lilico.utils.isMeowDomainClaimed
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 
 class ProfileFragmentPresenter(

@@ -1,6 +1,7 @@
 package io.outblock.lilico.cache
 
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.manager.account.AccountPublicKeyCache
 import io.outblock.lilico.manager.app.chainNetWorkString
 import io.outblock.lilico.manager.app.isMainnet
 import io.outblock.lilico.manager.app.isTestnet
@@ -21,6 +22,7 @@ const val ADDRESS_BOOK = "address_book"
 const val RECENT_ADDRESS_BOOK = "recent_address_book"
 const val TOKEN_STATE = "token_state"
 const val NFT_COLLECTION_STATE = "nft_collection_state"
+const val CACHE_ACCOUNT_PUBLIC_KEY = "cache_account_public_key"
 
 fun nftListCache(address: String?): CacheManager<NFTListData> {
     return CacheManager("${address}_$CACHE_NFT_LIST".cacheFile(), NFTListData::class.java)
@@ -36,6 +38,10 @@ fun userInfoCache(): CacheManager<UserInfoData> {
 
 fun addressBookCache(): CacheManager<AddressBookContactBookList> {
     return CacheManager(ADDRESS_BOOK, AddressBookContactBookList::class.java)
+}
+
+fun accountPublicKeyCache(): CacheManager<AccountPublicKeyCache> {
+    return CacheManager(CACHE_ACCOUNT_PUBLIC_KEY, AccountPublicKeyCache::class.java)
 }
 
 // recent send history

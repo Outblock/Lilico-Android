@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityMainBinding
+import io.outblock.lilico.manager.account.AccountWalletManager
 import io.outblock.lilico.page.dialog.common.RootDetectedDialog
 import io.outblock.lilico.page.guide.GuideActivity
 import io.outblock.lilico.page.main.model.MainContentModel
@@ -19,6 +20,7 @@ import io.outblock.lilico.page.window.WindowFrame
 import io.outblock.lilico.utils.isGuidePageShown
 import io.outblock.lilico.utils.isNightMode
 import io.outblock.lilico.utils.isRegistered
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 
 
@@ -53,6 +55,7 @@ class MainActivity : BaseActivity() {
         if (!isGuidePageShown()) {
             GuideActivity.launch(this)
         }
+        AccountWalletManager.initAccountPublicKeyMap()
     }
 
     override fun onBackPressed() {
