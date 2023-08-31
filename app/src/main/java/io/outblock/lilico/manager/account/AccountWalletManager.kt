@@ -36,8 +36,6 @@ object AccountWalletManager {
     }
 
     fun initAccountPublicKeyMap() {
-        logd("AccountWalletManager", "init")
-        publicKeyMap.clear()
         if (accountPublicKeyCache().isCacheExist()) {
             publicKeyMap.putAll(accountPublicKeyCache().read()?.keyMap ?: emptyMap())
         } else {
@@ -59,9 +57,10 @@ object AccountWalletManager {
     private fun queryAllAccountPublicKey() {
         ioScope {
             val keyMap = queryAccountPublicKey(AccountManager.addressList())
-            accountPublicKeyCache().cache(AccountPublicKeyCache(keyMap))
-            publicKeyMap.putAll(keyMap)
-            logd("AccountWalletManager", publicKeyMap.toString())
+            if (keyMap.isNotEmpty()) {
+                accountPublicKeyCache().cache(AccountPublicKeyCache(keyMap))
+                publicKeyMap.putAll(keyMap)
+            }
         }
     }
 

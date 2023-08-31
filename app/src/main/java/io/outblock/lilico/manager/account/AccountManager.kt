@@ -87,19 +87,16 @@ object AccountManager {
 
     private suspend fun switchAccount(account: Account, callback: (isSuccess: Boolean) -> Unit) {
         if (!setToAnonymous()) {
-            toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
             callback(false)
             return
         }
         val address = account.wallet?.walletAddress()
         if (address.isNullOrBlank()) {
-            toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
             callback(false)
             return
         }
         val wallet = AccountWalletManager.getHDWalletByAddress(address)
         if (wallet == null) {
-            toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
             callback(false)
             return
         }
@@ -108,7 +105,6 @@ object AccountManager {
             getFirebaseJwt()
         )))
         if (resp.data?.customToken.isNullOrBlank()) {
-            toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
             callback(false)
             return
         }
@@ -118,7 +114,6 @@ object AccountManager {
                 Wallet.store().resume()
                 callback(true)
             } else {
-                toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
                 callback(false)
                 return@firebaseLogin
             }
