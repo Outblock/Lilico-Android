@@ -1,11 +1,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false">
+    <item android:state_pressed="false">
         <shape>
             <solid android:color="@color/bg_icon"/>
             <corners android:radius="20dp"/>
         </shape>
     </item>
-    <item>
+    <item android:state_pressed="true">
         <shape>
             <solid android:color="@color/navy5"/>
             <corners android:radius="20dp"/>

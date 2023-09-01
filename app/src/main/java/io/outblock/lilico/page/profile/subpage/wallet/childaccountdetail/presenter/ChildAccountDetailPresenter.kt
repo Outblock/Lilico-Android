@@ -55,8 +55,8 @@ class ChildAccountDetailPresenter(
     }
 
     private fun changeTabStatus(collectionSelected: Boolean) {
-        binding.tvTabCollection.isEnabled = collectionSelected
-        binding.tvTabCoin.isEnabled = collectionSelected.not()
+        binding.tvTabCollection.isPressed = collectionSelected
+        binding.tvTabCoin.isPressed = collectionSelected.not()
         if (collectionSelected) {
             accessibleAdapter.setNewDiffData(nftCollections)
             binding.accessibleListView.visible()
