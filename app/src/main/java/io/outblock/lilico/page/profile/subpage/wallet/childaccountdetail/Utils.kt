@@ -34,6 +34,12 @@ fun queryChildAccountTokens(account: ChildAccount): List<TokenData> {
     return parseTokenList(response.stringValue)
 }
 
+data class CoinData(
+    val coinName: String,
+    val coinIcon: String,
+    val balance: Float
+)
+
 data class TokenData(
     val id: String,
     val balance: Float
