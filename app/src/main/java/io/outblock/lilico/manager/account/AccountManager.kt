@@ -65,10 +65,17 @@ object AccountManager {
         return accounts.map { it.wallet?.walletAddress() ?: "" }
     }
 
+    var isSwitching = false
+
     fun switch(account: Account) {
         ioScope {
+            if (isSwitching) {
+                return@ioScope
+            }
+            isSwitching = true
             switchAccount(account) { isSuccess ->
                 if (isSuccess) {
+                    isSwitching = false
                     accounts.forEach {
                         it.isActive = it.userInfo.username == account.userInfo.username
                     }
@@ -78,6 +85,7 @@ object AccountManager {
                         MainActivity.relaunch(Env.getApp(), true)
                     }
                 } else {
+                    isSwitching = false
                     toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
                 }
             }

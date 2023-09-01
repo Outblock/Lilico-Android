@@ -12,7 +12,6 @@ import com.google.gson.annotations.SerializedName
 import io.outblock.lilico.cache.accountPublicKeyCache
 import io.outblock.lilico.manager.flowjvm.queryAccountPublicKey
 import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.logd
 import io.outblock.lilico.wallet.getPublicKey
 import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
