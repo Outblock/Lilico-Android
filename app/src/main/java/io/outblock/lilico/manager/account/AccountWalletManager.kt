@@ -8,10 +8,10 @@ import io.outblock.lilico.utils.getWalletStoreNameAesKey
 import io.outblock.lilico.utils.readWalletPassword
 import io.outblock.lilico.utils.saveWalletStoreNameAesKey
 import io.outblock.lilico.utils.secret.aesEncrypt
-import com.google.gson.annotations.SerializedName
-import io.outblock.lilico.cache.accountPublicKeyCache
 import io.outblock.lilico.manager.flowjvm.queryAccountPublicKey
 import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.readAccountPublicKey
+import io.outblock.lilico.utils.storeAccountPublicKey
 import io.outblock.lilico.wallet.getPublicKey
 import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
@@ -25,6 +25,10 @@ object AccountWalletManager {
 
     private var publicKeyMap = mutableMapOf<String, String>()
 
+    init {
+        publicKeyMap.putAll(runCatching { readAccountPublicKey() }.getOrNull() ?: emptyMap())
+    }
+
     private fun passwordMap(): HashMap<String, String> {
         val pref = runCatching { readWalletPassword() }.getOrNull()
         return if (pref.isNullOrBlank()) {
@@ -35,36 +39,34 @@ object AccountWalletManager {
     }
 
     fun initAccountPublicKeyMap() {
-        if (accountPublicKeyCache().isCacheExist()) {
-            publicKeyMap.putAll(accountPublicKeyCache().read()?.keyMap ?: emptyMap())
-        } else {
+        if (publicKeyMap.isEmpty()) {
             queryAllAccountPublicKey()
         }
     }
 
-    fun addPublicKey(address: String?, publicKey: String) {
-        if (address.isNullOrBlank()) {
+    fun addPublicKey(username: String?, publicKey: String) {
+        if (username.isNullOrBlank()) {
             return
         }
-        if (publicKeyMap.containsKey(address)) {
+        if (publicKeyMap.containsKey(username)) {
             return
         }
-        publicKeyMap[address] = publicKey
-        accountPublicKeyCache().cache(AccountPublicKeyCache(publicKeyMap))
+        publicKeyMap[username] = publicKey
+        storeAccountPublicKey(publicKeyMap)
     }
 
     private fun queryAllAccountPublicKey() {
         ioScope {
             val keyMap = queryAccountPublicKey(AccountManager.addressList())
             if (keyMap.isNotEmpty()) {
-                accountPublicKeyCache().cache(AccountPublicKeyCache(keyMap))
+                storeAccountPublicKey(publicKeyMap)
                 publicKeyMap.putAll(keyMap)
             }
         }
     }
 
-    fun getHDWalletByAddress(address: String): HDWallet? {
-        val publicKey = publicKeyMap[address]
+    fun getHDWalletByAddress(username: String): HDWallet? {
+        val publicKey = publicKeyMap[username]
         val hdWalletList = mutableListOf<HDWallet>()
         for ((uid, password) in passwordMap()) {
             hdWalletList.add(WalletStoreWithUid(uid, password).wallet())
@@ -109,8 +111,3 @@ class WalletStoreWithUid(private val uid: String, private val password: String) 
 
     private fun randomString(length: Int = 16): String = UUID.randomUUID().toString().take(length)
 }
-
-class AccountPublicKeyCache(
-    @SerializedName("keyMap")
-    val keyMap: Map<String, String> = emptyMap()
-)

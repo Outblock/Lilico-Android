@@ -55,7 +55,7 @@ object AccountManager {
     fun updateWalletInfo(wallet: WalletListData) {
         list().firstOrNull { it.userInfo.username == wallet.username }?.wallet = wallet
         accountsCache().cache(Accounts().apply { addAll(accounts) })
-        AccountWalletManager.addPublicKey(wallet.walletAddress(), Wallet.store().wallet().getPublicKey())
+        AccountWalletManager.addPublicKey(wallet.username, Wallet.store().wallet().getPublicKey())
         WalletManager.walletUpdate()
     }
 
@@ -98,12 +98,7 @@ object AccountManager {
             callback(false)
             return
         }
-        val address = account.wallet?.walletAddress()
-        if (address.isNullOrBlank()) {
-            callback(false)
-            return
-        }
-        val wallet = AccountWalletManager.getHDWalletByAddress(address)
+        val wallet = AccountWalletManager.getHDWalletByAddress(account.userInfo.username)
         if (wallet == null) {
             callback(false)
             return

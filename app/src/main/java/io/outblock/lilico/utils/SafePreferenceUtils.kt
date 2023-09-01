@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.annotation.WorkerThread
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 /**
  * Crypto SharedPreferences
@@ -15,6 +17,7 @@ private const val KEY_PUSH_TOKEN = "push_token"
 private const val KEY_WALLET_PASSWORD = "key_wallet_password"
 private const val KEY_PIN_CODE = "key_pin_code"
 private const val KEY_WALLET_STORE_NAME_AES_KEY = "key_wallet_store_name_aes_key"
+private const val KEY_ACCOUNT_PUBLIC_KEY = "key_account_public_key"
 
 private const val KEY_AES_LOCAL_CODE = "key_aes_local_code"
 
@@ -33,6 +36,16 @@ fun storeWalletPassword(key: String) {
 }
 
 fun readWalletPassword(): String = preference.getString(KEY_WALLET_PASSWORD, "").orEmpty()
+
+fun storeAccountPublicKey(keyMap: Map<String, String>) {
+    val keyMapString = Gson().toJson(keyMap)
+    preference.edit().putString(KEY_ACCOUNT_PUBLIC_KEY, keyMapString).apply()
+}
+
+fun readAccountPublicKey(): Map<String, String> {
+    val keyMapString = preference.getString(KEY_ACCOUNT_PUBLIC_KEY, "").orEmpty()
+    return Gson().fromJson(keyMapString, object : TypeToken<MutableMap<String, String>>() {}.type)
+}
 
 @SuppressLint("ApplySharedPref")
 @WorkerThread
