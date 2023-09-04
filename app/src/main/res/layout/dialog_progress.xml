@@ -7,6 +7,6 @@
     <ProgressBar
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:progressTint="@color/colorSecondary"
+        android:progressTint="@color/colorSecondaryVariant"
         android:layout_gravity="center"/>
 </FrameLayout>

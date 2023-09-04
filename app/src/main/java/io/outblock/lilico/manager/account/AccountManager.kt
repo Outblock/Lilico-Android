@@ -66,7 +66,7 @@ object AccountManager {
 
     var isSwitching = false
 
-    fun switch(account: Account) {
+    fun switch(account: Account, onFinish: () -> Unit) {
         ioScope {
             if (isSwitching) {
                 return@ioScope
@@ -87,6 +87,7 @@ object AccountManager {
                     isSwitching = false
                     toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
                 }
+                onFinish()
             }
 
         }
