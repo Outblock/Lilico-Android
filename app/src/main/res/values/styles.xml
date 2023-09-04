@@ -51,7 +51,7 @@
     </style>
 
     <style name="CheckBox">
-        <item name="android:buttonTint">@color/colorSecondary</item>
+        <item name="android:buttonTint">@color/colorSecondaryVariant</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -160,13 +160,22 @@
         <item name="android:popupBackground">@drawable/bg_popup_menu</item>
     </style>
 
+    <style name="FrozenSwitch">
+        <!--开启时的颜色-->
+        <item name="colorControlActivated">@color/colorSecondaryVariant</item>
+<!--        关闭时的颜色-->
+<!--        <item name="colorSwitchThumbNormal">#383434</item>-->
+<!--        关闭时的轨迹颜色-->
+<!--        <item name="android:colorForeground">#ecd502</item>-->
+    </style>
+
     <style name="AppSplash" parent="Theme.SplashScreen">
         <!-- Set the splash screen background, animated icon, and animation duration. -->
-        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
 
         <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
              animated drawable. One of these is required. -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
         <!-- Required for animated icons -->
         <item name="windowSplashScreenAnimationDuration">100</item>
 

@@ -33,6 +33,7 @@ import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
@@ -136,6 +137,8 @@ class WalletHeaderPresenter(
         uiScope {
             binding.domainWrapper.setVisible(isMeowDomainClaimed())
             binding.domainView.text = "$username.meow"
+//          todo hide domain info for rebranding
+            binding.domainWrapper.gone()
         }
     }
 

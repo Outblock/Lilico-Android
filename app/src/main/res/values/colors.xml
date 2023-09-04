@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryVariant">#ffffff</color>
-    <color name="colorSecondary">#FF7340</color>
-    <color name="colorSecondaryVariant">#FF7340</color>
+    <color name="colorSecondary">#32E355</color>
+    <color name="colorSecondaryVariant">#00B881</color>
     <color name="text_sub">#565A69</color>
     <color name="text_light">#8f8f93</color>
 
@@ -123,6 +123,7 @@
     <color name="background">#FAFAFA</color>
     <color name="front_color">#FFFFFF</color>
     <color name="mango_nft">#FFD500</color>
+    <color name="mango_nft_16">#29FFD500</color>
     <color name="mango1">#E0BF16</color>
     <color name="mango3">#FADD4B</color>
     <color name="mango4">#FAE57D</color>
@@ -146,7 +147,7 @@
     <color name="neutrals10">#E3E3E3</color>
     <color name="note">#808080</color>
     <color name="outline">#E6E6E6</color>
-    <color name="salmon_primary">#FC814A</color>
+    <color name="salmon_primary">#32E355</color>
     <color name="salmon1">#C9683A</color>
     <color name="salmon3">#FCA47C</color>
     <color name="salmon4">#FCC7AE</color>
@@ -172,7 +173,7 @@
     <color name="neutrals11">#E6E6E6</color>
     <color name="neutrals12">#FAFAFA</color>
     <color name="neutrals12_background">#0D0D0D</color>
-    <color name="salmon_primary_8">#14FC814A</color>
+    <color name="salmon_primary_8">#1432E355</color>
     <color name="button">#1a1a1a</color>
     <color name="button_text">#ffffff</color>
     <color name="deep_bg">#ffffff</color>
@@ -199,6 +200,16 @@
     <color name="stake_12">#1c60C293</color>
     <color name="deep_bg_0">#00ffffff</color>
 
-    <color name="sandbox">#F3EA5F</color>
-    <color name="testnet">#00EE8A</color>
+    <color name="mainnet">#32E355</color>
+    <color name="sandbox">#CCAF21</color>
+    <color name="testnet">#FF8A00</color>
+    <color name="profile_tip_background">#2900B881</color>
+    <color name="colorSecondaryVariant_50">#8000B881</color>
+    <color name="colorSecondary_25">#4032E355</color>
+    <color name="colorSecondary_35">#5932E355</color>
+    <color name="colorSecondary_50">#8032E355</color>
+    <color name="colorSecondary_65">#a632E355</color>
+    <color name="colorSecondary_80">#CC32E355</color>
+    <color name="colorSecondary_95">#F232E355</color>
+    <color name="swap_token_selected">#363636</color>
 </resources>

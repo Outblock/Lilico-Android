@@ -57,7 +57,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/more"
                     android:textAllCaps="false"
-                    android:textColor="@color/salmon_primary"
+                    android:textColor="@color/colorSecondaryVariant"
                     android:textSize="14sp"/>
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:src="@drawable/ic_arrow_right_1"
-                    app:tint="@color/salmon_primary"/>
+                    app:tint="@color/colorSecondaryVariant"/>
             </LinearLayout>
         </LinearLayout>
 

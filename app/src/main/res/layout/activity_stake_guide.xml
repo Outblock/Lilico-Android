@@ -121,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_marginHorizontal="18dp"
             android:layout_marginBottom="40dp"
-            android:backgroundTint="#865CFF"
+            android:backgroundTint="@color/stake"
             android:text="@string/lets_staking"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

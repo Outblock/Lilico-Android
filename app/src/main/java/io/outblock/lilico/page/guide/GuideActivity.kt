@@ -75,7 +75,8 @@ class GuideActivity : BaseActivity() {
             listOf(
                 GuideItemModel(R.drawable.img_guide_1, R.string.guide_title_1, R.string.guide_desc_1),
                 GuideItemModel(R.drawable.img_guide_2, R.string.guide_title_2, R.string.guide_desc_2),
-                GuideItemModel(R.drawable.img_guide_3, R.string.guide_title_3, R.string.guide_desc_3),
+//                todo hide domain entrance for rebranding
+//                GuideItemModel(R.drawable.img_guide_3, R.string.guide_title_3, R.string.guide_desc_3),
                 GuideItemModel(R.drawable.img_guide_4, R.string.guide_title_4, R.string.guide_desc_4),
             )
         )

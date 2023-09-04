@@ -29,7 +29,7 @@ class TokenItemPresenter(
         }
 
         val backgroundColor = when (model.symbol) {
-            selectedCoin -> R.color.salmon4.res2color()
+            selectedCoin -> R.color.swap_token_selected.res2color()
             disableCoin -> R.color.transparent.res2color()
             else -> R.color.background.res2color()
         }
