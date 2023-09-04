@@ -8,11 +8,6 @@ import io.outblock.lilico.utils.getWalletStoreNameAesKey
 import io.outblock.lilico.utils.readWalletPassword
 import io.outblock.lilico.utils.saveWalletStoreNameAesKey
 import io.outblock.lilico.utils.secret.aesEncrypt
-import io.outblock.lilico.manager.flowjvm.queryAccountPublicKey
-import io.outblock.lilico.utils.ioScope
-import io.outblock.lilico.utils.readAccountPublicKey
-import io.outblock.lilico.utils.storeAccountPublicKey
-import io.outblock.lilico.wallet.getPublicKey
 import wallet.core.jni.HDWallet
 import wallet.core.jni.StoredKey
 import java.io.File
@@ -23,12 +18,6 @@ import java.util.UUID
  */
 object AccountWalletManager {
 
-    private var publicKeyMap = mutableMapOf<String, String>()
-
-    init {
-        publicKeyMap.putAll(runCatching { readAccountPublicKey() }.getOrNull() ?: emptyMap())
-    }
-
     private fun passwordMap(): HashMap<String, String> {
         val pref = runCatching { readWalletPassword() }.getOrNull()
         return if (pref.isNullOrBlank()) {
@@ -38,44 +27,13 @@ object AccountWalletManager {
         }
     }
 
-    fun initAccountPublicKeyMap() {
-        if (publicKeyMap.isEmpty()) {
-            queryAllAccountPublicKey()
+    fun getHDWalletByUID(uid: String): HDWallet? {
+        val password = passwordMap()[uid]
+        if (password.isNullOrBlank()) {
+            return null
         }
+        return WalletStoreWithUid(uid, password).wallet()
     }
-
-    fun addPublicKey(username: String?, publicKey: String) {
-        if (username.isNullOrBlank()) {
-            return
-        }
-        if (publicKeyMap.containsKey(username)) {
-            return
-        }
-        publicKeyMap[username] = publicKey
-        storeAccountPublicKey(publicKeyMap)
-    }
-
-    private fun queryAllAccountPublicKey() {
-        ioScope {
-            val keyMap = queryAccountPublicKey(AccountManager.addressList())
-            if (keyMap.isNotEmpty()) {
-                storeAccountPublicKey(publicKeyMap)
-                publicKeyMap.putAll(keyMap)
-            }
-        }
-    }
-
-    fun getHDWalletByAddress(username: String): HDWallet? {
-        val publicKey = publicKeyMap[username]
-        val hdWalletList = mutableListOf<HDWallet>()
-        for ((uid, password) in passwordMap()) {
-            hdWalletList.add(WalletStoreWithUid(uid, password).wallet())
-        }
-        return hdWalletList.firstOrNull {
-            it.getPublicKey() == publicKey
-        }
-    }
-
 }
 
 

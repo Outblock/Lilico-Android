@@ -55,7 +55,6 @@ class MainActivity : BaseActivity() {
         if (!isGuidePageShown()) {
             GuideActivity.launch(this)
         }
-        AccountWalletManager.initAccountPublicKeyMap()
     }
 
     override fun onBackPressed() {

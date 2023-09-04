@@ -68,7 +68,7 @@ object NftFavoriteManager {
 
     private suspend fun fetchFromServer() {
         val response = service.getNftFavorite(nftWalletAddress())
-        val nfts = response.data.nfts()
+        val nfts = response.data?.nfts() ?: emptyList()
 
         cache().cacheSync(FavoriteCache(nfts))
 
