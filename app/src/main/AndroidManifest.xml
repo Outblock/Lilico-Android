@@ -271,13 +271,12 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                    android:host="link.lilico.app"
-                    android:scheme="http"/>
-                <data
-                    android:host="link.lilico.app"
-                    android:scheme="https"/>
+                <data android:scheme="fcw"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
                 <data android:scheme="lilico"/>
+                <data android:host="link.lilico.app"/>
+                <data android:host="fcw-link.lilico.app"/>
             </intent-filter>
         </activity>
 
