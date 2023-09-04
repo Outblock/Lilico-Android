@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import io.outblock.lilico.BuildConfig
 import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.page.profile.subpage.currency.model.Currency
 import io.outblock.lilico.page.token.detail.QuoteMarket
@@ -56,6 +57,8 @@ private const val KEY_SELECTED_WALLET_ADDRESS = "KEY_SELECTED_WALLET_ADDRESS"
 
 private val KEY_SANDBOX_ENABLED = booleanPreferencesKey("KEY_SANDBOX_ENABLED")
 
+private val KEY_VERSION_CODE = intPreferencesKey("KEY_VERSION_CODE")
+
 private val scope = CoroutineScope(Dispatchers.IO)
 
 private val sharedPreferencesTraditional by lazy { Env.getApp().getSharedPreferences(PREFERENCE_TRADITIONAL, Context.MODE_PRIVATE) }
@@ -73,6 +76,15 @@ suspend fun isRegistered(): Boolean = dataStore.data.map { it[KEY_REGISTERED] ?:
 
 fun setRegistered() {
     edit { dataStore.edit { it[KEY_REGISTERED] = true } }
+}
+
+suspend fun isNewVersion(): Boolean {
+    val currentVersionCode = BuildConfig.VERSION_CODE
+    if (currentVersionCode > dataStore.data.map { it[KEY_VERSION_CODE] ?: -1 }.first()) {
+        edit { dataStore.edit { it[KEY_VERSION_CODE] = currentVersionCode } }
+        return true
+    }
+    return false
 }
 
 suspend fun isNftCollectionExpanded(): Boolean = dataStore.data.map { it[KEY_NFT_COLLECTION_EXPANDED] ?: false }.first()
