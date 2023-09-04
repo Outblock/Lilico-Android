@@ -68,28 +68,30 @@ class ProfileFragmentPresenter(
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
         binding.actionGroup.walletButton.setOnClickListener { ChildAccountsActivity.launch(context) }
         binding.actionGroup.inboxButton.setOnClickListener { InboxActivity.launch(context) }
+
         binding.group0.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
-        binding.group1.securityPreference.setOnClickListener {
-            SecuritySettingActivity.launch(
-                context
-            )
+        binding.group0.securityPreference.setOnClickListener {
+            SecuritySettingActivity.launch(context)
         }
-        binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
-        binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
-        binding.group2.notificationPreference.setOnClickListener {
-            context.startActivity(
-                getNotificationSettingIntent(context)
-            )
-        }
-        binding.group3.developerModePreference.setOnClickListener {
+        binding.group0.developerModePreference.setOnClickListener {
             DeveloperModeActivity.launch(context)
         }
-        binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
-        binding.group5.walletConnectPreference.setOnClickListener {
-            WalletConnectSessionActivity.launch(
-                context
-            )
+
+        binding.group1.walletConnectPreference.setOnClickListener {
+            WalletConnectSessionActivity.launch(context)
         }
+
+        binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
+        binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
+        binding.group2.notificationPreference.setOnClickListener {
+            context.startActivity(getNotificationSettingIntent(context))
+        }
+
+        binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
+        binding.group4.switchAccountPreference.setOnClickListener {
+            AccountSwitchDialog.show(fragment.childFragmentManager)
+        }
+
         updatePreferenceState()
         updateClaimDomainState()
         observeMeowDomainClaimedStateChange(this)
@@ -130,12 +132,14 @@ class ProfileFragmentPresenter(
                     userInfo.root.setVisible(isSignIn)
                     notLoggedIn.root.setVisible(!isSignIn)
                     actionGroup.root.setVisible(isSignIn)
-                    group1.root.setVisible(isSignIn)
-                    group5.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
+                    group0.root.setVisible(isSignIn)
+                    group1.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group2.currencyPreference.setDesc(findCurrencyFromFlag(getCurrencyFlag()).name)
-                    group3.developerModePreference.setDesc((if (isTestnet()) R.string.testnet
-                    else R.string.mainnet).res2String())
+                    group0.developerModePreference.setDesc(
+                        (if (isTestnet()) R.string.testnet
+                        else R.string.mainnet).res2String()
+                    )
                 }
                 updateWalletConnectSessionCount()
             }
@@ -163,7 +167,9 @@ class ProfileFragmentPresenter(
     private fun updateWalletConnectSessionCount() {
         ioScope {
             val count = WalletConnect.get().sessionCount()
-            uiScope { binding.group5.walletConnectPreference.setMarkText(if (count == 0) "" else "$count") }
+            uiScope {
+                binding.group1.walletConnectPreference.setMarkText(if (count == 0) "" else "$count")
+            }
         }
     }
 }

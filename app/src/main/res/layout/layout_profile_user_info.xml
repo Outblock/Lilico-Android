@@ -36,7 +36,7 @@
         tools:text="nickzyan"
         android:drawablePadding="8dp"
         app:drawableEndCompat="@drawable/ic_baseline_arrow_down_18"
-        app:drawableTint="@color/navy3"/>
+        app:drawableTint="@color/accent_gray"/>
 
     <TextView
         android:id="@+id/userid_view"
