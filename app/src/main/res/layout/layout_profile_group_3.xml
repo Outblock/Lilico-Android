@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isArrowVisible="true"
-        app:icon="@drawable/ic_setting_chrome_extension"
+        app:icon="@drawable/ic_settings_extension"
         app:title="@string/chrome_extension"/>
 
 

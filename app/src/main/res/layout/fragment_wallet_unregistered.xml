@@ -60,6 +60,7 @@
         app:cornerRadius="100dp"
         app:icon="@drawable/ic_add_circle_white"
         app:iconGravity="textStart"
+        app:iconTint="@color/white"
         app:iconPadding="8dp"
         app:layout_constraintBottom_toTopOf="@id/import_button"
         app:layout_constraintEnd_toEndOf="parent"
