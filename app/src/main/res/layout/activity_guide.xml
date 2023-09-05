@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background_guide"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_wrapper"
         android:layout_width="match_parent"
@@ -35,7 +28,7 @@
             android:textAllCaps="false"
             android:textColor="@color/text"
             android:textSize="14sp"
-            app:backgroundTint="@color/white_25"
+            app:backgroundTint="@color/white"
             app:cornerRadius="100dp"
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"

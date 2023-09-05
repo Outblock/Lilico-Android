@@ -33,7 +33,7 @@ class WalletCreateLegalFragment : Fragment() {
             title1.text = SpannableString(R.string.legal_information.res2String()).apply {
                 val protection = R.string.legal.res2String()
                 val index = indexOf(protection)
-                setSpan(ForegroundColorSpan(R.color.colorSecondary.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(ForegroundColorSpan(R.color.accent_green.res2color()), index, index + protection.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 
             termsButton.setOnClickListener { openWebUrl("https://lilico.app/about/terms") }

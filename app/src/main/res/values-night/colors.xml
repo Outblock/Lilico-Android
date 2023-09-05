@@ -92,5 +92,6 @@
 
     <color name="profile_card_background">#1AFFFFFF</color>
     <color name="profile_card_divider">#14FFFFFF</color>
+    <color name="welcome_page_text">#FFFFFF</color>
 </resources>
 
