@@ -31,6 +31,7 @@ import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccounts
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.openInSystemBrowser
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.getCurrencyFlag
@@ -87,8 +88,12 @@ class ProfileFragmentPresenter(
             context.startActivity(getNotificationSettingIntent(context))
         }
 
-        binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
-        binding.group4.switchAccountPreference.setOnClickListener {
+        binding.group3.chromeExtension.setOnClickListener {
+            "https://chrome.google.com/webstore/detail/lilico/hpclkefagolihohboafpheddmmgdffjm".openInSystemBrowser(context, ignoreInAppBrowser = true)
+        }
+
+        binding.group4.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
+        binding.group5.switchAccountPreference.setOnClickListener {
             AccountSwitchDialog.show(fragment.childFragmentManager)
         }
 

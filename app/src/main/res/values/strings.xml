@@ -109,6 +109,7 @@
     <string name="address">Address</string>
     <string name="wallets">Wallets</string>
     <string name="device">Device</string>
+    <string name="chrome_extension">Chrome Extension</string>
     <string name="about">About</string>
     <string name="switch_account">Switch Account</string>
     <string name="logout">Logout</string>
