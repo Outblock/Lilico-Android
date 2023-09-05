@@ -72,9 +72,9 @@ fun requestWalletRestoreLogin(mnemonic: String, callback: (isSuccess: Boolean, r
                                 Wallet.store().reset(mnemonic)
                                 ioScope {
                                     clearUserCache()
-                                    AccountManager.init()
+//                                    AccountManager.init()
                                     AccountManager.add(Account(userInfo = service.userInfo().data))
-                                    uiScope { callback.invoke(true, null) }
+                                    callback.invoke(true, null)
                                 }
                             } else {
                                 callback.invoke(false, ERROR_FIREBASE_SIGN_IN)

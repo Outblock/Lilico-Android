@@ -12,6 +12,8 @@ import io.outblock.lilico.manager.account.Account
 import io.outblock.lilico.manager.account.AccountManager
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.widgets.ProgressDialog
 
 class AccountListAdapter : BaseAdapter<Account>() {
 
@@ -31,10 +33,18 @@ private class AccountViewHolder(
     private val binding by lazy { ItemAccountListDialogBinding.bind(view) }
 
     private var model: Account? = null
+    private val progressDialog by lazy { ProgressDialog(view.context) }
 
     init {
         view.setOnClickListener {
-            model?.let { AccountManager.switch(it) }
+            model?.let {
+                progressDialog.show()
+                AccountManager.switch(it) {
+                    uiScope {
+                        progressDialog.dismiss()
+                    }
+                }
+            }
         }
     }
 

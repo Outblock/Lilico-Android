@@ -34,7 +34,7 @@ private val FCL_AUTHN_RESPONSE = """
             "f_type": "Service",
             "f_vsn": "1.0.0",
             "type": "authn",
-            "uid": "lilicoWallet#authn",
+            "uid": "fcw#authn",
             "endpoint": "ext:0x000",
             "id": "$ADDRESS_REPLACEMENT",
             "identity": {
@@ -44,7 +44,7 @@ private val FCL_AUTHN_RESPONSE = """
               "f_type": "ServiceProvider",
               "f_vsn": "1.0.0",
               "address": "$ADDRESS_REPLACEMENT",
-              "name": "Lilico Wallet"
+              "name": "Flow Core Wallet"
             }
           },
           $PRE_AUTHZ_REPLACEMENT
@@ -54,7 +54,7 @@ private val FCL_AUTHN_RESPONSE = """
             "f_type": "Service",
             "f_vsn": "1.0.0",
             "type": "authz",
-            "uid": "lilicoWallet#authz",
+            "uid": "fcw#authz",
             "endpoint": "ext:0x000",
             "method": "EXT/RPC",
             "identity": {
@@ -74,7 +74,7 @@ private val FCL_AUTHN_RESPONSE_USER_SIGNATURE = """
         "f_type": "Service",
         "f_vsn": "1.0.0",
         "type": "user-signature",
-        "uid": "lilico#user-signature",
+        "uid": "fcw#user-signature",
         "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
         "method": "EXT/RPC"
     },
@@ -85,7 +85,7 @@ private val FCL_AUTHN_RESPONSE_ACCOUNT_PROOF = """
         "f_type": "Service",
         "f_vsn": "1.0.0",
         "type": "account-proof",
-        "uid": "lilico#account-proof",
+        "uid": "fcw#account-proof",
         "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
         "method": "EXT/RPC",
         "data": {
@@ -133,7 +133,7 @@ private val FCL_PRE_AUTHZ_RESPONSE = """
                 "f_type": "Service",
                 "f_vsn": "1.0.0",
                 "type": "authz",
-                "uid": "lilico#authz",
+                "uid": "fcw#authz",
                 "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
                 "method": "EXT/RPC",
                 "identity": {
@@ -146,7 +146,7 @@ private val FCL_PRE_AUTHZ_RESPONSE = """
                     "f_type": "Service",
                     "f_vsn": "1.0.0",
                     "type": "authz",
-                    "uid": "lilico#authz",
+                    "uid": "fcw#authz",
                     "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
                     "method": "EXT/RPC",
                     "identity": {
@@ -160,7 +160,7 @@ private val FCL_PRE_AUTHZ_RESPONSE = """
                     "f_type": "Service",
                     "f_vsn": "1.0.0",
                     "type": "authz",
-                    "uid": "lilico#authz",
+                    "uid": "fcw#authz",
                     "endpoint": "chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html",
                     "method": "EXT/RPC",
                     "identity": {
@@ -203,7 +203,7 @@ fun generateFclExtensionInject(): String {
           f_type: 'Service',
           f_vsn: '1.0.0',
           type: 'authn',
-          uid: 'Lilico',
+          uid: 'Flow Core Wallet',
           endpoint: 'chrome-extension://hpclkefagolihohboafpheddmmgdffjm/popup.html',
           method: 'EXT/RPC',
           id: 'hpclkefagolihohboafpheddmmgdffjm',
@@ -212,9 +212,9 @@ fun generateFclExtensionInject(): String {
           },
           provider: {
             address: '$address',
-            name: 'Lilico',
-            icon: 'https://raw.githubusercontent.com/Outblock/Lilico-Web/main/asset/logo-dis.png',
-            description: 'Lilico is bringing an out of the world experience to your crypto assets on Flow',
+            name: 'Flow Core Wallet',
+            icon: 'https://lilico.app/fcw-logo.png',
+            description: 'Digital wallet created for everyone.',
           }
         }
 """.trimIndent()
@@ -271,7 +271,7 @@ private suspend fun generateAuthnPreAuthz(): String {
                 "f_type": "Service",
                 "f_vsn": "1.0.0",
                 "type": "pre-authz",
-                "uid": "lilico#pre-authz",
+                "uid": "fcw#pre-authz",
                 "endpoint": "android://pre-authz.lilico.app",
                 "method": "EXT/RPC",
                 "data": {

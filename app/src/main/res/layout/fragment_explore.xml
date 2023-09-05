@@ -116,7 +116,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:backgroundTint="@color/salmon_primary"
+                    app:backgroundTint="@color/violet1"
                     app:cornerRadius="100dp"
                     app:elevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -224,7 +224,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/recent_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/recent_title"
-                        app:tint="@color/salmon_primary"/>
+                        app:tint="@color/violet1"/>
 
                     <TextView
                         android:id="@+id/recent_title"
@@ -257,7 +257,7 @@
                             android:gravity="center_vertical"
                             android:text="@string/more"
                             android:textAllCaps="false"
-                            android:textColor="@color/salmon_primary"
+                            android:textColor="@color/violet1"
                             android:textSize="14sp"/>
 
                         <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -265,7 +265,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:src="@drawable/ic_arrow_right_1"
-                            app:tint="@color/salmon_primary"/>
+                            app:tint="@color/violet1"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -300,7 +300,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/bookmark_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/bookmark_title"
-                    app:tint="@color/salmon_primary"/>
+                    app:tint="@color/violet1"/>
 
                 <TextView
                     android:id="@+id/bookmark_title"
@@ -332,7 +332,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/more"
                         android:textAllCaps="false"
-                        android:textColor="@color/salmon_primary"
+                        android:textColor="@color/violet1"
                         android:textSize="14sp"/>
 
                     <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -340,7 +340,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:src="@drawable/ic_arrow_right_1"
-                        app:tint="@color/salmon_primary"/>
+                        app:tint="@color/violet1"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -372,7 +372,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/dapp_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/dapp_title"
-                    app:tint="@color/salmon_primary"/>
+                    app:tint="@color/violet1"/>
 
                 <TextView
                     android:id="@+id/dapp_title"
@@ -404,7 +404,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/more"
                         android:textAllCaps="false"
-                        android:textColor="@color/salmon_primary"
+                        android:textColor="@color/violet1"
                         android:textSize="14sp"/>
 
                     <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -412,7 +412,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:src="@drawable/ic_arrow_right_1"
-                        app:tint="@color/salmon_primary"/>
+                        app:tint="@color/violet1"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

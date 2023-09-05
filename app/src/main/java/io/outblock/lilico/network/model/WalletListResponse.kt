@@ -36,7 +36,7 @@ data class WalletListData(
 
 data class WalletData(
     @SerializedName("blockchain")
-    val blockchain: List<BlockchainData>,
+    val blockchain: List<BlockchainData>?,
     @SerializedName("color")
     val color: String,
     @SerializedName("icon")
@@ -46,9 +46,9 @@ data class WalletData(
     @SerializedName("id")
     val walletId: Int
 ) {
-    fun address() = blockchain.firstOrNull()?.address
+    fun address() = blockchain?.firstOrNull()?.address
 
-    fun network() = blockchain.firstOrNull()?.chainId
+    fun network() = blockchain?.firstOrNull()?.chainId
 }
 
 @Parcelize

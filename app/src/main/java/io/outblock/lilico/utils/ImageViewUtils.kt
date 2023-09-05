@@ -29,7 +29,7 @@ private fun ImageView.loadAvatarNormal(url: String, placeholderEnable: Boolean =
     var request = Glide.with(this).load(url)
 
     if (placeholderEnable) {
-        request = request.placeholder(R.drawable.placeholder)
+        request = request.placeholder(R.drawable.ic_placeholder)
     }
     if (transformation != null) {
         request = request.transform(transformation)
@@ -43,7 +43,7 @@ private fun ImageView.loadAvatarSvg(url: String, placeholderEnable: Boolean = tr
     }.build()
     load(url, loader) {
         if (placeholderEnable) {
-            placeholder(R.drawable.placeholder)
+            placeholder(R.drawable.ic_placeholder)
         }
     }
 }

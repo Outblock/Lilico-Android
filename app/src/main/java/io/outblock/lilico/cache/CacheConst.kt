@@ -64,7 +64,10 @@ fun transferRecordCache(tokenId: String = ""): CacheManager<TransferRecordList> 
 }
 
 fun nftCollectionsCache(): CacheManager<NftCollectionListResponse> {
-    return CacheManager("nft_collections_${chainNetWorkString()}".cacheFile(), NftCollectionListResponse::class.java)
+    return CacheManager(
+        "nft_collections_${chainNetWorkString()}".cacheFile(),
+        NftCollectionListResponse::class.java
+    )
 }
 
 fun currencyCache(): CacheManager<CurrencyCache> {

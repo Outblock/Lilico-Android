@@ -22,8 +22,14 @@ class StakingListItemPresenter(
     @SuppressLint("SetTextI18n")
     override fun bind(model: StakingListItemModel) {
         with(binding) {
-            claimButton.setOnClickListener { StakingAmountActivity.launch(view.context, model.provider) }
-            Glide.with(providerIcon).load(model.provider.icon).placeholder(R.drawable.placeholder).into(providerIcon)
+            claimButton.setOnClickListener {
+                StakingAmountActivity.launch(
+                    view.context,
+                    model.provider
+                )
+            }
+            Glide.with(providerIcon).load(model.provider.icon)
+                .placeholder(R.drawable.ic_placeholder).into(providerIcon)
             providerName.text = model.provider.name
             providerRate.text = (model.provider.rate() * 100).formatNum(2) + "%"
             amountView.text = model.stakingNode.stakingCount().formatNum(3)

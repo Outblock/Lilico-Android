@@ -11,6 +11,7 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.LayoutMainDrawerLayoutBinding
 import io.outblock.lilico.manager.account.AccountManager
+import io.outblock.lilico.manager.account.AccountWalletManager
 import io.outblock.lilico.manager.account.OnWalletDataUpdate
 import io.outblock.lilico.manager.account.WalletFetcher
 import io.outblock.lilico.manager.childaccount.ChildAccount

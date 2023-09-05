@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionManager
+import androidx.transition.Visibility
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.FragmentExploreBinding
@@ -21,6 +22,7 @@ import io.outblock.lilico.page.profile.subpage.claimdomain.ClaimDomainActivity
 import io.outblock.lilico.page.profile.subpage.claimdomain.MeowDomainClaimedStateChangeListener
 import io.outblock.lilico.page.profile.subpage.claimdomain.observeMeowDomainClaimedStateChange
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.location
 import io.outblock.lilico.utils.extensions.scrollToPositionForce
@@ -123,14 +125,16 @@ class ExplorePresenter(
 
     private fun updateClaimDomainState() {
         ioScope {
-            val isClaimedDomain = isMeowDomainClaimed()
-            val isVisibleChange = binding.claimDomainWrapper.isVisible() == isClaimedDomain
-            if (isVisibleChange) {
-                uiScope {
-                    TransitionManager.beginDelayedTransition(binding.contentWrapper)
-                    binding.claimDomainWrapper.setVisible(!isClaimedDomain)
-                }
-            }
+            binding.claimDomainWrapper.gone()
+//            todo hide domain entrance for rebranding
+//            val isClaimedDomain = isMeowDomainClaimed()
+//            val isVisibleChange = binding.claimDomainWrapper.isVisible() == isClaimedDomain
+//            if (isVisibleChange) {
+//                uiScope {
+//                    TransitionManager.beginDelayedTransition(binding.contentWrapper)
+//                    binding.claimDomainWrapper.setVisible(!isClaimedDomain)
+//                }
+//            }
         }
     }
 }

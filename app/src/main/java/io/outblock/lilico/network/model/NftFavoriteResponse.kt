@@ -7,7 +7,7 @@ import io.outblock.lilico.page.nft.nftlist.utils.NftCache
 
 data class NftFavoriteResponse(
     @SerializedName("data")
-    val data: NftFavoriteData,
+    val data: NftFavoriteData?,
 
     @SerializedName("message")
     val message: String,

@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="@id/avatar_view"
         app:layout_constraintStart_toEndOf="@id/title_view"
         app:layout_constraintTop_toTopOf="@id/avatar_view"
-        tools:backgroundTint="@color/success"
+        tools:backgroundTint="@color/salmon_primary"
         tools:text="TESTNET"
         tools:visibility="visible"/>
 

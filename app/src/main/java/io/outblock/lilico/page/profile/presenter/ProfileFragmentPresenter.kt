@@ -31,6 +31,7 @@ import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccounts
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.security.SecuritySettingActivity
 import io.outblock.lilico.utils.extensions.isVisible
+import io.outblock.lilico.utils.extensions.openInSystemBrowser
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.getCurrencyFlag
@@ -39,8 +40,10 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isBackupGoogleDrive
 import io.outblock.lilico.utils.isMeowDomainClaimed
 import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.isNotificationPermissionGrand
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.loadAvatar
+import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 
 class ProfileFragmentPresenter(
@@ -60,19 +63,44 @@ class ProfileFragmentPresenter(
             AccountSwitchDialog.show(fragment.childFragmentManager)
         }
         binding.notLoggedIn.root.setOnClickListener {
-            ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(HomeTab.WALLET)
+            ViewModelProvider(fragment.requireActivity())[MainActivityViewModel::class.java].changeTab(
+                HomeTab.WALLET
+            )
         }
         binding.actionGroup.addressButton.setOnClickListener { AddressBookActivity.launch(context) }
         binding.actionGroup.walletButton.setOnClickListener { ChildAccountsActivity.launch(context) }
         binding.actionGroup.inboxButton.setOnClickListener { InboxActivity.launch(context) }
+
         binding.group0.backupPreference.setOnClickListener { BackupSettingActivity.launch(context) }
-        binding.group1.securityPreference.setOnClickListener { SecuritySettingActivity.launch(context) }
-        binding.group1.developerModePreference.setOnClickListener { DeveloperModeActivity.launch(context) }
-        binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
+        binding.group0.securityPreference.setOnClickListener {
+            SecuritySettingActivity.launch(context)
+        }
+        binding.group0.developerModePreference.setOnClickListener {
+            DeveloperModeActivity.launch(context)
+        }
+
+        binding.group1.walletConnectPreference.setOnClickListener {
+            WalletConnectSessionActivity.launch(context)
+        }
+
         binding.group2.currencyPreference.setOnClickListener { CurrencyListActivity.launch(context) }
-        binding.group2.notificationPreference.setOnClickListener { context.startActivity(getNotificationSettingIntent(context)) }
-        binding.group3.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
-        binding.group5.walletConnectPreference.setOnClickListener { WalletConnectSessionActivity.launch(context) }
+        binding.group2.themePreference.setOnClickListener { ThemeSettingActivity.launch(context) }
+        binding.group2.notificationPreference.setOnClickListener {
+            context.startActivity(getNotificationSettingIntent(context))
+        }
+
+        binding.group3.chromeExtension.setOnClickListener {
+            "https://chrome.google.com/webstore/detail/lilico/hpclkefagolihohboafpheddmmgdffjm".openInSystemBrowser(
+                context,
+                ignoreInAppBrowser = true
+            )
+        }
+
+        binding.group4.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
+        binding.group5.switchAccountPreference.setOnClickListener {
+            AccountSwitchDialog.show(fragment.childFragmentManager)
+        }
+
         updatePreferenceState()
         updateClaimDomainState()
         observeMeowDomainClaimedStateChange(this)
@@ -82,6 +110,7 @@ class ProfileFragmentPresenter(
         model.userInfo?.let { bindUserInfo(it) }
         model.onResume?.let { updatePreferenceState() }
         model.inboxCount?.let { updateInboxCount(it) }
+        updateNotificationPermissionStatus()
     }
 
     override fun onDomainClaimedStateChange(isClaimed: Boolean) {
@@ -100,6 +129,16 @@ class ProfileFragmentPresenter(
         }
     }
 
+    private fun updateNotificationPermissionStatus() {
+        binding.group2.notificationPreference.setDesc(
+            if (isNotificationPermissionGrand(context)) {
+                R.string.on.res2String()
+            } else {
+                R.string.off.res2String()
+            }
+        )
+    }
+
     private fun updatePreferenceState() {
         ioScope {
             val isBackupGoogleDrive = isBackupGoogleDrive()
@@ -113,11 +152,14 @@ class ProfileFragmentPresenter(
                     userInfo.root.setVisible(isSignIn)
                     notLoggedIn.root.setVisible(!isSignIn)
                     actionGroup.root.setVisible(isSignIn)
-                    group1.root.setVisible(isSignIn)
-                    group5.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
+                    group0.root.setVisible(isSignIn)
+                    group1.root.setVisible(isSignIn && AppConfig.walletConnectEnable())
                     group2.themePreference.setDesc(if (isNightMode(fragment.requireActivity())) R.string.dark.res2String() else R.string.light.res2String())
                     group2.currencyPreference.setDesc(findCurrencyFromFlag(getCurrencyFlag()).name)
-                    group1.developerModePreference.setDesc((if (isTestnet()) R.string.testnet else R.string.mainnet).res2String())
+                    group0.developerModePreference.setDesc(
+                        (if (isTestnet()) R.string.testnet
+                        else R.string.mainnet).res2String()
+                    )
                 }
                 updateWalletConnectSessionCount()
             }
@@ -145,7 +187,9 @@ class ProfileFragmentPresenter(
     private fun updateWalletConnectSessionCount() {
         ioScope {
             val count = WalletConnect.get().sessionCount()
-            uiScope { binding.group5.walletConnectPreference.setMarkText(if (count == 0) "" else "$count") }
+            uiScope {
+                binding.group1.walletConnectPreference.setMarkText(if (count == 0) "" else "$count")
+            }
         }
     }
 }

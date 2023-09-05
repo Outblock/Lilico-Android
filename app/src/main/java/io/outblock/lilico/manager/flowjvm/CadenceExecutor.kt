@@ -5,6 +5,7 @@ import com.nftco.flow.sdk.FlowScriptResponse
 import com.nftco.flow.sdk.ScriptBuilder
 import com.nftco.flow.sdk.cadence.marshall
 import com.nftco.flow.sdk.simpleFlowScript
+import io.outblock.lilico.manager.account.parsePublicKeyMap
 import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.coin.formatCadence
 import io.outblock.lilico.manager.config.NftCollection
@@ -26,7 +27,10 @@ fun cadenceQueryAddressByDomainFlowns(domain: String, root: String = "fn"): Stri
         arg { marshall { string(domain) } }
         arg { marshall { string(root) } }
     }
-    logd(TAG, "cadenceQueryAddressByDomainFlowns domain=$domain, root=$root response:${String(result?.bytes ?: byteArrayOf())}")
+    logd(
+        TAG,
+        "cadenceQueryAddressByDomainFlowns domain=$domain, root=$root response:${String(result?.bytes ?: byteArrayOf())}"
+    )
     return result?.parseSearchAddress()
 }
 
@@ -35,7 +39,10 @@ fun cadenceQueryDomainByAddressFlowns(address: String): FlowScriptResponse? {
     val result = CADENCE_QUERY_DOMAIN_BY_ADDRESS_FLOWNS.executeCadence {
         arg { address(address) }
     }
-    logd(TAG, "cadenceQueryDomainByAddressFlowns response:${String(result?.bytes ?: byteArrayOf())}")
+    logd(
+        TAG,
+        "cadenceQueryDomainByAddressFlowns response:${String(result?.bytes ?: byteArrayOf())}"
+    )
     return result
 }
 
@@ -71,7 +78,8 @@ fun cadenceCheckTokenListEnabled(coins: List<FlowCoin>): List<Boolean>? {
     logd(TAG, "cadenceCheckTokenListEnabled()")
     val walletAddress = WalletManager.selectedWalletAddress() ?: return null
 
-    val tokenImports = coins.map { it.formatCadence("import <Token> from <TokenAddress>") }.joinToString("\r\n") { it }
+    val tokenImports = coins.map { it.formatCadence("import <Token> from <TokenAddress>") }
+        .joinToString("\r\n") { it }
 
     val tokenFunctions = coins.map {
         it.formatCadence(
@@ -166,7 +174,8 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
     if (nfts.isEmpty()) return emptyList()
     val walletAddress = WalletManager.selectedWalletAddress() ?: return null
 
-    val tokenImports = nfts.map { nft -> nft.formatCadence("import <Token> from <TokenAddress>") }.joinToString("\r\n") { it }
+    val tokenImports = nfts.map { nft -> nft.formatCadence("import <Token> from <TokenAddress>") }
+        .joinToString("\r\n") { it }
     val tokenFunctions = nfts.map { nft ->
         nft.formatCadence(
             """
@@ -211,10 +220,12 @@ fun cadenceNftListCheckEnabled(nfts: List<NftCollection>): List<Boolean>? {
 
 suspend fun cadenceTransferNft(toAddress: String, nft: Nft): String? {
     logd(TAG, "cadenceTransferNft()")
-    val transactionId = nft.formatCadence(if (nft.isNBA()) CADENCE_NBA_NFT_TRANSFER else CADENCE_NFT_TRANSFER).transactionByMainWallet {
-        arg { address(toAddress.toAddress()) }
-        arg { uint64(nft.id) }
-    }
+    val transactionId =
+        nft.formatCadence(if (nft.isNBA()) CADENCE_NBA_NFT_TRANSFER else CADENCE_NFT_TRANSFER)
+            .transactionByMainWallet {
+                arg { address(toAddress.toAddress()) }
+                arg { uint64(nft.id) }
+            }
     logd(TAG, "cadenceTransferNft() transactionId:$transactionId")
     return transactionId
 }
@@ -256,7 +267,15 @@ suspend fun cadenceClaimInboxNft(
 }
 
 fun String.executeCadence(block: ScriptBuilder.() -> Unit): FlowScriptResponse? {
-    logv(TAG, "executeScript:\n${Flow.DEFAULT_ADDRESS_REGISTRY.processScript(this, chainId = Flow.DEFAULT_CHAIN_ID)}")
+    logv(
+        TAG,
+        "executeScript:\n${
+            Flow.DEFAULT_ADDRESS_REGISTRY.processScript(
+                this,
+                chainId = Flow.DEFAULT_CHAIN_ID
+            )
+        }"
+    )
     return try {
         FlowApi.get().simpleFlowScript {
             script { this@executeCadence.trimIndent() }
@@ -295,4 +314,15 @@ suspend fun String.executeTransaction(arguments: CadenceArgumentsBuilder.() -> U
         loge(e)
         null
     }
+}
+
+fun queryAccountPublicKey(accounts: List<String>): Map<String, String> {
+    val result = CADENCE_QUERY_PUBLIC_KEY.executeCadence {
+        arg {
+            array {
+                accounts.map { address(it) }
+            }
+        }
+    }
+    return result?.parsePublicKeyMap() ?: emptyMap()
 }

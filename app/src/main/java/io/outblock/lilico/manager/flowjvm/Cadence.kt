@@ -1063,3 +1063,15 @@ const val CADENCE_QUERY_CHILD_ACCOUNT_NFT = """
         return collectionList
     }
 """
+
+const val CADENCE_QUERY_PUBLIC_KEY = """
+    pub fun main(accounts: [Address]):{String: String} {
+    var keys: {String: String} = {}
+    for account in accounts {
+      let acct = getAccount(account)
+      let key = acct.keys.get(keyIndex: 0)!
+      keys[account.toString()] = (String.encodeHex(key.publicKey.publicKey))
+    }
+    return keys
+}
+"""

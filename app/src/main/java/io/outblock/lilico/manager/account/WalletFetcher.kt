@@ -9,7 +9,9 @@ import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.uiScope
 import kotlinx.coroutines.delay
 import java.lang.ref.WeakReference
+import java.util.Timer
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.concurrent.timer
 
 
 object WalletFetcher {
@@ -24,7 +26,10 @@ object WalletFetcher {
             if (useCache) {
                 WalletManager.wallet()?.let { dispatchListeners(it) }
             }
-            while (true) {
+            var dataReceived = false
+            var firstAttempt = true
+            while (!dataReceived) {
+                delay(5000)
                 runCatching {
                     val resp = apiService.getWalletList()
 
@@ -33,11 +38,16 @@ object WalletFetcher {
                         AccountManager.updateWalletInfo(resp.data!!)
                         delay(300)
                         dispatchListeners(resp.data)
-                        return@ioScope
+                        dataReceived = true
+                    } else if (firstAttempt) {
+                        firstAttempt = false
+                        timer(period = 20000) {
+                            ioScope {
+                                apiService.manualAddress()
+                            }
+                        }
                     }
                 }
-
-                delay(2000)
             }
         }
     }

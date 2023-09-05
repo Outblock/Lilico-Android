@@ -36,7 +36,7 @@
         tools:text="nickzyan"
         android:drawablePadding="8dp"
         app:drawableEndCompat="@drawable/ic_baseline_arrow_down_18"
-        app:drawableTint="@color/navy3"/>
+        app:drawableTint="@color/accent_gray"/>
 
     <TextView
         android:id="@+id/userid_view"
@@ -47,6 +47,7 @@
         android:fontFamily="@font/inter_medium"
         android:textColor="@color/text"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/avatar_view"
         app:layout_constraintStart_toEndOf="@id/avatar_view"
         app:layout_constraintTop_toBottomOf="@id/nickname_view"

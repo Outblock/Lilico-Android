@@ -52,12 +52,12 @@ class WalletFragmentPresenter(
             if (!isMainnet()) {
                 val color = if (isTestnet()) R.color.testnet.res2color() else R.color.sandbox.res2color()
                 backgroundTintList =
-                    ColorStateList.valueOf(color).withAlpha(50)
+                    ColorStateList.valueOf(color).withAlpha(16)
                 setTextColor(color)
                 setText(if (isTestnet()) R.string.testnet else R.string.sandbox)
             }
         }
-        bindAvatar()
+        bindUserInfo()
     }
 
     override fun bind(model: WalletFragmentModel) {
@@ -65,14 +65,18 @@ class WalletFragmentPresenter(
             reportEvent("wallet_coin_list_loaded", mapOf("count" to it.size.toString()))
             adapter.setNewDiffData(it)
             binding.refreshLayout.isRefreshing = false
-            bindAvatar()
+            bindUserInfo()
         }
     }
 
-    private fun bindAvatar() {
+    private fun bindUserInfo() {
         ioScope {
             val userInfo = AccountManager.userInfo() ?: return@ioScope
-            uiScope { binding.avatarView.loadAvatar(userInfo.avatar) }
+            uiScope {
+                binding.titleView.text = userInfo.nickname
+                binding.avatarView.loadAvatar(userInfo.avatar)
+            }
         }
     }
+
 }

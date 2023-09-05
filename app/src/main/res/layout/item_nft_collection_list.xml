@@ -43,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/center_guideline"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/placeholder"/>
+            tools:src="@drawable/ic_placeholder"/>
 
         <View
             android:layout_width="0dp"

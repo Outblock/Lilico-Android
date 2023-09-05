@@ -1,81 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/explore_search_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_input_border_radius_16dp_2"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    tools:ignore="MissingDefaultResource">
-
-    <include
-        android:id="@+id/explore_search_box"
-        layout="@layout/layout_explore_search_box"/>
+    android:layout_margin="2dp"
+    app:cardCornerRadius="16dp"
+    app:rippleColor="@color/black_10">
 
     <LinearLayout
-        android:id="@+id/input_box"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/input_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:fontFamily="@font/inter_semi_bold"
-            android:gravity="center_vertical"
-            android:imeOptions="actionSearch"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:textColor="@color/text"
-            android:textSize="16sp"
-            tools:ignore="LabelFor,RtlSymmetry"
-            tools:text="The Material palette generator can be used to generate a palette for any color you input. "/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:src="@drawable/ic_baseline_search_24"
+            app:tint="@color/colorSecondaryVariant"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/cancel_wrapper"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <androidx.constraintlayout.utils.widget.ImageFilterButton
-                android:id="@+id/clear_button"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:background="?attr/actionBarItemBackground"
-                android:padding="9dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_username_error"
-                android:visibility="visible"
-                app:tint="@color/salmon_primary"
-                tools:visibility="visible"/>
-
-            <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:layout_width="2dp"
-                android:layout_height="8dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginEnd="8dp"
-                android:background="@color/neutrals10"
-                app:round="12dp"/>
-
-            <TextView
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="12dp"
-                android:fontFamily="@font/inter_semi_bold"
-                android:gravity="center_vertical"
-                android:text="@string/cancel"
-                android:textColor="@color/note"
-                android:textSize="14sp"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/explore_search_hint"
+            android:textColor="@color/text"
+            android:textSize="16sp"/>
     </LinearLayout>
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

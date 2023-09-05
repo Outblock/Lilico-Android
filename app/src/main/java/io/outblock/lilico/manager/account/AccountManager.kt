@@ -1,14 +1,31 @@
 package io.outblock.lilico.manager.account
 
+import android.widget.Toast
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.annotations.SerializedName
+import io.outblock.lilico.R
 import io.outblock.lilico.cache.CacheManager
+import io.outblock.lilico.firebase.auth.getFirebaseJwt
+import io.outblock.lilico.firebase.auth.isAnonymousSignIn
+import io.outblock.lilico.firebase.auth.signInAnonymously
 import io.outblock.lilico.manager.wallet.WalletManager
+import io.outblock.lilico.network.ApiService
 import io.outblock.lilico.network.clearUserCache
 import io.outblock.lilico.network.model.UserInfoData
 import io.outblock.lilico.network.model.WalletListData
+import io.outblock.lilico.network.retrofit
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.walletrestore.firebaseLogin
 import io.outblock.lilico.utils.Env
+import io.outblock.lilico.utils.ioScope
+import io.outblock.lilico.utils.setRegistered
+import io.outblock.lilico.utils.toast
 import io.outblock.lilico.utils.uiScope
+import io.outblock.lilico.wallet.Wallet
+import io.outblock.lilico.wallet.WalletStore
+import io.outblock.lilico.wallet.getPublicKey
+import io.outblock.lilico.wallet.sign
 
 object AccountManager {
     private val accounts = mutableListOf<Account>()
@@ -43,15 +60,74 @@ object AccountManager {
 
     fun list() = accounts.toList()
 
-    fun switch(account: Account) {
-        uiScope {
-            accounts.forEach {
-                it.isActive = it.userInfo.username == account.userInfo.username
+    fun addressList(): List<String> {
+        return accounts.map { it.wallet?.walletAddress() ?: "" }
+    }
+
+    var isSwitching = false
+
+    fun switch(account: Account, onFinish: () -> Unit) {
+        ioScope {
+            if (isSwitching) {
+                return@ioScope
             }
-            accountsCache().cache(Accounts().apply { addAll(accounts) })
-            clearUserCache()
-            uiScope { MainActivity.relaunch(Env.getApp(), true) }
+            isSwitching = true
+            switchAccount(account) { isSuccess ->
+                if (isSuccess) {
+                    isSwitching = false
+                    accounts.forEach {
+                        it.isActive = it.userInfo.username == account.userInfo.username
+                    }
+                    accountsCache().cache(Accounts().apply { addAll(accounts) })
+                    uiScope {
+                        clearUserCache()
+                        MainActivity.relaunch(Env.getApp(), true)
+                    }
+                } else {
+                    isSwitching = false
+                    toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
+                }
+                onFinish()
+            }
+
         }
+    }
+
+    private suspend fun switchAccount(account: Account, callback: (isSuccess: Boolean) -> Unit) {
+        if (!setToAnonymous()) {
+            callback(false)
+            return
+        }
+        val wallet = AccountWalletManager.getHDWalletByUID(account.wallet?.id ?: "")
+        if (wallet == null) {
+            callback(false)
+            return
+        }
+        val service = retrofit().create(ApiService::class.java)
+        val resp = service.login(mapOf("public_key" to wallet.getPublicKey(), "signature" to wallet.sign(
+            getFirebaseJwt()
+        )))
+        if (resp.data?.customToken.isNullOrBlank()) {
+            callback(false)
+            return
+        }
+        firebaseLogin(resp.data?.customToken!!) { isSuccess ->
+            if (isSuccess) {
+                setRegistered()
+                Wallet.store().resume()
+                callback(true)
+            } else {
+                callback(false)
+                return@firebaseLogin
+            }
+        }
+    }
+    private suspend fun setToAnonymous(): Boolean {
+        if (!isAnonymousSignIn()) {
+            Firebase.auth.signOut()
+            return signInAnonymously()
+        }
+        return true
     }
 }
 
