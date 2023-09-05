@@ -40,6 +40,7 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isBackupGoogleDrive
 import io.outblock.lilico.utils.isMeowDomainClaimed
 import io.outblock.lilico.utils.isNightMode
+import io.outblock.lilico.utils.isNotificationPermissionGrand
 import io.outblock.lilico.utils.isRegistered
 import io.outblock.lilico.utils.loadAvatar
 import io.outblock.lilico.utils.logd
@@ -89,7 +90,10 @@ class ProfileFragmentPresenter(
         }
 
         binding.group3.chromeExtension.setOnClickListener {
-            "https://chrome.google.com/webstore/detail/lilico/hpclkefagolihohboafpheddmmgdffjm".openInSystemBrowser(context, ignoreInAppBrowser = true)
+            "https://chrome.google.com/webstore/detail/lilico/hpclkefagolihohboafpheddmmgdffjm".openInSystemBrowser(
+                context,
+                ignoreInAppBrowser = true
+            )
         }
 
         binding.group4.aboutPreference.setOnClickListener { AboutActivity.launch(context) }
@@ -106,6 +110,7 @@ class ProfileFragmentPresenter(
         model.userInfo?.let { bindUserInfo(it) }
         model.onResume?.let { updatePreferenceState() }
         model.inboxCount?.let { updateInboxCount(it) }
+        updateNotificationPermissionStatus()
     }
 
     override fun onDomainClaimedStateChange(isClaimed: Boolean) {
@@ -122,6 +127,16 @@ class ProfileFragmentPresenter(
 
             avatarView.setOnClickListener { ViewAvatarActivity.launch(context, userInfo) }
         }
+    }
+
+    private fun updateNotificationPermissionStatus() {
+        binding.group2.notificationPreference.setDesc(
+            if (isNotificationPermissionGrand(context)) {
+                R.string.on.res2String()
+            } else {
+                R.string.off.res2String()
+            }
+        )
     }
 
     private fun updatePreferenceState() {

@@ -200,6 +200,8 @@
     <string name="dark">Dark</string>
     <string name="auto">Auto</string>
     <string name="theme">Theme</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
     <string name="get_more_flow">Get more FLOW</string>
     <string name="get_more_flow_desc">Stake tokens and earn rewards</string>
     <string name="usd_balance">$%1$s USD</string>
