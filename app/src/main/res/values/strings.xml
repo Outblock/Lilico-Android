@@ -378,6 +378,7 @@
     <string name="sandbox">Sandbox</string>
     <string name="storage_info">Storage info</string>
     <string name="storage_info_count">%1$s / %2$s</string>
+    <string name="committed">Committed</string>
     <string name="commit_to_stake">Commit to Stake</string>
     <string name="unstaking">UnStaking</string>
     <string name="request_to_unstake">Request to UnStake</string>

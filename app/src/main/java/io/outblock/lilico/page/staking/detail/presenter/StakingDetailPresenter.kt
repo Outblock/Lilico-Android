@@ -77,6 +77,7 @@ class StakingDetailPresenter(
             val color = if (isInProgress) R.color.mango1.res2color() else R.color.success2.res2color()
             clockIcon.imageTintList = ColorStateList.valueOf(color)
             stateText.setTextColor(color)
+            stateText.setText(R.string.committed)
             root.setVisible(amount > 0)
         }
 
