@@ -87,10 +87,10 @@ class WalletConnect {
 
 private fun setup(application: Application) {
     val appMetaData = Core.Model.AppMetaData(
-        name = "Lilico Android",
-        description = "A crypto wallet on Flow built for Explorers, Collectors and Gamers",
-        url = "https://lilico.app",
-        icons = listOf("https://lilico.app/logo.png"),
+        name = "Flow Core Wallet Android",
+        description = "Digital wallet created for everyone.",
+        url = "https://core.flow.com/",
+        icons = listOf("https://lilico.app/fcw-logo.png"),
         redirect = null,
     )
 
