@@ -2,6 +2,7 @@ package io.outblock.lilico.manager.staking
 
 import androidx.annotation.WorkerThread
 import com.google.gson.annotations.SerializedName
+import com.nftco.flow.sdk.decode
 import io.outblock.lilico.cache.stakingCache
 import io.outblock.lilico.manager.flowjvm.*
 import io.outblock.lilico.manager.transaction.TransactionStateWatcher
@@ -11,6 +12,7 @@ import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.logd
 import io.outblock.lilico.utils.logv
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Serializable
 import java.math.BigDecimal
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.resume
@@ -27,6 +29,8 @@ object StakingManager {
     private var apyYear = DEFAULT_APY
     private var isSetup = false
 
+    private var rawStakingInfo: List<RawStakingNode>? = null
+
     private val providers = StakingProviders().apply { refresh() }
 
     private val delegatorIds = ConcurrentHashMap<String, Int>()
@@ -42,6 +46,8 @@ object StakingManager {
     }
 
     fun stakingInfo() = stakingInfo
+
+    fun rawStakingInfo() = rawStakingInfo
 
     fun stakingNode(provider: StakingProvider) = stakingInfo().nodes.firstOrNull { it.nodeID == provider.id }
 
@@ -112,19 +118,23 @@ object StakingManager {
             stakingCache().cache(StakingCache(info = stakingInfo, apy = apy, isSetup = isSetup))
         }
     }
-}
 
-private fun queryStakingInfo(): StakingInfo? {
-    val address = WalletManager.selectedWalletAddress() ?: return null
+    private fun queryStakingInfo(): StakingInfo? {
+        val address = WalletManager.selectedWalletAddress() ?: return null
 
-    return runCatching {
-        val response = CADENCE_QUERY_STAKE_INFO.executeCadence {
-            arg { address(address) }
-        }
-        val text = String(response!!.bytes)
-        logv(TAG, "queryStakingInfo response:$text")
-        parseStakingInfoResult(text)
-    }.getOrNull()
+        return runCatching {
+            val response = CADENCE_QUERY_STAKE_INFO.executeCadence {
+                arg { address(address) }
+            }
+            rawStakingInfo =  response?.decode<List<RawStakingNode>>() ?: emptyList<RawStakingNode>()
+            val text = String(response!!.bytes)
+            logv(TAG, "queryStakingInfo response:$text")
+            parseStakingInfoResult(text)
+        }.onFailure {
+            println(it)
+        }.getOrNull()
+    }
+
 }
 
 private fun queryStakingApy(cadence: String): Float? {
@@ -194,7 +204,6 @@ private fun checkHasBeenSetup(): Boolean {
 }
 
 data class StakingInfo(
-    @SerializedName("nodes")
     val nodes: List<StakingNode> = emptyList(),
 )
 
@@ -215,6 +224,18 @@ data class StakingNode(
     val tokensUnstaked: Float = 0.0f,
     @SerializedName("tokensRequestedToUnstake")
     val tokensRequestedToUnstake: Float = 0.0f,
+)
+
+@Serializable
+data class RawStakingNode(
+    val id: Int? = null,
+    val nodeID: String = "",
+    val tokensCommitted: Double = 0.0,
+    val tokensStaked: Double = 0.0,
+    val tokensUnstaking: Double = 0.0,
+    val tokensRewarded: Double = 0.0,
+    val tokensUnstaked: Double = 0.0,
+    val tokensRequestedToUnstake: Double = 0.0,
 )
 
 data class StakingCache(

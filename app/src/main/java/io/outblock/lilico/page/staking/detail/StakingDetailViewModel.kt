@@ -81,12 +81,12 @@ class StakingDetailViewModel : ViewModel(), OnBalanceUpdate, OnCoinRateUpdate {
             }
 
             val amount = if (isUnStaked) {
-                StakingManager.stakingInfo().nodes.first { it.nodeID == provider.id }.tokensUnstaked
-            } else StakingManager.stakingInfo().nodes.first { it.nodeID == provider.id }.tokensRewarded
+                StakingManager.rawStakingInfo()?.first { it.nodeID == provider.id }?.tokensUnstaked
+            } else StakingManager.rawStakingInfo()?.first { it.nodeID == provider.id }?.tokensRewarded
             val txid = transactionByMainWallet {
                 arg { string(provider.id) }
                 arg { uint32(delegatorId) }
-                arg { ufix64Safe(amount) }
+                arg { ufix64(amount ?: 0.0) }
             }
 
             val transactionState = TransactionState(
