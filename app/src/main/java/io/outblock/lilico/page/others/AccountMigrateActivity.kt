@@ -33,11 +33,7 @@ open class NewFeatureActivity : BaseActivity() {
 
     override fun finish() {
         super.finish()
-        if (!isNotificationPermissionGrand(this)) {
-            NotificationPermissionActivity.launch(this)
-        } else {
-            MainActivity.launch(this)
-        }
+        MainActivity.launch(this)
     }
 
     @Deprecated("Deprecated in Java")

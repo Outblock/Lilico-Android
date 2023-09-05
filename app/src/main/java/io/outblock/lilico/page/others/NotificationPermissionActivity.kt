@@ -11,6 +11,7 @@ import com.permissionx.guolindev.PermissionX
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.utils.setNotificationPermissionChecked
 
 class NotificationPermissionActivity : BaseActivity() {
 
@@ -18,7 +19,6 @@ class NotificationPermissionActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_permission)
-        findViewById<View>(R.id.start_button).setOnClickListener { finish() }
         findViewById<View>(R.id.start_button).setOnClickListener {
             PermissionX.init(this).permissions(Manifest.permission.POST_NOTIFICATIONS).request { allGranted, _, _ ->
                 MainActivity.launch(this)
@@ -26,6 +26,7 @@ class NotificationPermissionActivity : BaseActivity() {
         }
 
         findViewById<View>(R.id.cancel_button).setOnClickListener { MainActivity.launch(this) }
+        setNotificationPermissionChecked()
     }
 
     override fun finish() {

@@ -18,8 +18,11 @@ import io.outblock.lilico.databinding.ActivityGuideBinding
 import io.outblock.lilico.page.guide.adapter.GuideItemAdapter
 import io.outblock.lilico.page.guide.model.GuideItemModel
 import io.outblock.lilico.page.main.MainActivity
+import io.outblock.lilico.page.others.NotificationPermissionActivity
 import io.outblock.lilico.utils.extensions.isVisible
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.isNotificationPermissionChecked
+import io.outblock.lilico.utils.isNotificationPermissionGrand
 import io.outblock.lilico.utils.setGuidePageShown
 
 class GuideActivity : BaseActivity() {
@@ -62,12 +65,21 @@ class GuideActivity : BaseActivity() {
     private fun setupButtons() {
         binding.nextButton.setOnClickListener {
             if (binding.viewPager.currentItem == adapter.getData().size - 1) {
-                MainActivity.launch(this)
+                finish()
             } else {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
         }
-        binding.skipButton.setOnClickListener { MainActivity.launch(this) }
+        binding.skipButton.setOnClickListener { finish() }
+    }
+
+    override fun finish() {
+        super.finish()
+        if (!isNotificationPermissionChecked() && !isNotificationPermissionGrand(this)) {
+            NotificationPermissionActivity.launch(this)
+        } else {
+            MainActivity.launch(this)
+        }
     }
 
     private fun setupData() {

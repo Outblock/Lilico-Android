@@ -58,6 +58,7 @@ private const val KEY_SELECTED_WALLET_ADDRESS = "KEY_SELECTED_WALLET_ADDRESS"
 private val KEY_SANDBOX_ENABLED = booleanPreferencesKey("KEY_SANDBOX_ENABLED")
 
 private val KEY_VERSION_CODE = intPreferencesKey("KEY_VERSION_CODE")
+private const val KEY_IS_NOTIFICATION_PERMISSION_CHECKED = "KEY_IS_NOTIFICATION_PERMISSION_CHECKED"
 
 private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -186,6 +187,14 @@ fun isGuidePageShown(): Boolean {
 
 fun setGuidePageShown() {
     sharedPreferencesTraditional.edit().putBoolean(KEY_IS_GUIDE_PAGE_SHOWN, true).apply()
+}
+
+fun isNotificationPermissionChecked(): Boolean {
+    return sharedPreferencesTraditional.getBoolean(KEY_IS_NOTIFICATION_PERMISSION_CHECKED, false)
+}
+
+fun setNotificationPermissionChecked() {
+    sharedPreferencesTraditional.edit().putBoolean(KEY_IS_NOTIFICATION_PERMISSION_CHECKED, true).apply()
 }
 
 suspend fun isMeowDomainClaimed(): Boolean = dataStore.data.map { it[KEY_IS_MEOW_DOMAIN_CLAIMED] ?: false }.first()

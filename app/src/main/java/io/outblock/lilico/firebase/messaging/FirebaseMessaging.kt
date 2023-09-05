@@ -102,7 +102,7 @@ private fun sendNotification(message: RemoteMessage) {
 
     val channelId = Env.getApp().getString(R.string.notification_channel_id)
     val notificationBuilder = NotificationCompat.Builder(Env.getApp(), channelId)
-        .setSmallIcon(R.drawable.ic_launcher_splash)
+        .setSmallIcon(R.mipmap.ic_launcher)
         .setContentTitle(message.notification?.title)
         .setContentText(message.notification?.body)
         .setAutoCancel(true)
