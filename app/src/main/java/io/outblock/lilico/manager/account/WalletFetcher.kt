@@ -11,6 +11,8 @@ import kotlinx.coroutines.delay
 import java.lang.ref.WeakReference
 import java.util.Timer
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.concurrent.schedule
+import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.concurrent.timer
 
 
@@ -28,6 +30,7 @@ object WalletFetcher {
             }
             var dataReceived = false
             var firstAttempt = true
+            var timer: Timer? = null
             while (!dataReceived) {
                 delay(5000)
                 runCatching {
@@ -39,13 +42,16 @@ object WalletFetcher {
                         delay(300)
                         dispatchListeners(resp.data)
                         dataReceived = true
+                        timer?.cancel()
+                        timer = null
                     } else if (firstAttempt) {
-                        firstAttempt = false
-                        timer(period = 20000) {
+                        timer = Timer()
+                        timer!!.scheduleAtFixedRate(0, 20000) {
                             ioScope {
                                 apiService.manualAddress()
                             }
                         }
+                        firstAttempt = false
                     }
                 }
             }
