@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/deep_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,10 +51,6 @@
             layout="@layout/layout_profile_group_1"/>
 
         <include
-            android:id="@+id/group5"
-            layout="@layout/layout_profile_group_5"/>
-
-        <include
             android:id="@+id/group2"
             layout="@layout/layout_profile_group_2"/>
 
@@ -64,8 +60,11 @@
 
         <include
             android:id="@+id/group4"
-            layout="@layout/layout_profile_group_4"
-            android:visibility="gone"/>
+            layout="@layout/layout_profile_group_4"/>
+
+        <include
+            android:id="@+id/group5"
+            layout="@layout/layout_profile_group_5"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout_button"

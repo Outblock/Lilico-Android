@@ -31,7 +31,11 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
     private val data by lazy { arguments?.getParcelable<StakingAmountConfirmModel>(DATA)!! }
     private lateinit var binding: DialogStakingAmountConfirmBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DialogStakingAmountConfirmBinding.inflate(inflater)
         return binding.rootView
     }
@@ -39,15 +43,19 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
-            Glide.with(providerIcon).load(data.provider.icon).placeholder(R.drawable.placeholder).into(providerIcon)
+            Glide.with(providerIcon).load(data.provider.icon)
+                .placeholder(R.drawable.ic_placeholder).into(providerIcon)
             providerName.text = data.provider.name
             amountView.text = data.amount.format(3)
-            amoundPriceView.text = (data.amount * data.coinRate).formatPrice(3, includeSymbol = true)
+            amoundPriceView.text =
+                (data.amount * data.coinRate).formatPrice(3, includeSymbol = true)
             amoundPriceCurrencyView.text = data.currency.name
 
             rateView.text = (data.rate * 100).format(2) + "%"
-            rewardCoinView.text = "${(data.rewardCoin).formatNum(digits = 2)} " + R.string.flow_coin_name.res2String()
-            rewardPriceView.text = "≈ ${(data.rewardUsd).formatPrice(digits = 2, includeSymbol = true)}"
+            rewardCoinView.text =
+                "${(data.rewardCoin).formatNum(digits = 2)} " + R.string.flow_coin_name.res2String()
+            rewardPriceView.text =
+                "≈ ${(data.rewardUsd).formatPrice(digits = 2, includeSymbol = true)}"
             rewardPriceCurrencyView.text = data.currency.name
 
             sendButton.setOnProcessing { sendStake() }
@@ -66,12 +74,12 @@ class StakingAmountConfirmDialog : BottomSheetDialogFragment() {
                 uiScope { safeRun { dismiss() } }
                 return@ioScope
             }
-            val isSuccess = if(data.isUnstake) unstake(data.provider) else stake(data.provider)
+            val isSuccess = if (data.isUnstake) unstake(data.provider) else stake(data.provider)
             safeRun {
                 if (isSuccess) {
                     requireActivity().finish()
                 } else {
-                    toast(msgRes = if(data.isUnstake) R.string.unstake_failed else R.string.stake_failed)
+                    toast(msgRes = if (data.isUnstake) R.string.unstake_failed else R.string.stake_failed)
                     uiScope { binding.sendButton.changeState(ButtonState.DEFAULT) }
                 }
             }

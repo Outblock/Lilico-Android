@@ -3,10 +3,10 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/src_montserrat_regular" />
+        android:font="@font/e_ukraine_inter_regular" />
 
     <font
         android:fontStyle="normal"
         android:fontWeight="700"
-        android:font="@font/src_montserrat_bold" />
+        android:font="@font/e_ukraine_inter_bold" />
 </font-family>

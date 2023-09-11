@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_8dp"
-        android:backgroundTint="@color/salmon5"
+        android:backgroundTint="@color/profile_tip_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="16dp"
@@ -22,7 +22,7 @@
             android:layout_height="16dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_tips"
-            android:tint="@color/salmon_primary"/>
+            android:tint="@color/accent_blue"/>
 
         <TextView
             android:layout_width="0dp"
@@ -32,7 +32,7 @@
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:text="@string/profile_switch_tip"
-            android:textColor="@color/salmon_primary"
+            android:textColor="@color/accent_blue"
             android:textSize="12sp"/>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -42,7 +42,7 @@
             android:background="?attr/actionBarItemBackground"
             android:paddingVertical="12dp"
             android:src="@drawable/ic_baseline_close_24"
-            android:tint="@color/salmon_primary"/>
+            android:tint="@color/accent_blue"/>
     </LinearLayout>
 
     <androidx.constraintlayout.utils.widget.ImageFilterView

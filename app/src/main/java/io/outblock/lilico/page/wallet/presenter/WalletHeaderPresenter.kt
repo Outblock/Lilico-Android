@@ -18,10 +18,13 @@ import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletHeaderBinding
 import io.outblock.lilico.manager.app.isMainnet
+import io.outblock.lilico.manager.app.isTestnet
 import io.outblock.lilico.manager.coin.FlowCoinListManager
 import io.outblock.lilico.manager.coin.TokenStateManager
+import io.outblock.lilico.manager.config.AppConfig
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.manager.walletconnect.getWalletConnectPendingRequests
+import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.walletconnect.session.WalletConnectSessionActivity
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
@@ -33,6 +36,7 @@ import io.outblock.lilico.page.wallet.WalletFragmentViewModel
 import io.outblock.lilico.page.wallet.dialog.SwapDialog
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.*
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
@@ -77,7 +81,15 @@ class WalletHeaderPresenter(
             receiveButton.setOnClickListener { ReceiveActivity.launch(view.context) }
             copyButton.setOnClickListener { copyAddress(address.text.toString()) }
             addButton.setOnClickListener { AddTokenActivity.launch(view.context) }
-            swapButton.setOnClickListener { SwapActivity.launch(view.context) }
+            swapButton.setOnClickListener {
+                if (AppConfig.isInAppSwap()) {
+                    SwapActivity.launch(view.context)
+                } else {
+                    activity?.let {
+                        openBrowser(it, "https://${if (isTestnet()) "demo" else "app"}.increment.fi/swap")
+                    }
+                }
+            }
             stackingButton.setOnClickListener { openStakingPage(view.context) }
             buyButton.setOnClickListener { activity?.let { SwapDialog.show(it.supportFragmentManager) } }
 
@@ -136,6 +148,8 @@ class WalletHeaderPresenter(
         uiScope {
             binding.domainWrapper.setVisible(isMeowDomainClaimed())
             binding.domainView.text = "$username.meow"
+//          todo hide domain info for rebranding
+            binding.domainWrapper.gone()
         }
     }
 

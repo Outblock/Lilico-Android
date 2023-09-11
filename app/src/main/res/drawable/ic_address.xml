@@ -14,10 +14,10 @@
                 android:type="linear">
                 <item
                     android:offset="0"
-                    android:color="#FF8080FF"/>
+                    android:color="@color/accent_blue"/>
                 <item
                     android:offset="1"
-                    android:color="#FF6666FF"/>
+                    android:color="@color/accent_blue"/>
             </gradient>
         </aapt:attr>
     </path>
@@ -31,10 +31,10 @@
                 android:type="linear">
                 <item
                     android:offset="0"
-                    android:color="#FF8080FF"/>
+                    android:color="@color/accent_blue"/>
                 <item
                     android:offset="1"
-                    android:color="#FF6666FF"/>
+                    android:color="@color/accent_blue"/>
             </gradient>
         </aapt:attr>
     </path>

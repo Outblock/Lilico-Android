@@ -5,35 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    app:cardBackgroundColor="@color/deep_bg"
+    app:cardBackgroundColor="@color/profile_card_background"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     app:layout_constraintTop_toBottomOf="@id/action_group">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <io.outblock.lilico.page.profile.widget.ProfilePreferenceMark
+        android:id="@+id/wallet_connect_preference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <io.outblock.lilico.page.profile.widget.ProfilePreference
-            android:id="@+id/security_preference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_settings_security"
-            app:isArrowVisible="true"
-            app:title="@string/security"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/background"/>
-
-        <io.outblock.lilico.page.profile.widget.ProfilePreference
-            android:id="@+id/developer_mode_preference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_developer"
-            app:title="@string/developer_mode"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        app:isArrowVisible="false"
+        app:icon="@drawable/ic_wallet_connect"
+        app:title="@string/wallet_connect"/>
 </com.google.android.material.card.MaterialCardView>

@@ -21,6 +21,9 @@ interface ApiService {
     @GET("/v2/user/wallet")
     suspend fun getWalletList(): WalletListResponse
 
+    @GET("/v1/user/manualaddress")
+    suspend fun manualAddress(): CommonResponse
+
     @GET("/v1/user/search")
     suspend fun searchUser(@Query("keyword") keyword: String): SearchUserResponse
 

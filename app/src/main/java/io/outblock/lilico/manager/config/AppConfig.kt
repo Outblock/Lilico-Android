@@ -24,6 +24,8 @@ object AppConfig {
 
     fun walletConnectEnable() = config().features.walletConnect
 
+    fun isInAppSwap() = config().features.swap
+
     fun addressRegistry(network: Int): Map<String, String> {
         return when (network) {
             NETWORK_TESTNET -> flowAddressRegistry().testnet
@@ -73,6 +75,8 @@ private data class Features(
     val freeGas: Boolean,
     @SerializedName("wallet_connect")
     val walletConnect: Boolean,
+    @SerializedName("swap")
+    val swap: Boolean,
 )
 
 private data class Payer(

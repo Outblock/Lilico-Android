@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/neutrals12"
+    app:cardBackgroundColor="@color/drawer_item_background"
     app:cardCornerRadius="12dp"
     app:cardElevation="0dp"
     app:rippleColor="@color/black_10">
@@ -21,7 +21,7 @@
             android:id="@+id/image_view"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:tint="@color/text"
+            app:tint="@color/neutrals2"
             tools:src="@drawable/ic_scan_simple"/>
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:fontFamily="@font/inter_semi_bold"
-            android:textColor="@color/text"
+            android:textColor="@color/neutrals2"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:text="Lilico"/>

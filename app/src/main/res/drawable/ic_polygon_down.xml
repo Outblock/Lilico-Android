@@ -5,5 +5,5 @@
     android:viewportHeight="9">
   <path
       android:pathData="M6,9L0.804,-0L11.196,-0L6,9Z"
-      android:fillColor="#FCE9E1"/>
+      android:fillColor="@color/profile_tip_background"/>
 </vector>

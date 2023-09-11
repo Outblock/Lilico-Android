@@ -55,7 +55,6 @@ object AccountManager {
     fun updateWalletInfo(wallet: WalletListData) {
         list().firstOrNull { it.userInfo.username == wallet.username }?.wallet = wallet
         accountsCache().cache(Accounts().apply { addAll(accounts) })
-        AccountWalletManager.addPublicKey(wallet.walletAddress(), Wallet.store().wallet().getPublicKey())
         WalletManager.walletUpdate()
     }
 
@@ -67,7 +66,7 @@ object AccountManager {
 
     var isSwitching = false
 
-    fun switch(account: Account) {
+    fun switch(account: Account, onFinish: () -> Unit) {
         ioScope {
             if (isSwitching) {
                 return@ioScope
@@ -88,6 +87,7 @@ object AccountManager {
                     isSwitching = false
                     toast(msgRes = R.string.resume_login_error, duration = Toast.LENGTH_LONG)
                 }
+                onFinish()
             }
 
         }
@@ -98,12 +98,7 @@ object AccountManager {
             callback(false)
             return
         }
-        val address = account.wallet?.walletAddress()
-        if (address.isNullOrBlank()) {
-            callback(false)
-            return
-        }
-        val wallet = AccountWalletManager.getHDWalletByAddress(address)
+        val wallet = AccountWalletManager.getHDWalletByUID(account.wallet?.id ?: "")
         if (wallet == null) {
             callback(false)
             return

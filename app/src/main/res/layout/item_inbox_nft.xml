@@ -17,7 +17,7 @@
             android:id="@+id/nft_cover_view"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:src="@drawable/placeholder"
+            android:src="@drawable/ic_placeholder"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:round="12dp"
@@ -37,7 +37,7 @@
                 android:id="@+id/nft_collection_cover_view"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/placeholder"
+                android:src="@drawable/ic_placeholder"
                 app:round="20dp"
                 tools:background="#999"/>
 
