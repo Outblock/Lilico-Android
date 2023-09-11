@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.profile.subpage.wallet.childaccount.adapter
+package io.outblock.lilico.page.profile.subpage.wallet.account.adapter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -14,7 +14,7 @@ import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemChildAccountListBinding
 import io.outblock.lilico.manager.childaccount.ChildAccount
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccountsViewModel
+import io.outblock.lilico.page.profile.subpage.wallet.account.ChildAccountsViewModel
 import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.ChildAccountDetailActivity
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color

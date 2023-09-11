@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.profile.subpage.wallet.childaccount
+package io.outblock.lilico.page.profile.subpage.wallet.account
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

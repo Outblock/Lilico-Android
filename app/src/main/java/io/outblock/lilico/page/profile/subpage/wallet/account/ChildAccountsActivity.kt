@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.profile.subpage.wallet.childaccount
+package io.outblock.lilico.page.profile.subpage.wallet.account
 
 import android.content.Context
 import android.content.Intent
@@ -10,8 +10,8 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.activity.BaseActivity
 import io.outblock.lilico.databinding.ActivityChildAccountsBinding
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.model.ChildAccountsModel
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.presenter.ChildAccountsPresenter
+import io.outblock.lilico.page.profile.subpage.wallet.account.model.ChildAccountsModel
+import io.outblock.lilico.page.profile.subpage.wallet.account.presenter.ChildAccountsPresenter
 import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.isNightMode
 
@@ -51,7 +51,7 @@ class ChildAccountsActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title = R.string.wallet.res2String()
+        title = R.string.linked_account.res2String()
     }
 
     companion object {
