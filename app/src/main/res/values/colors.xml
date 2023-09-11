@@ -203,7 +203,7 @@
     <color name="mainnet">#32E355</color>
     <color name="sandbox">#CCAF21</color>
     <color name="testnet">#FF8A00</color>
-    <color name="profile_tip_background">#2900B881</color>
+    <color name="profile_tip_background">#29579AF2</color>
     <color name="colorSecondaryVariant_50">#8000B881</color>
     <color name="colorSecondary_25">#4032E355</color>
     <color name="colorSecondary_35">#5932E355</color>
@@ -218,5 +218,6 @@
     <color name="profile_card_background">#FAFAFA</color>
     <color name="profile_card_divider">#FFFFFF</color>
     <color name="welcome_page_text">#000000</color>
+    <color name="drawer_item_background">#F4F4F7</color>
 
 </resources>

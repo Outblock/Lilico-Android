@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_round_16dp"
-            android:backgroundTint="@color/neutrals12"
+            android:backgroundTint="@color/drawer_item_background"
             app:layout_constraintBottom_toTopOf="@id/create_wallet_item"
             app:layout_constraintTop_toBottomOf="@id/scan_item"
             tools:layout_height="100dp">
