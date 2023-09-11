@@ -451,5 +451,5 @@
     <string name="accessible">Accessible</string>
     <string name="none_accessible_coins">None Accessible Coins</string>
     <string name="no_linked_account">No Linked Account</string>
->>>>>>> develop
+    <string name="hide_empty_collection">Hide Empty Collection</string>
 </resources>

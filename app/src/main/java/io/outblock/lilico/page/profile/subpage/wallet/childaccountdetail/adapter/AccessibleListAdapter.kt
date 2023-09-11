@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import io.outblock.lilico.R
 import io.outblock.lilico.base.recyclerview.BaseAdapter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
+import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.CoinData
 import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.CollectionData
 import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.presenter.AccessibleCoinPresenter
 import io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.presenter.AccessibleNftCollectionPresenter
-import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 
 class AccessibleListAdapter : BaseAdapter<Any>(diffUtils) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is CollectionData -> TYPE_NFT
-            is WalletCoinItemModel -> TYPE_TOKEN
+            is CoinData -> TYPE_TOKEN
             else -> TYPE_TOKEN
         }
     }
@@ -34,7 +34,7 @@ class AccessibleListAdapter : BaseAdapter<Any>(diffUtils) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is AccessibleNftCollectionPresenter -> holder.bind(getItem(position) as CollectionData)
-            is AccessibleCoinPresenter -> holder.bind(getItem(position) as WalletCoinItemModel)
+            is AccessibleCoinPresenter -> holder.bind(getItem(position) as CoinData)
         }
     }
 
@@ -49,8 +49,8 @@ private val diffUtils = object : DiffUtil.ItemCallback<Any>() {
         if (oldItem is CollectionData && newItem is CollectionData) {
             return oldItem.id == newItem.id
         }
-        if (oldItem is WalletCoinItemModel && newItem is WalletCoinItemModel) {
-            return oldItem.coin.name == newItem.coin.name
+        if (oldItem is CoinData && newItem is CoinData) {
+            return oldItem.name == newItem.name
         }
         return oldItem == newItem
     }
@@ -60,8 +60,8 @@ private val diffUtils = object : DiffUtil.ItemCallback<Any>() {
         if (oldItem is CollectionData && newItem is CollectionData) {
             return oldItem == newItem
         }
-        if (oldItem is WalletCoinItemModel && newItem is WalletCoinItemModel) {
-            return oldItem.coin == newItem.coin
+        if (oldItem is CoinData && newItem is CoinData) {
+            return oldItem == newItem
         }
         return oldItem == newItem
     }

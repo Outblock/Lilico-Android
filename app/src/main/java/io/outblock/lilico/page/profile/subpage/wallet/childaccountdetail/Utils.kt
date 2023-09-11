@@ -1,24 +1,22 @@
 package io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail
 
 import io.outblock.lilico.manager.childaccount.ChildAccount
-import io.outblock.lilico.manager.coin.FlowCoin
 import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_NFT
 import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_TOKENS
 import io.outblock.lilico.manager.flowjvm.executeCadence
 import io.outblock.lilico.manager.wallet.WalletManager
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.Float.parseFloat
 
 
-fun queryChildAccountNftCollections(account: ChildAccount): List<CollectionData> {
+fun queryChildAccountNftCollections(account: ChildAccount): List<NFTCollectionData> {
     val walletAddress = WalletManager.wallet()?.walletAddress() ?: return emptyList()
     val response = CADENCE_QUERY_CHILD_ACCOUNT_NFT.executeCadence {
         arg { address(walletAddress) }
         arg { address(account.address) }
 // for test
-//        arg { address("0x7179def56a8b9c5e") }
-//        arg { address("0xa3897cee18b350ea") }
+//        arg { address("0x84221fe0294044d7") }
+//        arg { address("0x16c41a2b76dee69b") }
     }
     response ?: return emptyList()
     return parseJson(response.stringValue)
@@ -35,8 +33,9 @@ fun queryChildAccountTokens(account: ChildAccount): List<TokenData> {
 }
 
 data class CoinData(
-    val coinName: String,
-    val coinIcon: String,
+    val name: String,
+    val icon: String,
+    val symbol: String,
     val balance: Float
 )
 
@@ -46,6 +45,14 @@ data class TokenData(
 )
 
 data class CollectionData(
+    val id: String,
+    val name: String,
+    val logo: String,
+    val path: String,
+    val idList: List<String>
+)
+
+data class NFTCollectionData(
     val id: String,
     val path: String,
     val display: DisplayData,
@@ -58,8 +65,8 @@ data class DisplayData(
     val mediaType: String
 )
 
-fun parseJson(json: String): List<CollectionData> {
-    val list = mutableListOf<CollectionData>()
+fun parseJson(json: String): List<NFTCollectionData> {
+    val list = mutableListOf<NFTCollectionData>()
 
     val root = JSONObject(json)
     val valueArray = root.optJSONArray("value") ?: JSONArray()
@@ -74,9 +81,8 @@ fun parseJson(json: String): List<CollectionData> {
 
         for (j in 0 until fields.length()) {
             val field = fields.getJSONObject(j)
-            val fieldName = field.optString("name")
 
-            when (fieldName) {
+            when (field.optString("name")) {
                 "id" -> id = field.optJSONObject("value")?.optString("value") ?: ""
                 "path" -> path = field.optJSONObject("value")?.optString("value") ?: ""
                 "display" -> {
@@ -90,9 +96,8 @@ fun parseJson(json: String): List<CollectionData> {
 
                     for (k in 0 until displayFields.length()) {
                         val displayField = displayFields.getJSONObject(k)
-                        val displayName = displayField.optString("name")
 
-                        when (displayName) {
+                        when (displayField.optString("name")) {
                             "name" -> name =
                                 displayField.optJSONObject("value")?.optString("value") ?: ""
 
@@ -118,8 +123,8 @@ fun parseJson(json: String): List<CollectionData> {
             }
         }
 
-        val collectionData = CollectionData(id, path, display, idList)
-        list.add(collectionData)
+        val nftCollectionData = NFTCollectionData(id, path, display, idList)
+        list.add(nftCollectionData)
     }
 
     return list

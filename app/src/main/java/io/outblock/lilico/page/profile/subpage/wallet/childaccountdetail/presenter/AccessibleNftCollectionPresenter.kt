@@ -21,8 +21,8 @@ class AccessibleNftCollectionPresenter(
                 // todo jump to NFTCollectionDetail model.path
                 // '/storage/MomentCollection'.split('/').last
             }
-            iconView.loadAvatar(model.display.squareImage)
-            titleView.text = model.display.name
+            iconView.loadAvatar(model.logo)
+            titleView.text = model.name
             collectionCountView.text = view.context.getString(R.string.collections_count, model.idList.size)
             arrowView.setVisible(model.idList.isNotEmpty())
         }

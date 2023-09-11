@@ -133,18 +133,51 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description_view"/>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_hide_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/accessible_title_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/accessible_title_view">
+
+                <ImageView
+                    android:id="@+id/iv_hide_empty"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_check_round"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@string/hide_empty_collection"
+                    android:textColor="@color/neutrals9"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_hide_empty"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/tv_tab_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="12dp"
-                android:text="@string/collections"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="12sp"
-                android:textColor="@color/account_accessible_tab_color"
                 android:background="@drawable/bg_account_accessible_tab"
+                android:fontFamily="@font/inter_medium"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/collections"
+                android:textColor="@color/account_accessible_tab_color"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@id/accessible_title_view"
                 app:layout_constraintTop_toBottomOf="@id/accessible_title_view"/>
 
@@ -152,15 +185,15 @@
                 android:id="@+id/tv_tab_coin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="12dp"
                 android:layout_marginStart="8dp"
-                android:text="@string/coins"
-                android:fontFamily="@font/inter_medium"
-                android:textSize="12sp"
-                android:textColor="@color/account_accessible_tab_color"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/bg_account_accessible_tab"
+                android:fontFamily="@font/inter_medium"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/coins"
+                android:textColor="@color/account_accessible_tab_color"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@id/tv_tab_collection"
                 app:layout_constraintTop_toBottomOf="@id/accessible_title_view"/>
 
@@ -175,14 +208,14 @@
                 android:id="@+id/tv_coin_empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:text="@string/none_accessible_coins"
-                android:fontFamily="@font/inter_semi_bold"
-                android:textColor="@color/neutrals9"
-                android:background="@drawable/bg_account_detail_coin_empty"
-                android:paddingVertical="13dp"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/bg_account_detail_coin_empty"
+                android:fontFamily="@font/inter_semi_bold"
+                android:gravity="center"
+                android:paddingVertical="13dp"
+                android:text="@string/none_accessible_coins"
+                android:textColor="@color/neutrals9"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/tv_tab_collection"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail.presenter
 
 import android.graphics.Color
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
@@ -30,6 +29,7 @@ class ChildAccountDetailPresenter(
     private val accessibleAdapter by lazy { AccessibleListAdapter() }
     private val nftCollections = mutableListOf<CollectionData>()
     private val coinList = mutableListOf<CoinData>()
+    private var isHideEmptyCollection = true
 
     init {
         with(binding.accessibleListView) {
@@ -37,15 +37,31 @@ class ChildAccountDetailPresenter(
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 8.dp2px().toInt()))
         }
+        binding.clHideEmpty.setOnClickListener {
+            isHideEmptyCollection = isHideEmptyCollection.not()
+            binding.ivHideEmpty.setImageResource(
+                if (isHideEmptyCollection)
+                    R.drawable.ic_check_round
+                else
+                    R.drawable.ic_check_normal_gray
+            )
+            updateNFTCollections()
+        }
         binding.tvTabCollection.setOnClickListener { changeTabStatus(collectionSelected = true) }
         binding.tvTabCoin.setOnClickListener { changeTabStatus(collectionSelected = false) }
     }
 
+    private fun updateNFTCollections() {
+        accessibleAdapter.setNewDiffData(
+            if (isHideEmptyCollection) nftCollections.filter { it.idList.isNotEmpty() } else nftCollections
+        )
+    }
+
     override fun bind(model: ChildAccountDetailModel) {
         model.account?.let { updateAccount(it) }
-        model.nftCollections?.let {
+        model.nftCollections?.let { list ->
             nftCollections.clear()
-            nftCollections.addAll(it)
+            nftCollections.addAll(list.sortedByDescending { it.idList.size })
             changeTabStatus(collectionSelected = true)
         }
         model.coinList?.let {
@@ -55,14 +71,16 @@ class ChildAccountDetailPresenter(
     }
 
     private fun changeTabStatus(collectionSelected: Boolean) {
-        binding.tvTabCollection.isPressed = collectionSelected
-        binding.tvTabCoin.isPressed = collectionSelected.not()
+        binding.tvTabCollection.isSelected = collectionSelected
+        binding.tvTabCoin.isSelected = collectionSelected.not()
         if (collectionSelected) {
-            accessibleAdapter.setNewDiffData(nftCollections)
+            updateNFTCollections()
+            binding.clHideEmpty.visible()
             binding.accessibleListView.visible()
             binding.tvCoinEmpty.gone()
         } else {
             accessibleAdapter.setNewDiffData(coinList)
+            binding.clHideEmpty.gone()
             if (coinList.isEmpty()) {
                 binding.tvCoinEmpty.visible()
                 binding.accessibleListView.gone()
@@ -87,7 +105,12 @@ class ChildAccountDetailPresenter(
                 toast(msgRes = R.string.copy_address_toast)
             }
 
-            unlinkButton.setOnClickListener { ChildAccountUnlinkDialog.show(activity.supportFragmentManager, account) }
+            unlinkButton.setOnClickListener {
+                ChildAccountUnlinkDialog.show(
+                    activity.supportFragmentManager,
+                    account
+                )
+            }
         }
     }
 
