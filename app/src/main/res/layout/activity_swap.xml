@@ -245,8 +245,8 @@
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:indeterminateTint="@color/colorSecondaryVariant"
-                android:progressTint="@color/colorSecondaryVariant"/>
+                android:indeterminateTint="@color/colorSecondary"
+                android:progressTint="@color/colorSecondary"/>
         </FrameLayout>
 
         <androidx.constraintlayout.utils.widget.ImageFilterView

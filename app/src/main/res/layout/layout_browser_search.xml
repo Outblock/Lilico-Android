@@ -54,7 +54,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_username_error"
                 android:visibility="visible"
-                app:tint="@color/colorSecondaryVariant"
+                app:tint="@color/colorSecondary"
                 tools:visibility="visible"/>
 
             <androidx.constraintlayout.utils.widget.ImageFilterView

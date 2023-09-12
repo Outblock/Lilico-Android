@@ -56,7 +56,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/inter_semi_bold"
                 android:text="@string/copy_str"
-                android:textColor="@color/colorSecondaryVariant"
+                android:textColor="@color/colorSecondary"
                 android:textSize="15sp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
@@ -117,7 +117,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/inter_semi_bold"
                 android:text="@string/copy_str"
-                android:textColor="@color/colorSecondaryVariant"
+                android:textColor="@color/colorSecondary"
                 android:textSize="15sp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
