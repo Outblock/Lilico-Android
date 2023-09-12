@@ -250,7 +250,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".page.profile.subpage.wallet.childaccount.ChildAccountsActivity"
+            android:name=".page.profile.subpage.wallet.account.ChildAccountsActivity"
             android:screenOrientation="portrait"/>
 
         <activity

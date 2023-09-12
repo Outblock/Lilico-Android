@@ -42,8 +42,8 @@ class DeveloperModePresenter(
                 mainnetPreference.setChecked(isMainnet())
                 testnetPreference.setChecked(isTestnet())
 
-                mainnetPreference.setCheckboxColor(R.color.colorSecondaryVariant.res2color())
-                testnetPreference.setCheckboxColor(R.color.colorSecondaryVariant.res2color())
+                mainnetPreference.setCheckboxColor(R.color.colorSecondary.res2color())
+                testnetPreference.setCheckboxColor(R.color.colorSecondary.res2color())
 
                 mainnetPreference.setOnCheckedChangeListener {
                     testnetPreference.setChecked(!it)

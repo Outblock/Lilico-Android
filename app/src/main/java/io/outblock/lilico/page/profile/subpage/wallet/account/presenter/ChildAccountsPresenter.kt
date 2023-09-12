@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.profile.subpage.wallet.childaccount.presenter
+package io.outblock.lilico.page.profile.subpage.wallet.account.presenter
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.outblock.lilico.R
@@ -7,12 +7,13 @@ import io.outblock.lilico.databinding.ActivityChildAccountsBinding
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.profile.subpage.wallet.WalletSettingActivity
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.ChildAccountsActivity
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.adapter.ChildAccountListAdapter
-import io.outblock.lilico.page.profile.subpage.wallet.childaccount.model.ChildAccountsModel
+import io.outblock.lilico.page.profile.subpage.wallet.account.ChildAccountsActivity
+import io.outblock.lilico.page.profile.subpage.wallet.account.adapter.ChildAccountListAdapter
+import io.outblock.lilico.page.profile.subpage.wallet.account.model.ChildAccountsModel
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.extensions.visible
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.uiScope
 import io.outblock.lilico.widgets.itemdecoration.ColorDividerItemDecoration
@@ -31,16 +32,6 @@ class ChildAccountsPresenter(
             addItemDecoration(ColorDividerItemDecoration(R.color.transparent.res2color(), 8.dp2px().toInt()))
         }
 
-        with(binding) {
-            iconView.setImageResource(R.drawable.ic_coin_flow)
-            nameView.setText(R.string.wallet)
-            ioScope {
-                val address = WalletManager.selectedWalletAddress() ?: return@ioScope
-                uiScope { addressView.text = address }
-            }
-
-            headerWrapper.setOnClickListener { WalletSettingActivity.launch(activity) }
-        }
     }
 
     override fun bind(model: ChildAccountsModel) {
@@ -49,8 +40,9 @@ class ChildAccountsPresenter(
 
     private fun updateAccounts(accounts: List<ChildAccount>) {
         with(binding) {
-            listTitleView.setVisible(accounts.isNotEmpty())
-            adapter.setNewDiffData(accounts)
+            llEmpty.setVisible(accounts.isEmpty())
+            recyclerView.setVisible(accounts.isEmpty().not())
         }
+        adapter.setNewDiffData(accounts)
     }
 }

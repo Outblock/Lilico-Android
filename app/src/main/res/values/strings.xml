@@ -91,6 +91,7 @@
     <string name="grid">Grid</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="purchase_price">Purchase Price</string>
+    <string name="coins">Coins</string>
     <string name="collections">Collections</string>
     <string name="collections_count">%1$d Collections</string>
     <string name="collectibles_count">%1$d Collectibles</string>
@@ -448,4 +449,7 @@
     <string name="maybe_later">Maybe Later</string>
     <string name="transaction_pending_tips">Almost there, the last transaction is pending.</string>
     <string name="accessible">Accessible</string>
+    <string name="none_accessible_coins">None Accessible Coins</string>
+    <string name="no_linked_account">No Linked Account</string>
+    <string name="view_empty_collection">View Empty</string>
 </resources>

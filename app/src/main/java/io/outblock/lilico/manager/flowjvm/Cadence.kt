@@ -945,11 +945,13 @@ const val CADENCE_QUERY_CHILD_ACCOUNT_NFT = """
     
     pub struct NFTCollection {
       pub let id: String
+      pub let path: String
       pub let display: CollectionDisplay?
       pub let idList: [UInt64]
     
-      init(id:String, display: CollectionDisplay?, idList: [UInt64]) {
+      init(id: String, path: String, display: CollectionDisplay?, idList: [UInt64]) {
         self.id = id
+        self.path = path
         self.display = display
         self.idList = idList
       }
@@ -1049,6 +1051,7 @@ const val CADENCE_QUERY_CHILD_ACCOUNT_NFT = """
                         collectionList.append(
                           NFTCollection(
                             id: type.identifier,
+                            path: path.toString(),
                             display: getDisplay(address: childAccount, path: path),
                             idList: collection.getIDs()
                           )
@@ -1061,6 +1064,89 @@ const val CADENCE_QUERY_CHILD_ACCOUNT_NFT = """
         })
     
         return collectionList
+    }
+"""
+
+const val CADENCE_QUERY_CHILD_ACCOUNT_TOKENS = """
+    import HybridCustody from 0xHybridCustody
+    import MetadataViews from 0xMetadataViews
+    import FungibleToken from 0xFungibleToken
+    import NonFungibleToken from 0xNonFungibleToken
+    
+    pub struct TokenInfo {
+      pub let id: String
+      pub let balance: UFix64
+    
+      init(id: String, balance: UFix64) {
+        self.id = id
+        self.balance = balance
+      }
+    }
+    
+    pub fun main(parent: Address, childAddress: Address): [TokenInfo] {
+        let manager = getAuthAccount(parent).borrow<&HybridCustody.Manager>(from: HybridCustody.ManagerStoragePath) ?? panic ("manager does not exist")
+    
+        var typeIdsWithProvider: {Address: [Type]} = {}
+    
+        var coinInfoList: [TokenInfo] = []
+        let providerType = Type<Capability<&{FungibleToken.Provider}>>()
+        let vaultType: Type = Type<@FungibleToken.Vault>()
+    
+        // Iterate through child accounts
+    
+            let acct = getAuthAccount(childAddress)
+            let foundTypes: [Type] = []
+            let vaultBalances: {String: UFix64} = {}
+            let childAcct = manager.borrowAccount(addr: childAddress) ?? panic("child account not found")
+            // get all private paths
+            acct.forEachPrivate(fun (path: PrivatePath, type: Type): Bool {
+                // Check which private paths have NFT Provider AND can be borrowed
+                if !type.isSubtype(of: providerType){
+                    return true
+                }
+                if let cap = childAcct.getCapability(path: path, type: Type<&{FungibleToken.Provider}>()) {
+                    let providerCap = cap as! Capability<&{FungibleToken.Provider}> 
+    
+                    if !providerCap.check(){
+                        // if this isn't a provider capability, exit the account iteration function for this path
+                        return true
+                    }
+                    foundTypes.append(cap.borrow<&AnyResource>()!.getType())
+                }
+                return true
+            })
+            typeIdsWithProvider[childAddress] = foundTypes
+    
+            // iterate storage, check if typeIdsWithProvider contains the typeId, if so, add to vaultBalances
+            acct.forEachStored(fun (path: StoragePath, type: Type): Bool {
+    
+                if typeIdsWithProvider[childAddress] == nil {
+                    return true
+                }
+    
+                for key in typeIdsWithProvider.keys {
+                    for idx, value in typeIdsWithProvider[key]! {
+                        let value = typeIdsWithProvider[key]!
+    
+                        if value[idx] != type {
+                            continue
+                        } else {
+                            if type.isInstance(vaultType) {
+                                continue
+                            }
+                            if let vault = acct.borrow<&FungibleToken.Vault>(from: path) { 
+                                coinInfoList.append(
+                                  TokenInfo(id: type.identifier, balance: vault.balance)
+                                )
+                            }
+                            continue
+                        }
+                    }
+                }
+                return true
+            })
+        
+        return coinInfoList
     }
 """
 

@@ -37,13 +37,13 @@
             android:textColor="@color/text"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/collection_count_view"
+            app:layout_constraintEnd_toStartOf="@id/coin_balance_view"
             app:layout_constraintStart_toEndOf="@id/icon_view"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="NBA Top Shot"/>
+            tools:text="Flow"/>
 
         <TextView
-            android:id="@+id/collection_count_view"
+            android:id="@+id/coin_balance_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -51,18 +51,9 @@
             android:textColor="@color/neutrals6"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/arrow_view"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="35 Collectibles"/>
-
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/arrow_view"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/neutrals4"/>
+            tools:text="100 Flow"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

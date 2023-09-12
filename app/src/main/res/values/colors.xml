@@ -2,8 +2,7 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryVariant">#ffffff</color>
-    <color name="colorSecondary">#32E355</color>
-    <color name="colorSecondaryVariant">#00B881</color>
+    <color name="colorSecondary">#41CC5D</color>
     <color name="text_sub">#565A69</color>
     <color name="text_light">#8f8f93</color>
 
@@ -11,7 +10,7 @@
 
     <color name="card_bg">#f0f0f0</color>
 
-    <color name="error">#EF383A</color>
+    <color name="error">#E54040</color>
 
     <color name="disable">#d9d9d9</color>
 
@@ -147,7 +146,7 @@
     <color name="neutrals10">#E3E3E3</color>
     <color name="note">#808080</color>
     <color name="outline">#E6E6E6</color>
-    <color name="salmon_primary">#32E355</color>
+    <color name="salmon_primary">#41CC5D</color>
     <color name="salmon1">#C9683A</color>
     <color name="salmon3">#FCA47C</color>
     <color name="salmon4">#FCC7AE</color>
@@ -200,17 +199,16 @@
     <color name="stake_12">#1c60C293</color>
     <color name="deep_bg_0">#00ffffff</color>
 
-    <color name="mainnet">#32E355</color>
+    <color name="mainnet">#41CC5D</color>
     <color name="sandbox">#CCAF21</color>
     <color name="testnet">#FF8A00</color>
-    <color name="profile_tip_background">#2900B881</color>
-    <color name="colorSecondaryVariant_50">#8000B881</color>
-    <color name="colorSecondary_25">#4032E355</color>
-    <color name="colorSecondary_35">#5932E355</color>
-    <color name="colorSecondary_50">#8032E355</color>
-    <color name="colorSecondary_65">#a632E355</color>
-    <color name="colorSecondary_80">#CC32E355</color>
-    <color name="colorSecondary_95">#F232E355</color>
+    <color name="profile_tip_background">#29579AF2</color>
+    <color name="colorSecondary_25">#4041CC5D</color>
+    <color name="colorSecondary_35">#5941CC5D</color>
+    <color name="colorSecondary_50">#8041CC5D</color>
+    <color name="colorSecondary_65">#a641CC5D</color>
+    <color name="colorSecondary_80">#CC41CC5D</color>
+    <color name="colorSecondary_95">#F241CC5D</color>
     <color name="swap_token_selected">#363636</color>
     <color name="accent_blue">#579AF2</color>
     <color name="accent_green">#41CC5D</color>
@@ -218,5 +216,8 @@
     <color name="profile_card_background">#FAFAFA</color>
     <color name="profile_card_divider">#FFFFFF</color>
     <color name="welcome_page_text">#000000</color>
+    <color name="drawer_item_background">#F4F4F7</color>
+
+    <color name="text_3">#4D000000</color>
 
 </resources>

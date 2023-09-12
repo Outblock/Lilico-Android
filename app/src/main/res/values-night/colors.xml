@@ -2,8 +2,7 @@
 <resources>
     <color name="colorPrimary">#242430</color>
     <color name="colorPrimaryVariant">@color/deep_bg</color>
-    <color name="colorSecondary">#32E355</color>
-    <color name="colorSecondaryVariant">#00b881</color>
+    <color name="colorSecondary">#41CC5D</color>
 
     <color name="text_sub">#D2D2D2</color>
 
@@ -50,7 +49,7 @@
     <color name="neutrals12_background">#0D0D0D</color>
     <color name="note">#C4C4C4</color>
     <color name="outline">#4C4C4C</color>
-    <color name="salmon_primary">#32E355</color>
+    <color name="salmon_primary">#41CC5D</color>
     <color name="salmon1">#FCA47C</color>
     <color name="salmon3">#E37542</color>
     <color name="salmon4">#B05B33</color>
@@ -93,5 +92,9 @@
     <color name="profile_card_background">#1AFFFFFF</color>
     <color name="profile_card_divider">#14FFFFFF</color>
     <color name="welcome_page_text">#FFFFFF</color>
+    <color name="drawer_item_background">#292929</color>
+
+    <color name="text_3">#66FFFFFF</color>
+
 </resources>
 

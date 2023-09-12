@@ -51,7 +51,7 @@
     </style>
 
     <style name="CheckBox">
-        <item name="android:buttonTint">@color/colorSecondaryVariant</item>
+        <item name="android:buttonTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -162,7 +162,7 @@
 
     <style name="FrozenSwitch">
         <!--开启时的颜色-->
-        <item name="colorControlActivated">@color/colorSecondaryVariant</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
 <!--        关闭时的颜色-->
 <!--        <item name="colorSwitchThumbNormal">#383434</item>-->
 <!--        关闭时的轨迹颜色-->

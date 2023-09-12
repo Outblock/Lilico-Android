@@ -1,4 +1,4 @@
-package io.outblock.lilico.page.profile.subpage.wallet.childaccount.model
+package io.outblock.lilico.page.profile.subpage.wallet.account.model
 
 import io.outblock.lilico.manager.childaccount.ChildAccount
 
