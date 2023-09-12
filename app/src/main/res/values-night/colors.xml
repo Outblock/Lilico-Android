@@ -94,5 +94,8 @@
     <color name="profile_card_divider">#14FFFFFF</color>
     <color name="welcome_page_text">#FFFFFF</color>
     <color name="drawer_item_background">#292929</color>
+
+    <color name="text_3">#66FFFFFF</color>
+
 </resources>
 

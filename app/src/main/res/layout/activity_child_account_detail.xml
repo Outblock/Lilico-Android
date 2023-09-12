@@ -141,27 +141,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/accessible_title_view">
 
-                <ImageView
-                    android:id="@+id/iv_hide_empty"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:src="@drawable/ic_check_round"
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="@string/view_empty_collection"
+                    android:textColor="@color/neutrals9"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
+                <io.outblock.lilico.widgets.FrozenSwitch
+                    android:id="@+id/switch_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:text="@string/hide_empty_collection"
-                    android:textColor="@color/neutrals9"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:textSize="10sp"
+                    android:layout_marginStart="4dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:theme="@style/FrozenSwitch"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_hide_empty"
+                    app:layout_constraintStart_toEndOf="@id/tv_empty"
                     app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

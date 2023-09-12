@@ -29,7 +29,7 @@ class ChildAccountDetailPresenter(
     private val accessibleAdapter by lazy { AccessibleListAdapter() }
     private val nftCollections = mutableListOf<CollectionData>()
     private val coinList = mutableListOf<CoinData>()
-    private var isHideEmptyCollection = true
+    private var isShowEmptyCollection = false
 
     init {
         with(binding.accessibleListView) {
@@ -38,13 +38,12 @@ class ChildAccountDetailPresenter(
             addItemDecoration(ColorDividerItemDecoration(Color.TRANSPARENT, 8.dp2px().toInt()))
         }
         binding.clHideEmpty.setOnClickListener {
-            isHideEmptyCollection = isHideEmptyCollection.not()
-            binding.ivHideEmpty.setImageResource(
-                if (isHideEmptyCollection)
-                    R.drawable.ic_check_round
-                else
-                    R.drawable.ic_check_normal_gray
-            )
+            isShowEmptyCollection = isShowEmptyCollection.not()
+            binding.switchEmpty.isChecked = isShowEmptyCollection
+            with(binding.switchEmpty) {
+                isChecked = isShowEmptyCollection
+                jumpDrawablesToCurrentState()
+            }
             updateNFTCollections()
         }
         binding.tvTabCollection.setOnClickListener { changeTabStatus(collectionSelected = true) }
@@ -53,7 +52,7 @@ class ChildAccountDetailPresenter(
 
     private fun updateNFTCollections() {
         accessibleAdapter.setNewDiffData(
-            if (isHideEmptyCollection) nftCollections.filter { it.idList.isNotEmpty() } else nftCollections
+            if (isShowEmptyCollection) nftCollections else nftCollections.filter { it.idList.isNotEmpty() }
         )
     }
 
