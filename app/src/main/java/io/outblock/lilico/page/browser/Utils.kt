@@ -174,7 +174,7 @@ fun String.toFavIcon(size: Int = 256): String {
 }
 
 fun openInFlowScan(activity: Activity, transactionId: String) {
-    openBrowser(activity, "https://${if (isTestnet()) "testnet." else ""}flowscan.org/transaction/$transactionId")
+    openBrowser(activity, "https://${if (isTestnet()) "testnet." else ""}flowdiver.io/tx/$transactionId")
 }
 
 class BrowserParams(

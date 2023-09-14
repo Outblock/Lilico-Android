@@ -45,7 +45,7 @@ class NotificationDispatchActivity : BaseActivity() {
 
     private fun String.toFlowScanTransactionUrl(): String {
         return if (isTestnet()) {
-            "https://testnet.flowscan.org/transaction/$this"
-        } else "https://flowscan.org/transaction/$this"
+            "https://testnet.flowdiver.io/tx/$this"
+        } else "https://flowdiver.io/tx/$this"
     }
 }

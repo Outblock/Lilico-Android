@@ -18,7 +18,7 @@ class TransactionViewMoreItemPresenter(
 
     private fun TransactionViewMoreModel.url(): String {
         return if (isTestnet()) {
-            "https://testnet.flowscan.org/account/$address"
-        } else "https://flowscan.org/account/$address"
+            "https://testnet.flowdiver.io/account/$address"
+        } else "https://flowdiver.io/account/$address"
     }
 }
