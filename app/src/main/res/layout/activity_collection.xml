@@ -61,31 +61,33 @@
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/montsettat"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="@color/text"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/subtitle_view"
                 app:layout_constraintStart_toEndOf="@id/cover_view"
                 app:layout_constraintTop_toTopOf="@id/cover_view"
-                tools:text="The Truth of Nature"/>
+                app:layout_constraintEnd_toStartOf="@id/coin_icon"
+                tools:text="The Truth of NatureThe Truth of Nature"/>
 
             <ImageView
                 android:id="@+id/coin_icon"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_coin_flow"
                 app:layout_constraintBottom_toBottomOf="@id/title_view"
                 app:layout_constraintStart_toEndOf="@id/title_view"
                 app:layout_constraintTop_toTopOf="@id/title_view"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/subtitle_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/inter"
@@ -104,6 +106,8 @@
                 android:fontFamily="@font/inter_semi_bold"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="8dp"
                 android:stateListAnimator="@null"
@@ -116,7 +120,7 @@
                 app:elevation="0dp"
                 app:icon="@drawable/ic_share"
                 app:iconTint="@color/colorSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/cover_view"
+                app:layout_constraintTop_toBottomOf="@id/subtitle_view"
                 app:layout_constraintStart_toStartOf="@id/title_view"
                 app:rippleColor="@color/black_10"/>
 
@@ -132,6 +136,7 @@
                 android:minHeight="0dp"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="8dp"
+                android:layout_marginTop="4dp"
                 android:stateListAnimator="@null"
                 android:text="@string/explore"
                 android:textAllCaps="false"
@@ -141,7 +146,7 @@
                 app:elevation="0dp"
                 app:icon="@drawable/ic_web"
                 app:iconTint="@color/colorSecondary"
-                app:layout_constraintBottom_toBottomOf="@id/cover_view"
+                app:layout_constraintTop_toBottomOf="@id/subtitle_view"
                 app:layout_constraintStart_toEndOf="@id/share_button"
                 app:rippleColor="@color/black_10"/>
 

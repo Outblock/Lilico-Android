@@ -49,6 +49,7 @@ data class CollectionData(
     val name: String,
     val logo: String,
     val path: String,
+    val contractName: String,
     val idList: List<String>
 )
 

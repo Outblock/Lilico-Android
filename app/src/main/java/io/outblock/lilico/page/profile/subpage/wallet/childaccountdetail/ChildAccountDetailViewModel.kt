@@ -52,13 +52,10 @@ class ChildAccountDetailViewModel : ViewModel() {
                 collectionList.add(
                     CollectionData(
                         it.id,
-                        nftCollection?.name.orEmpty().ifBlank {
-                            it.display.name.ifBlank {
-                                it.id.split(".", ignoreCase = true, limit = 0)[2]
-                            }
-                        },
+                        nftCollection?.name ?: it.display.name,
                         nftCollection?.logo ?: it.display.squareImage,
                         it.path,
+                        it.id.split(".", ignoreCase = true, limit = 0)[2],
                         it.idList
                     )
                 )
