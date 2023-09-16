@@ -33,7 +33,7 @@ data class NFTListData(
 @Parcelize
 data class Nft(
     @SerializedName("contract")
-    val contract: NFTContract,
+    val contract: NFTContract?,
     @SerializedName("description")
     val description: String?,
     @SerializedName("id")

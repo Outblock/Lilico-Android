@@ -19,6 +19,9 @@ class CollectionActivity : BaseActivity() {
     private lateinit var binding: ActivityCollectionBinding
 
     private val contractName by lazy { intent.getStringExtra(EXTRA_CONTRACT_NAME).orEmpty() }
+    private val collectionLogo by lazy { intent.getStringExtra(EXTRA_COLLECTION_LOGO).orEmpty() }
+    private val collectionName by lazy { intent.getStringExtra(EXTRA_COLLECTION_NAME).orEmpty() }
+    private val collectionSize by lazy { intent.getIntExtra(EXTRA_COLLECTION_SIZE, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +29,22 @@ class CollectionActivity : BaseActivity() {
         setContentView(binding.root)
         UltimateBarX.with(this).fitWindow(false).light(!isNightMode(this)).applyStatusBar()
 
-        presenter = CollectionContentPresenter(this, binding)
+        presenter = CollectionContentPresenter(this, binding).apply {
+            bindInfo(collectionLogo, collectionName, collectionSize)
+        }
         viewModel = ViewModelProvider(this)[CollectionViewModel::class.java].apply {
-            dataLiveData.observe(this@CollectionActivity) { presenter.bind(CollectionContentModel(data = it)) }
-            collectionLiveData.observe(this@CollectionActivity) { presenter.bind(CollectionContentModel(collection = it)) }
+            dataLiveData.observe(this@CollectionActivity) {
+                presenter.bind(
+                    CollectionContentModel(
+                        data = it
+                    )
+                )
+            }
+            collectionLiveData.observe(this@CollectionActivity) {
+                presenter.bind(
+                    CollectionContentModel(collection = it)
+                )
+            }
             load(contractName)
         }
     }
@@ -44,10 +59,22 @@ class CollectionActivity : BaseActivity() {
 
     companion object {
         private const val EXTRA_CONTRACT_NAME = "extra_address"
+        private const val EXTRA_COLLECTION_LOGO = "extra_collection_logo"
+        private const val EXTRA_COLLECTION_NAME = "extra_collection_name"
+        private const val EXTRA_COLLECTION_SIZE = "extra_collection_size"
 
-        fun launch(context: Context, contractName: String) {
+        fun launch(
+            context: Context,
+            contractName: String,
+            logo: String? = "",
+            name: String? = "",
+            size: Int? = 0
+        ) {
             context.startActivity(Intent(context, CollectionActivity::class.java).apply {
                 putExtra(EXTRA_CONTRACT_NAME, contractName)
+                putExtra(EXTRA_COLLECTION_LOGO, logo)
+                putExtra(EXTRA_COLLECTION_NAME, name)
+                putExtra(EXTRA_COLLECTION_SIZE, size)
             })
         }
     }

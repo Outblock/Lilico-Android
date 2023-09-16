@@ -7,8 +7,12 @@ import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.LayoutWalletCoinItemBinding
+import io.outblock.lilico.manager.coin.FlowCoin
+import io.outblock.lilico.manager.wallet.WalletManager
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.page.token.detail.TokenDetailActivity
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
@@ -34,6 +38,7 @@ class WalletCoinItemPresenter(
             }
             coinPrice.text = model.coinRate.formatPrice(includeSymbol = true)
             bindStaking(model)
+            bindAccessible(model.coin)
             view.setOnClickListener { TokenDetailActivity.launch(view.context, model.coin) }
         }
     }
@@ -46,6 +51,15 @@ class WalletCoinItemPresenter(
         setStakingVisible(true)
         binding.stakingAmount.text = view.context.getString(R.string.flow_num, model.stakeAmount.formatNum(3))
         binding.stakingAmountPrice.text = (model.stakeAmount * model.coinRate).formatPrice(includeSymbol = true)
+    }
+
+    private fun bindAccessible(coin: FlowCoin) {
+        val accessible = ChildAccountCollectionManager.isTokenAccessible(coin.contractName, coin.address())
+        if (accessible.not()) {
+            setStakingVisible(false)
+        }
+        binding.coinPrice.setVisible(accessible)
+        binding.tvInaccessibleTag.setVisible(accessible.not())
     }
 
     private fun setStakingVisible(isVisible: Boolean) {

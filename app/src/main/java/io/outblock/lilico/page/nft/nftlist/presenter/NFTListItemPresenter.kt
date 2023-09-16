@@ -15,8 +15,12 @@ import io.outblock.lilico.page.nft.nftdetail.NftDetailActivity
 import io.outblock.lilico.page.nft.nftlist.cover
 import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
 import io.outblock.lilico.page.nft.nftlist.widget.NftItemPopupMenu
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.gone
 import io.outblock.lilico.utils.extensions.res2pix
+import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.extensions.visible
 import io.outblock.lilico.utils.findActivity
 
 class NFTListItemPresenter(
@@ -54,6 +58,13 @@ class NFTListItemPresenter(
         view.setOnClickListener {
             NftDetailActivity.launch(context, nft.uniqueId())
         }
+        bindAccessible(model)
+    }
+
+    private fun bindAccessible(model: NFTItemModel) {
+        val accessible = ChildAccountCollectionManager.isNFTAccessible(model.nft.id)
+        binding.priceView.setVisible(accessible)
+        binding.tvInaccessibleTag.setVisible(accessible.not())
     }
 
     private fun showPopupMenu(model: NFTItemModel) {

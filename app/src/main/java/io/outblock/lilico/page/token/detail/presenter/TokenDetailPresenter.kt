@@ -20,13 +20,17 @@ import io.outblock.lilico.manager.staking.stakingCount
 import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.page.receive.ReceiveActivity
 import io.outblock.lilico.page.send.transaction.TransactionSendActivity
 import io.outblock.lilico.page.staking.openStakingPage
 import io.outblock.lilico.page.token.detail.TokenDetailViewModel
 import io.outblock.lilico.page.token.detail.model.TokenDetailModel
+import io.outblock.lilico.utils.extensions.gone
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.extensions.visible
 import io.outblock.lilico.utils.formatNum
 import io.outblock.lilico.utils.formatPrice
 
@@ -77,6 +81,17 @@ class TokenDetailPresenter(
                 )
             }
         }
+        bindAccessible(coin)
+    }
+
+    private fun bindAccessible(coin: FlowCoin) {
+        if (ChildAccountCollectionManager.isTokenAccessible(coin.contractName, coin.address())) {
+            binding.inaccessibleTip.gone()
+            return
+        }
+        val accountName = WalletManager.childAccount(WalletManager.selectedWalletAddress())?.name ?: R.string.default_child_account_name.res2String()
+        binding.tvInaccessibleTip.text = activity.getString(R.string.inaccessible_token_tip, coin.name, accountName)
+        binding.inaccessibleTip.visible()
     }
 
     @SuppressLint("SetTextI18n")

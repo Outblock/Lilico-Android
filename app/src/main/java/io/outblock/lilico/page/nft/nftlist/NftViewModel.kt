@@ -18,6 +18,7 @@ import io.outblock.lilico.page.nft.nftlist.utils.NftGridRequester
 import io.outblock.lilico.page.nft.nftlist.utils.NftList
 import io.outblock.lilico.page.nft.nftlist.utils.NftListRequester
 import io.outblock.lilico.page.nft.nftlist.utils.OnNftFavoriteChangeListener
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.utils.ioScope
 import io.outblock.lilico.utils.isNftCollectionExpanded
 import io.outblock.lilico.utils.logd
@@ -49,6 +50,10 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
     init {
         NftFavoriteManager.addOnNftSelectionChangeListener(this)
         observeWalletUpdate()
+    }
+
+    fun requestChildAccountCollectionList() {
+        ChildAccountCollectionManager.loadChildAccountNFTCollectionList()
     }
 
     fun requestList() {
@@ -100,6 +105,7 @@ class NftViewModel : ViewModel(), OnNftFavoriteChangeListener, OnWalletDataUpdat
     override fun onWalletDataUpdate(wallet: WalletListData) {
         requestList()
         requestGrid()
+        requestChildAccountCollectionList()
     }
 
     private fun observeWalletUpdate() {

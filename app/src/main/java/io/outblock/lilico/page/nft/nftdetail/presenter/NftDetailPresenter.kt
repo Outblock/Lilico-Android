@@ -33,11 +33,15 @@ import io.outblock.lilico.page.nft.nftdetail.shareNft
 import io.outblock.lilico.page.nft.nftdetail.widget.NftMorePopupMenu
 import io.outblock.lilico.page.nft.nftlist.*
 import io.outblock.lilico.page.nft.nftlist.utils.NftFavoriteManager
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.page.send.nft.NftSendAddressDialog
 import io.outblock.lilico.utils.*
 import io.outblock.lilico.utils.exoplayer.createExoPlayer
+import io.outblock.lilico.utils.extensions.gone
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.extensions.visible
 import io.outblock.lilico.widgets.ProgressDialog
 import io.outblock.lilico.widgets.likebutton.LikeButton
 import io.outblock.lilico.widgets.likebutton.OnLikeListener
@@ -147,14 +151,26 @@ class NftDetailPresenter(
 
             bindVideo(nft)
 
+            bindAccessible(title, nft)
+
             collectionWrapper.setOnClickListener {
-                CollectionActivity.launch(activity, nft.contract.name.orEmpty())
+                CollectionActivity.launch(activity, nft.collectionContractName)
             }
 
             ioScope { updateSelectionState(NftFavoriteManager.isFavoriteNft(nft)) }
 
             sendButton.setVisible(!nft.isDomain())
         }
+    }
+
+    private fun bindAccessible(title: String, nft: Nft) {
+        if (ChildAccountCollectionManager.isNFTAccessible(nft.id)) {
+            binding.inaccessibleTip.gone()
+            return
+        }
+        val accountName = WalletManager.childAccount(WalletManager.selectedWalletAddress())?.name ?: R.string.default_child_account_name.res2String()
+        binding.tvInaccessibleTip.text = activity.getString(R.string.inaccessible_token_tip, title, accountName)
+        binding.inaccessibleTip.visible()
     }
 
     private fun bindVideo(nft: Nft) {

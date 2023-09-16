@@ -279,7 +279,7 @@
     <string name="lilico">Flow Core</string>
     <string name="things_you_should_know">Things You Should Know</string>
     <string name="claim_domain_desc_1">Free lilico domain help you find each other easier on chain.</string>
-    <string name="claim_domain_desc_2">An Inbox system will help you send tokens and NFT to your firend without enable vault.</string>
+    <string name="claim_domain_desc_2">An Inbox system will help you send tokens and NFT to your friend without enable vault.</string>
     <string name="claim_domain_desc_3">Anonymous mode will be affected, others can find your address by your domain.</string>
     <string name="claim_domain_failed">Claim domain failed</string>
     <string name="nft_count">%1$d NFTs</string>
@@ -350,7 +350,7 @@
     <string name="hold_to_stake">Hold to stake</string>
     <string name="hold_to_unstake">Hold to unstake</string>
     <string name="the_stake_is_processing">The stake is processing</string>
-    <string name="staking_not_enabled">Staking is under maintenance on %1$s netwrok, please try again later.</string>
+    <string name="staking_not_enabled">Staking is under maintenance on %1$s network, please try again later.</string>
     <string name="stake_failed">Stake failed</string>
     <string name="unstake_failed">Unstake failed</string>
     <string name="staking_list">Staking List</string>
@@ -392,8 +392,7 @@
     <string name="create_account">Create Account</string>
     <string name="suggest_to_backup">Suggest to Backup</string>
     <string name="link_account">Link Account</string>
-    <string name="link_account_desc">We would like to link your %1$s account to your Flow Core
-        account</string>
+    <string name="link_account_desc">We would like to link your %1$s account to your Flow Core account</string>
     <string name="hold_to_link">Hold to Link</string>
     <string name="work_in_progress">Work in Progress</string>
     <string name="account_linking">Account Linking</string>
@@ -452,4 +451,6 @@
     <string name="none_accessible_coins">None Accessible Coins</string>
     <string name="no_linked_account">No Linked Account</string>
     <string name="view_empty_collection">View Empty</string>
+    <string name="inaccessible_tag">Inaccessible</string>
+    <string name="inaccessible_token_tip">Flow Core doesn’t have access to %1$s in %2$s Account, please check your linked account settings.</string>
 </resources>

@@ -21,6 +21,7 @@ import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.flowscan.flowScanAccountTransferCountQuery
 import io.outblock.lilico.network.model.WalletListData
 import io.outblock.lilico.page.profile.subpage.currency.model.selectedCurrency
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.page.wallet.model.WalletCoinItemModel
 import io.outblock.lilico.page.wallet.model.WalletHeaderModel
 import io.outblock.lilico.utils.getAccountTransactionCountLocal
@@ -57,6 +58,7 @@ class WalletFragmentViewModel : ViewModel(), OnWalletDataUpdate, OnBalanceUpdate
             loadTransactionCount()
             CurrencyManager.fetch()
             StakingManager.refresh()
+            ChildAccountCollectionManager.loadChildAccountTokenList()
         }
     }
 

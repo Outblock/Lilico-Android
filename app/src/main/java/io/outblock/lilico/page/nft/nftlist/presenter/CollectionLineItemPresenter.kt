@@ -10,7 +10,10 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionLineBinding
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
+import io.outblock.lilico.page.nft.nftlist.model.NFTItemModel
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.setVisible
 
 class CollectionLineItemPresenter(
     private val view: View,
@@ -26,6 +29,13 @@ class CollectionLineItemPresenter(
             countView.text = view.context.getString(R.string.collectibles_count, model.count)
             Glide.with(coverView).load(config.logo).transform(CenterCrop(), RoundedCorners(corner)).into(coverView)
         }
+        bindAccessible(model)
         view.setOnClickListener { CollectionActivity.launch(view.context, model.collection.contractName) }
+    }
+
+    private fun bindAccessible(model: CollectionItemModel) {
+        val accessible = ChildAccountCollectionManager.isNFTCollectionAccessible(model.collection.id)
+        binding.countView.setVisible(accessible)
+        binding.tvInaccessibleTag.setVisible(accessible.not())
     }
 }
