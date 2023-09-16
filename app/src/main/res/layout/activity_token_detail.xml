@@ -22,6 +22,41 @@
             android:layout_marginTop="60dp"
             android:paddingBottom="50dp">
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/inaccessible_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_8dp"
+                android:backgroundTint="@color/colorSecondary_16"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="10dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/icon_view">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_tips"
+                    android:tint="@color/accent_green"/>
+
+                <TextView
+                    android:id="@+id/tv_inaccessible_tip"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="@string/inaccessible_token_tip"
+                    android:textColor="@color/accent_green"
+                    android:textSize="12sp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -73,7 +108,7 @@
                 android:outlineSpotShadowColor="@color/border_2"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inaccessible_tip"
                 tools:src="@drawable/ic_coin_flow"/>
 
             <TextView

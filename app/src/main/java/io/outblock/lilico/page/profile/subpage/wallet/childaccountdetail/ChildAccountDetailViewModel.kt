@@ -18,14 +18,17 @@ class ChildAccountDetailViewModel : ViewModel() {
         }
     }
 
+    // id format A.a60698727837eccf.GamePieceNFT.Collection
     fun queryCoinList(account: ChildAccount) {
         viewModelIOScope(this) {
-            val tokenList = queryChildAccountTokens(account)
+            val tokenList = queryChildAccountTokens(account.address)
             val coinDataList = mutableListOf<CoinData>()
             tokenList.forEach {
-                val contractName = it.id.split(".", ignoreCase = true, limit = 0)[2]
+                val idSplitList = it.id.split(".", ignoreCase = true, limit = 0)
+                val contractName = idSplitList[2]
+                val address = idSplitList[1]
                 val flowCoin = FlowCoinListManager.coinList().firstOrNull { flowCoin ->
-                    contractName == flowCoin.contractName
+                    contractName == flowCoin.contractName && address == flowCoin.address()
                 }
                 coinDataList.add(
                     CoinData(
@@ -44,7 +47,7 @@ class ChildAccountDetailViewModel : ViewModel() {
 
     private fun queryNft(account: ChildAccount) {
         viewModelIOScope(this) {
-            val collections = queryChildAccountNftCollections(account)
+            val collections = queryChildAccountNftCollections(account.address)
             logd("ChildAccountDetailViewModel", collections)
             val collectionList = mutableListOf<CollectionData>()
             collections.forEach{

@@ -2,6 +2,7 @@ package io.outblock.lilico.page.profile.subpage.wallet.childaccountdetail
 
 import io.outblock.lilico.manager.childaccount.ChildAccount
 import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_NFT
+import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_NFT_ID
 import io.outblock.lilico.manager.flowjvm.CADENCE_QUERY_CHILD_ACCOUNT_TOKENS
 import io.outblock.lilico.manager.flowjvm.executeCadence
 import io.outblock.lilico.manager.wallet.WalletManager
@@ -9,11 +10,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-fun queryChildAccountNftCollections(account: ChildAccount): List<NFTCollectionData> {
+fun queryChildAccountNftCollections(childAddress: String): List<NFTCollectionData> {
     val walletAddress = WalletManager.wallet()?.walletAddress() ?: return emptyList()
     val response = CADENCE_QUERY_CHILD_ACCOUNT_NFT.executeCadence {
         arg { address(walletAddress) }
-        arg { address(account.address) }
+        arg { address(childAddress) }
 // for test
 //        arg { address("0x84221fe0294044d7") }
 //        arg { address("0x16c41a2b76dee69b") }
@@ -22,14 +23,24 @@ fun queryChildAccountNftCollections(account: ChildAccount): List<NFTCollectionDa
     return parseJson(response.stringValue)
 }
 
-fun queryChildAccountTokens(account: ChildAccount): List<TokenData> {
+fun queryChildAccountTokens(childAddress: String): List<TokenData> {
     val walletAddress = WalletManager.wallet()?.walletAddress() ?: return emptyList()
     val response = CADENCE_QUERY_CHILD_ACCOUNT_TOKENS.executeCadence {
         arg { address(walletAddress) }
-        arg { address(account.address) }
+        arg { address(childAddress) }
     }
     response ?: return emptyList()
     return parseTokenList(response.stringValue)
+}
+
+fun queryChildAccountNFTCollectionID(childAddress: String): List<NFTCollectionIDData> {
+    val walletAddress = WalletManager.wallet()?.walletAddress() ?: return emptyList()
+    val response = CADENCE_QUERY_CHILD_ACCOUNT_NFT_ID.executeCadence {
+        arg { address(walletAddress) }
+        arg { address(childAddress) }
+    }
+    response ?: return emptyList()
+    return parseNFTCollectionData(response.stringValue)
 }
 
 data class CoinData(
@@ -42,6 +53,11 @@ data class CoinData(
 data class TokenData(
     val id: String,
     val balance: Float
+)
+
+data class NFTCollectionIDData(
+    val id: String,
+    val idList: List<String>
 )
 
 data class CollectionData(
@@ -157,4 +173,26 @@ fun parseTokenList(json: String): List<TokenData> {
     }
 
     return list
+}
+
+fun parseNFTCollectionData(json: String): List<NFTCollectionIDData> {
+
+    val root = JSONObject(json)
+    val infoArray = root.getJSONArray("info")
+    val infoList = mutableListOf<NFTCollectionIDData>()
+
+    for (i in 0 until infoArray.length()) {
+        val infoObject = infoArray.getJSONObject(i)
+
+        val id = infoObject.getString("id")
+        val idListArray = infoObject.getJSONArray("idList")
+
+        val idList = mutableListOf<String>()
+        for (j in 0 until idListArray.length()) {
+            val idListItem = idListArray.getString(j)
+            idList.add(idListItem)
+        }
+        infoList.add(NFTCollectionIDData(id, idList))
+    }
+    return infoList
 }
