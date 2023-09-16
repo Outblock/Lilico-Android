@@ -61,6 +61,7 @@ internal class NftListFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[NftViewModel::class.java].apply {
             requestList()
+            requestChildAccountCollectionList()
             listNftLiveData.observe(viewLifecycleOwner) { data -> updateListData(data) }
             collectionsLiveData.observe(viewLifecycleOwner) { data -> updateCollections(data) }
             collectionTitleLiveData.observe(viewLifecycleOwner) { collectionTitlePresenter.bind(it) }

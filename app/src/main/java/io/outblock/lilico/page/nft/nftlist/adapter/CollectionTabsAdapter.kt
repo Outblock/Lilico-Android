@@ -18,8 +18,10 @@ import io.outblock.lilico.base.recyclerview.BaseViewHolder
 import io.outblock.lilico.databinding.ItemNftListCollectionTabBinding
 import io.outblock.lilico.page.nft.nftlist.NftViewModel
 import io.outblock.lilico.page.nft.nftlist.model.CollectionItemModel
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.utils.extensions.dp2px
 import io.outblock.lilico.utils.extensions.res2color
+import io.outblock.lilico.utils.extensions.setVisible
 import io.outblock.lilico.utils.findActivity
 
 class CollectionTabsAdapter : BaseAdapter<CollectionItemModel>(diffCallback) {
@@ -66,6 +68,13 @@ private class TabsViewHolder(
             root.strokeColor = if (model.isSelected) R.color.neutrals4.res2color() else Color.TRANSPARENT
         }
         this.model = model
+        bindAccessible(model)
+    }
+
+    private fun bindAccessible(model: CollectionItemModel) {
+        val accessible = ChildAccountCollectionManager.isNFTCollectionAccessible(model.collection.id)
+        binding.countView.setVisible(accessible)
+        binding.tvInaccessibleTag.setVisible(accessible.not())
     }
 }
 

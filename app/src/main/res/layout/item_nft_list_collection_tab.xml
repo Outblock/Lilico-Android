@@ -37,10 +37,9 @@
             android:textColor="@color/text"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/count_view"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/cover_view"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cover_view"
             tools:text="Claude Monet"/>
 
         <ImageView
@@ -66,6 +65,25 @@
             app:layout_constraintStart_toEndOf="@id/cover_view"
             app:layout_constraintTop_toBottomOf="@id/name_view"
             tools:text="0 Collections"/>
+
+        <TextView
+            android:id="@+id/tv_inaccessible_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semi_bold"
+            android:layout_marginStart="12dp"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:textSize="10sp"
+            android:textColor="@color/accent_gray"
+            android:text="@string/inaccessible_tag"
+            android:visibility="gone"
+            android:background="@drawable/bg_round_4dp"
+            android:backgroundTint="@color/inaccessible_tag_background_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/cover_view"
+            app:layout_constraintTop_toBottomOf="@id/name_view"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

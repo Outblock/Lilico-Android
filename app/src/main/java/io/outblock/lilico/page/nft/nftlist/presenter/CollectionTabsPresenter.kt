@@ -41,6 +41,7 @@ class CollectionTabsPresenter(
                 adapter.setNewDiffData(data)
             }
         }
+
     }
 
     override fun bind(model: CollectionTabsModel) {

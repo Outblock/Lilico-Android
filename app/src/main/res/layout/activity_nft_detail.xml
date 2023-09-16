@@ -58,15 +58,51 @@
                 android:paddingTop="40dp"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/inaccessible_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_round_8dp"
+                    android:backgroundTint="@color/colorSecondary_16"
+                    android:orientation="horizontal"
+                    android:layout_marginEnd="18dp"
+                    android:paddingVertical="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/media_wrapper">
+
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_tips"
+                        android:tint="@color/accent_green"/>
+
+                    <TextView
+                        android:id="@+id/tv_inaccessible_tip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:text="@string/inaccessible_token_tip"
+                        android:textColor="@color/accent_green"
+                        android:textSize="12sp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/media_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="18dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/inaccessible_tip">
 
                     <androidx.constraintlayout.utils.widget.ImageFilterView
                         android:id="@+id/cover_view"

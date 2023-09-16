@@ -56,4 +56,20 @@
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/name_view"
         tools:text="1,289.20 Flow"/>
+
+    <TextView
+        android:id="@+id/tv_inaccessible_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semi_bold"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:textSize="10sp"
+        android:textColor="@color/accent_gray"
+        android:text="@string/inaccessible_tag"
+        android:visibility="gone"
+        android:background="@drawable/bg_round_4dp"
+        android:backgroundTint="@color/inaccessible_tag_background_gray"
+        app:layout_constraintTop_toBottomOf="@id/name_view"
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

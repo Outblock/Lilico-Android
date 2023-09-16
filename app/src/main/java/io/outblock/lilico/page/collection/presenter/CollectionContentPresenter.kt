@@ -11,16 +11,22 @@ import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import io.outblock.lilico.R
 import io.outblock.lilico.base.presenter.BasePresenter
 import io.outblock.lilico.databinding.ActivityCollectionBinding
+import io.outblock.lilico.manager.config.NftCollection
+import io.outblock.lilico.manager.wallet.WalletManager
 import io.outblock.lilico.network.model.NftCollectionWrapper
 import io.outblock.lilico.page.browser.openBrowser
 import io.outblock.lilico.page.collection.CollectionActivity
 import io.outblock.lilico.page.collection.model.CollectionContentModel
 import io.outblock.lilico.page.nft.nftlist.adapter.NFTListAdapter
+import io.outblock.lilico.page.profile.subpage.wallet.ChildAccountCollectionManager
 import io.outblock.lilico.utils.ScreenUtils
 import io.outblock.lilico.utils.extensions.dp2px
+import io.outblock.lilico.utils.extensions.gone
+import io.outblock.lilico.utils.extensions.res2String
 import io.outblock.lilico.utils.extensions.res2color
 import io.outblock.lilico.utils.extensions.res2dip
 import io.outblock.lilico.utils.extensions.setVisible
+import io.outblock.lilico.utils.extensions.visible
 import io.outblock.lilico.widgets.itemdecoration.GridSpaceItemDecoration
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlin.math.min
@@ -85,6 +91,17 @@ class CollectionContentPresenter(
                 exploreButton.setOnClickListener { openBrowser(activity, url) }
             }
         }
+        bindAccessible(collection)
+    }
+
+    private fun bindAccessible(collection: NftCollection) {
+        if (ChildAccountCollectionManager.isNFTCollectionAccessible(collection.id)) {
+            binding.inaccessibleTip.gone()
+            return
+        }
+        val accountName = WalletManager.childAccount(WalletManager.selectedWalletAddress())?.name ?: R.string.default_child_account_name.res2String()
+        binding.tvInaccessibleTip.text = activity.getString(R.string.inaccessible_token_tip, collection.name, accountName)
+        binding.inaccessibleTip.visible()
     }
 
     private fun setupToolbar() {

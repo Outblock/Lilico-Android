@@ -105,6 +105,7 @@ class NFTFragmentPresenter(
         } else {
             viewModel.requestList()
         }
+        viewModel.requestChildAccountCollectionList()
     }
 
     private fun isGridTabSelected() = binding.tabs.currentTab != 0
