@@ -21,7 +21,7 @@ class AccessibleNftCollectionPresenter(
         with(binding) {
             view.setOnClickListener {
                 findActivity(view)?.let {
-                    CollectionActivity.launch(it, model.contractName)
+                    CollectionActivity.launch(it, model.contractName, model.logo, model.name, model.idList.size)
                 }
             }
             iconView.loadAvatar(model.logo)

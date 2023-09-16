@@ -73,6 +73,23 @@ class CollectionContentPresenter(
         model.collection?.let { bindHeader(it) }
     }
 
+    fun bindInfo(logo: String, name: String, size: Int) {
+        with(binding) {
+            Glide.with(coverView).load(logo).transform(CenterCrop(), RoundedCorners(16.dp2px().toInt())).into(coverView)
+            Glide.with(backgroundImage).load(logo)
+                .transition(DrawableTransitionOptions.withCrossFade(100))
+                .transform(BlurTransformation(15, 30))
+                .into(backgroundImage)
+
+            titleView.text = name
+            subtitleView.text = activity.getString(R.string.collectibles_count, size)
+
+            toolbar.title = name
+
+            exploreButton.setOnClickListener {  }
+        }
+    }
+
     private fun bindHeader(collectionWrapper: NftCollectionWrapper) {
         val collection = collectionWrapper.collection ?: return
         with(binding) {
